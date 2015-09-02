@@ -33,12 +33,12 @@ class TermSampleClassTests: XCTestCase {
     func testCriticalPeaks() {
         let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)")
         let gb_c = TermType.Rule("g(b)", "c")
-        // let peaks = fagx_fxx!.criticalPeaks(gb_c!)
-        let peaks = gb_c!.criticalPeaks(fagx_fxx!)
+        XCTAssertEqual(0,fagx_fxx!.criticalPeaks(gb_c!).count)
         
+        let peaks = gb_c!.criticalPeaks(fagx_fxx!)
         XCTAssertEqual(1, peaks.count)
         
-        let (l2r1,p,l2,r2) = peaks.first!
+        guard let (l2r1,p,l2,r2) = peaks.first else { return }
         
         XCTAssertEqual("f(a,c)",l2r1)
         XCTAssertEqual([2], p)

@@ -4,29 +4,30 @@
 import Foundation
 
 public typealias Symbol = String
+public typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:Range<Int>)
 
 // MARK: symbol properties
 
 public extension Symbol {
     
     public var type : SymbolType? {
-        return SymbolTable.dictionary[self]?.type
+        return SymbolTable.definedSymbols[self]?.type
     }
     
     public var category : SymbolCategory? {
-        return SymbolTable.dictionary[self]?.category
+        return SymbolTable.definedSymbols[self]?.category
     }
     
     public var notation : SymbolNotation? {
-        return SymbolTable.dictionary[self]?.notation
+        return SymbolTable.definedSymbols[self]?.notation
     }
     
     public var arity : Range<Int>? {
-        return SymbolTable.dictionary[self]?.arity
+        return SymbolTable.definedSymbols[self]?.arity
     }
     
-    public var quadruple : (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:Range<Int>)? {
-        return SymbolTable.dictionary[self]
+    public var quadruple : SymbolQuadruple? {
+        return SymbolTable.definedSymbols[self]
     }
 }
 
@@ -40,7 +41,7 @@ struct SymbolTable {
     /// arity is empty == 0..<0
     static func add(variable symbol: Symbol) {
         guard let quadruple = symbol.quadruple else {
-            dictionary[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arity:Range(start:0, end:0))
+            definedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arity:Range(start:0, end:0))
             return
         }
         
@@ -58,7 +59,7 @@ struct SymbolTable {
     /// arity == value...value == value..<value+1
     static func add(function symbol: Symbol, arity value:Int) {
         guard let quadruple = symbol.quadruple else {
-            dictionary[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arity:Range(start:value,end:value+1))
+            definedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arity:Range(start:value,end:value+1))
             return
         }
         assert(quadruple.type == SymbolType.Function || quadruple.type == SymbolType.Predicate)
@@ -67,7 +68,7 @@ struct SymbolTable {
         assert(quadruple.arity.startIndex==value)
         assert(quadruple.arity.endIndex==value+1)
         quadruple.arity.insert(value)
-        dictionary[symbol] = (type:quadruple.type, category:quadruple.category, notation:quadruple.notation, arity: quadruple.arity)
+        definedSymbols[symbol] = (type:quadruple.type, category:quadruple.category, notation:quadruple.notation, arity: quadruple.arity)
     }
     
     static func add(proposition symbol:Symbol) {
@@ -78,9 +79,9 @@ struct SymbolTable {
     static func add(predicate symbol: Symbol, arity value:Int) {
         guard let quadruple = symbol.quadruple else {
             #if FUNCTION_TABLE || FULL_TABLE
-                assert(false,"predicates has to be added as functions first")
+                assertionFailure("predicates has to be added as functions first")
             #endif
-            dictionary[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arity:Range(start:value,end:value+1))
+            definedSymbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arity:Range(start:value,end:value+1))
             return
         }
         // assert(quadruple.type == SymbolType.Function)
@@ -90,51 +91,53 @@ struct SymbolTable {
         assert(quadruple.arity.startIndex==value)
         assert(quadruple.arity.endIndex==value+1)
         quadruple.arity.insert(value)
-        dictionary[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arity: quadruple.arity)
+        definedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arity: quadruple.arity)
     }
     
-    private static var defaultDictionary : [String:(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:Range<Int>)] = [
+    static let predefinedSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arity: Range(start:0,end:0)),
-        "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0, end:1)),
-        ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0, end:1)),
-        "⟨" : (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0, end:1)),
-        "⟩" : (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0, end:1)),
-        "{" : (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0, end:1)),
-        "}" : (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0, end:1)),
-        "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0, end:1)),
-        "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0, end:1)),
+        "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
+        ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
+        "⟨" : (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
+        "⟩" : (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
+        "{" : (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
+        "}" : (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
+        "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
+        "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
         
-        "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: Range(start:1, end:Int.max)),
-        "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: Range(start:1, end:3)),
-        "⟶" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: Range(start:2, end:3)),
+        "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: 1..<Int.max),    //  X, X+Y, X+...+Z
+        "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: 1...2),          // -X, X-Y
+        "⟶" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: 2...2),
+        "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: 2...2),
     ]
     
-    static private var dictionary = [String:(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:Range<Int>)]()
+       
+    static private var definedSymbols = SymbolTable.predefinedSymbols
     
-    static func setup(dictionary dictionary:[String:(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:Range<Int>)]) {
-        SymbolTable.dictionary = defaultDictionary
+    static func setup(dictionary dictionary:[Symbol:SymbolQuadruple]) {
+        SymbolTable.definedSymbols = SymbolTable.predefinedSymbols
         
         for (key,value) in dictionary {
-            assert(SymbolTable.dictionary[key] == nil)
-            SymbolTable.dictionary[key] = value
+            assert(SymbolTable.definedSymbols[key] == nil, "predefined symbol \(key) must not be overwritten.")
+            SymbolTable.definedSymbols[key] = value
         }
         
         SymbolTable.symbolsByCategory.removeAll()
         SymbolTable.symbolsByType.removeAll()
     }
     
-    static func symbols(category category: SymbolCategory) -> Set<String> {
+    static func symbols(category category: SymbolCategory) -> Set<Symbol> {
         guard let symbols = symbolsByCategory[category] else {
-            let s = SymbolTable.dictionary.filteredSetOfKeys { $0.1.category == category }
+            let s = SymbolTable.definedSymbols.filteredSetOfKeys { $0.1.category == category }
             symbolsByCategory[category] = s
             return s
         }
         return symbols
     }
     
-    static func symbols(type type: SymbolType) -> Set<String> {
+    static func symbols(type type: SymbolType) -> Set<Symbol> {
         guard let symbols = symbolsByType[type] else {
-            let s = SymbolTable.dictionary.filteredSetOfKeys { $0.1.type == type }
+            let s = SymbolTable.definedSymbols.filteredSetOfKeys { $0.1.type == type }
             symbolsByType[type] = s
             return s
         }
@@ -154,7 +157,7 @@ struct SymbolTable {
         // Other Swift Flages
         var tables = [String]()
         
-        tables.append("(\(SymbolTable.dictionary.count))")
+        tables.append("(\(SymbolTable.definedSymbols.count))")
         
         #if FULL_TABLE
             tables.append("full")

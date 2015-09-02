@@ -3,8 +3,8 @@
 
 import Cocoa
 
-private func setupSymbols() {
-    SymbolTable.setup(dictionary:TptpTerm.symbolsDictionary)
+func setupSymbols() {
+    SymbolTable.setup(dictionary:TptpTerm.predefinedSymbols)
 }
 
 /// Parses the content of the tptp file at absolute `path`.

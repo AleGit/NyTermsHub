@@ -47,33 +47,33 @@ public final class TptpTerm: NSObject, Term {
     
     // MARK: - TptpTerm symbols:
     
-    static let symbolsDictionary : [String:(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:Range<Int>)] = [
+    static let predefinedSymbols : [String:SymbolQuadruple] = [
         // <assoc_connective> ::= <vline> | &
-        "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range(start: 0, end:Int.max)),
-        "|" : (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range(start: 0, end:Int.max)),
+        "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:0..<Int.max),  // true; A; A & B; A & ... & Z
+        "|" : (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:0..<Int.max),  // false; A; A | B; A | ... & Z
         // <unary_connective> ::= ~
-        "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arity:Range(start:1, end:2)),
+        "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arity:1...1),          // ~A
         // <binary_connective>  ::= <=> | => | <= | <~> | ~<vline> | ~&
-        "=>" : (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
-        "<=" : (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start: 1, end: Int.max)),
-        "<=>" : (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
-        "~&" : (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
-        "~|" : (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
-        "<~>" : (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
+        "=>" : (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),       // A => B
+        "<=" : (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),          // A <= B
+        "<=>" : (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),              // A <=> B
+        "~&" : (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),              // A ~& B
+        "~|" : (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),               // A ~| B
+        "<~>" : (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),             // A <~> B
         // <fol_quantifier> ::= ! | ?
-        "!" : (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.Specific, arity:Range<Int>(start:2, end:3)),
-        "?" : (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.Specific, arity:Range<Int>(start:2, end:3)),
+        "!" : (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.Specific, arity:2...2),     // ! [X] : A
+        "?" : (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.Specific, arity:2...2),       // ? [X] : A
         // <gentzen_arrow>      ::= -->
-        "-->" : (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
+        "-->" : (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),          // A --> B
         // <defined_infix_formula>  ::= <term> <defined_infix_pred> <term>
         // <defined_infix_pred> ::= <infix_equality>
         // <infix_equality>     ::= =
-        "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
+        // "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:2...2),        // s = t
         // <fol_infix_unary>    ::= <term> <infix_inequality> <term>
         // <infix_inequality>   ::= !=
-        "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:Range<Int>(start:2, end:3)),
+        "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:2...2),        // s != t
         
-        "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:1, end:Int.max))
+        "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
     
     static public func predicate(term:TptpTerm) {
@@ -172,6 +172,7 @@ extension TptpTerm : StringLiteralConvertible {
             return predicate
         }
         else {
+            setupSymbols()
             // a variable (UPPER_WORD) or a constant (LOWER_WORD)
             
             let first = String(value.characters.first!)

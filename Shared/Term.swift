@@ -78,11 +78,10 @@ public extension Term {
 
 // MARK: CustomStringConvertible (pretty printing)
 
-extension Array where Element : Term {
+extension Array where Element : CustomStringConvertible {
     /// Concatinate descriptions of elements separated by separator.
-    func description(separator:String) -> String {
-        let descriptions = self.map { t in t.description }
-        return descriptions.joinWithSeparator(separator)
+    func joinWithSeparator(separator:String) -> String {
+        return self.map { $0.description }.joinWithSeparator(separator)
     }
 }
 
@@ -91,44 +90,53 @@ extension Term {
     public var defaultDescription : String {
         assert(!self.symbol.isEmpty, "a term must not have an emtpy symbol")
         
-        guard let terms = self.terms else { return self.symbol }       // variable
+        guard let terms = self.terms else {
+            // since term has not list of subterms it is a variable term
+            assert((self.symbol.quadruple?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(self.symbol.quadruple!)")
+            return self.symbol
+        }
         
         guard let quadruple = self.symbol.quadruple else {
-            // assume prefix notation 
+            assert(TptpTerm.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a reserved TPTP keyword \(TptpTerm.predefinedSymbols[self.symbol)]")
+            assert(SymbolTable.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a predefined symbol \(SymbolTable.predefinedSymbols[self.symbol)]")
+            
+            // If the symbol is not defined in the symbol table 
+            // we assume prefix notation for (constant) funtions or predicates:
             switch terms.count {
             case 0:
                 return "\(self.symbol)" // constant (or proposition)
             default:
-                return "\(self.symbol)(\(terms.description(SymbolTable.SEPARATOR)))" // prefix function (or predicate)
+                return "\(self.symbol)(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))" // prefix function (or predicate)
             }
         }
         
-        assert(quadruple.arity.contains(terms.count))
+        assert(quadruple.arity.contains(terms.count), "'\(self.symbol)' has invalid number \(terms.count) of subterms  ∉ \(quadruple.arity).")
         
         switch quadruple {
             
         case (.Universal,_,.Specific,_), (.Existential,_,.Specific,_):
-            return "(\(self.symbol)[\(terms.first!)]:(\(terms.last!)))"
+            return "(\(self.symbol)[\(terms.first!)]:(\(terms.last!)))" // e.g.: ! [X,Y,Z] : ( P(f(X,Y),Z) & f(X,X)=g(X) )
             
         case (_,_,.Specific,_):
-            assert(false)
-            return "\(self.symbol)☇(\(terms.description(SymbolTable.SEPARATOR)))"
+            assertionFailure("'\(self.symbol)' has ambiguous notation \(quadruple).")
+            return "\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
             
         case (_,_,.Prefix,_) where terms.count == 0:
             return "\(self.symbol)"
             
         case (_,_,.Prefix,_):
-            return "\(self.symbol)(\(terms.description(SymbolTable.SEPARATOR)))"
+            return "\(self.symbol)(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
             
         case (_,_,.Infix,_):
-            return terms.description(self.symbol)
+            return terms.joinWithSeparator(self.symbol)
             
         case (_,_,.Postfix,_):
-            return "(\(terms.description(SymbolTable.SEPARATOR)))\(self.symbol)"
+            assertionFailure("'\(self.symbol)' uses unsupported postfix notation \(quadruple).")
+            return "(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))\(self.symbol)"
             
         case (_,_,.Invalid,_):
-            assert(false)
-            return "☇\(self.symbol)☇(\(terms.description(SymbolTable.SEPARATOR)))"
+            assertionFailure("'\(self.symbol)' has invalid notation: \(quadruple)")
+            return "☇\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
 
         }
     }

@@ -14,7 +14,6 @@ guard Process.arguments.count > 1 else {
 
 if Process.arguments.count > 1 {
     
-    
     let path = Process.arguments[1]
     
     let start = NSDate()

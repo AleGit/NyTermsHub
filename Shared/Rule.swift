@@ -99,7 +99,7 @@ extension Term {
     ///
     /// - l<sub>1</sub>->r<sub>1</sub>, l<sub>2</sub>->r<sub>2</sub> are variants of rewrite rules of *R* without common variables,
     /// - p in Pos<sub>F</sub>(l<sub>2</sub>), i.e. p is the position of a non-variable term,
-    /// - l<sub>1</sub> and l<sub>2</sub>|<sub>p</sub> are unifiable, 
+    /// - l<sub>1</sub> and l<sub>2</sub>|<sub>p</sub> are unifiable,
     /// i.e. l<sub>2</sub>|<sub>p</sub>.σ == l<sub>1</sub>.σ with σ = mgu(l<sub>1</sub>,l<sub>2</sub>|<sub>p</sub>)
     /// - if p = [] then l<sub>1</sub>->r<sub>1</sub> and l<sub>2</sub>->r<sub>2</sub> are not variants
     typealias Overlap = (l1r1:Self, position:Position, l2r2:Self)
@@ -159,20 +159,38 @@ extension Term {
             $0.position != [] || !self.isVariant(other)
         }
         
-        var peaks = [CriticalPeak]()
+        // TODO: The commented code `p1 = …` does not be build, but it's unclear why:
+        /* 
+        Cannot invoke 'map' with an argument list of type '((_, _) -> _)'
+        Overloads for 'map' exist with these partially matching parameter lists: (@noescape (Self.Generator.Element) throws -> T), (@noescape (Self.Base.Generator.Element) -> T)
+        */
+//        let p1 = list.map { (p,σ) in              // let p: <<error_type>> why?
+//            let l2σ = l2 * σ                      // _σ == l2[p]σ == l1σ -> r1σ
+//            let l2r1σ = l2σ[r1 * σ,p]             // l2σ[l1σ,p] -> l2σ[r1σ,p]
+//            let peak = (l2r1: l2r1σ!, positon: p, l2: l2σ, r2: r2 * σ)
+//            return peak
+//        }
         
-        // TODO: rewrite to list.map { ... } which did not work
-        for (p,σ) in list {
-            assert(l2[p] != nil) // i.e. position p must be in Pos(l2)
-            assert(!l2[p]!.isVariable) // i.e. p is a non-variable position
-            
-            let l2σ = l2 * σ    // _σ == l2[p]σ == l1σ -> r1σ
-            
-            let l2r1σ = l2σ[r1 * σ,p] // l2σ[l1σ,p] -> l2σ[r1σ,p]
-            let peak = (l2r1: l2r1σ!, positon: p, l2: l2σ, r2: r2 * σ)
-            peaks.append(peak)
+        // TODO: This code calculates l2 * σ two times.
+        let peaks = list.map { p,σ in // (p,σ) works too.
+            ( l2r1: (l2 * σ)[r1 * σ,p]!, positon: p, l2: l2 * σ, r2: r2 * σ )
+     
         }
-
+        
+//        var peaks = [CriticalPeak]()
+//        
+//        // TODO: rewrite to list.map { ... } which did not work
+//        for (p,σ) in list {
+//            assert(l2[p] != nil) // i.e. position p must be in Pos(l2)
+//            assert(!l2[p]!.isVariable) // i.e. p is a non-variable position
+//            
+//            let l2σ = l2 * σ    // _σ == l2[p]σ == l1σ -> r1σ
+//            
+//            let l2r1σ = l2σ[r1 * σ,p] // l2σ[l1σ,p] -> l2σ[r1σ,p]
+//            let peak = (l2r1: l2r1σ!, positon: p, l2: l2σ, r2: r2 * σ)
+//            peaks.append(peak)
+//        }
+        
         return peaks
         
         

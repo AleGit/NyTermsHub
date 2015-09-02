@@ -114,8 +114,6 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(",", forall2vars.symbol)
         XCTAssertEqual(16448, forall2vars.terms!.count)
         
-    
-        
         for (index,term) in forall2vars.terms!.enumerate() {
             let symbol = "V\(index+1)"
             // if index > 3 { break; }
@@ -184,10 +182,5 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(cvars, cbvars)
         
         XCTAssertEqual(15312, b.allVariables.count)
-        
     }
-    
-    
-
-
 }

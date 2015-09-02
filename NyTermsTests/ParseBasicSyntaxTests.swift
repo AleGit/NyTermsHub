@@ -35,7 +35,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     // MARK - parse cfn files
     
     func testParseHWV134cfn1() {
-        let path = "/Users/alm/TPTP-v6.1.0/Problems/HWV/HWV134-1.p"
+        let path = "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p"
         let (tptpFormulae,_) = check(path, limit:150, count: 2_332_428)
         // *** 'HWV134-1.p' total:74.974s, limit:150.0s, count:2332428 avg:0.032ms *** (2015-08-29 11:43:46 +0000)
         
@@ -45,7 +45,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     }
     
     func testParseHWV105cfn1() {
-        let path = "/Users/alm/TPTP-v6.1.0/Problems/HWV/HWV105-1.p"
+        let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
         let (tptpFormulae,_) = check(path, limit:1.5, count: 20_900)  // <1s
         // *** 'HWV105-1.p' total:0.737s, limit:1.5s, count:20900 avg:0.035ms *** (2015-08-29 11:42:31 +0000)
 
@@ -62,7 +62,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     // MARK - parse fof files
     
     func testParseHWV134fof1() {
-        let path = "/Users/alm/TPTP-v6.1.0/Problems/HWV/HWV134+1.p"
+        let path = "/Users/Shared/TPTP/Problems/HWV/HWV134+1.p"
         let (tptpFormulae,_) = check(path, limit:90.0, count: 128_975)
         // *** 'HWV134+1.p' total:42.162s, limit:90.0s, count:128975 avg:0.326ms *** (2015-08-29 11:44:30 +0000)
         
@@ -71,7 +71,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     }
     
     func testParseHWV062fof1() {
-        let path = "/Users/alm/TPTP-v6.1.0/Problems/HWV/HWV062+1.p"
+        let path = "/Users/Shared/TPTP/Problems/HWV/HWV062+1.p"
         let (tptpFormulae,_) = check(path, limit:2, count: 2) // 209
         // *** 'HWV062+1.p' total:0.93s, limit:2.0s, count:2 avg:465.016ms *** (2015-08-29 11:42:18 +0000)
         

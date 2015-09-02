@@ -13,7 +13,7 @@ class ParsePuzzleFileTests: XCTestCase {
     ///
     /// Who killed Aunt Agatha?
     func testParsePUZ001cfn1() {
-        let path = "/Users/alm/TPTP-v6.1.0/Problems/PUZ/PUZ001-1.p"
+        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
         
         let (result,tptpFormulae,_) = parsePath(path)
         XCTAssertEqual(1, result.count)
@@ -32,7 +32,7 @@ class ParsePuzzleFileTests: XCTestCase {
     ///
     /// includes Axioms/PUZ004-0.ax
     func testParsePUZ051cfn1() {
-        let path = "/Users/alm/TPTP-v6.1.0/Problems/PUZ/PUZ051-1.p"
+        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p"
         
         let (result,tptpFormulae,tptpIncludes) = parsePath(path)
         XCTAssertEqual(2, result.count)

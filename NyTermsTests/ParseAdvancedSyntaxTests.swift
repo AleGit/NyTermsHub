@@ -13,7 +13,7 @@ class ParseAdvancedSyntaxTests: XCTestCase {
     ///
     /// include('Axioms/SYN000-0.ax',[ia1,ia3]).
     func testParseSYN000cnf2() {
-        let path = "/Users/alm/TPTP-v6.1.0/Problems/SYN/SYN000-2.p"
+        let path = "/Users/Shared/TPTP/Problems/SYN/SYN000-2.p"
         
         let (result,tptpFormulae,tptpIncludes) = parsePath(path)
         XCTAssertEqual(2, result.count)

@@ -5,8 +5,8 @@ import Foundation
 
 /// Absolute path to a tptp file (problem, axiom).
 ///
-///     '/Users/alm/TPTP/Problems/PUZ/PUZ001-1.p'
-///     '/Users/alm/TPTP/Axioms/PUZ001-0.ax'
+///     '/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p'
+///     '/Users/Shared/TPTP/Axioms/PUZ001-0.ax'
 public typealias TptpPath = String
 
 /// A tptp path to a file contains three components.
@@ -15,9 +15,9 @@ public typealias TptpPath = String
 /// - 'local' is a local path from root and starts with 'Axioms' or 'Problems',
 /// - 'last' and the file name of the axiom or problem.
 ///
-/// (root:/Users/alm/TPTP/,local:Problems/PUZ/,last:PUZ001-1.p)
+/// (root:/Users/Shared/TPTP/,local:Problems/PUZ/,last:PUZ001-1.p)
 ///
-/// (root:/Users/alm/TPTP/,local:Axioms/,last:PUZ001-0.ax)
+/// (root:/Users/Shared/TPTP/,local:Axioms/,last:PUZ001-0.ax)
 typealias TptpPathComponents = (root:TptpPath,local:TptpPath,last:TptpPath)
 
 public extension TptpPath {

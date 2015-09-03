@@ -69,6 +69,8 @@
 		51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F21B8E3DAC008D7F22 /* minimal.c */; settings = {ASSET_TAGS = (); }; };
 		51B883F51B8E3DAC008D7F22 /* test_pp.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F31B8E3DAC008D7F22 /* test_pp.c */; settings = {ASSET_TAGS = (); }; };
 		51B883F71B8E3F3E008D7F22 /* YicesExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */; settings = {ASSET_TAGS = (); }; };
+		51C94CB91B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; settings = {ASSET_TAGS = (); }; };
+		51C94CBA1B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; settings = {ASSET_TAGS = (); }; };
 		51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */; };
 		51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA241B71D37700A7B16C /* String+TptpPath.swift */; };
 		51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */; };
@@ -158,6 +160,7 @@
 		51B883F21B8E3DAC008D7F22 /* minimal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minimal.c; sourceTree = "<group>"; };
 		51B883F31B8E3DAC008D7F22 /* test_pp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_pp.c; sourceTree = "<group>"; };
 		51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesExamples.swift; sourceTree = "<group>"; };
+		51C94CB81B987E70004C3082 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpTermTests.swift; sourceTree = "<group>"; };
 		51EFBA241B71D37700A7B16C /* String+TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+TptpPath.swift"; sourceTree = "<group>"; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -202,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				51B26B5E1B8D9F9E00CC59AD /* Docs */,
+				51C94CB71B987D9F004C3082 /* MaxComp */,
 				512977171B677CAA003D3E80 /* NyTerms */,
 				511E95731B8AE4070093F4E8 /* NyTermsCL */,
 				512977291B677CAB003D3E80 /* NyTermsTests */,
@@ -321,6 +325,14 @@
 				513CF7E01B8EF6D20063BA57 /* String+Yices.swift */,
 			);
 			path = Yices;
+			sourceTree = "<group>";
+		};
+		51C94CB71B987D9F004C3082 /* MaxComp */ = {
+			isa = PBXGroup;
+			children = (
+				51C94CB81B987E70004C3082 /* Empty.swift */,
+			);
+			path = MaxComp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -467,6 +479,7 @@
 				513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */,
 				511E95841B8AE7B80093F4E8 /* Rule.swift in Sources */,
 				511E95851B8AE7B80093F4E8 /* Symbol.swift in Sources */,
+				51C94CBA1B987E70004C3082 /* Empty.swift in Sources */,
 				511E95751B8AE4070093F4E8 /* main.swift in Sources */,
 				5101485D1B90382B00D95B00 /* Term+Properties.swift in Sources */,
 			);
@@ -493,6 +506,7 @@
 				515D91BE1B6D2513000EDB3B /* TptpTerm.swift in Sources */,
 				515F0F061B6BB0A100B470B4 /* Symbol.swift in Sources */,
 				512977371B677E1B003D3E80 /* Term.swift in Sources */,
+				51C94CB91B987E70004C3082 /* Empty.swift in Sources */,
 				51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */,
 				51226E7D1B6D44E20077E34D /* TptpPrintable.swift in Sources */,
 			);

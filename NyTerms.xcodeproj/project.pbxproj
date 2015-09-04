@@ -194,6 +194,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		26EBF5861B99C251006E5FF4 /* MaxComp */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = MaxComp;
+			sourceTree = "<group>";
+		};
 		511E95731B8AE4070093F4E8 /* NyTermsCL */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +250,7 @@
 		512977291B677CAB003D3E80 /* NyTermsTests */ = {
 			isa = PBXGroup;
 			children = (
+				26EBF5861B99C251006E5FF4 /* MaxComp */,
 				51B26B761B8DB46500CC59AD /* example1.c */,
 				51B26B771B8DB46500CC59AD /* example2.c */,
 				5129772C1B677CAB003D3E80 /* Info.plist */,

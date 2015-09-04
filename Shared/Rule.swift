@@ -164,12 +164,12 @@ extension Term {
         Cannot invoke 'map' with an argument list of type '((_, _) -> _)'
         Overloads for 'map' exist with these partially matching parameter lists: (@noescape (Self.Generator.Element) throws -> T), (@noescape (Self.Base.Generator.Element) -> T)
         */
-//        let p1 = list.map { (p,σ) in              // let p: <<error_type>> why?
-//            let l2σ = l2 * σ                      // _σ == l2[p]σ == l1σ -> r1σ
-//            let l2r1σ = l2σ[r1 * σ,p]             // l2σ[l1σ,p] -> l2σ[r1σ,p]
-//            let peak = (l2r1: l2r1σ!, positon: p, l2: l2σ, r2: r2 * σ)
-//            return peak
-//        }
+        let p1 = list.map { (p,σ) -> CriticalPeak in              // let p: <<error_type>> why?
+            let l2σ = l2 * σ                      // _σ == l2[p]σ == l1σ -> r1σ
+            let l2r1σ = l2σ[r1 * σ,p]             // l2σ[l1σ,p] -> l2σ[r1σ,p]
+            let peak = (l2r1: l2r1σ!, positon: p, l2: l2σ, r2: r2 * σ)
+            return peak
+        }
         
         // TODO: This code calculates l2 * σ two times.
         let peaks = list.map { p,σ in // (p,σ) works too.

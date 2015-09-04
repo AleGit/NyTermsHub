@@ -143,8 +143,8 @@ extension Term {
     /// originating in left-hand side of rule `other` = l<sub>2</sub>->r<sub>2</sub>
     /// and induced by left-hand side of rule `self` = l<sub>1</sub>->r<sub>1</sub>.
     public func criticalPeaks(other:Self) -> [CriticalPeak] {
-        assert(other.isRewriteTree,self.description)
-        assert(self.isRewriteTree,self.description)
+        assert(other.isRewriteRule,self.description)
+        assert(self.isRewriteRule,self.description)
         assert(self.allVariables.intersect(other.allVariables).isEmpty)
         
         // self is rule l1->r1

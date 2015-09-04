@@ -25,6 +25,8 @@ class ExampleTests: XCTestCase {
         
         XCTAssertEqual("f(X)=g(X,Y)", t.description)
         XCTAssertFalse(t.isRewriteTree)
+        
+        /* test */
     }
     
 }

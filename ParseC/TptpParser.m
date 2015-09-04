@@ -41,7 +41,7 @@ NSMutableArray* create_array(int n, ...) {
 TptpFormula *create_formula(TptpLanguage language,  NSString *name, TptpRole role,  TptpTerm *term,  NSArray<NSString*> *annotations) {
     assert(name != nil);
     assert(term != nil);
-    // annoatations can be nil, i.e. there are not annotations.
+    // annoatations can be nil, i.e. there are no annotations at all.
     
     TptpFormula *formula = [[TptpFormula alloc] initWithLanguage:language name:name role:role formula:term annotations:annotations];
     [_parser_formulae_ addObject:formula];
@@ -199,32 +199,42 @@ TptpTerm* append(TptpTerm* parent, TptpTerm* child) {
 
 /// Map cstrings to role enums.
 TptpRole make_role(const char* cstring) {
-    assert(cstring != NULL);    // although handled this function should not be called with a null pointer.
-    assert(cstring[0] != 0x00); // although handled this function should not be called with an empty cstring.
+    assert(cstring != NULL);    // allthough handled this function should not be called with a null pointer.
+    assert(strlen(cstring)>=4); // the shortest role `type` has 4 characters.
+    assert(strlen(cstring)<=18); // the longest role `negated_conjecture` has 18 characters.
     
     switch (cstring ? cstring[0] : 0x00) {
         case 'a':
             if(!strcmp("axiom", cstring)) return TptpRoleAxiom;
-            if(!strcmp("assumption", cstring)) return TptpRoleAssumption;
+            else if(!strcmp("assumption", cstring)) return TptpRoleAssumption;
+            else return TptpRoleUnknown;
         case 'c':
             if(!strcmp("conjecture", cstring)) return TptpRoleConjecture;
+            else return TptpRoleUnknown;
         case 'd':
             if(!strcmp("definition", cstring)) return TptpRoleDefinition;
+            else return TptpRoleUnknown;
         case 'f':
             if(!strcmp("fi_domain", cstring)) return TptpRoleFiDomain;
             if(!strcmp("fi_functors", cstring)) return TptpRoleFiFunctors;
             if(!strcmp("fi_predicates", cstring)) return TptpRoleFiPredicates;
+            else return TptpRoleUnknown;
         case 'h':
             if(!strcmp("hypothesis", cstring)) return TptpRoleHypothesis;
+            else return TptpRoleUnknown;
         case 'l':
             if(!strcmp("lemma", cstring)) return TptpRoleLemma;
+            else return TptpRoleUnknown;
         case 'n':
             if(!strcmp("negated_conjecture", cstring)) return TptpRoleNegatedConjecture;
+            else return TptpRoleUnknown;
         case 'p':
             if(!strcmp("plain", cstring)) return TptpRolePlain;
+            else return TptpRoleUnknown;
         case 't':
             if(!strcmp("theorem", cstring)) return TptpRoleTheorem;
-            if(!strcmp("type", cstring)) return TptpRoleDataType;
+            else if(!strcmp("type", cstring)) return TptpRoleDataType;
+            else return TptpRoleUnknown;
         case 'u':
             // if(!strncmp("unknown", cstring)) return TptpRoleUnknown;
         default:

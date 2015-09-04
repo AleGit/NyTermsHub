@@ -700,7 +700,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "-D PREDICATE_TABLE -D FULL_TABLE";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
@@ -721,7 +721,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "-D PREDICATE_TABLE -D FULL_TABLE";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";

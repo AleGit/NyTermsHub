@@ -26,9 +26,9 @@ public extension Term {
         return Set(ts.flatMap { $0.allVariables })
     }
     
-    /// Get a dictionary of all symbols as keys and
+    /// **(tentative)** Get a dictionary of all symbols as keys and
     /// the number of the occurencies and arities of each symbol as values
-    public var countedSymbols : SymbolCountArityDictonary {
+    var countedSymbols : SymbolCountArityDictonary {
         guard let terms = self.terms else { return [self.symbol:(1,Set<Int>())] } // variables has no arity at all
         
         var soas = [self.symbol:(count:1,arity:Set(arrayLiteral: terms.count))]
@@ -48,9 +48,9 @@ public extension Term {
         return soas
     }
     
-    /// Get a dictionary of all variable symbols as keys and
+    /// **(tentative)** Get a dictionary of all variable symbols as keys and
     /// the number of the occurencies of each variable as values.
-    public var countedVariableSymbols : VariableSymbolCountDictonary {
+    var countedVariableSymbols : VariableSymbolCountDictonary {
         assert(!self.symbol.isEmpty)
         
         guard let terms = self.terms else { return [self.symbol:1] }    // variable
@@ -122,6 +122,7 @@ extension Term {
     /// Find all of `self`'s *non-variable* subterms which are unifiable with term `other`
     /// and return a (possible empty) list of pairs with positions and unifiers.
     private func positionUnifiers(actual:Position, other:Self) -> [PositionUnifier] {
+        
         var positionUnifiers = [ PositionUnifier ]()
         
         guard let terms = self.terms else { return positionUnifiers }   // variables do not have non-variable subterms
@@ -154,21 +155,15 @@ extension Term {
         guard let l2 = other.terms?.first else { return [CriticalPeak]() }
         guard let r2 = other.terms?.last else { return [CriticalPeak]() }
         
-        let list = l2.positionUnifiers([], other: l1).filter {
+        return l2.positionUnifiers([], other: l1).filter {
             // - if p = [] then l1->r1 and l2</sub>->r2</sub> are not variants
             $0.position != [] || !self.isVariant(other)
-        }
-        
-        let peaks = list.map { (p,σ) -> CriticalPeak in              // let p: <<error_type>> why?
+        }.map { (p,σ) -> CriticalPeak in
             let l2σ = l2 * σ                      // _σ == l2[p]σ == l1σ -> r1σ
             let l2r1σ = l2σ[r1 * σ,p]             // l2σ[l1σ,p] -> l2σ[r1σ,p]
             let peak = (l2r1: l2r1σ!, positon: p, l2: l2σ, r2: r2 * σ)
             return peak
         }
-        
-        return peaks
-        
-        
     }
 }
 

@@ -97,7 +97,6 @@ extension Term {
         }
         
         guard let quadruple = self.symbol.quadruple else {
-            assert(TptpTerm.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a reserved TPTP keyword \(TptpTerm.predefinedSymbols[self.symbol)]")
             assert(SymbolTable.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a predefined symbol \(SymbolTable.predefinedSymbols[self.symbol)]")
             
             // If the symbol is not defined in the symbol table 
@@ -114,12 +113,15 @@ extension Term {
         
         switch quadruple {
             
-        case (.Universal,_,.Specific,_), (.Existential,_,.Specific,_):
+        case (.Universal,_,.TptpSpecific,_), (.Existential,_,.TptpSpecific,_):
             return "(\(self.symbol)[\(terms.first!)]:(\(terms.last!)))" // e.g.: ! [X,Y,Z] : ( P(f(X,Y),Z) & f(X,X)=g(X) )
-            
-        case (_,_,.Specific,_):
+        
+        case (_,_,.TptpSpecific,_):
             assertionFailure("'\(self.symbol)' has ambiguous notation \(quadruple).")
             return "\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
+       
+        case (.Universal,_,_,_), (.Existential,_,_,_):
+            return "(\(self.symbol)\(terms.first!) (\(terms.last!)))" // e.g.: ∀ x,y,z : ( P(f(x,y),z) ∧ f(x,x)=g(x) )
             
         case (_,_,.Prefix,_) where terms.count == 0:
             return "\(self.symbol)"
@@ -127,7 +129,10 @@ extension Term {
         case (_,_,.Prefix,_):
             return "\(self.symbol)(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
             
-        case (_,_,.Infix,_):
+        case (_,_,.PreInfix,_) where terms.count == 1:
+            return "\(self.symbol)(\(terms.first!)"
+            
+        case (_,_,.PreInfix,_), (_,_,.Infix,_):
             return terms.joinWithSeparator(self.symbol)
             
         case (_,_,.Postfix,_):
@@ -137,7 +142,10 @@ extension Term {
         case (_,_,.Invalid,_):
             assertionFailure("'\(self.symbol)' has invalid notation: \(quadruple)")
             return "☇\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
-
+            
+        default:
+            assertionFailure("'\(self.symbol)' has impossible notation: \(quadruple)")
+            return "☇☇\(self.symbol)☇☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
         }
     }
     

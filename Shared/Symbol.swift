@@ -31,14 +31,23 @@ public extension Symbol {
     }
 }
 
+func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
+    for (key,value) in rhs {
+        assert(lhs[key] == nil, "a key must not be redefined")
+        lhs[key] = value
+    }
+    return lhs
+}
+
 // MARK: symbol table
 
 struct SymbolTable {
     
-    static let REWRITES = "⟶" // →≈
+    static let EQUALS = "=" // →≈
     static let SEPARATOR = ","
     
-    /// arity is empty == 0..<0
+    /// arity is empty: 0..<0, 
+    /// i.e. variable.terms == nil
     static func add(variable symbol: Symbol) {
         guard let quadruple = symbol.quadruple else {
             definedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arity:Range(start:0, end:0))
@@ -51,12 +60,14 @@ struct SymbolTable {
         assert(quadruple.arity.isEmpty)
     }
     
-    /// arity == 0 == 0...0 == 0..<1
+    /// arity is zero: 0...0 == 0..<1, 
+    /// i.e. constant.terms.count == 0
     static func add(constant symbol: Symbol) {
         SymbolTable.add(function: symbol, arity: 0)
     }
     
-    /// arity == value...value == value..<value+1
+    /// arity is greater than zero: value...value == value..<value+1,
+    /// i.e. function.terms.count == value > 0
     static func add(function symbol: Symbol, arity value:Int) {
         guard let quadruple = symbol.quadruple else {
             definedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arity:Range(start:value,end:value+1))
@@ -71,11 +82,14 @@ struct SymbolTable {
         definedSymbols[symbol] = (type:quadruple.type, category:quadruple.category, notation:quadruple.notation, arity: quadruple.arity)
     }
     
+    /// arity is zero: 0...0 == 0..<1,
+    /// i.e. proposition.terms.count == 0
     static func add(proposition symbol:Symbol) {
         SymbolTable.add(predicate:symbol,arity:0)
     }
     
-    /// arity == value...value == value..<value+1
+    /// arity is greater than zero: value...value == value..<value+1,
+    /// i.e. predicate == value > 0
     static func add(predicate symbol: Symbol, arity value:Int) {
         guard let quadruple = symbol.quadruple else {
             #if FUNCTION_TABLE || FULL_TABLE
@@ -94,33 +108,65 @@ struct SymbolTable {
         definedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arity: quadruple.arity)
     }
     
-    static let predefinedSymbols : [Symbol:SymbolQuadruple] = [
+    static let generalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arity: Range(start:0,end:0)),
-        "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
-        ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
-        "⟨" : (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
-        "⟩" : (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
-        "{" : (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
-        "}" : (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
-        "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: 0...0),
-        "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: 0...0),
+        "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0,end:0)),
+        ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0,end:0)),
+        "⟨" : (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0,end:0)),
+        "⟩" : (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0,end:0)),
+        "{" : (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0,end:0)),
+        "}" : (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0,end:0)),
+        "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0,end:0)),
+        "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0,end:0)),
         
-        "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: 1..<Int.max),    //  X, X+Y, X+...+Z
-        "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: 1...2),          // -X, X-Y
-        "⟶" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: 2...2),
-        "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: 2...2),
+        "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: Range(start:1, end:Int.max)),    //  X, X+Y, X+...+Z
+        "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.PreInfix, arity: 1...2),          // -X, X-Y
+        "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: 2...2)
+        ]
+    
+    static let tptpSymbols : [Symbol:SymbolQuadruple] = [
+        
+        // <assoc_connective> ::= <vline> | &
+        "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
+        "|" : (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:0..<Int.max),  // false; A; A | B; A | ... & Z
+        // <unary_connective> ::= ~
+        "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arity:1...1),          // ~A
+        // <binary_connective>  ::= <=> | => | <= | <~> | ~<vline> | ~&
+        "=>" : (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),       // A => B
+        "<=" : (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),          // A <= B
+        "<=>" : (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),              // A <=> B
+        "~&" : (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),              // A ~& B
+        "~|" : (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),               // A ~| B
+        "<~>" : (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),             // A <~> B
+        // <fol_quantifier> ::= ! | ?
+        "!" : (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arity:2...2),     // ! [X] : A
+        "?" : (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arity:2...2),       // ? [X] : A
+        // <gentzen_arrow>      ::= -->
+        "-->" : (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),          // A --> B
+        // <defined_infix_formula>  ::= <term> <defined_infix_pred> <term>
+        // <defined_infix_pred> ::= <infix_equality>
+        // <infix_equality>     ::= =
+//         "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:2...2),        // s = t
+        // <fol_infix_unary>    ::= <term> <infix_inequality> <term>
+        // <infix_inequality>   ::= !=
+        "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:2...2),        // s != t
+        
+        "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
     
+    static let predefinedSymbols = generalSymbols + tptpSymbols
        
     static private var definedSymbols = SymbolTable.predefinedSymbols
     
-    static func setup(dictionary dictionary:[Symbol:SymbolQuadruple]) {
-        SymbolTable.definedSymbols = SymbolTable.predefinedSymbols
+    static func reset() {
+        definedSymbols = SymbolTable.predefinedSymbols
         
-        for (key,value) in dictionary {
-            assert(SymbolTable.definedSymbols[key] == nil, "predefined symbol \(key) must not be overwritten.")
-            SymbolTable.definedSymbols[key] = value
-        }
+        SymbolTable.symbolsByCategory.removeAll()
+        SymbolTable.symbolsByType.removeAll()
+    }
+    
+    static func setup(symbols dictionary:[Symbol:SymbolQuadruple]) {
+        SymbolTable.definedSymbols = dictionary
         
         SymbolTable.symbolsByCategory.removeAll()
         SymbolTable.symbolsByType.removeAll()
@@ -264,10 +310,13 @@ public enum SymbolCategory {
 }
 
 public enum SymbolNotation {
-    case Specific   // ! […]:(…)
+    case TptpSpecific   // ! […]:(…)
     
     case Prefix     // f(…,…)
+    case PreInfix   // prefix with single argument, infix notation with multiple arguments, e.g.: -4
     case Infix      // … + …
-    case Postfix    // …++
+    
+    case Postfix
+    
     case Invalid
 }

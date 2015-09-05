@@ -102,7 +102,7 @@ public extension Term {
     
     /// Costly check if `self` represents an equation.
     ///
-    /// - an expression `s = t` is an inequation if `s` and `t` are functions.
+    /// - an expression `s = t` is an equation if `s` and `t` are functions.
     public var isEquation : Bool {
         guard let type = self.symbol.type where type == SymbolType.Equation else { return false }
         guard let terms = self.terms where terms.count == 2 else { return false }

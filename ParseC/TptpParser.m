@@ -113,7 +113,7 @@ TptpTerm *create_functional(NSString *name, NSArray<TptpTerm*> *subnodes) {
 }
 
 void register_predicate(TptpTerm * _Nonnull term) {
-    [TptpTerm predicate:term];
+    [term setPredicate];
 }
 
 TptpTerm *create_equational(NSString *name, NSArray<TptpTerm*> *subnodes) {

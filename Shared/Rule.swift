@@ -80,7 +80,7 @@ public extension Term {
         
         if !(rhs.allVariables.isSubsetOf(lhs.allVariables)) { return nil }  // allVariables(rhs) is not a subset of allVariables(lhs), hence the equation is not a rule
         
-        return Self(symbol: SymbolTable.REWRITES, terms: [lhs,rhs]) // the equation is a rule
+        return Self(symbol: SymbolTable.EQUALS, terms: [lhs,rhs]) // the equation is a rule
     }
     
     

@@ -45,44 +45,13 @@ public final class TptpTerm: NSObject, Term {
         return self.hashValueDefault
     }
     
-    // MARK: - TptpTerm symbols:
-    
-    static let predefinedSymbols : [String:SymbolQuadruple] = [
-        // <assoc_connective> ::= <vline> | &
-        "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:0..<Int.max),  // true; A; A & B; A & ... & Z
-        "|" : (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:0..<Int.max),  // false; A; A | B; A | ... & Z
-        // <unary_connective> ::= ~
-        "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arity:1...1),          // ~A
-        // <binary_connective>  ::= <=> | => | <= | <~> | ~<vline> | ~&
-        "=>" : (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),       // A => B
-        "<=" : (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),          // A <= B
-        "<=>" : (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),              // A <=> B
-        "~&" : (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),              // A ~& B
-        "~|" : (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),               // A ~| B
-        "<~>" : (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),             // A <~> B
-        // <fol_quantifier> ::= ! | ?
-        "!" : (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.Specific, arity:2...2),     // ! [X] : A
-        "?" : (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.Specific, arity:2...2),       // ? [X] : A
-        // <gentzen_arrow>      ::= -->
-        "-->" : (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:2...2),          // A --> B
-        // <defined_infix_formula>  ::= <term> <defined_infix_pred> <term>
-        // <defined_infix_pred> ::= <infix_equality>
-        // <infix_equality>     ::= =
-        // "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:2...2),        // s = t
-        // <fol_infix_unary>    ::= <term> <infix_inequality> <term>
-        // <infix_inequality>   ::= !=
-        "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:2...2),        // s != t
-        
-        "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
-    ]
-    
-    static public func predicate(term:TptpTerm) {
+    func setPredicate() {
         #if PREDICATE_TABLE
-        guard let terms = term.terms else {
+        guard let terms = self.terms else {
             assert(false)
             return
         }
-            SymbolTable.add(predicate: term.symbol, arity: terms.count)
+            SymbolTable.add(predicate: self.symbol, arity: terms.count)
         #endif
     }
 
@@ -94,7 +63,7 @@ extension TptpTerm {
     
     public convenience init(variable symbol:Symbol) {
         assert(symbol.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")
-        assert(symbol.category != SymbolCategory.Connective, "variables symbols must not overlap connective symbols")
+        assert(symbol.category != SymbolCategory.Connective, "variables must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "variables must not overlap equational symbols")
         
         #if VARIABLE_TABLE || FULL_TABLE
@@ -104,9 +73,9 @@ extension TptpTerm {
     }
     
     public convenience init(constant symbol:Symbol) {
-        assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
-        assert(symbol.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
-        assert(symbol.category != SymbolCategory.Equational, "uninterpreted function symbols must not overlap equational symbols")
+        assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted constant symbols must not overlap auxiliary symbols")
+        assert(symbol.category != SymbolCategory.Connective, "uninterpreted constant symbols must not overlap connective symbols")
+        assert(symbol.category != SymbolCategory.Equational, "uninterpreted constant symbols must not overlap equational symbols")
         
         #if FUNCTION_TABLE || FULL_TABLE
             SymbolTable.add(constant: symbol)
@@ -115,7 +84,7 @@ extension TptpTerm {
     }
     
     public convenience init(functional symbol:Symbol, terms:[TptpTerm]) {
-        assert(terms.count > 0)
+        assert(terms.count > 0, "uninterpreted functions must have one argumument at least")
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "uninterpreted function symbols must not overlap equational symbols")
@@ -172,7 +141,6 @@ extension TptpTerm : StringLiteralConvertible {
             return predicate
         }
         else {
-            setupSymbols()
             // a variable (UPPER_WORD) or a constant (LOWER_WORD)
             
             let first = String(value.characters.first!)

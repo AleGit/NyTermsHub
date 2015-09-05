@@ -84,7 +84,7 @@ class TptpTermTests: XCTestCase {
     }
     
     func testCustomStringConvertible() {
-        XCTAssertEqual("f(X,Y)⟶X", TermType(fxy_x!).description)
+        XCTAssertEqual("f(X,Y)=X", TermType(fxy_x!).description)
     }
     
     func testStringLiteralConvertible() {

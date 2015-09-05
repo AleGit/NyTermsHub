@@ -57,6 +57,10 @@ public extension Term {
         
         return mgu.isRenaming
     }
+    
+    public func isUnifiable(rhs:Self) -> Bool {
+        return (self =?= rhs) != nil
+    }
 }
 
 public func ==<T:Term> (lhs:T, rhs:T) -> Bool {

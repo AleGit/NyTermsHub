@@ -44,6 +44,8 @@ class TermSampleClassTests: XCTestCase {
         XCTAssertEqual([2], p)
         XCTAssertEqual("f(a,g(b))", l2)
         XCTAssertEqual("f(b,b)", r2)
+        
+        XCTAssertTrue(gb_c.hasOverlap(at: p, with:fagx_fxx))
     }
     
     func testSymbols() {

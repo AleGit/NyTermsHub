@@ -140,20 +140,6 @@ extension Term {
         return positionUnifiers
     }
     
-    /// **(unused)** An *overlap* of TRS(*F*,*R*) is a triple (l<sub>1</sub>->r<sub>1</sub>,p,l<sub>2</sub>->r<sub>2</sub>) satisfying:
-    ///
-    /// - l<sub>1</sub>->r<sub>1</sub>, l<sub>2</sub>->r<sub>2</sub> are variants of rewrite rules of *R* without common variables,
-    /// - p in Pos<sub>F</sub>(l<sub>2</sub>), i.e. p is the position of a non-variable term,
-    /// - l<sub>1</sub> and l<sub>2</sub>|<sub>p</sub> are unifiable,
-    /// i.e. l<sub>2</sub>|<sub>p</sub>.σ == l<sub>1</sub>.σ with σ = mgu(l<sub>1</sub>,l<sub>2</sub>|<sub>p</sub>)
-    /// - if p = [] then l<sub>1</sub>->r<sub>1</sub> and l<sub>2</sub>->r<sub>2</sub> are not variants
-    func overlaps(other:Self) -> [Overlap] {
-        return self.positionUnifiers([], other:other).filter {
-            // - if p = [] then l1->r1 and l2</sub>->r2</sub> are not variants
-            $0.position != [] || !self.isVariant(other)
-            }.map { (l1r1:self, position: $0.position, l2r2: other) }
-    }
-    
     /// Find all critical peaks (l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub>, p, l<sub>2</sub>σ, r<sub>2</sub>σ)
     /// originating in left-hand side of rule `other` = l<sub>2</sub>->r<sub>2</sub>
     /// and induced by left-hand side of rule `self` = l<sub>1</sub>->r<sub>1</sub>.
@@ -188,13 +174,12 @@ extension Term {
         }
     }
     
-    public func hasOverlap(at position:Position, with other: Self) -> Bool {
-        assert(self.allVariables.intersect(other.allVariables).count == 0)
+    public func hasOverlap(at position:Position, with rule2: Self) -> Bool {
+        assert(self.allVariables.intersect(rule2.allVariables).count == 0)
         
-        guard let l1p = self.terms?.first?[position] else { return false }
-        guard let l2 = other.terms?.first else { return false }
-        
-        return l1p.isVariant(l2) && !(position.isEmpty && self.isVariant(other))        
+        guard let l1 = self.terms?.first else { return false }
+        guard let l2p = rule2.terms?.first?[position] else { return false }        
+        return l1.isUnifiable(l2p) && !(position.isEmpty && self.isVariant(rule2))
     }
 }
 

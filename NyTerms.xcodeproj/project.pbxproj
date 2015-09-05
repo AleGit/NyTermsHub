@@ -167,6 +167,10 @@
 		51EFBA241B71D37700A7B16C /* String+TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+TptpPath.swift"; sourceTree = "<group>"; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		8789DBF21B9B639200D2B903 /* Other Swift Flags -D.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Other Swift Flags -D.png"; path = "../../../Desktop/Other Swift Flags -D.png"; sourceTree = "<group>"; };
+		8789DBF31B9B63B200D2B903 /* yices-installation.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "yices-installation.txt"; path = "../../../Documents/yices-installation.txt"; sourceTree = "<group>"; };
+		8789DBF41B9B63B200D2B903 /* Z3-build-and-installation.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Z3-build-and-installation.txt"; path = "../../../Documents/Z3-build-and-installation.txt"; sourceTree = "<group>"; };
+		8789DBF51B9B63B200D2B903 /* z3-build.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "z3-build.txt"; path = "../../../Documents/z3-build.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,17 +318,10 @@
 		51B26B5E1B8D9F9E00CC59AD /* Docs */ = {
 			isa = PBXGroup;
 			children = (
-				51B26B711B8DAC3300CC59AD /* manual2.4.pdf */,
-				51B26B601B8DA14F00CC59AD /* NyTerms-Flags.jpg */,
-				51B26B611B8DA14F00CC59AD /* NyTerms-Yacc.jpg */,
-				51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */,
-				51B26B721B8DAC3300CC59AD /* smt-lib-v2.0.pdf */,
-				51B26B741B8DAC3300CC59AD /* smt-lib-v2.5.pdf */,
-				51B26B731B8DAC3300CC59AD /* SMTLIBTutorial.pdf */,
-				51B26B651B8DA23F00CC59AD /* Yices Bridging.png */,
-				51B26B661B8DA23F00CC59AD /* Yices Compiler Flags.jpg */,
-				51B26B671B8DA23F00CC59AD /* Yices Linker Flags.jpg */,
-				51B883EF1B8DED89008D7F22 /* Yices Search Path.jpg */,
+				8789DBF81B9B640E00D2B903 /* install logs */,
+				8789DBF91B9B642300D2B903 /* yacc */,
+				8789DBF71B9B63EA00D2B903 /* SMT */,
+				8789DBF61B9B63C700D2B903 /* Yices */,
 			);
 			path = Docs;
 			sourceTree = "<group>";
@@ -344,6 +341,49 @@
 				51C94CB81B987E70004C3082 /* Empty.swift */,
 			);
 			path = MaxComp;
+			sourceTree = "<group>";
+		};
+		8789DBF61B9B63C700D2B903 /* Yices */ = {
+			isa = PBXGroup;
+			children = (
+				51B26B711B8DAC3300CC59AD /* manual2.4.pdf */,
+				51B26B651B8DA23F00CC59AD /* Yices Bridging.png */,
+				51B26B661B8DA23F00CC59AD /* Yices Compiler Flags.jpg */,
+				51B26B671B8DA23F00CC59AD /* Yices Linker Flags.jpg */,
+				51B883EF1B8DED89008D7F22 /* Yices Search Path.jpg */,
+			);
+			name = Yices;
+			sourceTree = "<group>";
+		};
+		8789DBF71B9B63EA00D2B903 /* SMT */ = {
+			isa = PBXGroup;
+			children = (
+				51B26B721B8DAC3300CC59AD /* smt-lib-v2.0.pdf */,
+				51B26B741B8DAC3300CC59AD /* smt-lib-v2.5.pdf */,
+				51B26B731B8DAC3300CC59AD /* SMTLIBTutorial.pdf */,
+			);
+			name = SMT;
+			sourceTree = "<group>";
+		};
+		8789DBF81B9B640E00D2B903 /* install logs */ = {
+			isa = PBXGroup;
+			children = (
+				8789DBF31B9B63B200D2B903 /* yices-installation.txt */,
+				8789DBF41B9B63B200D2B903 /* Z3-build-and-installation.txt */,
+				8789DBF51B9B63B200D2B903 /* z3-build.txt */,
+			);
+			name = "install logs";
+			sourceTree = "<group>";
+		};
+		8789DBF91B9B642300D2B903 /* yacc */ = {
+			isa = PBXGroup;
+			children = (
+				8789DBF21B9B639200D2B903 /* Other Swift Flags -D.png */,
+				51B26B601B8DA14F00CC59AD /* NyTerms-Flags.jpg */,
+				51B26B611B8DA14F00CC59AD /* NyTerms-Yacc.jpg */,
+				51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */,
+			);
+			name = yacc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

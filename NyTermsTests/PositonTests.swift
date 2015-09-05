@@ -14,6 +14,8 @@ class PositonTests: XCTestCase {
         XCTAssertEqual( [Position(),[1]], fax.unifiablePositions(z))
         XCTAssertEqual( [Position(),[2]], fxa.unifiablePositions(z))
         XCTAssertEqual( [Position(),[1],[2]], faa.unifiablePositions(z))
+        
+        XCTAssertEqual( [Position(),[1],[1,1],[1,2]], gfaa.unifiablePositions(z))
     }
 }
 

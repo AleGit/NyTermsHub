@@ -132,10 +132,8 @@ extension Term {
         }
         
         for (index,term) in terms.enumerate() {
-            guard let mgu = term =?= other where !term.isVariable else { continue }
-            
-            // array index is i, then position is i+1.
-            positionUnifiers.append((position:actual+[index+1], unifier:mgu))
+            // if array index is i, then position is i+1.
+            positionUnifiers += term.positionUnifiers(actual+[index+1], other: other)
         }
         return positionUnifiers
     }

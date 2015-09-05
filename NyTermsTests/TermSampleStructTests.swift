@@ -31,14 +31,14 @@ class TermSampleStructTests: XCTestCase {
     }
     
     func testCriticalPeaks() {
-        let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)")
-        let gb_c = TermType.Rule("g(b)", "c")
-        XCTAssertEqual(0,fagx_fxx!.criticalPeaks(gb_c!).count)
+        guard let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)") else { XCTAssert(false, "f(a,g(X))=f(X,X) would be a rule."); return }
+        guard let gb_c = TermType.Rule("g(b)", "c") else { XCTAssert(false, "g(b)=c would be a rule"); return }
+        XCTAssertEqual(0,fagx_fxx.criticalPeaks(gb_c).count)
         
-        let peaks = gb_c!.criticalPeaks(fagx_fxx!)
-        XCTAssertEqual(1, peaks.count)
+        let peaks = gb_c.criticalPeaks(fagx_fxx)
+        XCTAssertEqual(1, peaks.count, "one peak was expected")
         
-        guard let (l2r1,p,l2,r2) = peaks.first else { return }
+        guard let (l2r1,p,l2,r2) = peaks.first else { XCTAssert(false, "one peak was expected"); return }
         
         XCTAssertEqual("f(a,c)",l2r1)
         XCTAssertEqual([2], p)

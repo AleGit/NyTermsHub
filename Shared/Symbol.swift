@@ -108,7 +108,7 @@ struct SymbolTable {
         definedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arity: quadruple.arity)
     }
     
-    static let generalSymbols : [Symbol:SymbolQuadruple] = [
+    static private let generalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arity: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: Range(start:0,end:0)),
         ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: Range(start:0,end:0)),
@@ -124,7 +124,7 @@ struct SymbolTable {
         "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: 2...2)
         ]
     
-    static let tptpSymbols : [Symbol:SymbolQuadruple] = [
+    static private let tptpSymbols : [Symbol:SymbolQuadruple] = [
         
         // <assoc_connective> ::= <vline> | &
         "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
@@ -156,20 +156,17 @@ struct SymbolTable {
     
     static let predefinedSymbols = generalSymbols + tptpSymbols
        
-    static private var definedSymbols = SymbolTable.predefinedSymbols
+    static private var definedSymbols = predefinedSymbols
     
     static func reset() {
-        definedSymbols = SymbolTable.predefinedSymbols
-        
-        SymbolTable.symbolsByCategory.removeAll()
-        SymbolTable.symbolsByType.removeAll()
+        setup(symbols:predefinedSymbols)
     }
     
     static func setup(symbols dictionary:[Symbol:SymbolQuadruple]) {
-        SymbolTable.definedSymbols = dictionary
+        definedSymbols = dictionary
         
-        SymbolTable.symbolsByCategory.removeAll()
-        SymbolTable.symbolsByType.removeAll()
+        symbolsByCategory.removeAll()
+        symbolsByType.removeAll()
     }
     
     static func symbols(category category: SymbolCategory) -> Set<Symbol> {

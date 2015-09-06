@@ -4,6 +4,24 @@
 import XCTest
 import NyTerms
 
+// MARK: - term implementation
+
+/// Struct `TermSampleStruct` is a sample implementation of protocol `Term` for testing purposes only.
+/// Basically just the data representation has to be defined, but nearly no functions.
+struct TermSampleStruct : Term {
+    let symbol : String
+    let terms : [TermSampleStruct]?
+}
+
+extension TermSampleStruct : StringLiteralConvertible {
+    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpTerm`.
+    init(stringLiteral value: StringLiteralType) {
+        self = TermSampleStruct(TptpTerm(stringLiteral:value))
+    }
+}
+
+// MARK: - term tests
+
 /// Tests for default implementation of protocol term with **swift struct** data structure.
 class TermSampleStructTests: XCTestCase {
     

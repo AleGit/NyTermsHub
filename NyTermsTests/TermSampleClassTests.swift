@@ -4,6 +4,38 @@
 import XCTest
 import NyTerms
 
+// MARK: - term implementation
+
+/// Class `TermSampleClass` is a sample implementation of protocol `Term` for testing purposes only.
+/// Basically just the data representation has to be defined, but nearly no functions.
+final class TermSampleClass : Term {
+    let symbol : String
+    let terms : [TermSampleClass]?
+    
+    required init(symbol:String, terms:[TermSampleClass]?) {
+        self.symbol = symbol
+        self.terms = terms
+    }
+}
+
+func ==(lhs:TermSampleClass, rhs:TermSampleClass) -> Bool {
+    
+    if lhs === rhs { return true }
+    
+    return lhs.isEqual(rhs)
+    
+}
+
+extension TermSampleClass : StringLiteralConvertible {
+    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpTerm`.
+    convenience init(stringLiteral value: StringLiteralType) {
+        let term = TermSampleClass(TptpTerm(stringLiteral:value))
+        self.init(symbol: term.symbol, terms: term.terms)
+    }
+}
+
+// MARK: - term tests
+
 /// Tests for default implementation of protocol term with **swift class** data structure.
 class TermSampleClassTests: XCTestCase {
 

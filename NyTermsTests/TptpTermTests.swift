@@ -4,6 +4,12 @@
 import XCTest
 import NyTerms
 
+// MARK: - term implementation
+
+/* TptpTerm is defined for flex/yacc-parsing in NyTerms */
+
+// MARK: - term tests
+
 /// Tests for default implementation of protocol term with **bridging class** data structure.
 class TptpTermTests: XCTestCase {
     

@@ -41,11 +41,11 @@ public extension Term {
     }
 }
 
-// MARK: Hashable
+// MARK: Hashable (==, hashValue)
 
 public extension Term {
     public func isEqual(rhs:Self) -> Bool {
-        if self.symbol != rhs.symbol  { return false }
+        if self.symbol != rhs.symbol  { return false }               // the symbols are equal
         
         if self.terms == nil && rhs.terms == nil { return true }     // both are nil (both are variables)
         if self.terms == nil || rhs.terms == nil { return false }    // one is nil, not both. (one is variable, the other is not)
@@ -80,7 +80,7 @@ public extension Term {
     }
 }
 
-// MARK: CustomStringConvertible (pretty printing)
+// MARK: CustomStringConvertible (description, pretty printing)
 
 extension Array where Element : CustomStringConvertible {
     /// Concatinate descriptions of elements separated by separator.
@@ -158,7 +158,7 @@ extension Term {
     }
 }
 
-// MARK: conversion to different type
+// MARK: conversion between different implemenations of prototocol term.
 
 private func convert <S:Term,T:Term>(s:S) -> T {
     guard let terms = s.terms else { return T(variable:s.symbol) }
@@ -175,17 +175,23 @@ extension Term {
 // MARK: StringLiteralConvertible (initialize term with string literal)
 
 public extension Term {
-    //public typealias UnicodeScalarLiteralType = StringLiteralType
-    /// UnicodeScalarLiteralConvertible
+    
+    // UnicodeScalarLiteralConvertible
+    // typealias UnicodeScalarLiteralType = StringLiteralType
     public init(unicodeScalarLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
     
-    //public typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
-    /// ExtendedGraphemeClusterLiteralConvertible
+    // ExtendedGraphemeClusterLiteralConvertible:UnicodeScalarLiteralConvertible
+    // typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
     public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
+    
+    // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
+    // typealias StringLiteralType
+    // public init(stringLiteral value: Self.StringLiteralType)
+    // have to be provided by protocol `Term`'s implementation
 }
 
 

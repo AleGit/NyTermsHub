@@ -5,37 +5,37 @@ import Foundation
 
 /// Abstract data type `Term`
 public protocol Term : Hashable, CustomStringConvertible, StringLiteralConvertible {
-    var symbol : Symbol { get }
+    var symbol : StringSymbol { get }
     var terms : [Self]? { get }
     
-    init (symbol:Symbol, terms:[Self]?)
+    init (symbol:StringSymbol, terms:[Self]?)
 }
 
 // MARK: convenience initializer
 
 public extension Term {
-    public init(variable symbol:Symbol) {
+    public init(variable symbol:StringSymbol) {
         self.init(symbol:symbol,terms: nil)
     }
     
-    public init(constant symbol:Symbol) {
+    public init(constant symbol:StringSymbol) {
         self.init(symbol:symbol,terms: [Self]())
     }
-    public init(function symbol:Symbol, terms:[Self]) {
+    public init(function symbol:StringSymbol, terms:[Self]) {
         assert(terms.count>0)
         self.init(symbol:symbol,terms: terms)
     }
     
-    public init(predicate symbol:Symbol, terms:[Self]) {
+    public init(predicate symbol:StringSymbol, terms:[Self]) {
         self.init(symbol:symbol,terms: terms)
     }
     
-    public init(equational symbol:Symbol, terms:[Self]) {
+    public init(equational symbol:StringSymbol, terms:[Self]) {
         assert(terms.count==2,"an equational term must have exactly two subterms.")
         self.init(symbol:symbol,terms: terms)
     }
     
-    public init(connective symbol:Symbol, terms:[Self]) {
+    public init(connective symbol:StringSymbol, terms:[Self]) {
         assert(terms.count>0,"a connective term must have at least one subterm")
         self.init(symbol:symbol,terms: terms)
     }
@@ -113,7 +113,7 @@ extension Term {
             }
         }
         
-        assert(quadruple.arity.contains(terms.count), "'\(self.symbol)' has invalid number \(terms.count) of subterms  ∉ \(quadruple.arity).")
+        assert(quadruple.arities.contains(terms.count), "'\(self.symbol)' has invalid number \(terms.count) of subterms  ∉ \(quadruple.arities).")
         
         switch quadruple {
             

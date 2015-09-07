@@ -137,7 +137,7 @@ public extension Term {
                 return false
         }
         guard let terms = self.terms
-            where quadruple.arity.contains(terms.count)
+            where quadruple.arities.contains(terms.count)
             else {
                 // self has wrong number of subterms
                 return false

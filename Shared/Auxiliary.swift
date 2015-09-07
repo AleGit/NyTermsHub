@@ -54,13 +54,13 @@ extension Dictionary {
 
 
 extension String  {
-    func contains(string:Symbol) -> Bool {
+    func contains(string:StringSymbol) -> Bool {
         return self.rangeOfString(string) != nil
     }
-    func containsOne(strings:Set<Symbol>) -> Bool {
+    func containsOne(strings:Set<StringSymbol>) -> Bool {
         return strings.reduce(false) { $0 || self.contains($1) }
     }
-    func containsAll(strings:Set<Symbol>) -> Bool {
+    func containsAll(strings:Set<StringSymbol>) -> Bool {
         return strings.reduce(true) { $0 && self.contains($1) }
     }
 }

@@ -3,16 +3,16 @@
 
 import Foundation
 
-public typealias SymbolCountArityDictonary = Dictionary<String,(count:Int,arity:Set<Int>)>
+public typealias SymbolCountArityDictonary = Dictionary<String,(count:Int,arities:Set<Int>)>
 public typealias VariableSymbolCountDictonary = Dictionary<String,Int>
 
 public func ==(lhs:SymbolCountArityDictonary,rhs:SymbolCountArityDictonary) -> Bool {
     if lhs.count != rhs.count { return false }
     
-    for (symbol,(count:occurs,arity:arity)) in lhs {
+    for (symbol,(count:occurs,arities:arities)) in lhs {
         guard let (ro,ra) = rhs[symbol] else { return false }
         
-        if ro != occurs || ra != arity { return false }
+        if ro != occurs || ra != arities { return false }
     }
     
     return true
@@ -29,19 +29,19 @@ public extension Term {
     /// **(tentative)** Get a dictionary of all symbols as keys and
     /// the number of the occurencies and arities of each symbol as values
     var countedSymbols : SymbolCountArityDictonary {
-        guard let terms = self.terms else { return [self.symbol:(1,Set<Int>())] } // variables has no arity at all
+        guard let terms = self.terms else { return [self.symbol:(1,Set<Int>())] } // variables has no arities at all
         
-        var soas = [self.symbol:(count:1,arity:Set(arrayLiteral: terms.count))]
+        var soas = [self.symbol:(count:1,arities:Set(arrayLiteral: terms.count))]
         
         let tsoas = terms.flatMap { $0.countedSymbols }
         
-        for (symbol, (count:occurs,arity:arity)) in tsoas {
+        for (symbol, (count:occurs,arities:arities)) in tsoas {
             if let (ao,aa) = soas[symbol] {
-                assert(arity == aa,"symbol \(symbol) with variadic arguments \(aa)!=\(arity) are not supported")
-                soas[symbol] = (count:occurs+ao,arity:arity.union(aa))
+                assert(arities == aa,"symbol \(symbol) with variadic arguments \(aa)!=\(arities) are not supported")
+                soas[symbol] = (count:occurs+ao,arities:arities.union(aa))
             }
             else {
-                soas[symbol] = (count:occurs,arity:arity)
+                soas[symbol] = (count:occurs,arities:arities)
             }
         }
         

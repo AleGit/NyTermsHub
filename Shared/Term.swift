@@ -5,47 +5,47 @@ import Foundation
 
 /// Abstract data type `Term`
 public protocol Term : Hashable, CustomStringConvertible, StringLiteralConvertible {
-    var symbol : Symbol { get }
+    var symbol : StringSymbol { get }
     var terms : [Self]? { get }
     
-    init (symbol:Symbol, terms:[Self]?)
+    init (symbol:StringSymbol, terms:[Self]?)
 }
 
 // MARK: convenience initializer
 
 public extension Term {
-    public init(variable symbol:Symbol) {
+    public init(variable symbol:StringSymbol) {
         self.init(symbol:symbol,terms: nil)
     }
     
-    public init(constant symbol:Symbol) {
+    public init(constant symbol:StringSymbol) {
         self.init(symbol:symbol,terms: [Self]())
     }
-    public init(function symbol:Symbol, terms:[Self]) {
+    public init(function symbol:StringSymbol, terms:[Self]) {
         assert(terms.count>0)
         self.init(symbol:symbol,terms: terms)
     }
     
-    public init(predicate symbol:Symbol, terms:[Self]) {
+    public init(predicate symbol:StringSymbol, terms:[Self]) {
         self.init(symbol:symbol,terms: terms)
     }
     
-    public init(equational symbol:Symbol, terms:[Self]) {
+    public init(equational symbol:StringSymbol, terms:[Self]) {
         assert(terms.count==2,"an equational term must have exactly two subterms.")
         self.init(symbol:symbol,terms: terms)
     }
     
-    public init(connective symbol:Symbol, terms:[Self]) {
+    public init(connective symbol:StringSymbol, terms:[Self]) {
         assert(terms.count>0,"a connective term must have at least one subterm")
         self.init(symbol:symbol,terms: terms)
     }
 }
 
-// MARK: Hashable
+// MARK: Hashable (==, hashValue)
 
 public extension Term {
     public func isEqual(rhs:Self) -> Bool {
-        if self.symbol != rhs.symbol  { return false }
+        if self.symbol != rhs.symbol  { return false }               // the symbols are equal
         
         if self.terms == nil && rhs.terms == nil { return true }     // both are nil (both are variables)
         if self.terms == nil || rhs.terms == nil { return false }    // one is nil, not both. (one is variable, the other is not)
@@ -56,6 +56,10 @@ public extension Term {
         guard let mgu = (self =?= rhs) else { return false }
         
         return mgu.isRenaming
+    }
+    
+    public func isUnifiable(rhs:Self) -> Bool {
+        return (self =?= rhs) != nil
     }
 }
 
@@ -76,7 +80,7 @@ public extension Term {
     }
 }
 
-// MARK: CustomStringConvertible (pretty printing)
+// MARK: CustomStringConvertible (description, pretty printing)
 
 extension Array where Element : CustomStringConvertible {
     /// Concatinate descriptions of elements separated by separator.
@@ -97,7 +101,6 @@ extension Term {
         }
         
         guard let quadruple = self.symbol.quadruple else {
-            assert(TptpTerm.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a reserved TPTP keyword \(TptpTerm.predefinedSymbols[self.symbol)]")
             assert(SymbolTable.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a predefined symbol \(SymbolTable.predefinedSymbols[self.symbol)]")
             
             // If the symbol is not defined in the symbol table 
@@ -110,16 +113,19 @@ extension Term {
             }
         }
         
-        assert(quadruple.arity.contains(terms.count), "'\(self.symbol)' has invalid number \(terms.count) of subterms  ∉ \(quadruple.arity).")
+        assert(quadruple.arities.contains(terms.count), "'\(self.symbol)' has invalid number \(terms.count) of subterms  ∉ \(quadruple.arities).")
         
         switch quadruple {
             
-        case (.Universal,_,.Specific,_), (.Existential,_,.Specific,_):
+        case (.Universal,_,.TptpSpecific,_), (.Existential,_,.TptpSpecific,_):
             return "(\(self.symbol)[\(terms.first!)]:(\(terms.last!)))" // e.g.: ! [X,Y,Z] : ( P(f(X,Y),Z) & f(X,X)=g(X) )
-            
-        case (_,_,.Specific,_):
+        
+        case (_,_,.TptpSpecific,_):
             assertionFailure("'\(self.symbol)' has ambiguous notation \(quadruple).")
             return "\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
+       
+        case (.Universal,_,_,_), (.Existential,_,_,_):
+            return "(\(self.symbol)\(terms.first!) (\(terms.last!)))" // e.g.: ∀ x,y,z : ( P(f(x,y),z) ∧ f(x,x)=g(x) )
             
         case (_,_,.Prefix,_) where terms.count == 0:
             return "\(self.symbol)"
@@ -127,7 +133,10 @@ extension Term {
         case (_,_,.Prefix,_):
             return "\(self.symbol)(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
             
-        case (_,_,.Infix,_):
+        case (_,_,.PreInfix,_) where terms.count == 1:
+            return "\(self.symbol)(\(terms.first!)"
+            
+        case (_,_,.PreInfix,_), (_,_,.Infix,_):
             return terms.joinWithSeparator(self.symbol)
             
         case (_,_,.Postfix,_):
@@ -137,7 +146,10 @@ extension Term {
         case (_,_,.Invalid,_):
             assertionFailure("'\(self.symbol)' has invalid notation: \(quadruple)")
             return "☇\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
-
+            
+        default:
+            assertionFailure("'\(self.symbol)' has impossible notation: \(quadruple)")
+            return "☇☇\(self.symbol)☇☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
         }
     }
     
@@ -146,7 +158,7 @@ extension Term {
     }
 }
 
-// MARK: conversion to different type
+// MARK: conversion between different implemenations of prototocol term.
 
 private func convert <S:Term,T:Term>(s:S) -> T {
     guard let terms = s.terms else { return T(variable:s.symbol) }
@@ -163,17 +175,23 @@ extension Term {
 // MARK: StringLiteralConvertible (initialize term with string literal)
 
 public extension Term {
-    //public typealias UnicodeScalarLiteralType = StringLiteralType
-    /// UnicodeScalarLiteralConvertible
+    
+    // UnicodeScalarLiteralConvertible
+    // typealias UnicodeScalarLiteralType = StringLiteralType
     public init(unicodeScalarLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
     
-    //public typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
-    /// ExtendedGraphemeClusterLiteralConvertible
+    // ExtendedGraphemeClusterLiteralConvertible:UnicodeScalarLiteralConvertible
+    // typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
     public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
+    
+    // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
+    // typealias StringLiteralType
+    // public init(stringLiteral value: Self.StringLiteralType)
+    // have to be provided by protocol `Term`'s implementation
 }
 
 

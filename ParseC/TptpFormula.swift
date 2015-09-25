@@ -3,17 +3,12 @@
 
 import Cocoa
 
-func setupSymbols() {
-    SymbolTable.setup(dictionary:TptpTerm.predefinedSymbols)
-}
-
 /// Parses the content of the tptp file at absolute `path`.
 /// When that tptp file contains *include* lines multiple files will be read.
 /// It returns a triple with the list of parse status, 
 /// the list for successfully parsed *annotated formulae*
 /// and the list of all *include* lines.
 public func parsePath(path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
-    setupSymbols()
     
     let array = parse_path(path)
     var result = [Int(array[0] as! NSNumber)]
@@ -41,7 +36,6 @@ public func parsePath(path:String) -> (status:[Int], formulae:[TptpFormula], inc
 /// Parses the content of `string` which may contain multiple annotated formulae, but must not contain include lines.
 /// It returns a pair with parse status and the list of successfully parsed *annotated formulae*.
 public func parseString(string:String) -> (status:Int, formulae:[TptpFormula]) {
-    setupSymbols()
     
     let array = parse_string(string)
     let result = Int(array[0] as! NSNumber)

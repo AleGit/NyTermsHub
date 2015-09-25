@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import NyTerms
+
 class ExampleTests: XCTestCase {
     
     override func setUp() {
@@ -24,7 +26,12 @@ class ExampleTests: XCTestCase {
         let t = "f(X)=g(X,Y)" as TermSampleClass
         
         XCTAssertEqual("f(X)=g(X,Y)", t.description)
-        XCTAssertFalse(t.isRewriteTree)
+        XCTAssertTrue(t.isLiteral)
+        
+        XCTAssertTrue(t.isEquation)
+        XCTAssertFalse(t.isRewriteRule)
+        
+        XCTAssertTrue(t.isDisjunctionOfLiterals)
         
         /* test */
     }

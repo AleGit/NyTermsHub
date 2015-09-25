@@ -21,6 +21,7 @@ let fxa = fxy * [y:a]
 let faa = fxy * [x:a,y:a]
 let gx = TestTerm(function:"g", terms: [x])
 let gb = gx * [x:b]
+let gfaa = TestTerm(function:"g",terms: [faa])
 
 // rules
 

@@ -4,6 +4,61 @@
 import XCTest
 import NyTerms
 
+// MARK: - term implementation
+
+/// Enum `TermSampleEnum` is a sample implementation of protocol `Term` for testing purposes only.
+/// Basically just the data representation has to be defined, but nearly no functions.
+enum TermSampleEnum : Term {
+    case Variable (symbol:String)
+    case Constant (symbol:String)
+    case Function (symbol:String, terms:[TermSampleEnum])
+    
+    var symbol : String {
+        switch self {
+        case let .Variable(symbol):
+            return symbol
+        case let .Constant(symbol):
+            return symbol
+        case let .Function(symbol, _):
+            return symbol
+        }
+    }
+    
+    var terms : [TermSampleEnum]? {
+        switch self {
+        case .Variable:
+            return nil
+        case .Constant:
+            return [TermSampleEnum]()
+        case let .Function(_,terms:terms):
+            return terms
+        }
+    }
+    
+    init (symbol:String, terms:[TermSampleEnum]?) {
+        guard let ts = terms else {
+            self = Variable(symbol: symbol)
+            return
+        }
+        
+        if ts.count == 0 {
+            self = Constant(symbol: symbol)
+        }
+        else {
+            self = Function(symbol: symbol, terms: ts)
+        }
+    }
+}
+
+extension TermSampleEnum : StringLiteralConvertible {
+    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpTerm`.
+    init(stringLiteral value: StringLiteralType) {
+        self = TermSampleEnum(TptpTerm(stringLiteral:value))
+    }
+}
+
+// MARK: - term tests
+
 /// Tests for default implementation of protocol term with **swift enum** data structure.
 class TermSampleEnumTests: XCTestCase {
 
@@ -31,19 +86,21 @@ class TermSampleEnumTests: XCTestCase {
     }
     
     func testCriticalPeaks() {
-        let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)")
-        let gb_c = TermType.Rule("g(b)", "c")
-        XCTAssertEqual(0,fagx_fxx!.criticalPeaks(gb_c!).count)
+        guard let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)") else { XCTAssert(false, "f(a,g(X))=f(X,X) would be a rule."); return }
+        guard let gb_c = TermType.Rule("g(b)", "c") else { XCTAssert(false, "g(b)=c would be a rule"); return }
+        XCTAssertEqual(0,fagx_fxx.criticalPeaks(gb_c).count)
         
-        let peaks = gb_c!.criticalPeaks(fagx_fxx!)
-        XCTAssertEqual(1, peaks.count)
+        let peaks = gb_c.criticalPeaks(fagx_fxx)
+        XCTAssertEqual(1, peaks.count, "one peak was expected")
         
-        guard let (l2r1,p,l2,r2) = peaks.first else { return }
+        guard let (l2r1,p,l2,r2) = peaks.first else { XCTAssert(false, "one peak was expected"); return }
         
         XCTAssertEqual("f(a,c)",l2r1)
         XCTAssertEqual([2], p)
         XCTAssertEqual("f(a,g(b))", l2)
         XCTAssertEqual("f(b,b)", r2)
+        
+        XCTAssertTrue(gb_c.hasOverlap(at: p, with:fagx_fxx))
     }
     
     func testSymbols() {
@@ -59,11 +116,11 @@ class TermSampleEnumTests: XCTestCase {
         XCTAssertEqual(2, soa_faa.count)
         XCTAssertEqual(3, soa_fxy.count)
         
-        let efaa = ["f":(count:1,arity:Set(arrayLiteral:2)), "a":(count:2,arity:Set(arrayLiteral:0))]
+        let efaa = ["f":(count:1,arities:Set(arrayLiteral:2)), "a":(count:2,arities:Set(arrayLiteral:0))]
         let efxy = [
-            "f":(count:1,arity:Set(arrayLiteral:2)),
-            "X":(count:1,arity:Set<Int>()),
-            "Y":(count:1,arity:Set<Int>())]
+            "f":(count:1,arities:Set(arrayLiteral:2)),
+            "X":(count:1,arities:Set<Int>()),
+            "Y":(count:1,arities:Set<Int>())]
         
         XCTAssertTrue(efaa == soa_faa)
         XCTAssertTrue(efxy == soa_fxy)
@@ -84,7 +141,7 @@ class TermSampleEnumTests: XCTestCase {
     }
     
     func testCustomStringConvertible() {
-        XCTAssertEqual("f(X,Y)⟶X", TermType(fxy_x!).description)
+        XCTAssertEqual("f(X,Y)=X", TermType(fxy_x!).description)
     }
     
     func testStringLiteralConvertible() {

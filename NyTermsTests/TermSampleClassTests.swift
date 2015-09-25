@@ -4,6 +4,38 @@
 import XCTest
 import NyTerms
 
+// MARK: - term implementation
+
+/// Class `TermSampleClass` is a sample implementation of protocol `Term` for testing purposes only.
+/// Basically just the data representation has to be defined, but nearly no functions.
+final class TermSampleClass : Term {
+    let symbol : String
+    let terms : [TermSampleClass]?
+    
+    required init(symbol:String, terms:[TermSampleClass]?) {
+        self.symbol = symbol
+        self.terms = terms
+    }
+}
+
+func ==(lhs:TermSampleClass, rhs:TermSampleClass) -> Bool {
+    
+    if lhs === rhs { return true }
+    
+    return lhs.isEqual(rhs)
+    
+}
+
+extension TermSampleClass : StringLiteralConvertible {
+    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpTerm`.
+    convenience init(stringLiteral value: StringLiteralType) {
+        let term = TermSampleClass(TptpTerm(stringLiteral:value))
+        self.init(symbol: term.symbol, terms: term.terms)
+    }
+}
+
+// MARK: - term tests
+
 /// Tests for default implementation of protocol term with **swift class** data structure.
 class TermSampleClassTests: XCTestCase {
 
@@ -31,19 +63,21 @@ class TermSampleClassTests: XCTestCase {
     }
     
     func testCriticalPeaks() {
-        let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)")
-        let gb_c = TermType.Rule("g(b)", "c")
-        XCTAssertEqual(0,fagx_fxx!.criticalPeaks(gb_c!).count)
+        guard let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)") else { XCTAssert(false, "f(a,g(X))=f(X,X) would be a rule."); return }
+        guard let gb_c = TermType.Rule("g(b)", "c") else { XCTAssert(false, "g(b)=c would be a rule"); return }
+        XCTAssertEqual(0,fagx_fxx.criticalPeaks(gb_c).count)
         
-        let peaks = gb_c!.criticalPeaks(fagx_fxx!)
-        XCTAssertEqual(1, peaks.count)
+        let peaks = gb_c.criticalPeaks(fagx_fxx)
+        XCTAssertEqual(1, peaks.count, "one peak was expected")
         
-        guard let (l2r1,p,l2,r2) = peaks.first else { return }
+        guard let (l2r1,p,l2,r2) = peaks.first else { XCTAssert(false, "one peak was expected"); return }
         
         XCTAssertEqual("f(a,c)",l2r1)
         XCTAssertEqual([2], p)
         XCTAssertEqual("f(a,g(b))", l2)
         XCTAssertEqual("f(b,b)", r2)
+        
+        XCTAssertTrue(gb_c.hasOverlap(at: p, with:fagx_fxx))
     }
     
     func testSymbols() {
@@ -59,11 +93,11 @@ class TermSampleClassTests: XCTestCase {
         XCTAssertEqual(2, soa_faa.count)
         XCTAssertEqual(3, soa_fxy.count)
         
-        let efaa = ["f":(count:1,arity:Set(arrayLiteral:2)), "a":(count:2,arity:Set(arrayLiteral:0))]
+        let efaa = ["f":(count:1,arities:Set(arrayLiteral:2)), "a":(count:2,arities:Set(arrayLiteral:0))]
         let efxy = [
-            "f":(count:1,arity:Set(arrayLiteral:2)),
-            "X":(count:1,arity:Set<Int>()),
-            "Y":(count:1,arity:Set<Int>())]
+            "f":(count:1,arities:Set(arrayLiteral:2)),
+            "X":(count:1,arities:Set<Int>()),
+            "Y":(count:1,arities:Set<Int>())]
         
         XCTAssertTrue(efaa == soa_faa)
         XCTAssertTrue(efxy == soa_fxy)
@@ -84,7 +118,7 @@ class TermSampleClassTests: XCTestCase {
     }
     
     func testCustomStringConvertible() {
-        XCTAssertEqual("f(X,Y)⟶X", TermType(fxy_x!).description)
+        XCTAssertEqual("f(X,Y)=X", TermType(fxy_x!).description)
     }
     
     func testStringLiteralConvertible() {

@@ -3,16 +3,14 @@
 
 import Foundation
 
-public protocol Symbol : Hashable, CustomStringConvertible, StringLiteralConvertible {
-    var quadruple : SymbolQuadruple? { get }
-}
 
-public typealias StringSymbol = String
+
+public typealias Symbol = String
 public typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 // MARK: symbol properties
 
-public extension StringSymbol {
+public extension Symbol {
     
     public var type : SymbolType? {
         return SymbolTable.definedSymbols[self]?.type
@@ -52,7 +50,7 @@ struct SymbolTable {
     
     /// no arity at all, arities: 0..<0,
     /// i.e. variable.terms == nil
-    static func add(variable symbol: StringSymbol) {
+    static func add(variable symbol: Symbol) {
         guard let quadruple = symbol.quadruple else {
             definedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
             return
@@ -66,13 +64,13 @@ struct SymbolTable {
     
     /// aritiy is zero, arities: 0...0 == 0..<1,
     /// i.e. constant.terms.count == 0
-    static func add(constant symbol: StringSymbol) {
+    static func add(constant symbol: Symbol) {
         SymbolTable.add(function: symbol, arity: 0)
     }
     
     /// arity is greater than zero, arities: value...value == value..<value+1,
     /// i.e. function.terms.count == value > 0
-    static func add(function symbol: StringSymbol, arity value:Int) {
+    static func add(function symbol: Symbol, arity value:Int) {
         guard let quadruple = symbol.quadruple else {
             definedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
@@ -88,13 +86,13 @@ struct SymbolTable {
     
     /// /// aritiy is zero, arities: 0...0 == 0..<1,
     /// i.e. proposition.terms.count == 0
-    static func add(proposition symbol:StringSymbol) {
+    static func add(proposition symbol:Symbol) {
         SymbolTable.add(predicate:symbol,arity:0)
     }
     
     /// arities is greater than zero: value...value == value..<value+1,
     /// i.e. predicate == value > 0
-    static func add(predicate symbol: StringSymbol, arity value:Int) {
+    static func add(predicate symbol: Symbol, arity value:Int) {
         guard let quadruple = symbol.quadruple else {
             #if FUNCTION_TABLE || FULL_TABLE
                 assertionFailure("predicates has to be added as functions first")
@@ -112,7 +110,7 @@ struct SymbolTable {
         definedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
     }
     
-    static private let generalSymbols : [StringSymbol:SymbolQuadruple] = [
+    static private let generalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
         ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
@@ -128,7 +126,7 @@ struct SymbolTable {
         "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
         ]
     
-    static private let tptpSymbols : [StringSymbol:SymbolQuadruple] = [
+    static private let tptpSymbols : [Symbol:SymbolQuadruple] = [
         
         // <assoc_connective> ::= <vline> | &
         "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
@@ -166,14 +164,14 @@ struct SymbolTable {
         setup(symbols:predefinedSymbols)
     }
     
-    static func setup(symbols dictionary:[StringSymbol:SymbolQuadruple]) {
+    static func setup(symbols dictionary:[Symbol:SymbolQuadruple]) {
         definedSymbols = dictionary
         
         symbolsByCategory.removeAll()
         symbolsByType.removeAll()
     }
     
-    static func symbols(category category: SymbolCategory) -> Set<StringSymbol> {
+    static func symbols(category category: SymbolCategory) -> Set<Symbol> {
         guard let symbols = symbolsByCategory[category] else {
             let s = SymbolTable.definedSymbols.filteredSetOfKeys { $0.1.category == category }
             symbolsByCategory[category] = s
@@ -182,7 +180,7 @@ struct SymbolTable {
         return symbols
     }
     
-    static func symbols(type type: SymbolType) -> Set<StringSymbol> {
+    static func symbols(type type: SymbolType) -> Set<Symbol> {
         guard let symbols = symbolsByType[type] else {
             let s = SymbolTable.definedSymbols.filteredSetOfKeys { $0.1.type == type }
             symbolsByType[type] = s
@@ -191,8 +189,8 @@ struct SymbolTable {
         return symbols
     }
     
-    private static var symbolsByCategory = [SymbolCategory:Set<StringSymbol>]()
-    private static var symbolsByType = [SymbolType:Set<StringSymbol>]()
+    private static var symbolsByCategory = [SymbolCategory:Set<Symbol>]()
+    private static var symbolsByType = [SymbolType:Set<Symbol>]()
     
     /// Build Settings : Swift Compiler - Custom Flags : Other Swift Flags
     ///

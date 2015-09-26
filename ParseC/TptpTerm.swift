@@ -61,7 +61,7 @@ public final class TptpTerm: NSObject, Term {
 
 extension TptpTerm {
     
-    public convenience init(variable symbol:StringSymbol) {
+    public convenience init(variable symbol:Symbol) {
         assert(symbol.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "variables must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "variables must not overlap equational symbols")
@@ -72,7 +72,7 @@ extension TptpTerm {
         self.init(symbol:symbol,terms: nil)
     }
     
-    public convenience init(constant symbol:StringSymbol) {
+    public convenience init(constant symbol:Symbol) {
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted constant symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted constant symbols must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "uninterpreted constant symbols must not overlap equational symbols")
@@ -83,7 +83,7 @@ extension TptpTerm {
         self.init(symbol:symbol,terms: [TptpTerm]())
     }
     
-    public convenience init(functional symbol:StringSymbol, terms:[TptpTerm]) {
+    public convenience init(functional symbol:Symbol, terms:[TptpTerm]) {
         assert(terms.count > 0, "uninterpreted functions must have one argumument at least")
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
@@ -95,7 +95,7 @@ extension TptpTerm {
         self.init(symbol:symbol,terms: terms)
     }
     
-    public convenience init(predicate symbol:StringSymbol, terms:[TptpTerm]) {
+    public convenience init(predicate symbol:Symbol, terms:[TptpTerm]) {
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted predicate symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
@@ -108,13 +108,13 @@ extension TptpTerm {
         self.init(symbol:symbol,terms: terms)
     }
     
-    public convenience init(equational symbol:StringSymbol, terms:[TptpTerm]) {
+    public convenience init(equational symbol:Symbol, terms:[TptpTerm]) {
         assert(terms.count == 2)
         assert(symbol.category == SymbolCategory.Equational, "equational symbols must be predefined")
         self.init(symbol:symbol,terms: terms)
     }
     
-    public convenience init(connective symbol:StringSymbol, terms:[TptpTerm]) {
+    public convenience init(connective symbol:Symbol, terms:[TptpTerm]) {
         assert(terms.count > 0)
         assert(symbol.category == SymbolCategory.Connective, "connective symbols must be predefined")
         self.init(symbol:symbol,terms: terms)

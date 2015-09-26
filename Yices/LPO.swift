@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import NyTerms
 
 public struct LPO {
     
@@ -25,7 +24,7 @@ public struct LPO {
         return p!
     }
     
-    public func ge(l:Term, r:Term) -> term_t  {
+    public func ge<T:Term>(l:T, r:T) -> term_t  {
         return Yices.bot()
     }
     

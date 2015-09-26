@@ -5,12 +5,16 @@ import Foundation
 
 // (Sunday, 30 August 2015 at 10:51:47 Central European Summer Time '/Users/Shared/TPTP/Problems/HWV/HWV062+1.p'
 // *** 'HWV062+1.p' total:0.631s, limit:0.7s, count:2 avg:315.721ms ***
+// *** 'HWV062+1.p' total:0.755s, limit:2.0s, count:2 avg:377.844ms ***
 // (Sunday, 30 August 2015 at 10:51:48 Central European Summer Time '/Users/Shared/TPTP/Problems/HWV/HWV134-1.p'
 // *** 'HWV134-1.p' total:49.438s, limit:49.5s, count:2332428 avg:0.021ms ***
+// *** 'HWV134-1.p' total:64.744s, limit:150.0s, count:2332428 avg:0.027ms ***
 // (Sunday, 30 August 2015 at 10:52:37 Central European Summer Time '/Users/Shared/TPTP/Problems/HWV/HWV105-1.p'
 // *** 'HWV105-1.p' total:1.262s, limit:1.3s, count:20900 avg:0.06ms ***
+// *** 'HWV105-1.p' total:1.01s, limit:1.5s, count:20900 avg:0.048ms *** 
 // (Sunday, 30 August 2015 at 10:52:38 Central European Summer Time '/Users/Shared/TPTP/Problems/HWV/HWV134+1.p'
 // *** 'HWV134+1.p' total:14.732s, limit:14.8s, count:128975 avg:0.114ms ***
+// *** 'HWV134+1.p' total:39.361s, limit:90.0s, count:128975 avg:0.305ms ***
 
 struct Samples {
     static var tptpPath = "/Users/Shared/TPTP/Problems/"

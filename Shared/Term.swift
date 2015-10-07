@@ -3,7 +3,15 @@
 
 import Foundation
 
-/// Abstract data type `Term`
+/// Abstract data type `Term`, e.g
+///
+/// * variable terms: X, Y, Zustand
+/// * constant (function) terms: a, b, config
+/// * functional terms: f(X,a)
+/// * predicate terms: p(f(X,a)
+/// * equational terms: a = X, b ~= f(X,a)
+/// * clause terms: a=X | b ~= f(X,a)
+/// * formuala terms: ...
 public protocol Term : Hashable, CustomStringConvertible, StringLiteralConvertible {
     var symbol : Symbol { get }
     var terms : [Self]? { get }
@@ -11,7 +19,7 @@ public protocol Term : Hashable, CustomStringConvertible, StringLiteralConvertib
     init (symbol:Symbol, terms:[Self]?)
 }
 
-// MARK: convenience initializer
+// MARK: default implementation of convenience initializers
 
 public extension Term {
     public init(variable symbol:Symbol) {
@@ -21,6 +29,7 @@ public extension Term {
     public init(constant symbol:Symbol) {
         self.init(symbol:symbol,terms: [Self]())
     }
+    
     public init(function symbol:Symbol, terms:[Self]) {
         assert(terms.count>0)
         self.init(symbol:symbol,terms: terms)
@@ -41,7 +50,7 @@ public extension Term {
     }
 }
 
-// MARK: Hashable (==, hashValue)
+// MARK: Hashable (==, hashValue) default implementation
 
 public extension Term {
     public func isEqual(rhs:Self) -> Bool {
@@ -80,7 +89,7 @@ public extension Term {
     }
 }
 
-// MARK: CustomStringConvertible (description, pretty printing)
+// MARK: CustomStringConvertible (description, pretty printing) default implementation
 
 extension Array where Element : CustomStringConvertible {
     /// Concatinate descriptions of elements separated by separator.
@@ -95,8 +104,10 @@ extension Term {
         assert(!self.symbol.isEmpty, "a term must not have an emtpy symbol")
         
         guard let terms = self.terms else {
-            // since term has not list of subterms it is a variable term
+            // since self has not list of subterms at all,
+            // self must be a variable term
             assert((self.symbol.quadruple?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(self.symbol.quadruple!)")
+            
             return self.symbol
         }
         
@@ -158,7 +169,7 @@ extension Term {
     }
 }
 
-// MARK: conversion between different implemenations of prototocol term.
+// MARK: Conversion between different implemenations of prototocol term.
 
 private func convert <S:Term,T:Term>(s:S) -> T {
     guard let terms = s.terms else { return T(variable:s.symbol) }
@@ -172,7 +183,7 @@ extension Term {
     }
 }
 
-// MARK: StringLiteralConvertible (initialize term with string literal)
+// MARK: StringLiteralConvertible (initialize term with string literal) partial default implementation
 
 public extension Term {
     

@@ -3,8 +3,6 @@
 
 import Foundation
 
-
-
 public typealias Symbol = String
 public typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
@@ -56,6 +54,9 @@ struct SymbolTable {
             return
         }
         
+        // we know: the symbol was allreday in the symbol table
+        // we check: is our variable symbol consistent with the symbol in the table
+        
         assert(quadruple.type == SymbolType.Variable)
         assert(quadruple.category == SymbolCategory.Variable)
         assert(quadruple.notation == SymbolNotation.Prefix)
@@ -65,6 +66,7 @@ struct SymbolTable {
     /// aritiy is zero, arities: 0...0 == 0..<1,
     /// i.e. constant.terms.count == 0
     static func add(constant symbol: Symbol) {
+        // a constant is just a constant function, hence it has arity zero
         SymbolTable.add(function: symbol, arity: 0)
     }
     
@@ -75,11 +77,18 @@ struct SymbolTable {
             definedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
+        
+        // we know: the symbol was allread in the symbol table
+        // we check: is our function symbol consitent with the symbol in the table
+        // remark: a function symbol, more specifically a functor can be a predicate symbol
+        
         assert(quadruple.type == SymbolType.Function || quadruple.type == SymbolType.Predicate)
         assert(quadruple.category == SymbolCategory.Functor)
         
+        // we check: variadic function/predicate symbols are not supported yet.
         assert(quadruple.arities.startIndex==value)
         assert(quadruple.arities.endIndex==value+1)
+        
         quadruple.arities.insert(value)
         definedSymbols[symbol] = (type:quadruple.type, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
     }
@@ -100,17 +109,22 @@ struct SymbolTable {
             definedSymbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
-        // assert(quadruple.type == SymbolType.Function)
+        // we know: the symbol was allread in the symbol table
+        // we check: is our function symbol consitent with the symbol in the table
+        // remark: a predicate symbol, more specifically a functor could be added as function symbol before
         assert(quadruple.type == SymbolType.Function || quadruple.type == SymbolType.Predicate)
         assert(quadruple.category == SymbolCategory.Functor)
         assert(quadruple.notation == SymbolNotation.Prefix)
+        
+        // we check: variadic predicate symbols are not supported yet.
         assert(quadruple.arities.startIndex==value)
         assert(quadruple.arities.endIndex==value+1)
+        
         quadruple.arities.insert(value)
         definedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
     }
     
-    static private let generalSymbols : [Symbol:SymbolQuadruple] = [
+    static private let universalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
         ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
@@ -156,7 +170,7 @@ struct SymbolTable {
         "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
     
-    static let predefinedSymbols = generalSymbols + tptpSymbols
+    static let predefinedSymbols = universalSymbols + tptpSymbols
        
     static private var definedSymbols = predefinedSymbols
     

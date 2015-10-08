@@ -72,5 +72,11 @@ class OrderTests: XCTestCase {
         XCTAssertTrue(lpo.greaterThan(sx_m_y, t: xmy_p_y))
         
     }
+    
+    func testWeight() {
+        let w : weight = ( w:{ (s:Symbol) -> Int in return s.hashValue }, w0:1)
+        XCTAssertEqual(w.w("f"),"f".hashValue)
+        XCTAssertEqual(w.w0,1)
+    }
 
 }

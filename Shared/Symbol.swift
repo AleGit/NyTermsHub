@@ -6,31 +6,6 @@ import Foundation
 public typealias Symbol = String
 public typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
-// MARK: symbol properties
-
-public extension Symbol {
-    
-    public var type : SymbolType? {
-        return SymbolTable.definedSymbols[self]?.type
-    }
-    
-    public var category : SymbolCategory? {
-        return SymbolTable.definedSymbols[self]?.category
-    }
-    
-    public var notation : SymbolNotation? {
-        return SymbolTable.definedSymbols[self]?.notation
-    }
-    
-    public var arities : Range<Int>? {
-        return SymbolTable.definedSymbols[self]?.arities
-    }
-    
-    public var quadruple : SymbolQuadruple? {
-        return SymbolTable.definedSymbols[self]
-    }
-}
-
 func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
     for (key,value) in rhs {
         assert(lhs[key] == nil, "a key must not be redefined")
@@ -41,6 +16,8 @@ func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
 
 // MARK: symbol table
 
+var tptpSymbols = SymbolTable.definedSymbols
+
 struct SymbolTable {
     
     static let EQUALS = "=" // →≈
@@ -49,7 +26,7 @@ struct SymbolTable {
     /// no arity at all, arities: 0..<0,
     /// i.e. variable.terms == nil
     static func add(variable symbol: Symbol) {
-        guard let quadruple = symbol.quadruple else {
+        guard let quadruple = tptpSymbols[symbol] else {
             definedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
             return
         }
@@ -73,7 +50,7 @@ struct SymbolTable {
     /// arity is greater than zero, arities: value...value == value..<value+1,
     /// i.e. function.terms.count == value > 0
     static func add(function symbol: Symbol, arity value:Int) {
-        guard let quadruple = symbol.quadruple else {
+        guard let quadruple = tptpSymbols[symbol] else {
             definedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
@@ -102,7 +79,7 @@ struct SymbolTable {
     /// arities is greater than zero: value...value == value..<value+1,
     /// i.e. predicate == value > 0
     static func add(predicate symbol: Symbol, arity value:Int) {
-        guard let quadruple = symbol.quadruple else {
+        guard let quadruple = tptpSymbols[symbol] else {
             #if FUNCTION_TABLE || FULL_TABLE
                 assertionFailure("predicates has to be added as functions first")
             #endif

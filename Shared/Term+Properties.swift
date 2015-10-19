@@ -130,7 +130,7 @@ public extension Term {
     /// Costly check if `self` is a first order logic formula.
     ///
     /// - a formula is either a literal or a connection of literals
-    private var isFormula : Bool {
+    var isFormula : Bool {
         guard !self.isLiteral else { return true }
         
         guard let quadruple = Symbols.defined[self.symbol]
@@ -150,10 +150,10 @@ public extension Term {
     }
     
     /// Costly check if `self` represents a disjunction of literals.
-    public var isDisjunctionOfLiterals : Bool {
+    private var isDisjunctionOfLiterals : Bool {
         guard !self.isLiteral else { return true }
         
-        guard Symbols.defined[self.symbol]?.type == SymbolType.Disjunction else { return false }
+        guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
         
         guard let terms = self.terms else { return false }
         

@@ -60,6 +60,7 @@ class ParsePuzzleFileTests: XCTestCase {
         for formula in tptpFormulae[2..<tptpFormulae.count] {
             XCTAssertEqual(formula.language, TptpLanguage.CNF)
             XCTAssertEqual(formula.role, TptpRole.Axiom)
+            XCTAssertTrue(formula.formula.isFormula)
         }
     }
     

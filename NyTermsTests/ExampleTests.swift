@@ -31,7 +31,7 @@ class ExampleTests: XCTestCase {
         XCTAssertTrue(t.isEquation)
         XCTAssertFalse(t.isRewriteRule)
         
-        XCTAssertTrue(t.isDisjunctionOfLiterals)
+        XCTAssertTrue(t.isClause)
         
         /* test */
     }

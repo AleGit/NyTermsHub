@@ -215,38 +215,48 @@ formula_role        :   LOWER_WORD { $$ = MAKE_ROLE($1); }
  */
 fof_formula             :   fof_logic_formula { $$ = $1; }
                         |   fof_sequent { $$ = $1; }
+
 fof_logic_formula       :   fof_binary_formula { $$ = $1; }
                         |   fof_unitary_formula { $$ = $1; }
+
 fof_binary_formula      :   fof_binary_nonassoc { $$ = $1; }
                         |   fof_binary_assoc { $$ = $1; }
+
 fof_binary_nonassoc     :   fof_unitary_formula binary_connective fof_unitary_formula {
     $$ = CREATE_Connective($2, CREATE_NODES2($1,$3));
 }
+
 fof_binary_assoc        :   fof_or_formula { $$ = $1; }
                         |   fof_and_formula { $$ = $1; }
+
 fof_or_formula          :   fof_unitary_formula '|' fof_unitary_formula {
     $$ = CREATE_Connective(_OR_ , CREATE_NODES2($1,$3));
 }
                         |   fof_or_formula '|' fof_unitary_formula {
-    /* $$ = CREATE_NODE(_OR_ , CREATE_NODES2($1,$3)); */
-    $$ = APPEND($1,$3);
+    $$ = APPEND($1,$3); 
+    /* deprecated: $$ = CREATE_NODE(_OR_ , CREATE_NODES2($1,$3)); */
 }
+
 fof_and_formula         :   fof_unitary_formula '&' fof_unitary_formula  {
     $$ = CREATE_Connective(_AND_ , CREATE_NODES2($1,$3));
 }
                         |   fof_and_formula '&' fof_unitary_formula  {
-    /* $$ = CREATE_NODE(_AND_ , CREATE_NODES2($1,$3)); */
     $$ = APPEND($1,$3);
+    /* deprecated: $$ = CREATE_NODE(_AND_ , CREATE_NODES2($1,$3)); */
 }
+
 fof_unitary_formula     :   fof_quantified_formula { $$ = $1; }
                         |   fof_unary_formula { $$ = $1; }
                         |   atomic_formula { $$ = $1; }
                         |   '(' fof_logic_formula ')'  { SET_PARENTHESES($2); $$ = $2; }
 
 fof_quantified_formula  :   fol_quantifier '[' fof_variable_list ']' ':' fof_unitary_formula  {
-    $$ = CREATE_Quantified($1, $6, $3); }
+    $$ = CREATE_Quantified($1, $6, $3); 
+}
+
 fof_variable_list       :   variable { $$ = CREATE_STRINGS1($1); }
                         |   fof_variable_list ',' variable { STRINGS_APPEND($1,$3); $$ = $1; }
+
 fof_unary_formula       :   unary_connective fof_unitary_formula  { $$ = CREATE_Connective(_NOT_, CREATE_NODES1($2)); }
                         |   fol_infix_unary { $$ = $1; }
 

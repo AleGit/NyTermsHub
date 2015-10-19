@@ -106,12 +106,12 @@ extension Term {
         guard let terms = self.terms else {
             // since self has not list of subterms at all,
             // self must be a variable term
-            assert((tptpSymbols[self.symbol]?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(tptpSymbols[self.symbol]!)")
+            assert((SymbolTable.symbols[self.symbol]?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(SymbolTable.symbols[self.symbol]!)")
             
             return self.symbol
         }
         
-        guard let quadruple = tptpSymbols[self.symbol] else {
+        guard let quadruple = SymbolTable.symbols[self.symbol] else {
             assert(SymbolTable.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a predefined symbol \(SymbolTable.predefinedSymbols[self.symbol)]")
             
             // If the symbol is not defined in the symbol table 

@@ -16,8 +16,6 @@ func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
 
 // MARK: symbol table
 
-var tptpSymbols = SymbolTable.definedSymbols
-
 struct SymbolTable {
     
     static let EQUALS = "=" // →≈
@@ -26,7 +24,7 @@ struct SymbolTable {
     /// no arity at all, arities: 0..<0,
     /// i.e. variable.terms == nil
     static func add(variable symbol: Symbol) {
-        guard let quadruple = tptpSymbols[symbol] else {
+        guard let quadruple = SymbolTable.symbols[symbol] else {
             definedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
             return
         }
@@ -50,7 +48,7 @@ struct SymbolTable {
     /// arity is greater than zero, arities: value...value == value..<value+1,
     /// i.e. function.terms.count == value > 0
     static func add(function symbol: Symbol, arity value:Int) {
-        guard let quadruple = tptpSymbols[symbol] else {
+        guard let quadruple = SymbolTable.symbols[symbol] else {
             definedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
@@ -79,7 +77,7 @@ struct SymbolTable {
     /// arities is greater than zero: value...value == value..<value+1,
     /// i.e. predicate == value > 0
     static func add(predicate symbol: Symbol, arity value:Int) {
-        guard let quadruple = tptpSymbols[symbol] else {
+        guard let quadruple = SymbolTable.symbols[symbol] else {
             #if FUNCTION_TABLE || FULL_TABLE
                 assertionFailure("predicates has to be added as functions first")
             #endif
@@ -151,6 +149,8 @@ struct SymbolTable {
     static let predefinedSymbols = universalSymbols + tptpSymbols
        
     static private var definedSymbols = predefinedSymbols
+    
+    static var symbols : [Symbol:SymbolQuadruple] { return definedSymbols }
     
     static func reset() {
         setup(symbols:predefinedSymbols)

@@ -106,13 +106,13 @@ extension Term {
         guard let terms = self.terms else {
             // since self has not list of subterms at all,
             // self must be a variable term
-            assert((SymbolTable.symbols[self.symbol]?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(SymbolTable.symbols[self.symbol]!)")
+            assert((Symbols.defined[self.symbol]?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(Symbols.defined[self.symbol]!)")
             
             return self.symbol
         }
         
-        guard let quadruple = SymbolTable.symbols[self.symbol] else {
-            assert(SymbolTable.predefinedSymbols[self.symbol] == nil, "\(self.symbol) is a predefined symbol \(SymbolTable.predefinedSymbols[self.symbol)]")
+        guard let quadruple = Symbols.defined[self.symbol] else {
+            assert(Symbols.precachedSymbols[self.symbol] == nil, "\(self.symbol) is a predefined symbol \(Symbols.precachedSymbols[self.symbol)]")
             
             // If the symbol is not defined in the symbol table 
             // we assume prefix notation for (constant) funtions or predicates:
@@ -120,7 +120,7 @@ extension Term {
             case 0:
                 return "\(self.symbol)" // constant (or proposition)
             default:
-                return "\(self.symbol)(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))" // prefix function (or predicate)
+                return "\(self.symbol)(\(terms.joinWithSeparator(Symbols.SEPARATOR)))" // prefix function (or predicate)
             }
         }
         
@@ -133,7 +133,7 @@ extension Term {
         
         case (_,_,.TptpSpecific,_):
             assertionFailure("'\(self.symbol)' has ambiguous notation \(quadruple).")
-            return "\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
+            return "\(self.symbol)☇(\(terms.joinWithSeparator(Symbols.SEPARATOR)))"
        
         case (.Universal,_,_,_), (.Existential,_,_,_):
             return "(\(self.symbol)\(terms.first!) (\(terms.last!)))" // e.g.: ∀ x,y,z : ( P(f(x,y),z) ∧ f(x,x)=g(x) )
@@ -142,7 +142,7 @@ extension Term {
             return "\(self.symbol)"
             
         case (_,_,.Prefix,_):
-            return "\(self.symbol)(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
+            return "\(self.symbol)(\(terms.joinWithSeparator(Symbols.SEPARATOR)))"
             
         case (_,_,.PreInfix,_) where terms.count == 1:
             return "\(self.symbol)(\(terms.first!)"
@@ -152,15 +152,15 @@ extension Term {
             
         case (_,_,.Postfix,_):
             assertionFailure("'\(self.symbol)' uses unsupported postfix notation \(quadruple).")
-            return "(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))\(self.symbol)"
+            return "(\(terms.joinWithSeparator(Symbols.SEPARATOR)))\(self.symbol)"
             
         case (_,_,.Invalid,_):
             assertionFailure("'\(self.symbol)' has invalid notation: \(quadruple)")
-            return "☇\(self.symbol)☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
+            return "☇\(self.symbol)☇(\(terms.joinWithSeparator(Symbols.SEPARATOR)))"
             
         default:
             assertionFailure("'\(self.symbol)' has impossible notation: \(quadruple)")
-            return "☇☇\(self.symbol)☇☇(\(terms.joinWithSeparator(SymbolTable.SEPARATOR)))"
+            return "☇☇\(self.symbol)☇☇(\(terms.joinWithSeparator(Symbols.SEPARATOR)))"
         }
     }
     

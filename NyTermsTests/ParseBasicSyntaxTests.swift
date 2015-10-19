@@ -28,7 +28,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let message = "'\(name)' total:\(Double(Int(total*1000))/1000.0)s, limit:\(limit)s, count:\(tptpFormulae.count) avg:\(Double(Int(average*1000_000))/1000.0)ms"
         XCTAssertTrue(total < limit, message)
-        print("// (\(NSDate())) \(SymbolTable.info)\n// *** \(message) *** ")
+        print("// (\(NSDate())) \(Symbols.info)\n// *** \(message) *** ")
         return (tptpFormulae, tptpIncludes)
     }
     
@@ -83,8 +83,8 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let last = MyTestTerm(tptpFormulae.last!.formula)
         XCTAssertEqual("!=", last.symbol)
-        XCTAssertNotNil(SymbolTable.symbols[last.symbol])
-        let quadruple = SymbolTable.symbols[last.symbol]!
+        XCTAssertNotNil(Symbols.defined[last.symbol])
+        let quadruple = Symbols.defined[last.symbol]!
         
         XCTAssertEqual(SymbolNotation.Infix, quadruple.notation)
         let actual = last.description

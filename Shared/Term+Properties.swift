@@ -20,7 +20,7 @@ public extension Term {
     
     /// Check if `self` represents a (non-empty) tuple of variables.
     public var isTupleOfVariables : Bool {
-        guard SymbolTable.symbols[self.symbol]?.type == SymbolType.Tuple else { return false }
+        guard Symbols.defined[self.symbol]?.type == SymbolType.Tuple else { return false }
         guard let terms = self.terms else { return false }
         guard terms.count > 0 else { return false } /* a tuple of variables must not be empty */
         return terms.reduce(true) { $0 && $1.isVariable }
@@ -56,7 +56,7 @@ public extension Term {
     /// if `f` is a function symbol and `t_1`,...,`t_n` are (function) terms.
     var isFunction : Bool {
         guard let terms = self.terms else { return true; } // a variable is a term
-        guard let category = SymbolTable.symbols[self.symbol]?.category else { return terms.reduce(true) { $0 && $1.isFunction } }
+        guard let category = Symbols.defined[self.symbol]?.category else { return terms.reduce(true) { $0 && $1.isFunction } }
         return category == SymbolCategory.Functor && terms.reduce(true) { $0 && $1.isFunction }
     }
     
@@ -64,7 +64,7 @@ public extension Term {
     ///
     /// - an expression `~E` is a negative predicate, if `E` is a predicate term.
     private var isNegativePredicate : Bool {
-        guard SymbolTable.symbols[self.symbol]?.type == SymbolType.Negation else { return false }
+        guard Symbols.defined[self.symbol]?.type == SymbolType.Negation else { return false }
         guard let terms = self.terms where terms.count == 1 else { return false }
         
         return terms.first!.isPositivePredicate
@@ -75,7 +75,10 @@ public extension Term {
     /// - an expression `p(t_1,...t_n)` is a positive predicate term
     /// if `p` is a predicate symbol and `t_1`,...,`t_n` are (function) terms.
     private var isPositivePredicate : Bool {
-        guard let type = SymbolTable.symbols[self.symbol]?.type where type == SymbolType.Predicate else { return false }
+        if let type = Symbols.defined[self.symbol]?.type {
+            // if the symbols is defined, then it must be a predicatate symbol
+            guard type == SymbolType.Predicate else { return false }
+        }
         guard let terms = self.terms else { return false }
         
         return terms.reduce(true) { $0 && $1.isFunction }
@@ -86,7 +89,7 @@ public extension Term {
     /// - an expression `s ≠ t` is an inequation if `s` and `t` are functions.
     /// - an expression `~E` is the negation of an equation, if `E` is an equation.
     private var isInequation : Bool {
-        guard let type = SymbolTable.symbols[self.symbol]?.type else { return false }
+        guard let type = Symbols.defined[self.symbol]?.type else { return false }
         guard let terms = self.terms else { return false }
         
         switch (type, terms.count) {
@@ -104,7 +107,7 @@ public extension Term {
     ///
     /// - an expression `s = t` is an equation if `s` and `t` are functions.
     public var isEquation : Bool {
-        guard let type = SymbolTable.symbols[self.symbol]?.type where type == SymbolType.Equation else { return false }
+        guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Equation else { return false }
         guard let terms = self.terms where terms.count == 2 else { return false }
         return terms.first!.isFunction && terms.last!.isFunction
     }
@@ -130,7 +133,7 @@ public extension Term {
     private var isFormula : Bool {
         guard !self.isLiteral else { return true }
         
-        guard let quadruple = SymbolTable.symbols[self.symbol]
+        guard let quadruple = Symbols.defined[self.symbol]
             where quadruple.category == SymbolCategory.Connective
             else {
                 // undefined or non-connective symbol
@@ -150,7 +153,7 @@ public extension Term {
     public var isDisjunctionOfLiterals : Bool {
         guard !self.isLiteral else { return true }
         
-        guard SymbolTable.symbols[self.symbol]?.type == SymbolType.Disjunction else { return false }
+        guard Symbols.defined[self.symbol]?.type == SymbolType.Disjunction else { return false }
         
         guard let terms = self.terms else { return false }
         

@@ -16,7 +16,7 @@ func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
 
 // MARK: symbol table
 
-struct SymbolTable {
+struct Symbols {
     
     static let EQUALS = "=" // →≈
     static let SEPARATOR = ","
@@ -24,8 +24,8 @@ struct SymbolTable {
     /// no arity at all, arities: 0..<0,
     /// i.e. variable.terms == nil
     static func add(variable symbol: Symbol) {
-        guard let quadruple = SymbolTable.symbols[symbol] else {
-            definedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
+        guard let quadruple = Symbols.defined[symbol] else {
+            cachedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
             return
         }
         
@@ -42,14 +42,14 @@ struct SymbolTable {
     /// i.e. constant.terms.count == 0
     static func add(constant symbol: Symbol) {
         // a constant is just a constant function, hence it has arity zero
-        SymbolTable.add(function: symbol, arity: 0)
+        Symbols.add(function: symbol, arity: 0)
     }
     
     /// arity is greater than zero, arities: value...value == value..<value+1,
     /// i.e. function.terms.count == value > 0
     static func add(function symbol: Symbol, arity value:Int) {
-        guard let quadruple = SymbolTable.symbols[symbol] else {
-            definedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
+        guard let quadruple = Symbols.defined[symbol] else {
+            cachedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
         
@@ -65,23 +65,23 @@ struct SymbolTable {
         assert(quadruple.arities.endIndex==value+1)
         
         quadruple.arities.insert(value)
-        definedSymbols[symbol] = (type:quadruple.type, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
+        cachedSymbols[symbol] = (type:quadruple.type, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
     }
     
     /// /// aritiy is zero, arities: 0...0 == 0..<1,
     /// i.e. proposition.terms.count == 0
     static func add(proposition symbol:Symbol) {
-        SymbolTable.add(predicate:symbol,arity:0)
+        Symbols.add(predicate:symbol,arity:0)
     }
     
     /// arities is greater than zero: value...value == value..<value+1,
     /// i.e. predicate == value > 0
     static func add(predicate symbol: Symbol, arity value:Int) {
-        guard let quadruple = SymbolTable.symbols[symbol] else {
+        guard let quadruple = Symbols.defined[symbol] else {
             #if FUNCTION_TABLE || FULL_TABLE
                 assertionFailure("predicates has to be added as functions first")
             #endif
-            definedSymbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
+            cachedSymbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
         // we know: the symbol was allread in the symbol table
@@ -96,7 +96,7 @@ struct SymbolTable {
         assert(quadruple.arities.endIndex==value+1)
         
         quadruple.arities.insert(value)
-        definedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
+        cachedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
     }
     
     static private let universalSymbols : [Symbol:SymbolQuadruple] = [
@@ -146,18 +146,18 @@ struct SymbolTable {
         "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
     
-    static let predefinedSymbols = universalSymbols + tptpSymbols
+    static let precachedSymbols = universalSymbols + tptpSymbols
        
-    static private var definedSymbols = predefinedSymbols
+    static private var cachedSymbols = precachedSymbols
     
-    static var symbols : [Symbol:SymbolQuadruple] { return definedSymbols }
+    static var defined : [Symbol:SymbolQuadruple] { return cachedSymbols }
     
     static func reset() {
-        setup(symbols:predefinedSymbols)
+        setup(symbols:precachedSymbols)
     }
     
     static func setup(symbols dictionary:[Symbol:SymbolQuadruple]) {
-        definedSymbols = dictionary
+        cachedSymbols = dictionary
         
         symbolsByCategory.removeAll()
         symbolsByType.removeAll()
@@ -165,7 +165,7 @@ struct SymbolTable {
     
     static func symbols(category category: SymbolCategory) -> Set<Symbol> {
         guard let symbols = symbolsByCategory[category] else {
-            let s = SymbolTable.definedSymbols.filteredSetOfKeys { $0.1.category == category }
+            let s = Symbols.cachedSymbols.filteredSetOfKeys { $0.1.category == category }
             symbolsByCategory[category] = s
             return s
         }
@@ -174,7 +174,7 @@ struct SymbolTable {
     
     static func symbols(type type: SymbolType) -> Set<Symbol> {
         guard let symbols = symbolsByType[type] else {
-            let s = SymbolTable.definedSymbols.filteredSetOfKeys { $0.1.type == type }
+            let s = Symbols.cachedSymbols.filteredSetOfKeys { $0.1.type == type }
             symbolsByType[type] = s
             return s
         }
@@ -194,7 +194,7 @@ struct SymbolTable {
         // Other Swift Flages
         var tables = [String]()
         
-        tables.append("(\(SymbolTable.definedSymbols.count))")
+        tables.append("(\(Symbols.cachedSymbols.count))")
         
         #if FULL_TABLE
             tables.append("full")

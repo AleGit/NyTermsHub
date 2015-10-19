@@ -51,7 +51,7 @@ public final class TptpTerm: NSObject, Term {
             assert(false)
             return
         }
-            SymbolTable.add(predicate: self.symbol, arity: terms.count)
+            Symbols.add(predicate: self.symbol, arity: terms.count)
         #endif
     }
 
@@ -62,61 +62,61 @@ public final class TptpTerm: NSObject, Term {
 extension TptpTerm {
     
     public convenience init(variable symbol:Symbol) {
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Connective, "variables must not overlap connective symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Equational, "variables must not overlap equational symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "variables must not overlap connective symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "variables must not overlap equational symbols")
         
         #if VARIABLE_TABLE || FULL_TABLE
-            SymbolTable.add(variable: symbol)
+            Symbols.add(variable: symbol)
         #endif
         self.init(symbol:symbol,terms: nil)
     }
     
     public convenience init(constant symbol:Symbol) {
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted constant symbols must not overlap auxiliary symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Connective, "uninterpreted constant symbols must not overlap connective symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Equational, "uninterpreted constant symbols must not overlap equational symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted constant symbols must not overlap auxiliary symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted constant symbols must not overlap connective symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted constant symbols must not overlap equational symbols")
         
         #if FUNCTION_TABLE || FULL_TABLE
-            SymbolTable.add(constant: symbol)
+            Symbols.add(constant: symbol)
         #endif
         self.init(symbol:symbol,terms: [TptpTerm]())
     }
     
     public convenience init(functional symbol:Symbol, terms:[TptpTerm]) {
         assert(terms.count > 0, "uninterpreted functions must have one argumument at least")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Equational, "uninterpreted function symbols must not overlap equational symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted function symbols must not overlap equational symbols")
         
         #if FUNCTION_TABLE || FULL_TABLE
-            SymbolTable.add(function: symbol, arity: terms.count)
+            Symbols.add(function: symbol, arity: terms.count)
         #endif
         self.init(symbol:symbol,terms: terms)
     }
     
     public convenience init(predicate symbol:Symbol, terms:[TptpTerm]) {
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted predicate symbols must not overlap auxiliary symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
-        assert(SymbolTable.symbols[symbol]?.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted predicate symbols must not overlap auxiliary symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
+        assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
         
         assert(terms.reduce(true) { $0 && $1.isFunction },"predicate subterms must be functional terms")
         
         #if FUNCTION_TABLE || FULL_TABLE
-            SymbolTable.add(predicate: symbol, arity: terms.count)
+            Symbols.add(predicate: symbol, arity: terms.count)
         #endif
         self.init(symbol:symbol,terms: terms)
     }
     
     public convenience init(equational symbol:Symbol, terms:[TptpTerm]) {
         assert(terms.count == 2)
-        assert(SymbolTable.symbols[symbol]?.category == SymbolCategory.Equational, "equational symbols must be predefined")
+        assert(Symbols.defined[symbol]?.category == SymbolCategory.Equational, "equational symbols must be predefined")
         self.init(symbol:symbol,terms: terms)
     }
     
     public convenience init(connective symbol:Symbol, terms:[TptpTerm]) {
         assert(terms.count > 0)
-        assert(SymbolTable.symbols[symbol]?.category == SymbolCategory.Connective, "connective symbols must be predefined")
+        assert(Symbols.defined[symbol]?.category == SymbolCategory.Connective, "connective symbols must be predefined")
         self.init(symbol:symbol,terms: terms)
     }
     
@@ -126,15 +126,15 @@ extension TptpTerm : StringLiteralConvertible {
     private static func parse(stringLiteral value:String) -> TptpTerm {
         assert(!value.isEmpty)
 
-        if value.containsOne(SymbolTable.symbols(category:SymbolCategory.Connective)) {
+        if value.containsOne(Symbols.symbols(category:SymbolCategory.Connective)) {
             // fof_formula or cnf_formula (i.e. fof_formula in connjective normal form)
             return TptpFormula.FOF(stringLiteral: value).formula
         }
-        else if value.containsOne(SymbolTable.symbols(type:SymbolType.LeftParenthesis)) {
+        else if value.containsOne(Symbols.symbols(type:SymbolType.LeftParenthesis)) {
             
             // single equation, predicate or (function) term
             let cnf = TptpFormula.CNF(stringLiteral: value)
-            assert(SymbolTable.symbols[cnf.formula.symbol]?.type == SymbolType.Disjunction)
+            assert(Symbols.defined[cnf.formula.symbol]?.type == SymbolType.Disjunction)
             assert(cnf.formula.terms!.count == 1)
             let predicate = cnf.formula.terms!.first!
             // self.init(symbol: predicate.symbol, terms: predicate.terms)

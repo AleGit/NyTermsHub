@@ -18,13 +18,13 @@ class ParseStringTests: XCTestCase {
         
         let myformulae = tptpFormulae.map{ $0.formula }
         for myformula in myformulae {
-            let myterm = TermSampleStruct(myformulae[0]);
+            let myterm = NodeStruct(myformulae[0]);
             
             
             XCTAssertEqual("lives(agatha)",myterm.description)
             
             XCTAssertEqual("TptpNode","\(myformula.dynamicType)")
-            XCTAssertEqual("TermSampleStruct","\(myterm.dynamicType)")
+            XCTAssertEqual("NodeStruct","\(myterm.dynamicType)")
             
             XCTAssertEqual("String","\(myformula.symbol.dynamicType)")
             XCTAssertEqual("String","\(myterm.symbol.dynamicType)")
@@ -35,7 +35,7 @@ class ParseStringTests: XCTestCase {
         XCTAssertEqual("Array<TptpNode>","\(myformulae.dynamicType)")
     }
     
-    typealias MyTestTerm = TermSampleStruct
+    typealias MyTestTerm = NodeStruct
     
     func fof_annotated(input:String) -> String {
         return "fof(test,axiom,\(input))."
@@ -68,7 +68,7 @@ class ParseStringTests: XCTestCase {
         
         let myformulae = tptpFormulae.map{ $0.formula }
         for myformula in myformulae {
-            let myterm = TermSampleStruct(myformula)
+            let myterm = NodeStruct(myformula)
             XCTAssertEqual(expected,myterm.description)
         }
         

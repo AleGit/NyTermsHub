@@ -21,7 +21,7 @@ class ParsePuzzleFileTests: XCTestCase {
         XCTAssertEqual(12, tptpFormulae.count)
         
         // test transformation
-        let myterms = tptpFormulae.map { TermSampleStruct($0.formula) }
+        let myterms = tptpFormulae.map { NodeStruct($0.formula) }
         
         XCTAssertEqual("lives(agatha)",myterms[0].description)
         XCTAssertEqual("killed(butler,agatha)|killed(charles,agatha)",myterms[11].description)

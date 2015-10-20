@@ -6,12 +6,12 @@ import NyTerms
 
 // MARK: - term implementation
 
-/// Enum `TermSampleEnum` is a sample implementation of protocol `Node` for testing purposes only.
+/// Enum `NodeEnum` is a sample implementation of protocol `Node` for testing purposes only.
 /// Basically just the data representation has to be defined, but nearly no functions.
-enum TermSampleEnum : Node {
+enum NodeEnum : Node {
     case Variable (symbol:String)
     case Constant (symbol:String)
-    case Function (symbol:String, terms:[TermSampleEnum])
+    case Function (symbol:String, terms:[NodeEnum])
     
     var symbol : String {
         switch self {
@@ -24,18 +24,18 @@ enum TermSampleEnum : Node {
         }
     }
     
-    var terms : [TermSampleEnum]? {
+    var terms : [NodeEnum]? {
         switch self {
         case .Variable:
             return nil
         case .Constant:
-            return [TermSampleEnum]()
+            return [NodeEnum]()
         case let .Function(_,terms:terms):
             return terms
         }
     }
     
-    init (symbol:String, terms:[TermSampleEnum]?) {
+    init (symbol:String, terms:[NodeEnum]?) {
         guard let ts = terms else {
             self = Variable(symbol: symbol)
             return
@@ -50,44 +50,44 @@ enum TermSampleEnum : Node {
     }
 }
 
-extension TermSampleEnum : StringLiteralConvertible {
+extension NodeEnum : StringLiteralConvertible {
     // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpNode`.
     init(stringLiteral value: StringLiteralType) {
-        self = TermSampleEnum(TptpNode(stringLiteral:value))
+        self = NodeEnum(TptpNode(stringLiteral:value))
     }
 }
 
 // MARK: - term tests
 
 /// Tests for default implementation of protocol term with **swift enum** data structure.
-class TermSampleEnumTests: XCTestCase {
+class NodeEnumTests: XCTestCase {
 
-    private typealias TermType = TermSampleEnum
+    private typealias NodeImpl = NodeEnum
     
     func testEquals() {
-        XCTAssertEqual("a", TermType(a))
-        XCTAssertEqual(TermType(constant:"a"), TermType(a))
-        XCTAssertEqual("b", TermType(b))
-        XCTAssertEqual("c", TermType(c))
-        XCTAssertEqual("X", TermType(x))
-        XCTAssertEqual(TermType(variable:"X"), TermType(x))
-        XCTAssertEqual("Y", TermType(y))
-        XCTAssertEqual("Z", TermType(z))
-        XCTAssertEqual("f(X,Y)", TermType(fxy))
-        XCTAssertEqual(TermType(function:"f",terms: ["X","Y"]), TermType(fxy))
-        XCTAssertEqual(TermType(function:"f",terms: [TermType(variable:"X"),TermType(variable:"Y")]), TermType(fxy))
-        XCTAssertEqual("f(a,X)", TermType(fax))
-        XCTAssertEqual("f(X,a)", TermType(fxa))
-        XCTAssertEqual("f(a,a)", TermType(faa))
-        XCTAssertEqual("g(X)", TermType(gx))
-        XCTAssertEqual("g(b)", TermType(gb))
-        let rule = TermType.Rule("f(X,Y)","X")!
-        XCTAssertEqual(rule, TermType(fxy_x!))
+        XCTAssertEqual("a", NodeImpl(a))
+        XCTAssertEqual(NodeImpl(constant:"a"), NodeImpl(a))
+        XCTAssertEqual("b", NodeImpl(b))
+        XCTAssertEqual("c", NodeImpl(c))
+        XCTAssertEqual("X", NodeImpl(x))
+        XCTAssertEqual(NodeImpl(variable:"X"), NodeImpl(x))
+        XCTAssertEqual("Y", NodeImpl(y))
+        XCTAssertEqual("Z", NodeImpl(z))
+        XCTAssertEqual("f(X,Y)", NodeImpl(fxy))
+        XCTAssertEqual(NodeImpl(function:"f",terms: ["X","Y"]), NodeImpl(fxy))
+        XCTAssertEqual(NodeImpl(function:"f",terms: [NodeImpl(variable:"X"),NodeImpl(variable:"Y")]), NodeImpl(fxy))
+        XCTAssertEqual("f(a,X)", NodeImpl(fax))
+        XCTAssertEqual("f(X,a)", NodeImpl(fxa))
+        XCTAssertEqual("f(a,a)", NodeImpl(faa))
+        XCTAssertEqual("g(X)", NodeImpl(gx))
+        XCTAssertEqual("g(b)", NodeImpl(gb))
+        let rule = NodeImpl.Rule("f(X,Y)","X")!
+        XCTAssertEqual(rule, NodeImpl(fxy_x!))
     }
     
     func testCriticalPeaks() {
-        guard let fagx_fxx = TermType.Rule("f(a,g(X))", "f(X,X)") else { XCTAssert(false, "f(a,g(X))=f(X,X) would be a rule."); return }
-        guard let gb_c = TermType.Rule("g(b)", "c") else { XCTAssert(false, "g(b)=c would be a rule"); return }
+        guard let fagx_fxx = NodeImpl.Rule("f(a,g(X))", "f(X,X)") else { XCTAssert(false, "f(a,g(X))=f(X,X) would be a rule."); return }
+        guard let gb_c = NodeImpl.Rule("g(b)", "c") else { XCTAssert(false, "g(b)=c would be a rule"); return }
         XCTAssertEqual(0,fagx_fxx.criticalPeaks(gb_c).count)
         
         let peaks = gb_c.criticalPeaks(fagx_fxx)
@@ -105,10 +105,10 @@ class TermSampleEnumTests: XCTestCase {
     
     func testSymbols() {
         
-        let tt_faa = TermType(faa)
-        let tt_fxy = TermType(fxy)
+        let tt_faa = NodeImpl(faa)
+        let tt_fxy = NodeImpl(fxy)
         
-        XCTAssertEqual("TermSampleEnum","\(tt_faa.dynamicType)")
+        XCTAssertEqual("NodeEnum","\(tt_faa.dynamicType)")
         
         let soa_faa = tt_faa.countedSymbols
         let soa_fxy = tt_fxy.countedSymbols
@@ -141,71 +141,71 @@ class TermSampleEnumTests: XCTestCase {
     }
     
     func testCustomStringConvertible() {
-        XCTAssertEqual("f(X,Y)=X", TermType(fxy_x!).description)
+        XCTAssertEqual("f(X,Y)=X", NodeImpl(fxy_x!).description)
     }
     
     func testStringLiteralConvertible() {
-        let variable = TermType(variable:"X")   // UPPER_WORD
-        var expected = "X" as TermType
+        let variable = NodeImpl(variable:"X")   // UPPER_WORD
+        var expected = "X" as NodeImpl
         XCTAssertEqual(variable, expected)
         
-        let constant = TermType(constant:"a")   // LOWER_WORD
+        let constant = NodeImpl(constant:"a")   // LOWER_WORD
         XCTAssertEqual(constant, "a")
         
-        let function = TermType(function:"f", terms: [variable, constant])
+        let function = NodeImpl(function:"f", terms: [variable, constant])
         XCTAssertEqual(function, "f(X,a)")
         
-        let equation = TermType(predicate:"=", terms:[function,constant])
+        let equation = NodeImpl(predicate:"=", terms:[function,constant])
         XCTAssertEqual(equation, "f(X,a)=a")
         
-        let inequation = TermType(predicate:"!=", terms:[function,constant])
+        let inequation = NodeImpl(predicate:"!=", terms:[function,constant])
         XCTAssertEqual(inequation, "f(X,a)!=a")
         
-        let predicate = TermType(predicate:"p", terms:[variable,constant])
+        let predicate = NodeImpl(predicate:"p", terms:[variable,constant])
         XCTAssertEqual(predicate, "p(X,a)")
         
-        let negation = TermType(connective:"~", terms: [predicate])
+        let negation = NodeImpl(connective:"~", terms: [predicate])
         XCTAssertEqual(negation, "~p(X,a)")
         
-        var disjunction = TermType(connective:"|", terms:[equation, predicate, negation])
+        var disjunction = NodeImpl(connective:"|", terms:[equation, predicate, negation])
         XCTAssertEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        disjunction = TermType(connective:"|", terms:[equation, TermType(connective:"|", terms: [predicate,negation])])
+        disjunction = NodeImpl(connective:"|", terms:[equation, NodeImpl(connective:"|", terms: [predicate,negation])])
         XCTAssertNotEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        var conjunction = TermType(connective:"&", terms:[equation, predicate, negation])
+        var conjunction = NodeImpl(connective:"&", terms:[equation, predicate, negation])
         XCTAssertEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        conjunction = TermType(connective:"&", terms:[equation, TermType(connective:"&", terms: [predicate,negation])])
+        conjunction = NodeImpl(connective:"&", terms:[equation, NodeImpl(connective:"&", terms: [predicate,negation])])
         XCTAssertNotEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        var fof = TermType(connective:"|", terms:[equation, TermType(connective:"&", terms: [predicate,negation])])
+        var fof = NodeImpl(connective:"|", terms:[equation, NodeImpl(connective:"&", terms: [predicate,negation])])
         expected = "f(X,a)=a | (p(X,a) & ~p(X,a) )"
         XCTAssertEqual(fof, expected)
         
-        fof = TermType(connective:"&", terms:[equation, TermType(connective:"|", terms: [predicate,negation])])
+        fof = NodeImpl(connective:"&", terms:[equation, NodeImpl(connective:"|", terms: [predicate,negation])])
         expected = "f(X,a)=a & (p(X,a) | ~p(X,a)) "
         XCTAssertEqual(fof, expected)
         
-        let universal = TermType(connective:"!", terms: [TermType(connective:",", terms:["X"]), disjunction])
+        let universal = NodeImpl(connective:"!", terms: [NodeImpl(connective:",", terms:["X"]), disjunction])
         expected = "![X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(universal, expected)
         
-        let existential = TermType(connective:"?", terms: [TermType(connective:",", terms:["X"]), disjunction])
+        let existential = NodeImpl(connective:"?", terms: [NodeImpl(connective:",", terms:["X"]), disjunction])
         expected = "?[X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(existential, expected)
     }
     
     func testSubstitution() {
-        var subs = [TermType: TermType]()
+        var subs = [NodeImpl: NodeImpl]()
         
         // An empty term mapping is everything.
         XCTAssertTrue(subs.isSubstitution)
@@ -213,7 +213,7 @@ class TermSampleEnumTests: XCTestCase {
         XCTAssertTrue(subs.isRenaming)
         
         // A term mapping, but not an substitution.
-        subs = ["f(g(X,a))": "g(X)"] as [TermType: TermType]
+        subs = ["f(g(X,a))": "g(X)"] as [NodeImpl: NodeImpl]
         
         XCTAssertFalse(subs.isSubstitution)
         XCTAssertFalse(subs.isVariableSubstitution)
@@ -226,7 +226,7 @@ class TermSampleEnumTests: XCTestCase {
         XCTAssertFalse(subs.isRenaming)
         
         // An substitution, but not a variable substitution.
-        subs = ["X": "g(X)"] as [TermType: TermType]
+        subs = ["X": "g(X)"] as [NodeImpl: NodeImpl]
         
         XCTAssertTrue(subs.isSubstitution)
         XCTAssertFalse(subs.isVariableSubstitution)
@@ -239,7 +239,7 @@ class TermSampleEnumTests: XCTestCase {
         XCTAssertFalse(subs.isRenaming)
         
         // A variable substitution, but not a renaming.
-        subs = ["X": "Z"] as [TermType: TermType]
+        subs = ["X": "Z"] as [NodeImpl: NodeImpl]
         subs["Y"] = "Z"
         
         XCTAssertTrue(subs.isSubstitution)
@@ -247,7 +247,7 @@ class TermSampleEnumTests: XCTestCase {
         XCTAssertFalse(subs.isRenaming)
         
         // A renaming
-        subs = ["X": "Y"] as [TermType: TermType]
+        subs = ["X": "Y"] as [NodeImpl: NodeImpl]
         
         XCTAssertTrue(subs.isSubstitution)
         XCTAssertTrue(subs.isVariableSubstitution)

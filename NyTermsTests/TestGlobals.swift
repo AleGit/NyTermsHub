@@ -4,25 +4,25 @@
 import Foundation
 import NyTerms
 
-typealias TestTerm = TermSampleStruct
+typealias TestNode = NodeStruct
 
 // terms
 
-let a = TestTerm(constant:"a")
-let b = TestTerm(constant:"b")
-let c = TestTerm(constant:"c")
-let cbot = TestTerm(constant:"⊥")
-let x = TestTerm(variable:"X")
-let y = TestTerm(variable:"Y")
-let z = TestTerm(variable:"Z")
-let fxy = TestTerm(function:"f", terms: [x,y])
+let a = TestNode(constant:"a")
+let b = TestNode(constant:"b")
+let c = TestNode(constant:"c")
+let cbot = TestNode(constant:"⊥")
+let x = TestNode(variable:"X")
+let y = TestNode(variable:"Y")
+let z = TestNode(variable:"Z")
+let fxy = TestNode(function:"f", terms: [x,y])
 let fax = fxy * [x:a,y:x]
 let fxa = fxy * [y:a]
 let faa = fxy * [x:a,y:a]
-let gx = TestTerm(function:"g", terms: [x])
+let gx = TestNode(function:"g", terms: [x])
 let gb = gx * [x:b]
-let gfaa = TestTerm(function:"g",terms: [faa])
+let gfaa = TestNode(function:"g",terms: [faa])
 
 // rules
 
-let fxy_x = TestTerm.Rule(fxy,x)
+let fxy_x = TestNode.Rule(fxy,x)

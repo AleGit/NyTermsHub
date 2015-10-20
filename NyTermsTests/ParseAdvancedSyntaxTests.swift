@@ -23,7 +23,7 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         
         XCTAssertEqual(1, tptpIncludes.count)
         
-        let formulae = tptpFormulae.map { TermSampleStruct($0.formula) }
+        let formulae = tptpFormulae.map { NodeStruct($0.formula) }
         
         // 1 quoted symbol
         var index = 0

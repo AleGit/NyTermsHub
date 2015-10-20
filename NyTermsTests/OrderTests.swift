@@ -11,7 +11,7 @@ import NyTerms
 
 class OrderTests: XCTestCase {
 
-    private typealias T = TermSampleStruct
+    private typealias T = NodeStruct
     
     func testSimpleLPO() {
         let signature = Set(["+","×","s"])

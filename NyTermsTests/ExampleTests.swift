@@ -23,7 +23,7 @@ class ExampleTests: XCTestCase {
     }
     
     func testExample() {
-        let t = "f(X)=g(X,Y)" as TermSampleClass
+        let t = "f(X)=g(X,Y)" as NodeClass
         
         XCTAssertEqual("f(X)=g(X,Y)", t.description)
         XCTAssertTrue(t.isLiteral)

@@ -11,7 +11,7 @@ import XCTest
 /// - Problems/HWV/HWV062+1.p
 class ParseBasicSyntaxTests: XCTestCase {
 
-    typealias MyTestTerm = TermSampleStruct
+    typealias MyTestTerm = NodeStruct
 
     func check(path:String, limit:NSTimeInterval, count:Int) -> ([TptpFormula],[TptpInclude]) {
         
@@ -170,7 +170,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("|", conjunction.terms!.last!.symbol)
         XCTAssertEqual("~(p(V2912))|p(V2896)|~(p(V2932))", conjunction.terms!.last!.description)
         
-        let terms = tptpFormulae.map { TermSampleStruct($0.formula) }
+        let terms = tptpFormulae.map { NodeStruct($0.formula) }
         XCTAssertEqual(2,terms.count)
         
         let a = terms.first!.terms!.last!.terms!.last!.terms!.last!

@@ -13,7 +13,7 @@ public typealias precedence = (Symbol,Symbol) -> Bool
 
 public protocol Order {
     
-    func greaterThan<T:Term>(s:T, t:T) -> Bool
+    func greaterThan<T:Node>(s:T, t:T) -> Bool
 }
 
 
@@ -39,7 +39,7 @@ public struct LexicographicPathOrder : Order {
         self.p = p
     }
     
-    public func greaterThan<T:Term>(s:T, t:T) -> Bool {
+    public func greaterThan<T:Node>(s:T, t:T) -> Bool {
         guard let sterms = s.terms else { return false } // a variable is never greater than a term
         
         func checkCaseOne() -> Bool {
@@ -96,9 +96,9 @@ public typealias weight = (w:Symbol -> Int, w0:Int)
 /// (D.4.4.2) Let *F* be a signature and (*w*,w<sub>0</sub> a weight function for *F*.
 /// The weight of a term t is defined as follows:
 /// 1. w(x) = w<sub>0</sub>
-public typealias weighting = Term -> Int
+public typealias weighting = Node -> Int
 
-public func makeWeighting<T:Term>(w: weight) -> ((T)->Int) {
+public func makeWeighting<T:Node>(w: weight) -> ((T)->Int) {
     
     var wt: ((T)->Int)? = nil
     
@@ -139,7 +139,7 @@ public struct KnuthBendixOrder : Order {
         self.w = w
     }
     
-    public func greaterThan<T:Term>(s:T, t:T) -> Bool {
+    public func greaterThan<T:Node>(s:T, t:T) -> Bool {
         let scvs = s.countedVariableSymbols
         let tcvs = s.countedVariableSymbols
         

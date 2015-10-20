@@ -24,7 +24,7 @@ public struct LPO {
         return p!
     }
     
-    public func ge<T:Term>(l:T, r:T) -> term_t  {
+    public func ge<T:Node>(l:T, r:T) -> term_t  {
         return Yices.bot()
     }
     

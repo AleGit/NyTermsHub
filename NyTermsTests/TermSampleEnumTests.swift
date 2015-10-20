@@ -6,9 +6,9 @@ import NyTerms
 
 // MARK: - term implementation
 
-/// Enum `TermSampleEnum` is a sample implementation of protocol `Term` for testing purposes only.
+/// Enum `TermSampleEnum` is a sample implementation of protocol `Node` for testing purposes only.
 /// Basically just the data representation has to be defined, but nearly no functions.
-enum TermSampleEnum : Term {
+enum TermSampleEnum : Node {
     case Variable (symbol:String)
     case Constant (symbol:String)
     case Function (symbol:String, terms:[TermSampleEnum])

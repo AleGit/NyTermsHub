@@ -3,7 +3,7 @@
 
 import Foundation
 
-public extension Term {
+public extension Node {
 
     /// Simple check if `self` represents a variable, 
     /// i.e. a leaf node without a list of subnodes.

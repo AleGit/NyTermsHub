@@ -6,9 +6,9 @@ import NyTerms
 
 // MARK: - term implementation
 
-/// Class `TermSampleClass` is a sample implementation of protocol `Term` for testing purposes only.
+/// Class `TermSampleClass` is a sample implementation of protocol `Node` for testing purposes only.
 /// Basically just the data representation has to be defined, but nearly no functions.
-final class TermSampleClass : Term {
+final class TermSampleClass : Node {
     let symbol : String
     let terms : [TermSampleClass]?
     

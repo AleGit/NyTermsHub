@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Abstract data type `Term`, e.g
+/// Abstract data type `Node`, e.g
 ///
 /// * variable terms: X, Y, Zustand
 /// * constant (function) terms: a, b, config
@@ -12,7 +12,7 @@ import Foundation
 /// * equational terms: a = X, b ~= f(X,a)
 /// * clause terms: a=X | b ~= f(X,a)
 /// * formuala terms: ...
-public protocol Term : Hashable, CustomStringConvertible, StringLiteralConvertible {
+public protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     var symbol : Symbol { get }
     var terms : [Self]? { get }
     
@@ -21,7 +21,7 @@ public protocol Term : Hashable, CustomStringConvertible, StringLiteralConvertib
 
 // MARK: default implementation of convenience initializers
 
-public extension Term {
+public extension Node {
     public init(variable symbol:Symbol) {
         self.init(symbol:symbol,terms: nil)
     }
@@ -52,7 +52,7 @@ public extension Term {
 
 // MARK: Hashable (==, hashValue) default implementation
 
-public extension Term {
+public extension Node {
     public func isEqual(rhs:Self) -> Bool {
         if self.symbol != rhs.symbol  { return false }               // the symbols are equal
         
@@ -72,11 +72,11 @@ public extension Term {
     }
 }
 
-public func ==<T:Term> (lhs:T, rhs:T) -> Bool {
+public func ==<T:Node> (lhs:T, rhs:T) -> Bool {
     return lhs.isEqual(rhs)
 }
 
-public extension Term {
+public extension Node {
     public var hashValueDefault : Int {
         let val = self.symbol.hashValue //  &+ self.type.hashValue
         guard let terms = self.terms else { return val }
@@ -98,8 +98,8 @@ extension Array where Element : CustomStringConvertible {
     }
 }
 
-extension Term {
-    /// Representation of self:Term in TPTP Syntax.
+extension Node {
+    /// Representation of self:Node in TPTP Syntax.
     public var defaultDescription : String {
         assert(!self.symbol.isEmpty, "a term must not have an emtpy symbol")
         
@@ -171,21 +171,21 @@ extension Term {
 
 // MARK: Conversion between different implemenations of prototocol term.
 
-private func convert <S:Term,T:Term>(s:S) -> T {
+private func convert <S:Node,T:Node>(s:S) -> T {
     guard let terms = s.terms else { return T(variable:s.symbol) }
     
     return T(symbol: s.symbol, terms: terms.map { convert($0) } )
 }
 
-extension Term {
-    public init<T:Term>(_ s:T) {    // similar to Int(3.5)
+extension Node {
+    public init<T:Node>(_ s:T) {    // similar to Int(3.5)
         self = convert(s)
     }
 }
 
 // MARK: StringLiteralConvertible (initialize term with string literal) partial default implementation
 
-public extension Term {
+public extension Node {
     
     // UnicodeScalarLiteralConvertible
     // typealias UnicodeScalarLiteralType = StringLiteralType
@@ -202,7 +202,7 @@ public extension Term {
     // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
     // typealias StringLiteralType
     // public init(stringLiteral value: Self.StringLiteralType)
-    // have to be provided by protocol `Term`'s implementation
+    // have to be provided by protocol `Node`'s implementation
 }
 
 

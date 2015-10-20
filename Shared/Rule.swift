@@ -18,7 +18,7 @@ public func ==(lhs:SymbolCountArityDictonary,rhs:SymbolCountArityDictonary) -> B
     return true
 }
 
-public extension Term {
+public extension Node {
     /// Get the set of all variable terms.
     public var allVariables : Set<Self> {
         guard let ts = self.terms else { return Set(arrayLiteral: self) }
@@ -88,7 +88,7 @@ public extension Term {
 
 // MARK: overlaps, critical pairs, critical peaks
 
-extension Term {
+extension Node {
     /// Pair with position p and unifier σ:
     /// - p in Pos(`self`)
     /// - `self`|<sub>p</sub>.σ = `other`.σ

@@ -3,7 +3,7 @@
 
 import Foundation
 
-extension Dictionary where Key:Term, Value:Term { // , Key == Value does not work
+extension Dictionary where Key:Node, Value:Node { // , Key == Value does not work
     ///
     private var isHomogenous : Bool {
         return self.keys.first?.dynamicType == self.values.first?.dynamicType
@@ -49,7 +49,7 @@ extension Dictionary where Key:Term, Value:Term { // , Key == Value does not wor
 
 /// 's =?= t' constructs most common unifier iff terms lhs and rhs are unifiable.
 /// Otherwise it returns *nil*.
-public func =?=<T:Term>(lhs:T, rhs:T) -> [T:T]? {
+public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     
     switch(lhs.isVariable,rhs.isVariable) {
     case (true, true):
@@ -78,7 +78,7 @@ public func =?=<T:Term>(lhs:T, rhs:T) -> [T:T]? {
 }
 
 /// 't * σ' applies substitution σ on term t.
-public func *<T:Term>(t:T, σ:[T:T]) -> T {
+public func *<T:Node>(t:T, σ:[T:T]) -> T {
     assert(σ.isSubstitution)
     
     if let tσ = σ[t] { return tσ }      // t is (variable) in σ.keys
@@ -90,19 +90,19 @@ public func *<T:Term>(t:T, σ:[T:T]) -> T {
 }
 
 /// 't ** s' replaces all variables in t with term s.
-public func **<T:Term>(t:T, s:T) -> T {
+public func **<T:Node>(t:T, s:T) -> T {
     guard let terms = t.terms else { return s }
     
     return T(symbol:t.symbol, terms: terms.map { $0 ** s })
 }
 
 /// 't**' replaces all variables in t with constant '⊥'.
-public postfix func **<T:Term>(t:T) -> T {
+public postfix func **<T:Node>(t:T) -> T {
     return t ** T(constant:"⊥")
 }
 
 /// 'σ * ρ' concatinates substitutions σ and ρ.
-public func *<T:Term> (lhs:[T:T], rhs:[T:T]) -> [T:T] {
+public func *<T:Node> (lhs:[T:T], rhs:[T:T]) -> [T:T] {
     var concat = [T:T]()
     for (lkey,lvalue) in lhs {
         concat[lkey] = lvalue * rhs

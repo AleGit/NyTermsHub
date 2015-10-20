@@ -6,9 +6,9 @@ import NyTerms
 
 // MARK: - term implementation
 
-/// Struct `TermSampleStruct` is a sample implementation of protocol `Term` for testing purposes only.
+/// Struct `TermSampleStruct` is a sample implementation of protocol `Node` for testing purposes only.
 /// Basically just the data representation has to be defined, but nearly no functions.
-struct TermSampleStruct : Term {
+struct TermSampleStruct : Node {
     let symbol : String
     let terms : [TermSampleStruct]?
 }

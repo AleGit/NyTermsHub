@@ -3,11 +3,11 @@
 
 import Cocoa
 
-/// Class `TptpTerm` is the generic bridging implementation of protocol `Term` (Swift) to the *TPTP* parser (C).
+/// Class `TptpTerm` is the generic bridging implementation of protocol `Node` (Swift) to the *TPTP* parser (C).
 /// The root node of an abstract syntax tree with TptpTerms represents one of the follwing TPTP types:
 /// - cnf_formula
 /// - fof_formula
-public final class TptpTerm: NSObject, Term {
+public final class TptpTerm: NSObject, Node {
     public let symbol: String
     public var terms: [TptpTerm]?
     

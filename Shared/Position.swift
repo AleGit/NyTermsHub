@@ -8,7 +8,7 @@ import Foundation
 /// and pq denotes the concatenation of positions p and q.
 public typealias Position = [Int]
 
-public extension Term {
+public extension Node {
     /// Get all positions of a term, i.e. all paths from root to nodes.
     /// "P(f(x),f(g(x,y))" yields the positions:
     ///
@@ -36,7 +36,7 @@ public extension Term {
     }
 }
 
-public extension Array where Element:Term {
+public extension Array where Element:Node {
     /// Get term at position in array. (for convenience)
     /// array[[i]] := array[i-1]
     /// array[[i,j,...]] := array[i-1][j,...]
@@ -53,7 +53,7 @@ public extension Array where Element:Term {
     }
 }
 
-public extension Term {
+public extension Node {
     /// Get term at position. 
     /// With [] the term itself is returned. 
     /// With [i] the the subterm with index (i-1) is returned.
@@ -67,7 +67,7 @@ public extension Term {
     }
 }
 
-private func subterm<T:Term>(root:T, position: Position) -> T? {
+private func subterm<T:Node>(root:T, position: Position) -> T? {
     
     guard let first = position.first else { return root }   // position == []
     
@@ -81,7 +81,7 @@ private func subterm<T:Term>(root:T, position: Position) -> T? {
     return subterm(terms[first-1], position:tail)
 }
 
-private func replace<T:Term>(root:T, position:Position, term:T) -> T? {
+private func replace<T:Node>(root:T, position:Position, term:T) -> T? {
     
     guard let first = position.first else { return term }   // position == []
     

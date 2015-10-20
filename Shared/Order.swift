@@ -40,7 +40,13 @@ public struct LexicographicPathOrder : Order {
     }
     
     public func greaterThan<T:Node>(s:T, t:T) -> Bool {
-        guard let sterms = s.terms else { return false } // a variable is never greater than a term
+        assert(s.isTerm)
+        assert(t.isTerm)
+
+        // a variable can never be greater than a term
+        guard let sterms = s.terms else { return false }
+        
+        // now we know, that s is not a variable
         
         func checkCaseOne() -> Bool {
             guard s.symbol == t.symbol else { return false }
@@ -140,6 +146,9 @@ public struct KnuthBendixOrder : Order {
     }
     
     public func greaterThan<T:Node>(s:T, t:T) -> Bool {
+        assert(s.isTerm)
+        assert(t.isTerm)
+        
         let scvs = s.countedVariableSymbols
         let tcvs = s.countedVariableSymbols
         

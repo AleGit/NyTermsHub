@@ -207,26 +207,27 @@
 			name = MaxCompTests;
 			sourceTree = "<group>";
 		};
-		511E95731B8AE4070093F4E8 /* NyTermsCL */ = {
+		511E95731B8AE4070093F4E8 /* _CLI_ */ = {
 			isa = PBXGroup;
 			children = (
 				511E95741B8AE4070093F4E8 /* main.swift */,
 				51342AB81B92CA3A0052A72F /* Samples.swift */,
 			);
+			name = _CLI_;
 			path = NyTermsCL;
 			sourceTree = "<group>";
 		};
 		5129770C1B677CAA003D3E80 = {
 			isa = PBXGroup;
 			children = (
+				511E95731B8AE4070093F4E8 /* _CLI_ */,
+				512977171B677CAA003D3E80 /* _GUI_ */,
 				51B26B5E1B8D9F9E00CC59AD /* Docs */,
 				51C94CB71B987D9F004C3082 /* MaxComp */,
-				512977171B677CAA003D3E80 /* NyTerms */,
-				511E95731B8AE4070093F4E8 /* NyTermsCL */,
-				512977291B677CAB003D3E80 /* NyTermsTests */,
+				512977291B677CAB003D3E80 /* Tests */,
 				515F0EED1B6B71C800B470B4 /* ParseC */,
 				512977161B677CAA003D3E80 /* Products */,
-				512977351B677DBE003D3E80 /* Shared */,
+				512977351B677DBE003D3E80 /* Core */,
 				51B26B6B1B8DA3E600CC59AD /* Yices */,
 			);
 			sourceTree = "<group>";
@@ -241,7 +242,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		512977171B677CAA003D3E80 /* NyTerms */ = {
+		512977171B677CAA003D3E80 /* _GUI_ */ = {
 			isa = PBXGroup;
 			children = (
 				512977181B677CAA003D3E80 /* AppDelegate.swift */,
@@ -250,10 +251,11 @@
 				5129771E1B677CAB003D3E80 /* Main.storyboard */,
 				512977211B677CAB003D3E80 /* Info.plist */,
 			);
+			name = _GUI_;
 			path = NyTerms;
 			sourceTree = "<group>";
 		};
-		512977291B677CAB003D3E80 /* NyTermsTests */ = {
+		512977291B677CAB003D3E80 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				26EBF5861B99C251006E5FF4 /* MaxCompTests */,
@@ -265,10 +267,11 @@
 				51303EB61B9C37A7003011A9 /* TermSampleTests */,
 				51D276621BC5805F005A0213 /* OrderTests.swift */,
 			);
+			name = Tests;
 			path = NyTermsTests;
 			sourceTree = "<group>";
 		};
-		512977351B677DBE003D3E80 /* Shared */ = {
+		512977351B677DBE003D3E80 /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				51B1EADE1B9429B5005187EC /* Auxiliary.swift */,
@@ -280,6 +283,7 @@
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				515F0F051B6BB0A100B470B4 /* Symbols.swift */,
 			);
+			name = Core;
 			path = Shared;
 			sourceTree = "<group>";
 		};

@@ -23,7 +23,7 @@ class ParseStringTests: XCTestCase {
             
             XCTAssertEqual("lives(agatha)",myterm.description)
             
-            XCTAssertEqual("TptpTerm","\(myformula.dynamicType)")
+            XCTAssertEqual("TptpNode","\(myformula.dynamicType)")
             XCTAssertEqual("TermSampleStruct","\(myterm.dynamicType)")
             
             XCTAssertEqual("String","\(myformula.symbol.dynamicType)")
@@ -32,7 +32,7 @@ class ParseStringTests: XCTestCase {
         
         
         XCTAssertEqual("Array<TptpFormula>","\(tptpFormulae.dynamicType)")
-        XCTAssertEqual("Array<TptpTerm>","\(myformulae.dynamicType)")
+        XCTAssertEqual("Array<TptpNode>","\(myformulae.dynamicType)")
     }
     
     typealias MyTestTerm = TermSampleStruct

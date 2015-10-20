@@ -6,14 +6,14 @@ import NyTerms
 
 // MARK: - term implementation
 
-/* TptpTerm is defined for flex/yacc-parsing in NyTerms */
+/* TptpNode is defined for flex/yacc-parsing in NyTerms */
 
 // MARK: - term tests
 
 /// Tests for default implementation of protocol term with **bridging class** data structure.
 class TptpTermTests: XCTestCase {
     
-    private typealias TermType = TptpTerm
+    private typealias TermType = TptpNode
     
     func testEquals() {
         XCTAssertEqual("a", TermType(a))
@@ -59,7 +59,7 @@ class TptpTermTests: XCTestCase {
         let tt_faa = TermType(faa)
         let tt_fxy = TermType(fxy)
         
-        XCTAssertEqual("TptpTerm","\(tt_faa.dynamicType)")
+        XCTAssertEqual("TptpNode","\(tt_faa.dynamicType)")
         
         let soa_faa = tt_faa.countedSymbols
         let soa_fxy = tt_fxy.countedSymbols

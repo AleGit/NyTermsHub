@@ -51,10 +51,10 @@ public final class TptpFormula: NSObject {
     public let language : TptpLanguage
     public let name : String
     public let role : TptpRole
-    public let formula : TptpTerm
+    public let formula : TptpNode
     public let annotations : [String]?
     
-    public init(language:TptpLanguage, name:String, role:TptpRole, formula:TptpTerm, annotations:[String]?) {
+    public init(language:TptpLanguage, name:String, role:TptpRole, formula:TptpNode, annotations:[String]?) {
         
         self.language = language
         self.name = name
@@ -93,7 +93,7 @@ extension TptpFormula : StringLiteralConvertible {
         
         switch formulae.count {
         case 0:
-            self.init(language: TptpLanguage.CNF, name: "parse_error", role: TptpRole.Unknown, formula: TptpTerm(constant:"parse_error"), annotations:nil)
+            self.init(language: TptpLanguage.CNF, name: "parse_error", role: TptpRole.Unknown, formula: TptpNode(constant:"parse_error"), annotations:nil)
         default:
             self.init(language: formulae[0].language, name: formulae[0].name, role: formulae[0].role, formula: formulae[0].formula, annotations: formulae[0].annotations)
         }

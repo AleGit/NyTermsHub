@@ -38,7 +38,7 @@ NSMutableArray* create_array(int n, ...) {
 
 #pragma mark - formulae, includes
 
-TptpFormula *create_formula(TptpLanguage language,  NSString *name, TptpRole role,  TptpTerm *term,  NSArray<NSString*> *annotations) {
+TptpFormula *create_formula(TptpLanguage language,  NSString *name, TptpRole role,  TptpNode *term,  NSArray<NSString*> *annotations) {
     assert(name != nil);
     assert(term != nil);
     // annoatations can be nil, i.e. there are no annotations at all.
@@ -89,7 +89,7 @@ void strings_append(NSMutableArray<NSString*> *a, NSString* b) {
 #pragma mark - nodes
 
 /// Create (universal, existential) quantified term with list of variables and unitary subterm.
-TptpTerm *create_quantified(NSString *name, TptpTerm* unitary, NSArray<NSString*>* vs) {
+TptpNode *create_quantified(NSString *name, TptpNode* unitary, NSArray<NSString*>* vs) {
     assert(name != nil);
     assert(unitary != nil);
     assert(vs != nil);
@@ -98,60 +98,60 @@ TptpTerm *create_quantified(NSString *name, TptpTerm* unitary, NSArray<NSString*
     for (NSString *v in vs) {
         [vnodes addObject: create_variable(v) ];
     }
-    TptpTerm *tuple = create_connective(@",", vnodes);
+    TptpNode *tuple = create_connective(@",", vnodes);
     
-    TptpTerm *term = [[TptpTerm alloc] initWithSymbol:name terms:@[tuple,unitary]];
+    TptpNode *term = [[TptpNode alloc] initWithSymbol:name terms:@[tuple,unitary]];
     [_parser_storage_ addObject:term];
     return term;
 }
 
 /// Create term with symbol and list of subterms.
-TptpTerm *create_functional(NSString *name, NSArray<TptpTerm*> *subnodes) {
-    TptpTerm *term = [[TptpTerm alloc] initWithFunctional:name terms:subnodes];
+TptpNode *create_functional(NSString *name, NSArray<TptpNode*> *subnodes) {
+    TptpNode *term = [[TptpNode alloc] initWithFunctional:name terms:subnodes];
     [_parser_storage_ addObject:term];
     return term;
 }
 
-void register_predicate(TptpTerm * _Nonnull term) {
+void register_predicate(TptpNode * _Nonnull term) {
     [term setPredicate];
 }
 
-TptpTerm *create_equational(NSString *name, NSArray<TptpTerm*> *subnodes) {
-    TptpTerm *term = [[TptpTerm alloc] initWithEquational:name terms:subnodes];
+TptpNode *create_equational(NSString *name, NSArray<TptpNode*> *subnodes) {
+    TptpNode *term = [[TptpNode alloc] initWithEquational:name terms:subnodes];
     [_parser_storage_ addObject:term];
     return term;
 }
 
-TptpTerm *create_connective(NSString *name, NSArray<TptpTerm*> *subnodes) {
+TptpNode *create_connective(NSString *name, NSArray<TptpNode*> *subnodes) {
     assert(name != nil);
     assert(subnodes != nil);
     
-    TptpTerm *term = [[TptpTerm alloc] initWithConnective:name terms:subnodes];
+    TptpNode *term = [[TptpNode alloc] initWithConnective:name terms:subnodes];
     [_parser_storage_ addObject:term];
     return term;
 }
 
 /// Create constant, i.e. term with empty list of subterms.
-TptpTerm *create_constant(NSString *name) {
+TptpNode *create_constant(NSString *name) {
     assert(name != nil);
     
-    TptpTerm *term = [[TptpTerm alloc] initWithConstant:name];
+    TptpNode *term = [[TptpNode alloc] initWithConstant:name];
     [_parser_storage_ addObject:term];
     return term;
     
 }
 
 /// Create variable, i.e. term without list of subterms.
-TptpTerm *create_variable(NSString *name) {
+TptpNode *create_variable(NSString *name) {
     assert(name != nil);
     
-    TptpTerm *term = [[TptpTerm alloc] initWithVariable:name];
+    TptpNode *term = [[TptpNode alloc] initWithVariable:name];
     [_parser_storage_ addObject:term];
     return term;
 }
 
 /// Create distinct object, i.e. constant with symbol in single quotes.
-TptpTerm *create_distinct_object(const char *cstring) {
+TptpNode *create_distinct_object(const char *cstring) {
     assert(cstring != NULL);
     
     NSString *string = [NSString stringWithUTF8String:cstring];
@@ -159,14 +159,14 @@ TptpTerm *create_distinct_object(const char *cstring) {
 }
 
 /// Create emtpy array of terms.
-NSMutableArray<TptpTerm*>*create_nodes0() { return create_array(0); }
+NSMutableArray<TptpNode*>*create_nodes0() { return create_array(0); }
 /// Create array with single term.
-NSMutableArray<TptpTerm*>*create_nodes1(TptpTerm* a) {
+NSMutableArray<TptpNode*>*create_nodes1(TptpNode* a) {
     assert(a != nil);
     return create_array(1,a);
 }
 /// Create array with two terms.
-NSMutableArray<TptpTerm*>* create_nodes2(TptpTerm* a, TptpTerm* b) {
+NSMutableArray<TptpNode*>* create_nodes2(TptpNode* a, TptpNode* b) {
     assert(a != nil);
     assert(b != nil);
     return create_array(2,a,b);
@@ -176,7 +176,7 @@ NSMutableArray<TptpTerm*>* create_nodes2(TptpTerm* a, TptpTerm* b) {
 /// - disjunction    : disjunction '|' literal
 /// - arguments      : arguments ',' term
 /// - fof_tuple_list : fof_tuple_list ',' fof_logic_formula
-void nodes_append(NSMutableArray<TptpTerm*> *a, TptpTerm* b) {
+void nodes_append(NSMutableArray<TptpNode*> *a, TptpNode* b) {
     assert(a != nil);
     assert(b != nil);
     [a addObject:b];
@@ -186,7 +186,7 @@ void nodes_append(NSMutableArray<TptpTerm*> *a, TptpTerm* b) {
 /// - fof_binary_assoc : fof_or_formula | fof_and_formula
 /// - fof_or_formula  : fof_or_formula '|' fof_unitary_formula
 /// - fof_and_formula : fof_and_formula '&' fof_unitary_formula
-TptpTerm* append(TptpTerm* parent, TptpTerm* child) {
+TptpNode* append(TptpNode* parent, TptpNode* child) {
     assert(parent != nil);
     assert(child != nil);
     assert(parent != child);

@@ -3,20 +3,20 @@
 
 import Cocoa
 
-/// Class `TptpTerm` is the generic bridging implementation of protocol `Node` (Swift) to the *TPTP* parser (C).
+/// Class `TptpNode` is the generic bridging implementation of protocol `Node` (Swift) to the *TPTP* parser (C).
 /// The root node of an abstract syntax tree with TptpTerms represents one of the follwing TPTP types:
 /// - cnf_formula
 /// - fof_formula
-public final class TptpTerm: NSObject, Node {
+public final class TptpNode: NSObject, Node {
     public let symbol: String
-    public var terms: [TptpTerm]?
+    public var terms: [TptpNode]?
     
-    public init(symbol: String, terms: [TptpTerm]?) {
+    public init(symbol: String, terms: [TptpNode]?) {
         self.symbol = symbol
         self.terms = terms
     }
     
-    /// Since TptpTerm inherits description from NSObject
+    /// Since TptpNode inherits description from NSObject
     /// it would not call the protocol extension's implementation.
     public override var description : String {
         return self.defaultDescription
@@ -25,21 +25,21 @@ public final class TptpTerm: NSObject, Node {
     /// Appends additonal term to subterms of connective.
     /// - fof_or_formula '|' fof_unitary_formula
     /// - fof_and_formula '&' fof_unitary_formula
-    public func append(term: TptpTerm) {
+    public func append(term: TptpNode) {
         if self.terms == nil { self.terms = [term] }
         else { self.terms!.append(term) }
     }
     
-    /// Since TptpTerm inherits isEqual from NSObject
+    /// Since TptpNode inherits isEqual from NSObject
     /// it would not call the protocol extension's implementation.
     public override func isEqual(object: AnyObject?) -> Bool {
        
-        guard let rhs = object as? TptpTerm else { return false }
+        guard let rhs = object as? TptpNode else { return false }
         
         return self.isEqual(rhs)
     }
     
-    /// Since TptpTerm inherits hashValue from NSObject
+    /// Since TptpNode inherits hashValue from NSObject
     /// it would not call the protocol extension's implementation.
     public override var hashValue : Int {
         return self.hashValueDefault
@@ -59,7 +59,7 @@ public final class TptpTerm: NSObject, Node {
 
 
 
-extension TptpTerm {
+extension TptpNode {
     
     public convenience init(variable symbol:Symbol) {
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")
@@ -80,10 +80,10 @@ extension TptpTerm {
         #if FUNCTION_TABLE || FULL_TABLE
             Symbols.add(constant: symbol)
         #endif
-        self.init(symbol:symbol,terms: [TptpTerm]())
+        self.init(symbol:symbol,terms: [TptpNode]())
     }
     
-    public convenience init(functional symbol:Symbol, terms:[TptpTerm]) {
+    public convenience init(functional symbol:Symbol, terms:[TptpNode]) {
         assert(terms.count > 0, "uninterpreted functions must have one argumument at least")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
@@ -95,7 +95,7 @@ extension TptpTerm {
         self.init(symbol:symbol,terms: terms)
     }
     
-    public convenience init(predicate symbol:Symbol, terms:[TptpTerm]) {
+    public convenience init(predicate symbol:Symbol, terms:[TptpNode]) {
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted predicate symbols must not overlap auxiliary symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
@@ -108,13 +108,13 @@ extension TptpTerm {
         self.init(symbol:symbol,terms: terms)
     }
     
-    public convenience init(equational symbol:Symbol, terms:[TptpTerm]) {
+    public convenience init(equational symbol:Symbol, terms:[TptpNode]) {
         assert(terms.count == 2)
         assert(Symbols.defined[symbol]?.category == SymbolCategory.Equational, "equational symbols must be predefined")
         self.init(symbol:symbol,terms: terms)
     }
     
-    public convenience init(connective symbol:Symbol, terms:[TptpTerm]) {
+    public convenience init(connective symbol:Symbol, terms:[TptpNode]) {
         assert(terms.count > 0)
         assert(Symbols.defined[symbol]?.category == SymbolCategory.Connective, "connective symbols must be predefined")
         self.init(symbol:symbol,terms: terms)
@@ -122,8 +122,8 @@ extension TptpTerm {
     
 }
 
-extension TptpTerm : StringLiteralConvertible {
-    private static func parse(stringLiteral value:String) -> TptpTerm {
+extension TptpNode : StringLiteralConvertible {
+    private static func parse(stringLiteral value:String) -> TptpNode {
         assert(!value.isEmpty)
 
         if value.containsOne(Symbols.symbols(category:SymbolCategory.Connective)) {
@@ -147,9 +147,9 @@ extension TptpTerm : StringLiteralConvertible {
             
             switch first {
             case first.uppercaseString:
-                return TptpTerm(variable:value) // UPPER_WORD, i.e. first character is uppercase
+                return TptpNode(variable:value) // UPPER_WORD, i.e. first character is uppercase
             default:
-                return TptpTerm(constant:value) // LOWER_WORD, i.e. first character is not uppercase
+                return TptpNode(constant:value) // LOWER_WORD, i.e. first character is not uppercase
             }
         }
     }
@@ -157,7 +157,7 @@ extension TptpTerm : StringLiteralConvertible {
     // TODO: Implementation of `StringLiteralConvertible` is still a hack.
     /// Parse a single (function) term or a single equation between two terms.
     public convenience init(stringLiteral value: StringLiteralType) {
-        let term = TptpTerm.parse(stringLiteral: value)
+        let term = TptpNode.parse(stringLiteral: value)
         self.init(symbol: term.symbol, terms: term.terms)
     }
 }

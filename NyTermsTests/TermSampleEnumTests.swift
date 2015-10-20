@@ -51,9 +51,9 @@ enum TermSampleEnum : Node {
 }
 
 extension TermSampleEnum : StringLiteralConvertible {
-    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpTerm`.
+    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpNode`.
     init(stringLiteral value: StringLiteralType) {
-        self = TermSampleEnum(TptpTerm(stringLiteral:value))
+        self = TermSampleEnum(TptpNode(stringLiteral:value))
     }
 }
 

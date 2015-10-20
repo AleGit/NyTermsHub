@@ -184,7 +184,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         let cvars = conjunction.allVariables
         
         XCTAssertEqual(cvars.count, bvars.count)
-        let cbvars = Set(bvars.map { TptpTerm($0) })
+        let cbvars = Set(bvars.map { TptpNode($0) })
         XCTAssertEqual(cvars, cbvars)
         
         XCTAssertEqual(15312, b.allVariables.count)

@@ -35,14 +35,14 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         XCTAssertEqual("|", clause.symbol)
         
         let literals = clause.terms!
-        XCTAssertEqual("Array<TptpTerm>", "\(literals.dynamicType)")
+        XCTAssertEqual("Array<TptpNode>", "\(literals.dynamicType)")
         XCTAssertEqual(1, literals.count)
         
         let literal = literals.first!
         XCTAssertEqual("!=", literal.symbol)
         
         let terms = literal.terms!
-        XCTAssertEqual("Array<TptpTerm>", "\(terms.dynamicType)")
+        XCTAssertEqual("Array<TptpNode>", "\(terms.dynamicType)")
         XCTAssertEqual(2, terms.count)
         
         let l = terms.first!

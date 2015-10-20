@@ -14,9 +14,9 @@ struct TermSampleStruct : Node {
 }
 
 extension TermSampleStruct : StringLiteralConvertible {
-    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpTerm`.
+    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpNode`.
     init(stringLiteral value: StringLiteralType) {
-        self = TermSampleStruct(TptpTerm(stringLiteral:value))
+        self = TermSampleStruct(TptpNode(stringLiteral:value))
     }
 }
 

@@ -4,7 +4,7 @@
 #ifndef Nyaya_TptpGlobals_h
 #define Nyaya_TptpGlobals_h
 
-@class TptpTerm;
+@class TptpNode;
 @class TptpFormula;
 @class TptpInclude;
 
@@ -14,7 +14,7 @@
 
 #pragma mark - formulae, includes
 
-TptpFormula* _Nonnull  create_formula(TptpLanguage language,  NSString * _Nonnull name, TptpRole role, TptpTerm * _Nonnull term, NSArray * _Nullable annotations);
+TptpFormula* _Nonnull  create_formula(TptpLanguage language,  NSString * _Nonnull name, TptpRole role, TptpNode * _Nonnull term, NSArray * _Nullable annotations);
 TptpInclude * _Nonnull create_include(NSString * _Nonnull fileName,  NSArray<NSString*>* _Nullable  selection);
 
 #pragma mark - string
@@ -25,21 +25,21 @@ void strings_append(NSMutableArray<NSString*> * _Nonnull a,  NSString* _Nonnull 
 
 #pragma mark - nodes
 
-TptpTerm* _Nonnull create_quantified( NSString * _Nonnull name, TptpTerm* _Nonnull  unitary,  NSArray<NSString*>* _Nonnull  vs);
-TptpTerm* _Nonnull create_functional(NSString * _Nonnull name,  NSArray<TptpTerm*> * _Nonnull subnodes);
-TptpTerm* _Nonnull create_equational(NSString * _Nonnull name,  NSArray<TptpTerm*> * _Nonnull subnodes);
-TptpTerm* _Nonnull create_connective(NSString * _Nonnull name,  NSArray<TptpTerm*> * _Nonnull subnodes);
-TptpTerm* _Nonnull create_constant(NSString * _Nonnull name);
-TptpTerm* _Nonnull create_variable(NSString * _Nonnull name);
-TptpTerm* _Nonnull create_distinct_object(const char * _Nonnull cstring);
-void register_predicate(TptpTerm * _Nonnull term);
+TptpNode* _Nonnull create_quantified( NSString * _Nonnull name, TptpNode* _Nonnull  unitary,  NSArray<NSString*>* _Nonnull  vs);
+TptpNode* _Nonnull create_functional(NSString * _Nonnull name,  NSArray<TptpNode*> * _Nonnull subnodes);
+TptpNode* _Nonnull create_equational(NSString * _Nonnull name,  NSArray<TptpNode*> * _Nonnull subnodes);
+TptpNode* _Nonnull create_connective(NSString * _Nonnull name,  NSArray<TptpNode*> * _Nonnull subnodes);
+TptpNode* _Nonnull create_constant(NSString * _Nonnull name);
+TptpNode* _Nonnull create_variable(NSString * _Nonnull name);
+TptpNode* _Nonnull create_distinct_object(const char * _Nonnull cstring);
+void register_predicate(TptpNode * _Nonnull term);
 
-NSMutableArray<TptpTerm*>* _Nonnull create_nodes0();
-NSMutableArray<TptpTerm*>* _Nonnull create_nodes1(TptpTerm* _Nonnull a);
-NSMutableArray<TptpTerm*>* _Nonnull create_nodes2(TptpTerm* _Nonnull a, TptpTerm* _Nonnull b);
-void nodes_append( NSMutableArray<TptpTerm*> * _Nonnull a, TptpTerm* _Nonnull  b);
+NSMutableArray<TptpNode*>* _Nonnull create_nodes0();
+NSMutableArray<TptpNode*>* _Nonnull create_nodes1(TptpNode* _Nonnull a);
+NSMutableArray<TptpNode*>* _Nonnull create_nodes2(TptpNode* _Nonnull a, TptpNode* _Nonnull b);
+void nodes_append( NSMutableArray<TptpNode*> * _Nonnull a, TptpNode* _Nonnull  b);
 
-TptpTerm* _Nonnull append(TptpTerm* _Nonnull parent, TptpTerm* _Nonnull child);
+TptpNode* _Nonnull append(TptpNode* _Nonnull parent, TptpNode* _Nonnull child);
 
 #pragma mark - roles
 

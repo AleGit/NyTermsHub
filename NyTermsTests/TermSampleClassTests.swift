@@ -27,9 +27,9 @@ func ==(lhs:TermSampleClass, rhs:TermSampleClass) -> Bool {
 }
 
 extension TermSampleClass : StringLiteralConvertible {
-    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpTerm`.
+    // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpNode`.
     convenience init(stringLiteral value: StringLiteralType) {
-        let term = TermSampleClass(TptpTerm(stringLiteral:value))
+        let term = TermSampleClass(TptpNode(stringLiteral:value))
         self.init(symbol: term.symbol, terms: term.terms)
     }
 }

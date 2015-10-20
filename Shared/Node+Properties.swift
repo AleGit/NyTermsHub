@@ -54,10 +54,10 @@ public extension Node {
     /// - a constant `c` is a (function) term
     /// - an expression `f(t_1, ..., t_n)` is a (function) term
     /// if `f` is a function symbol and `t_1`,...,`t_n` are (function) terms.
-    var isFunction : Bool {
+    var isTerm : Bool {
         guard let terms = self.terms else { return true; } // a variable is a term
-        guard let category = Symbols.defined[self.symbol]?.category else { return terms.reduce(true) { $0 && $1.isFunction } }
-        return category == SymbolCategory.Functor && terms.reduce(true) { $0 && $1.isFunction }
+        guard let category = Symbols.defined[self.symbol]?.category else { return terms.reduce(true) { $0 && $1.isTerm } }
+        return category == SymbolCategory.Functor && terms.reduce(true) { $0 && $1.isTerm }
     }
     
     /// Costly check if `self` represents the negation of a valid predicate term.
@@ -81,7 +81,7 @@ public extension Node {
         }
         guard let terms = self.terms else { return false }
         
-        return terms.reduce(true) { $0 && $1.isFunction }
+        return terms.reduce(true) { $0 && $1.isTerm }
     }
     
     /// Costly check if `self` represents a valid inequation or the negation of a valid equation.
@@ -97,7 +97,7 @@ public extension Node {
             return terms.first!.isEquation
             
         case (.Inequation, 2):
-            return terms.first!.isFunction && terms.last!.isFunction
+            return terms.first!.isTerm && terms.last!.isTerm
         default:
             return false
         }
@@ -109,7 +109,7 @@ public extension Node {
     public var isEquation : Bool {
         guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Equation else { return false }
         guard let terms = self.terms where terms.count == 2 else { return false }
-        return terms.first!.isFunction && terms.last!.isFunction
+        return terms.first!.isTerm && terms.last!.isTerm
     }
     
     /// Costly check if `self` represents the negation of an valid atomic formula.

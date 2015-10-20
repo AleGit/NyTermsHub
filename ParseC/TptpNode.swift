@@ -100,7 +100,7 @@ extension TptpNode {
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
         
-        assert(terms.reduce(true) { $0 && $1.isFunction },"predicate subterms must be functional terms")
+        assert(terms.reduce(true) { $0 && $1.isTerm },"predicate subterms must be functional terms")
         
         #if FUNCTION_TABLE || FULL_TABLE
             Symbols.add(predicate: symbol, arity: terms.count)

@@ -160,7 +160,7 @@ public struct KnuthBendixOrder : Order {
             
             func checkSubCaseOne() -> Bool {
                 guard t.isVariable else { return false }
-                guard s.isFunction else { return false }
+                guard s.isTerm else { return false }
                 var u = s
                 while u.terms?.count == 1 {
                     u = u.terms![0]
@@ -184,7 +184,7 @@ public struct KnuthBendixOrder : Order {
             }
             
             func checkSubCaseThree() -> Bool {
-                guard s.isFunction && t.isFunction else { return false }
+                guard s.isTerm && t.isTerm else { return false }
                 return p(s.symbol, t.symbol)
             }
             

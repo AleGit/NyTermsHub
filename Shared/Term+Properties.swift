@@ -149,9 +149,12 @@ public extension Term {
         return terms.reduce(true) { $0 && $1.isFormula }
     }
     
-    /// Costly check if `self` represents a disjunction of literals.
+    /// Costly check if `self` represents a (tree) disjunction of literals.
     private var isDisjunctionOfLiterals : Bool {
-        guard !self.isLiteral else { return true }
+        guard !self.isLiteral else {
+            // a literal is a disjunction of literals too
+            return true
+        }
         
         guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
         
@@ -160,8 +163,21 @@ public extension Term {
         return terms.reduce(true) { $0 && $1.isDisjunctionOfLiterals }
     }
     
+    /// Costly check if `self` represents a (flat) disjunction of literals
     public var isClause : Bool {
-        return self.isDisjunctionOfLiterals
+        guard !self.isLiteral else {
+            // a literal is not a clause
+            return false
+        }
+        
+        guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
+        
+        guard let terms = self.terms else { return false }
+        
+        // even a clause with zero literals is a clause
+        return terms.reduce(true) { $0 && $1.isLiteral }
+        
+        
     }
     
 }

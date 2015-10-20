@@ -26,6 +26,11 @@ class ParsePuzzleFileTests: XCTestCase {
         XCTAssertEqual("lives(agatha)",myterms[0].description)
         XCTAssertEqual("killed(butler,agatha)|killed(charles,agatha)",myterms[11].description)
         XCTAssertEqual("String","\(tptpFormulae[11].formula.symbol.dynamicType)")
+        
+        for formula in tptpFormulae {
+            XCTAssertTrue(formula.formula.isFormula)
+            XCTAssertTrue(formula.formula.isClause)
+        }
     }
     
     /// PUZ051-1.p: Quo vadis 6.
@@ -48,6 +53,8 @@ class ParsePuzzleFileTests: XCTestCase {
             XCTAssertEqual(tptpFormulae[index].language, TptpLanguage.CNF)
             XCTAssertEqual(tptpFormulae[index].name, "intermediate_state")
             XCTAssertEqual(tptpFormulae[index].role, TptpRole.Hypothesis)
+            XCTAssertTrue(tptpFormulae[index].formula.isFormula)
+            XCTAssertTrue(tptpFormulae[index].formula.isClause)
         }
         
         index = 1
@@ -61,6 +68,7 @@ class ParsePuzzleFileTests: XCTestCase {
             XCTAssertEqual(formula.language, TptpLanguage.CNF)
             XCTAssertEqual(formula.role, TptpRole.Axiom)
             XCTAssertTrue(formula.formula.isFormula)
+            XCTAssertTrue(formula.formula.isClause)
         }
     }
     

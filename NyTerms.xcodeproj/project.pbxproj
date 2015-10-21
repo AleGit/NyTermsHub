@@ -39,6 +39,9 @@
 		51342AB91B92CA3A0052A72F /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51342AB81B92CA3A0052A72F /* Samples.swift */; settings = {ASSET_TAGS = (); }; };
 		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; settings = {ASSET_TAGS = (); }; };
 		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; settings = {ASSET_TAGS = (); }; };
+		5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; settings = {ASSET_TAGS = (); }; };
+		5150F39C1BD62F4C003D69A3 /* PolyTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */; settings = {ASSET_TAGS = (); }; };
+		5150F39E1BD6769C003D69A3 /* SatTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39D1BD6769C003D69A3 /* SatTryTests.swift */; settings = {ASSET_TAGS = (); }; };
 		515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 515D91B61B6CFEF0000EDB3B /* TptpParser.m */; };
 		515D91BB1B6D0642000EDB3B /* ParseStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */; };
 		515D91BE1B6D2513000EDB3B /* TptpNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D91BD1B6D2513000EDB3B /* TptpNode.swift */; };
@@ -128,6 +131,9 @@
 		5129773E1B679177003D3E80 /* Substitution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Substitution.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51342AB81B92CA3A0052A72F /* Samples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
 		513CF7E01B8EF6D20063BA57 /* String+Yices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Yices.swift"; sourceTree = "<group>"; };
+		5150F3981BD62E67003D69A3 /* PolyTry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTry.swift; sourceTree = "<group>"; };
+		5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTryTests.swift; sourceTree = "<group>"; };
+		5150F39D1BD6769C003D69A3 /* SatTryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SatTryTests.swift; sourceTree = "<group>"; };
 		515D91B61B6CFEF0000EDB3B /* TptpParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TptpParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseStringTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515D91BD1B6D2513000EDB3B /* TptpNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TptpNode.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -222,12 +228,14 @@
 			children = (
 				511E95731B8AE4070093F4E8 /* _CLI_ */,
 				512977171B677CAA003D3E80 /* _GUI_ */,
+				512977351B677DBE003D3E80 /* Core */,
 				51B26B5E1B8D9F9E00CC59AD /* Docs */,
 				51C94CB71B987D9F004C3082 /* MaxComp */,
-				512977291B677CAB003D3E80 /* Tests */,
 				515F0EED1B6B71C800B470B4 /* ParseC */,
 				512977161B677CAA003D3E80 /* Products */,
-				512977351B677DBE003D3E80 /* Core */,
+				5150F3971BD62D8A003D69A3 /* Tentative */,
+				5150F39A1BD62EFB003D69A3 /* TentativeTests */,
+				512977291B677CAB003D3E80 /* Tests */,
 				51B26B6B1B8DA3E600CC59AD /* Yices */,
 			);
 			sourceTree = "<group>";
@@ -341,6 +349,23 @@
 				5129773A1B678B9C003D3E80 /* TestTermTests.swift */,
 			);
 			name = MiscTests;
+			sourceTree = "<group>";
+		};
+		5150F3971BD62D8A003D69A3 /* Tentative */ = {
+			isa = PBXGroup;
+			children = (
+				5150F3981BD62E67003D69A3 /* PolyTry.swift */,
+			);
+			path = Tentative;
+			sourceTree = "<group>";
+		};
+		5150F39A1BD62EFB003D69A3 /* TentativeTests */ = {
+			isa = PBXGroup;
+			children = (
+				5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */,
+				5150F39D1BD6769C003D69A3 /* SatTryTests.swift */,
+			);
+			path = TentativeTests;
 			sourceTree = "<group>";
 		};
 		515F0EED1B6B71C800B470B4 /* ParseC */ = {
@@ -600,6 +625,7 @@
 				51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */,
 				51226E7D1B6D44E20077E34D /* TptpPrintable.swift in Sources */,
 				51FAF9321BB70330004E6BD5 /* LPO.swift in Sources */,
+				5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,6 +636,7 @@
 				51D276631BC5805F005A0213 /* OrderTests.swift in Sources */,
 				515D91BB1B6D0642000EDB3B /* ParseStringTests.swift in Sources */,
 				519801A71B84E18C0030A61A /* NodeEnumTests.swift in Sources */,
+				5150F39C1BD62F4C003D69A3 /* PolyTryTests.swift in Sources */,
 				51A4D09C1B70EE0500672898 /* ParseBasicSyntaxTests.swift in Sources */,
 				51B883F51B8E3DAC008D7F22 /* test_pp.c in Sources */,
 				515F0F0C1B6BB50200B470B4 /* PositonTests.swift in Sources */,
@@ -625,6 +652,7 @@
 				512117641B81D26E00E1803C /* TptpFormulaLiteralsTests.swift in Sources */,
 				519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */,
 				519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */,
+				5150F39E1BD6769C003D69A3 /* SatTryTests.swift in Sources */,
 				51EFBA291B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift in Sources */,
 				51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */,
 				265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */,

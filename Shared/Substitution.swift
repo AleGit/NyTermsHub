@@ -4,7 +4,7 @@
 import Foundation
 
 extension Dictionary where Key:Node, Value:Node { // , Key == Value does not work
-    ///
+    /// Do the runtime types of keys and values match?
     private var isHomogenous : Bool {
         return self.keys.first?.dynamicType == self.values.first?.dynamicType
     }

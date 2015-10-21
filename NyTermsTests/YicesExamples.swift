@@ -50,6 +50,11 @@ func example2() -> (type:String?, term:String?, model:String?) {
     */
     
     let ctx = yices_new_context(nil);  // NULL means use the default configuration
+    defer {
+        yices_free_context(ctx)
+    }
+    
+    
     code = yices_assert_formula(ctx, a);
     if (code < 0) {
         print("Assert failed: ");

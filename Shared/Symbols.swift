@@ -55,7 +55,7 @@ struct Symbols {
         
         // we know: the symbol was allread in the symbol table
         // we check: is our function symbol consitent with the symbol in the table
-        // remark: a function symbol, more specifically a functor can be a predicate symbol
+        // remark: a function symbol, more specifically a symbol of category functor can be a predicate symbol
         
         assert(quadruple.type == SymbolType.Function || quadruple.type == SymbolType.Predicate)
         assert(quadruple.category == SymbolCategory.Functor)

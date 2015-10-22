@@ -40,6 +40,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         // *** 'HWV134-1.p' total:74.974s, limit:150.0s, count:2332428 avg:0.032ms *** (2015-08-29 11:43:46 +0000)
         // *** 'HWV134-1.p' total:70.208s, limit:150.0s, count:2332428 avg:0.030ms *** (2015-09-17 13:23:36 +0000)
         // *** 'HWV134-1.p' total:45.392s, limit:150.0s, count:2332428 avg:0.019ms *** (2015-10-05 09:42:29 +0000) (26) MacBookPro
+        // *** 'HWV134-1.p' total:42.139s, limit:150.0s, count:2332428 avg:0.018ms *** (2015-10-22 14:17:27 +0000) (27) Mac mini
         
         let myformula = MyTestTerm(tptpFormulae[2_332_427].formula)
         XCTAssertEqual("~(v437(VarCurr,bitIndex128))|v4403(VarCurr,bitIndex0)", myformula.description)
@@ -52,6 +53,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         // *** 'HWV105-1.p' total:0.737s, limit:1.5s, count:20900 avg:0.035ms *** (2015-08-29 11:42:31 +0000)
         // *** 'HWV105-1.p' total:0.712s, limit:1.5s, count:20900 avg:0.034ms *** (2015-09-17 13:22:26 +0000)
         // *** 'HWV105-1.p' total:0.438s, limit:1.5s, count:20900 avg:0.02ms *** (2015-10-05 09:41:43 +0000) (26) MacBookPro
+        // *** 'HWV105-1.p' total:0.383s, limit:1.5s, count:20900 avg:0.018ms *** (2015-10-22 14:16:44 +0000) (27) Mac mini
         let myformula = tptpFormulae[20_899]
         XCTAssertEqual("u61248", myformula.name)
         XCTAssertEqual(TptpRole.Axiom, myformula.role)
@@ -69,6 +71,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         // *** 'HWV134+1.p' total:42.162s, limit:90.0s, count:128975 avg:0.326ms *** (2015-08-29 11:44:30 +0000)
         // *** 'HWV134+1.p' total:41.537s, limit:90.0s, count:128975 avg:0.322ms *** (2015-09-17 13:24:20 +0000)
         // *** 'HWV134+1.p' total:18.978s, limit:90.0s, count:128975 avg:0.147ms *** (2015-10-05 09:42:48 +0000) (26) MacBookPro
+        // *** 'HWV134+1.p' total:17.459s, limit:90.0s, count:128975 avg:0.135ms *** (2015-10-22 14:17:44 +0000) (27) Mac mini
         
         let myformula = MyTestTerm(tptpFormulae[128_974].formula)
         XCTAssertEqual("(![VarCurr]:(v34(VarCurr)<=>v36(VarCurr)))", myformula.description)
@@ -80,6 +83,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         // *** 'HWV062+1.p' total:0.93s, limit:2.0s, count:2 avg:465.016ms *** (2015-08-29 11:42:18 +0000)
         // *** 'HWV062+1.p' total:0.837s, limit:2.0s, count:2 avg:418.707ms *** (2015-09-17 13:22:14 +0000)
         // *** 'HWV062+1.p' total:0.479s, limit:2.0s, count:2 avg:239.766ms *** (2015-10-05 09:41:32 +0000) (26) MacBookPro
+        // *** 'HWV062+1.p' total:0.504s, limit:2.0s, count:2 avg:252.009ms *** (2015-10-22 14:16:34 +0000) (27) Mac mini
         
         let last = MyTestTerm(tptpFormulae.last!.formula)
         XCTAssertEqual("!=", last.symbol)

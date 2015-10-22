@@ -60,6 +60,62 @@ class SatTryTests: XCTestCase {
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
     
+    func testEquations() {
+        yices_init()
+        defer { yices_exit() }
+        let ctx = yices_new_context(nil)
+        defer {  yices_free_context(ctx) }
+    
+//        let tau = yices_new_uninterpreted_type()
+        let tau = yices_int_type()
+
+        let truth = yices_bool_type()
+        
+        let c = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        yices_set_term_name(c, "c")
+    
+        let unary = yices_function_type1(tau, tau)
+        let f = yices_new_uninterpreted_term(unary)
+        yices_set_term_name(f, "f")
+        let g = yices_new_uninterpreted_term(unary)
+        yices_set_term_name(f, "g")
+        
+        let fc = yices_application1(f, c)
+        let gc = yices_application1(g, c)
+        
+        let eq = yices_eq(fc, gc)
+        let ne = yices_neq(fc, gc)
+        let neq = yices_not(eq)
+        
+        yices_assert_formula(ctx, ne)
+        XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
+
+        let mdl = yices_get_model(ctx, 1);
+        defer {
+            yices_free_model(mdl)
+        }
+        
+        print(String(model:mdl)!)
+        
+        var val = yices_get_bool_value(mdl, eq, pvalue)
+        print("eq:\(val) \(global_value)")
+        
+        val = yices_get_bool_value(mdl, ne, pvalue)
+        print("ne:\(val) \(global_value)")
+        
+        val = yices_get_bool_value(mdl, neq, pvalue)
+        print("neq:\(val) \(global_value)")
+        
+        yices_assert_formula(ctx, neq)
+        XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
+        
+        yices_assert_formula(ctx, eq)
+        XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
+        
+        
+        
+    }
+    
     func testPredicates() {
         
         yices_init()    // global initialization
@@ -72,8 +128,7 @@ class SatTryTests: XCTestCase {
             yices_free_context(ctx)
         }
         
-        // let tau = yices_new_uninterpreted_type()
-        let tau = yices_int_type()
+        let tau = yices_new_uninterpreted_type()
         let truth = yices_bool_type()
         
         let unary = yices_function_type1(tau, tau)
@@ -106,15 +161,13 @@ class SatTryTests: XCTestCase {
         
         print(String(model:mdl)!)
         
-//        let i: Int = 0
-//        
         let pfc_val = yices_get_bool_value(mdl, pfc, pvalue)
         
-        print("pfc:\(pfc_val)")
+        print("pfc:\(pfc_val) \(global_value)")
         
         let npfc_val = yices_get_bool_value(mdl, npfc, pvalue)
         
-        print("pfc:\(npfc_val)")
+        print("npfc:\(npfc_val) \(global_value)")
         
         let pfc_in_model = yices_formula_true_in_model(mdl,pfc)
         let npfc_in_model = yices_formula_true_in_model(mdl,npfc)
@@ -137,16 +190,5 @@ class SatTryTests: XCTestCase {
         yices_reset_context(ctx)
         yices_assert_formula(ctx, yices_implies(falsch, wahr))
         XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
 }

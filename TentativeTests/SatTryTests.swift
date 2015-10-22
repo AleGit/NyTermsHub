@@ -14,23 +14,18 @@ class SatTryTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        yices_init()    // global initialization
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        yices_exit()
         super.tearDown()
     }
     
     func testPropositions() {
-        yices_init()    // global initialization
-        defer {
-            yices_exit()    // global cleanup
-        }
-        
-        let ctx = yices_new_context(nil) // nil == NULL == default configuration
-        defer {
-            yices_free_context(ctx)
-        }
+        let ctx = yices_new_context(nil)
+        defer {  yices_free_context(ctx) }
         
         let tau = yices_bool_type()
         
@@ -61,8 +56,6 @@ class SatTryTests: XCTestCase {
     }
     
     func testEquations() {
-        yices_init()
-        defer { yices_exit() }
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
     
@@ -117,16 +110,8 @@ class SatTryTests: XCTestCase {
     }
     
     func testPredicates() {
-        
-        yices_init()    // global initialization
-        defer {
-            yices_exit()    // global cleanup
-        }
-        
-        let ctx = yices_new_context(nil) // nil == NULL == default configuration
-        defer {
-            yices_free_context(ctx)
-        }
+        let ctx = yices_new_context(nil)
+        defer {  yices_free_context(ctx) }
         
         let tau = yices_new_uninterpreted_type()
         let truth = yices_bool_type()
@@ -190,5 +175,42 @@ class SatTryTests: XCTestCase {
         yices_reset_context(ctx)
         yices_assert_formula(ctx, yices_implies(falsch, wahr))
         XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
+    }
+    
+    func testSymbols() {
+        let ctx = yices_new_context(nil)
+        defer {  yices_free_context(ctx) }
+        
+        let tau = yices_new_uninterpreted_type()
+        
+        let a = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        yices_set_term_name(a, "1")
+        
+        let b = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        yices_set_term_name(b, "⊥")
+        
+        let c = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        yices_set_term_name(c, "'Hällo, Wörld!'")
+        //  ⊕ ⊖ ⊗ ⊘
+        
+        let binary = yices_function_type(2, [tau,tau], tau)
+        let xor = yices_new_uninterpreted_term(binary)
+        yices_set_term_name(xor, "⊕")
+        
+        let axorb = yices_application2(xor, a, b)
+        let bxorc = yices_application2(xor, b, c)
+        
+        var s = String(term:b)
+        print(s)
+        XCTAssertEqual("⊥", s)
+        
+        s = String(term:axorb)
+        print(s)
+        XCTAssertEqual("(⊕ 1 ⊥)", s)
+        
+        s = String(term:bxorc)
+        print(s)
+        XCTAssertEqual("(⊕ ⊥ 'Hällo, Wörld!')", s)
+        
     }
 }

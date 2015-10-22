@@ -5,3 +5,6 @@ int example2_main(void);    // example2.c   main() renamed
 int minimal_main(void);     // minimal.c    main() renamed
 int names_main(void);       // names.c      main() renamed
 int test_pp_main(void);     // test_pp.c    main() renamed
+
+int global_value;
+int *pvalue;

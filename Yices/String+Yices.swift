@@ -63,4 +63,19 @@ public extension String {
             else { return nil }
         self = string as String
     }
+    
+    public init?(model: COpaquePointer) {
+        let cstring = yices_model_to_string(model, UInt32.max, 0, 0)
+        guard cstring != nil else {
+            yices_print_error(stdout);
+            return nil
+        }
+        defer {
+            yices_free_string(cstring)
+        }
+        guard let string = NSString(CString: cstring, encoding: NSUTF8StringEncoding)
+            else { return nil }
+        self = string as String
+        
+    }
 }

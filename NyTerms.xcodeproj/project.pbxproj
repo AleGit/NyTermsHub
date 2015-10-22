@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265666B41B98432C001BF9BD /* ExampleTests.swift */; settings = {ASSET_TAGS = (); }; };
-		5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; settings = {ASSET_TAGS = (); }; };
-		5101485D1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; settings = {ASSET_TAGS = (); }; };
+		265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265666B41B98432C001BF9BD /* ExampleTests.swift */; };
+		5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
+		5101485D1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
 		51192D1B1B67B059008C03B2 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51192D1A1B67B059008C03B2 /* Position.swift */; };
 		511E95751B8AE4070093F4E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E95741B8AE4070093F4E8 /* main.swift */; };
 		511E95811B8AE7B80093F4E8 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512977361B677E1B003D3E80 /* Node.swift */; };
@@ -36,12 +36,12 @@
 		512977371B677E1B003D3E80 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512977361B677E1B003D3E80 /* Node.swift */; };
 		5129773B1B678B9C003D3E80 /* TestTermTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5129773A1B678B9C003D3E80 /* TestTermTests.swift */; };
 		5129773F1B679177003D3E80 /* Substitution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5129773E1B679177003D3E80 /* Substitution.swift */; };
-		51342AB91B92CA3A0052A72F /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51342AB81B92CA3A0052A72F /* Samples.swift */; settings = {ASSET_TAGS = (); }; };
-		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; settings = {ASSET_TAGS = (); }; };
-		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; settings = {ASSET_TAGS = (); }; };
-		5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; settings = {ASSET_TAGS = (); }; };
-		5150F39C1BD62F4C003D69A3 /* PolyTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */; settings = {ASSET_TAGS = (); }; };
-		5150F39E1BD6769C003D69A3 /* SatTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39D1BD6769C003D69A3 /* SatTryTests.swift */; settings = {ASSET_TAGS = (); }; };
+		51342AB91B92CA3A0052A72F /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51342AB81B92CA3A0052A72F /* Samples.swift */; };
+		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
+		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
+		5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; };
+		5150F39C1BD62F4C003D69A3 /* PolyTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */; };
+		5150F39E1BD6769C003D69A3 /* SatTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39D1BD6769C003D69A3 /* SatTryTests.swift */; };
 		515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 515D91B61B6CFEF0000EDB3B /* TptpParser.m */; };
 		515D91BB1B6D0642000EDB3B /* ParseStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */; };
 		515D91BE1B6D2513000EDB3B /* TptpNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D91BD1B6D2513000EDB3B /* TptpNode.swift */; };
@@ -54,29 +54,30 @@
 		519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A21B84E11F0030A61A /* NodeStructTests.swift */; };
 		519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A41B84E1780030A61A /* NodeClassTests.swift */; };
 		519801A71B84E18C0030A61A /* NodeEnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A61B84E18C0030A61A /* NodeEnumTests.swift */; };
+		51A4891E1BD91BE5007A71FD /* my_yices_globals.c in Sources */ = {isa = PBXBuildFile; fileRef = 51A4891D1BD91BE5007A71FD /* my_yices_globals.c */; };
 		51A4D09C1B70EE0500672898 /* ParseBasicSyntaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A4D09B1B70EE0500672898 /* ParseBasicSyntaxTests.swift */; };
-		51B1EADF1B9429B5005187EC /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B1EADE1B9429B5005187EC /* Auxiliary.swift */; settings = {ASSET_TAGS = (); }; };
-		51B1EAE01B9429B5005187EC /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B1EADE1B9429B5005187EC /* Auxiliary.swift */; settings = {ASSET_TAGS = (); }; };
-		51B26B621B8DA14F00CC59AD /* NyTermsCL-Headers.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */; settings = {ASSET_TAGS = (); }; };
-		51B26B631B8DA14F00CC59AD /* NyTerms-Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B601B8DA14F00CC59AD /* NyTerms-Flags.jpg */; settings = {ASSET_TAGS = (); }; };
-		51B26B641B8DA14F00CC59AD /* NyTerms-Yacc.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B611B8DA14F00CC59AD /* NyTerms-Yacc.jpg */; settings = {ASSET_TAGS = (); }; };
-		51B26B681B8DA23F00CC59AD /* Yices Bridging.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B651B8DA23F00CC59AD /* Yices Bridging.png */; settings = {ASSET_TAGS = (); }; };
-		51B26B691B8DA23F00CC59AD /* Yices Compiler Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B661B8DA23F00CC59AD /* Yices Compiler Flags.jpg */; settings = {ASSET_TAGS = (); }; };
-		51B26B6A1B8DA23F00CC59AD /* Yices Linker Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B671B8DA23F00CC59AD /* Yices Linker Flags.jpg */; settings = {ASSET_TAGS = (); }; };
-		51B26B6D1B8DA41200CC59AD /* Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6C1B8DA41200CC59AD /* Yices.swift */; settings = {ASSET_TAGS = (); }; };
-		51B26B6E1B8DA41200CC59AD /* Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6C1B8DA41200CC59AD /* Yices.swift */; settings = {ASSET_TAGS = (); }; };
-		51B26B701B8DA75D00CC59AD /* YicesBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6F1B8DA75D00CC59AD /* YicesBasicTests.swift */; settings = {ASSET_TAGS = (); }; };
-		51B26B781B8DB46500CC59AD /* example1.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B761B8DB46500CC59AD /* example1.c */; settings = {ASSET_TAGS = (); }; };
-		51B26B791B8DB46500CC59AD /* example2.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B771B8DB46500CC59AD /* example2.c */; settings = {ASSET_TAGS = (); }; };
-		51B883F11B8E3D5B008D7F22 /* names.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F01B8E3D5B008D7F22 /* names.c */; settings = {ASSET_TAGS = (); }; };
-		51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F21B8E3DAC008D7F22 /* minimal.c */; settings = {ASSET_TAGS = (); }; };
-		51B883F51B8E3DAC008D7F22 /* test_pp.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F31B8E3DAC008D7F22 /* test_pp.c */; settings = {ASSET_TAGS = (); }; };
-		51B883F71B8E3F3E008D7F22 /* YicesExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */; settings = {ASSET_TAGS = (); }; };
-		51C94CB91B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; settings = {ASSET_TAGS = (); }; };
-		51C94CBA1B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; settings = {ASSET_TAGS = (); }; };
-		51D276601BC57879005A0213 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2765F1BC57879005A0213 /* Order.swift */; settings = {ASSET_TAGS = (); }; };
-		51D276611BC57879005A0213 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2765F1BC57879005A0213 /* Order.swift */; settings = {ASSET_TAGS = (); }; };
-		51D276631BC5805F005A0213 /* OrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D276621BC5805F005A0213 /* OrderTests.swift */; settings = {ASSET_TAGS = (); }; };
+		51B1EADF1B9429B5005187EC /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B1EADE1B9429B5005187EC /* Auxiliary.swift */; };
+		51B1EAE01B9429B5005187EC /* Auxiliary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B1EADE1B9429B5005187EC /* Auxiliary.swift */; };
+		51B26B621B8DA14F00CC59AD /* NyTermsCL-Headers.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */; };
+		51B26B631B8DA14F00CC59AD /* NyTerms-Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B601B8DA14F00CC59AD /* NyTerms-Flags.jpg */; };
+		51B26B641B8DA14F00CC59AD /* NyTerms-Yacc.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B611B8DA14F00CC59AD /* NyTerms-Yacc.jpg */; };
+		51B26B681B8DA23F00CC59AD /* Yices Bridging.png in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B651B8DA23F00CC59AD /* Yices Bridging.png */; };
+		51B26B691B8DA23F00CC59AD /* Yices Compiler Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B661B8DA23F00CC59AD /* Yices Compiler Flags.jpg */; };
+		51B26B6A1B8DA23F00CC59AD /* Yices Linker Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B671B8DA23F00CC59AD /* Yices Linker Flags.jpg */; };
+		51B26B6D1B8DA41200CC59AD /* Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6C1B8DA41200CC59AD /* Yices.swift */; };
+		51B26B6E1B8DA41200CC59AD /* Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6C1B8DA41200CC59AD /* Yices.swift */; };
+		51B26B701B8DA75D00CC59AD /* YicesBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6F1B8DA75D00CC59AD /* YicesBasicTests.swift */; };
+		51B26B781B8DB46500CC59AD /* example1.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B761B8DB46500CC59AD /* example1.c */; };
+		51B26B791B8DB46500CC59AD /* example2.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B771B8DB46500CC59AD /* example2.c */; };
+		51B883F11B8E3D5B008D7F22 /* names.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F01B8E3D5B008D7F22 /* names.c */; };
+		51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F21B8E3DAC008D7F22 /* minimal.c */; };
+		51B883F51B8E3DAC008D7F22 /* test_pp.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F31B8E3DAC008D7F22 /* test_pp.c */; };
+		51B883F71B8E3F3E008D7F22 /* YicesExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */; };
+		51C94CB91B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; };
+		51C94CBA1B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; };
+		51D276601BC57879005A0213 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2765F1BC57879005A0213 /* Order.swift */; };
+		51D276611BC57879005A0213 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2765F1BC57879005A0213 /* Order.swift */; };
+		51D276631BC5805F005A0213 /* OrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D276621BC5805F005A0213 /* OrderTests.swift */; };
 		51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */; };
 		51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA241B71D37700A7B16C /* String+TptpPath.swift */; };
 		51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */; };
@@ -150,6 +151,7 @@
 		519801A21B84E11F0030A61A /* NodeStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeStructTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A41B84E1780030A61A /* NodeClassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeClassTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A61B84E18C0030A61A /* NodeEnumTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeEnumTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		51A4891D1BD91BE5007A71FD /* my_yices_globals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = my_yices_globals.c; sourceTree = "<group>"; };
 		51A4D09B1B70EE0500672898 /* ParseBasicSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseBasicSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51B1EADE1B9429B5005187EC /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
 		51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "NyTermsCL-Headers.jpg"; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 				51B883F31B8E3DAC008D7F22 /* test_pp.c */,
 				51B26B6F1B8DA75D00CC59AD /* YicesBasicTests.swift */,
 				51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */,
+				51A4891D1BD91BE5007A71FD /* my_yices_globals.c */,
 			);
 			name = YicesExamples;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				5129773B1B678B9C003D3E80 /* TestTermTests.swift in Sources */,
 				51B26B791B8DB46500CC59AD /* example2.c in Sources */,
 				51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */,
+				51A4891E1BD91BE5007A71FD /* my_yices_globals.c in Sources */,
 				512117641B81D26E00E1803C /* TptpFormulaLiteralsTests.swift in Sources */,
 				519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */,
 				519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */,

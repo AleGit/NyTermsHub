@@ -48,7 +48,7 @@ struct Symbols {
     /// arity is greater than zero, arities: value...value == value..<value+1,
     /// i.e. function.terms.count == value > 0
     static func add(function symbol: Symbol, arity value:Int) {
-        guard let quadruple = Symbols.defined[symbol] else {
+        guard var quadruple = Symbols.defined[symbol] else {
             cachedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
@@ -65,7 +65,7 @@ struct Symbols {
         assert(quadruple.arities.endIndex==value+1)
         
         quadruple.arities.insert(value)
-        cachedSymbols[symbol] = (type:quadruple.type, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
+        cachedSymbols[symbol] = quadruple
     }
     
     /// /// aritiy is zero, arities: 0...0 == 0..<1,
@@ -77,7 +77,7 @@ struct Symbols {
     /// arities is greater than zero: value...value == value..<value+1,
     /// i.e. predicate == value > 0
     static func add(predicate symbol: Symbol, arity value:Int) {
-        guard let quadruple = Symbols.defined[symbol] else {
+        guard var quadruple = Symbols.defined[symbol] else {
             #if FUNCTION_TABLE || FULL_TABLE
                 assertionFailure("predicates has to be added as functions first")
             #endif
@@ -96,7 +96,7 @@ struct Symbols {
         assert(quadruple.arities.endIndex==value+1)
         
         quadruple.arities.insert(value)
-        cachedSymbols[symbol] = (type:SymbolType.Predicate, category:quadruple.category, notation:quadruple.notation, arities: quadruple.arities)
+        cachedSymbols[symbol] = quadruple
     }
     
     static private let universalSymbols : [Symbol:SymbolQuadruple] = [

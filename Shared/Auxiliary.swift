@@ -33,11 +33,11 @@ extension Range where Element : Comparable {
     /// - `func min<T : Comparable>(x: T, _ y: T) -> T`
     ///
     /// - `func max<T : Comparable>(x: T, _ y: T) -> T`
-    func insert(value:Element) {
+    mutating func insert(value:Element) {
         guard !self.contains(value) else { return }
         
-        self.startIndex == min(self.startIndex, value)
-        self.endIndex == max(self.endIndex, value.successor())
+        self.startIndex = min(self.startIndex, value)
+        self.endIndex = max(self.endIndex, value.successor())
     }
 }
 

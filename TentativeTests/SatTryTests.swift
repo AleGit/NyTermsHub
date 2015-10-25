@@ -10,11 +10,20 @@ import XCTest
 import NyTerms
 
 class SatTryTests: XCTestCase {
+    var utau : type_t = 0
+    var btau : type_t = 0
+    var gtrm : term_t = 0
 
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()    // global initialization
+        
+        utau = yices_new_uninterpreted_type()
+        btau = yices_bool_type()
+        
+        gtrm = yices_new_uninterpreted_term(utau)
+        yices_set_term_name(gtrm, "⊥")
     }
     
     override func tearDown() {
@@ -27,9 +36,7 @@ class SatTryTests: XCTestCase {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
         
-        let tau = yices_bool_type()
-        
-        let p = yices_new_uninterpreted_term(tau)
+        let p = yices_new_uninterpreted_term(btau)
         let np = yices_not(p)
         let wahr = yices_or2(p, np)
         let falsch = yices_and2(p, np)
@@ -162,6 +169,74 @@ class SatTryTests: XCTestCase {
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
     
+    func build_yices_term<N:Node>(term:N, tau:type_t) -> term_t {
+        
+        guard let terms = term.terms else { return gtrm }   // map variables to constant '⊥'
+        
+        switch term.symbol {
+        case "~":
+            assert(terms.count == 1)
+            
+            return yices_not( build_yices_term(terms[0], tau:btau))
+            
+        case "|":
+            var args = terms.map { build_yices_term($0, tau: btau) }
+            return yices_or( UInt32(terms.count), &args)
+            
+        
+        default:
+            
+            var t = yices_get_term_by_name(term.symbol)     // constant c, function f
+            
+            if t == NULL_TERM {
+                if terms.count == 0 {
+                    // proposition or (function) constant
+                    t = yices_new_uninterpreted_term(tau)
+                    yices_set_term_name(t, term.symbol)
+                }
+                else {
+                    let ftype = yices_function_type(UInt32(terms.count), [type_t](count:terms.count, repeatedValue:utau), tau)
+                    t = yices_new_uninterpreted_term(ftype)
+                    yices_set_term_name(t, term.symbol)
+                }
+            }
+            
+            if terms.count > 0 {
+                let yterms = terms.map { build_yices_term($0, tau:utau) }
+                t = yices_application(t, UInt32(yterms.count), yterms)
+            }
+            
+            return t
+        }
+        
+    }
+    
+    func testPUZ00m1() {
+        
+        // parse
+        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
+        
+        let (result,annotatedFormulae,_) = parsePath(path)
+        XCTAssertEqual(1, result.count)
+        XCTAssertEqual(0, result[0])
+        XCTAssertEqual(12, annotatedFormulae.count)
+        
+        
+        // check
+        let ctx = yices_new_context(nil)
+        defer {  yices_free_context(ctx) }
+        
+        for aFormula in annotatedFormulae {
+            let clause = build_yices_term(aFormula.formula, tau:btau)
+            
+            print(aFormula.formula)
+            print(String(term:clause)!)
+            print("")
+        }
+        
+        
+    }
+    
     func testSymbols() {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
@@ -198,4 +273,8 @@ class SatTryTests: XCTestCase {
         XCTAssertEqual("(⊕ ⊥ 'Hällo, Wörld!')", s)
         
     }
+    
+    
+    
+        
 }

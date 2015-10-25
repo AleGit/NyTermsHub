@@ -19,7 +19,8 @@ class SatTryTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()    // global initialization
         
-        utau = yices_new_uninterpreted_type()
+        // utau = yices_new_uninterpreted_type()
+        utau = yices_int_type()
         btau = yices_bool_type()
         
         gtrm = yices_new_uninterpreted_term(utau)
@@ -70,7 +71,8 @@ class SatTryTests: XCTestCase {
     
     func testEquations() {
         let ctx = yices_new_context(nil)
-        defer {  yices_free_context(ctx) }
+        defer {
+            yices_free_context(ctx) }
         
         // types
         let tau = yices_new_uninterpreted_type()
@@ -224,13 +226,71 @@ class SatTryTests: XCTestCase {
         
         // check
         let ctx = yices_new_context(nil)
-        defer {  yices_free_context(ctx) }
+        defer {
+            print("yices_free_context")
+            yices_free_context(ctx) }
+        
+        var clauses = [term_t]()
         
         for aFormula in annotatedFormulae {
             let clause = build_yices_term(aFormula.formula, tau:btau)
             
             print(aFormula.formula)
             print(String(term:clause)!)
+            yices_assert_formula(ctx, clause)
+            let status = yices_check_context(ctx, nil)
+            XCTAssertTrue(STATUS_SAT == status)
+            
+            XCTAssertEqual(0, yices_term_is_atomic(clause))
+            XCTAssertEqual(1, yices_term_is_composite(clause))
+            XCTAssertEqual(1, yices_term_is_bool(clause))
+            XCTAssertEqual(0, yices_term_is_sum(clause))
+            XCTAssertEqual(0, yices_term_is_bvsum(clause))
+            XCTAssertEqual(0, yices_term_is_product(clause))
+            
+            
+            let tcount = aFormula.formula.terms!.count
+            let ccount = Int(yices_term_num_children(clause))
+            
+            switch tcount {
+            case 0:
+                XCTFail()
+            case 1:
+                
+                    
+                print(ccount)
+            
+            default:
+                XCTAssertEqual(tcount, ccount)
+                
+                
+                
+                clauses.append(clause)
+            }
+            print("")
+            
+            
+        }
+        
+        let mdl = yices_get_model(ctx, 1);
+        defer {
+            print("yices_free_model")
+            yices_free_model(mdl)
+        }
+        
+        XCTAssertNotNil(mdl)
+        print(String(model:mdl)!)
+        print("")
+        
+        for clause in clauses {
+            let ccount = yices_term_num_children(clause)
+            for idx in 0..<ccount {
+                let child = yices_term_child(clause, Int32(idx))
+                
+                print(String(term:child), yices_formula_true_in_model(mdl, child))
+                
+            }
+            print(String(term:clause), yices_formula_true_in_model(mdl, clause))
             print("")
         }
         

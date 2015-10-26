@@ -304,25 +304,10 @@ class YicesSatTrials : XCTestCase {
                 let a = selected[i]
                 let b = selected[j]
                 
-                var unifier : [TptpNode : TptpNode]? = nil
-                
-                switch (a.symbol, b.symbol) {
-                case ("~","~"):
-                    unifier = nil
-                case ("~",_):
+                if let unifier = a ~?= b {
                     
-                    unifier = a.terms!.first! =?= b
-                case (_,"~"):
-                    
-                    unifier = a =?= b.terms!.first!
-                default:
-                    unifier = nil
-                }
-                
-                if unifier != nil {
-                    
-                    let na = tptpClauses[i] * unifier!
-                    let nb = tptpClauses[j] * unifier!
+                    let na = tptpClauses[i] * unifier
+                    let nb = tptpClauses[j] * unifier
                     
                     print(na,nb)
                     

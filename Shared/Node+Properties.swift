@@ -26,6 +26,25 @@ public extension Node {
         return terms.reduce(true) { $0 && $1.isVariable }
     }
     
+    /// If `self` is not P then P will be returned, if `self` is A != B then A = B will be returned.
+    /// Otherwise nil will be returned.
+    /// To do: find better name for this property
+    var unnegatedNode : Self? {
+        guard let terms = self.terms else { return nil }
+        guard let type = Symbols.defined[self.symbol]?.type else { return nil }
+        
+        switch type {
+        case SymbolType.Negation:
+            assert (terms.count == 1)
+            return terms.first
+        case SymbolType.Inequation:
+            assert (terms.count == 2)
+            return Self(equational: "=", terms: terms)
+        default:
+            return nil
+        }
+    }
+    
     /// Costly check if `self` reprsents a valid rewrite rule, i.e.
     /// an equation that satifies the follwong conditions
     /// - the left-hand side is not a variable

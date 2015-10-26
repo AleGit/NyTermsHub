@@ -81,6 +81,21 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     }
 }
 
+public func ~?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
+    
+    if let l = lhs.unnegatedNode {
+        return l =?= rhs
+    }
+    else if let r = rhs.unnegatedNode {
+        return lhs =?= r
+    }
+    else {
+        return nil
+    }
+}
+
+
+
 /// 't * σ' applies substitution σ on term t.
 public func *<T:Node>(t:T, σ:[T:T]) -> T {
     assert(σ.isSubstitution)

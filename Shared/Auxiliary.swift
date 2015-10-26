@@ -17,6 +17,11 @@ infix operator =?= {
 associativity none
 }
 
+/// Construct unifier for clashing literals
+infix operator ~?= {
+    associativity none
+}
+
 /// `s ** ` substitutes all variables in `s` with term `t`.
 infix operator ** {
 associativity left

@@ -47,7 +47,8 @@ extension Dictionary where Key:Node, Value:Node { // , Key == Value does not wor
     }
 }
 
-/// 's =?= t' constructs most common unifier iff terms lhs and rhs are unifiable.
+/// 'lhs =?= rhs' constructs most common unifier mgu(lhs,rhs)
+/// iff terms lhs and rhs are unifiable.
 /// Otherwise it returns *nil*.
 public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     
@@ -81,6 +82,9 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     }
 }
 
+/// 'lhs ~?= rhs' contstructs mgu(~lhs,rhs) or mgu(lhs,~rhs) iff lhs and rhs are clashing,
+/// i.e. the negation of one is unifiable with the other.
+/// Otherwise it returns *nil*.
 public func ~?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     
     if let l = lhs.unnegatedNode {

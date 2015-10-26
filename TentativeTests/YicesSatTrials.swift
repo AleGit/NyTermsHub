@@ -9,22 +9,22 @@
 import XCTest
 import NyTerms
 
-class SatTryTests: XCTestCase {
-    var utau : type_t = 0
-    var btau : type_t = 0
-    var gtrm : term_t = 0
+class YicesSatTrials : XCTestCase {
+    private var free_tau : type_t = 0
+    private var bool_tau : type_t = 0
+    private var general_constant : term_t = 0
 
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()    // global initialization
         
-        // utau = yices_new_uninterpreted_type()
-        utau = yices_int_type()
-        btau = yices_bool_type()
+        // uni_type = yices_new_uninterpreted_type()
+        free_tau = yices_int_type()
+        bool_tau = yices_bool_type()
         
-        gtrm = yices_new_uninterpreted_term(utau)
-        yices_set_term_name(gtrm, "⊥")
+        general_constant = yices_new_uninterpreted_term(free_tau)
+        yices_set_term_name(general_constant, "⊥")
     }
     
     override func tearDown() {
@@ -37,7 +37,7 @@ class SatTryTests: XCTestCase {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
         
-        let p = yices_new_uninterpreted_term(btau)
+        let p = yices_new_uninterpreted_term(bool_tau)
         let np = yices_not(p)
         let wahr = yices_or2(p, np)
         let falsch = yices_and2(p, np)
@@ -71,15 +71,12 @@ class SatTryTests: XCTestCase {
     
     func testEquations() {
         let ctx = yices_new_context(nil)
-        defer {
-            yices_free_context(ctx) }
+        defer { yices_free_context(ctx) }
         
         // types
-        let tau = yices_new_uninterpreted_type()
-        let truth = yices_bool_type()
-        let unary = yices_function_type1(tau, tau)
+        let unary = yices_function_type1(free_tau, free_tau)    // (tau) -> tau
         
-        let c = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        let c = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(c, "c")
         let f = yices_new_uninterpreted_term(unary)
         yices_set_term_name(f, "f")
@@ -123,13 +120,10 @@ class SatTryTests: XCTestCase {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
         
-        let tau = yices_new_uninterpreted_type()
-        let truth = yices_bool_type()
+        let unary = yices_function_type1(free_tau, free_tau)        // (tau) -> tau
+        let predicate = yices_function_type1(free_tau, bool_tau)    // (tau) -> bool
         
-        let unary = yices_function_type1(tau, tau)
-        let predicate = yices_function_type1(tau, truth)
-        
-        let c = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        let c = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(c, "c")
         let p = yices_new_uninterpreted_term(predicate)
         yices_set_term_name(p, "p")
@@ -171,21 +165,23 @@ class SatTryTests: XCTestCase {
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
     
-    func build_yices_term<N:Node>(term:N, tau:type_t) -> term_t {
+    func build_yices_term<N:Node>(term:N, range_tau:type_t) -> term_t {
         
-        guard let terms = term.terms else { return gtrm }   // map variables to constant '⊥'
+        guard let terms = term.terms else { return general_constant }   // map variables to constant '⊥'
         
         switch term.symbol {
         case "~":
             assert(terms.count == 1)
-            
-            return yices_not( build_yices_term(terms[0], tau:btau))
+            return yices_not( build_yices_term(terms.first!, range_tau:bool_tau))
             
         case "|":
-            var args = terms.map { build_yices_term($0, tau: btau) }
+            var args = terms.map { build_yices_term($0, range_tau: bool_tau) }
             return yices_or( UInt32(terms.count), &args)
             
-        
+        case "&":
+            var args = terms.map { build_yices_term($0, range_tau: bool_tau) }
+            return yices_and( UInt32(terms.count), &args)
+            
         default:
             
             var t = yices_get_term_by_name(term.symbol)     // constant c, function f
@@ -193,19 +189,20 @@ class SatTryTests: XCTestCase {
             if t == NULL_TERM {
                 if terms.count == 0 {
                     // proposition or (function) constant
-                    t = yices_new_uninterpreted_term(tau)
+                    t = yices_new_uninterpreted_term(range_tau)
                     yices_set_term_name(t, term.symbol)
                 }
                 else {
-                    let ftype = yices_function_type(UInt32(terms.count), [type_t](count:terms.count, repeatedValue:utau), tau)
-                    t = yices_new_uninterpreted_term(ftype)
+                    let domain_taus = [type_t](count:terms.count, repeatedValue:free_tau)
+                    let func_tau = yices_function_type(UInt32(terms.count), domain_taus, range_tau) // (tau,...,tau) -> range_tau
+                    t = yices_new_uninterpreted_term(func_tau)
                     yices_set_term_name(t, term.symbol)
                 }
             }
             
             if terms.count > 0 {
-                let yterms = terms.map { build_yices_term($0, tau:utau) }
-                t = yices_application(t, UInt32(yterms.count), yterms)
+                let args = terms.map { build_yices_term($0, range_tau:free_tau) }
+                t = yices_application(t, UInt32(args.count), args)
             }
             
             return t
@@ -213,33 +210,38 @@ class SatTryTests: XCTestCase {
         
     }
     
-    func testPUZ00m1() {
+    func testEmptyJunctions() {
+        let emptyDisjunction = NodeStruct(connective:"|", terms:[NodeStruct]())
+        let emtpyConjunction = NodeStruct(connective:"&", terms:[NodeStruct]())
+        XCTAssertEqual(0, emptyDisjunction.terms?.count)
+        XCTAssertEqual(0, emtpyConjunction.terms?.count)
+        
+        // no context needed
+        
+        let F = build_yices_term(emptyDisjunction, range_tau: bool_tau)
+        let T = build_yices_term(emtpyConjunction, range_tau: bool_tau)
+        
+        XCTAssertEqual("false",String(term:F))      // an empty disjunction is unsatisfiable
+        XCTAssertEqual("true",String(term:T))       // an empty conjunction is valid
+    }
+    
+    func testSatPUZ00m1() {
         
         // parse
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
         
-        let (result,annotatedFormulae,_) = parsePath(path)
+        let (result,tptpFormulae,_) = parsePath(path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
-        XCTAssertEqual(12, annotatedFormulae.count)
-        
+        XCTAssertEqual(12, tptpFormulae.count)
         
         // check
         let ctx = yices_new_context(nil)
-        defer {
-            print("yices_free_context")
-            yices_free_context(ctx) }
+        defer { yices_free_context(ctx) }
         
-        var clauses = [term_t]()
-        
-        for aFormula in annotatedFormulae {
-            let clause = build_yices_term(aFormula.formula, tau:btau)
-            
-            print(aFormula.formula)
-            print(String(term:clause)!)
-            yices_assert_formula(ctx, clause)
-            let status = yices_check_context(ctx, nil)
-            XCTAssertTrue(STATUS_SAT == status)
+        let clauses = tptpFormulae.map {
+            (tptpFormula) -> term_t in
+            let clause = build_yices_term(tptpFormula.formula, range_tau:bool_tau)
             
             XCTAssertEqual(0, yices_term_is_atomic(clause))
             XCTAssertEqual(1, yices_term_is_composite(clause))
@@ -248,51 +250,40 @@ class SatTryTests: XCTestCase {
             XCTAssertEqual(0, yices_term_is_bvsum(clause))
             XCTAssertEqual(0, yices_term_is_product(clause))
             
+            yices_assert_formula(ctx, clause)
+            XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
             
-            let tcount = aFormula.formula.terms!.count
+            let tcount = tptpFormula.formula.terms!.count
             let ccount = Int(yices_term_num_children(clause))
             
-            switch tcount {
-            case 0:
-                XCTFail()
-            case 1:
-                
-                    
-                print(ccount)
-            
-            default:
+            if tcount > 1 {
                 XCTAssertEqual(tcount, ccount)
-                
-                
-                
-                clauses.append(clause)
             }
-            print("")
             
-            
+            return clause
         }
         
         let mdl = yices_get_model(ctx, 1);
-        defer {
-            print("yices_free_model")
-            yices_free_model(mdl)
-        }
+        defer { yices_free_model(mdl) }
         
         XCTAssertNotNil(mdl)
-        print(String(model:mdl)!)
-        print("")
         
         for clause in clauses {
             let ccount = yices_term_num_children(clause)
             for idx in 0..<ccount {
                 let child = yices_term_child(clause, Int32(idx))
                 
-                print(String(term:child), yices_formula_true_in_model(mdl, child))
+                if yices_term_is_bool(child) == 1 {
+                    print("\t\t", yices_formula_true_in_model(mdl, child),String(term:child)!)
+                }
                 
             }
-            print(String(term:clause), yices_formula_true_in_model(mdl, clause))
-            print("")
+            print("clause\t", yices_formula_true_in_model(mdl, clause),String(term:clause)!)
         }
+        
+        let m = String(model: mdl)
+        XCTAssertNotNil(m)
+        print(m)
         
         
     }

@@ -60,7 +60,8 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     case (_,true):
         assert(!lhs.allVariables.contains(rhs)) // occur check
         return [rhs:lhs]
-    case (_, _) where lhs.terms!.count == rhs.terms!.count && lhs.symbol == rhs.symbol:
+    case (_, _) where lhs.symbol == rhs.symbol && lhs.terms!.count == rhs.terms!.count:
+        
         var result = [T:T]()
         
         for (s,t) in zip(lhs.terms!, rhs.terms!) {
@@ -72,6 +73,9 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
             }
         }
         return result
+    case (_,_) where lhs.symbol == rhs.symbol:
+        assert(false, "\(lhs.symbol) must not be variadic (\(lhs.terms!.count),\(rhs.terms!.count)")
+        return nil
     default:
         return nil
     }

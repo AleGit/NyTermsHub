@@ -38,6 +38,7 @@ class TermTests: XCTestCase {
     
     func testTermMgu() {
         
+        
         // unifyable
         XCTAssertEqual([x:x], (x =?= x)!)   // questionable
         
@@ -52,6 +53,14 @@ class TermTests: XCTestCase {
         
         // XCTAssertEqual([x:fxa], (x =?= fxa)!) // fails occur check
         // XCTAssertEqual([x:fxa], (fxa =?= x)!) // fails occur check
+        
+        
+        let fab = "f(a,b)" as TestNode
+        let gab = "g(a,b)" as TestNode
+        
+        XCTAssertEqual([x:a,y:b], (fxy =?= fab)!)
+        XCTAssertNil(fxy =?= gab)
+        XCTAssertNil(fab =?= gab)
         
     
     }

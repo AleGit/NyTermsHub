@@ -60,7 +60,7 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     case (_,true):
         assert(!lhs.allVariables.contains(rhs)) // occur check
         return [rhs:lhs]
-    case (_, _) where lhs.terms!.count == rhs.terms!.count:
+    case (_, _) where lhs.terms!.count == rhs.terms!.count && lhs.symbol == rhs.symbol:
         var result = [T:T]()
         
         for (s,t) in zip(lhs.terms!, rhs.terms!) {

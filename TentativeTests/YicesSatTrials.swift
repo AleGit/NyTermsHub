@@ -13,7 +13,7 @@ class YicesSatTrials : XCTestCase {
     private var free_tau : type_t = 0
     private var bool_tau : type_t = 0
     private var general_constant : term_t = 0
-
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -55,13 +55,13 @@ class YicesSatTrials : XCTestCase {
         
         for (formula,expected):(term_t,Int32) in [(p,1),(np,0), (wahr,1), (falsch,0), (nichtwahr,0)
             ] {
-            let name = String(term:formula)
-            let code = yices_get_bool_value(mdl, formula, &bvalue)
-            XCTAssertEqual(0,code,name!)
-            XCTAssertEqual(expected,bvalue,name!)
-            let mval = yices_formula_true_in_model(mdl, formula)
-            
-             print("\(name) : \(bvalue) \(mval)")
+                let name = String(term:formula)
+                let code = yices_get_bool_value(mdl, formula, &bvalue)
+                XCTAssertEqual(0,code,name!)
+                XCTAssertEqual(expected,bvalue,name!)
+                let mval = yices_formula_true_in_model(mdl, formula)
+                
+                print("\(name) : \(bvalue) \(mval)")
                 
         }
         
@@ -92,7 +92,7 @@ class YicesSatTrials : XCTestCase {
         
         yices_assert_formula(ctx, ne)
         XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
-
+        
         let mdl = yices_get_model(ctx, 1);
         defer {
             yices_free_model(mdl)
@@ -132,7 +132,7 @@ class YicesSatTrials : XCTestCase {
         let fc = yices_application1(f, c)
         let pfc = yices_application1(p, fc)
         let npfc = yices_not(pfc)
-    
+        
         let wahr = yices_or2(pfc,npfc)
         let falsch = yices_and2(pfc, npfc)
         
@@ -160,7 +160,7 @@ class YicesSatTrials : XCTestCase {
             
             print("\(name) : \(bvalue) \(mval)")
         }
-      
+        
         yices_assert_formula(ctx, pfc)
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
@@ -225,7 +225,7 @@ class YicesSatTrials : XCTestCase {
         XCTAssertEqual("true",String(term:T))       // an empty conjunction is valid
     }
     
-    func testSatPUZ00m1() {
+    func testPUZ001m1_step1() {
         
         // parse
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
@@ -239,9 +239,11 @@ class YicesSatTrials : XCTestCase {
         let ctx = yices_new_context(nil)
         defer { yices_free_context(ctx) }
         
-        let clauses = tptpFormulae.map {
-            (tptpFormula) -> term_t in
-            let clause = build_yices_term(tptpFormula.formula, range_tau:bool_tau)
+        var tptpClauses = tptpFormulae.map { $0.formula }
+        
+        let clauses = tptpClauses.map {
+            (tptpClause) -> (TptpNode,term_t) in
+            let clause = build_yices_term(tptpClause, range_tau:bool_tau)
             
             XCTAssertEqual(0, yices_term_is_atomic(clause))
             XCTAssertEqual(1, yices_term_is_composite(clause))
@@ -253,14 +255,14 @@ class YicesSatTrials : XCTestCase {
             yices_assert_formula(ctx, clause)
             XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
             
-            let tcount = tptpFormula.formula.terms!.count
+            let tcount = tptpClause.terms!.count
             let ccount = Int(yices_term_num_children(clause))
             
             if tcount > 1 {
                 XCTAssertEqual(tcount, ccount)
             }
             
-            return clause
+            return (tptpClause,clause)
         }
         
         let mdl = yices_get_model(ctx, 1);
@@ -268,22 +270,67 @@ class YicesSatTrials : XCTestCase {
         
         XCTAssertNotNil(mdl)
         
-        for clause in clauses {
-            let ccount = yices_term_num_children(clause)
-            for idx in 0..<ccount {
-                let child = yices_term_child(clause, Int32(idx))
+        let selected = clauses.map {
+            (tptpClause,clause) -> TptpNode in
+            
+            guard let terms = tptpClause.terms else { return TptpNode(connective:"|",terms:[TptpNode]()) } // false
+            
+            switch terms.count {
+            case 0:
+                return TptpNode(connective:"|",terms:[TptpNode]())  // false
+            case 1:
+                XCTAssertEqual(1, yices_formula_true_in_model(mdl, clause))
+                return tptpClause
+            case let tcount:
+                let ccount = Int(yices_term_num_children(clause))
+                XCTAssertEqual(tcount, ccount)
                 
-                if yices_term_is_bool(child) == 1 {
-                    print("\t\t", yices_formula_true_in_model(mdl, child),String(term:child)!)
+                for idx in 0..<ccount {
+                    let child = yices_term_child(clause, Int32(idx))
+                    XCTAssertEqual(1, yices_term_is_bool(child))
+                    if yices_formula_true_in_model(mdl, child) == 1 {
+                        return terms[idx]
+                    }
                 }
-                
             }
-            print("clause\t", yices_formula_true_in_model(mdl, clause),String(term:clause)!)
+            
+            return TptpNode(connective:"|",terms:[TptpNode]())  // false
         }
         
-        let m = String(model: mdl)
-        XCTAssertNotNil(m)
-        print(m)
+        var newClauses = [TptpNode]()
+        
+        for i in 0..<(selected.count-1) {
+            for j in (i+1)..<selected.count {
+                let a = selected[i]
+                let b = selected[j]
+                
+                var unifier : [TptpNode : TptpNode]? = nil
+                
+                switch (a.symbol, b.symbol) {
+                case ("~","~"):
+                    unifier = nil
+                case ("~",_):
+                    
+                    unifier = a.terms!.first! =?= b
+                case (_,"~"):
+                    
+                    unifier = a =?= b.terms!.first!
+                default:
+                    unifier = nil
+                }
+                
+                if unifier != nil {
+                    
+                    let na = tptpClauses[i] * unifier!
+                    let nb = tptpClauses[j] * unifier!
+                    
+                    print(na,nb)
+                    
+                    newClauses.append(na)
+                    newClauses.append(nb)
+                }
+            }
+        }
         
         
     }
@@ -327,5 +374,5 @@ class YicesSatTrials : XCTestCase {
     
     
     
-        
+    
 }

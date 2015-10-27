@@ -3,15 +3,16 @@
 
 import Foundation
 
-/// Abstract data type `Node`, e.g
+/// Abstract data type `Node`, 
+// a tree can represent a term, e.g
 ///
-/// * variable terms: X, Y, Zustand
-/// * constant terms: a, b, config
-/// * functional terms: f(X,a)
-/// * predicate terms: p(f(X,a)
-/// * equational terms: a = X, b ~= f(X,a)
-/// * clause terms: a=X | b ~= f(X,a)
-/// * formuala terms: ...
+/// * (leaf) variable terms: X, Y, Zustand
+/// * (leaf) constant terms: a, b, config
+/// * (tree) functional terms: f(X,a)
+/// * (tree) predicate terms: p(f(X,a)
+/// * (tree) equational terms: a = X, b ~= f(X,a)
+/// * (root) clause terms: a=X | b ~= f(X,a)
+/// * (root) formuala terms: ...
 public protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     var symbol : Symbol { get }
     var nodes : [Self]? { get }
@@ -45,7 +46,7 @@ public extension Node {
     }
     
     public init(connective symbol:Symbol, nodes:[Self]) {
-        assert(nodes.count>0,"a connective term must have at least one subterm")
+        assert(nodes.count>0,"a connective term must have at least one subnode")
         self.init(symbol:symbol,nodes: nodes)
     }
 }
@@ -169,7 +170,7 @@ extension Node {
     }
 }
 
-// MARK: Conversion between different implemenations of prototocol term.
+// MARK: Conversion between different implemenations of protocol `Node`.
 
 private func convert <S:Node,T:Node>(s:S) -> T {
     guard let nodes = s.nodes else { return T(variable:s.symbol) }

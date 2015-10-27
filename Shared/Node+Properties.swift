@@ -26,12 +26,13 @@ public extension Node {
         return nodes.reduce(true) { $0 && $1.isVariable }
     }
     
-    /// If `self` is not P then P will be returned, if `self` is A != B then A = B will be returned.
+    /// If `self` is not P then P will be returned, 
+    /// if `self` is A != B then A = B will be returned.
     /// Otherwise nil will be returned.
     /// To do: find better name for this property
     var unnegatedNode : Self? {
-        guard let nodes = self.nodes else { return nil }
-        guard let type = Symbols.defined[self.symbol]?.type else { return nil }
+        guard let nodes = self.nodes else { return nil }    // a variable is not negated
+        guard let type = Symbols.defined[self.symbol]?.type else { return nil } // the type of the node must be known
         
         switch type {
         case SymbolType.Negation:
@@ -45,7 +46,7 @@ public extension Node {
         }
     }
     
-    /// Costly check if `self` reprsents a valid rewrite rule, i.e.
+    /// Costly check if `self` represents a valid rewrite rule, i.e.
     /// an equation that satifies the follwong conditions
     /// - the left-hand side is not a variable
     /// - Vars(r) is a subset of Vars(l)
@@ -72,7 +73,7 @@ public extension Node {
     /// - a variable `X` is a (function) term
     /// - a constant `c` is a (function) term
     /// - an expression `f(t_1, ..., t_n)` is a (function) term
-    /// if `f` is a function symbol and `t_1`,...,`t_n` are (function) nodes.
+    /// if `f` is a function symbol and `t_1`,...,`t_n` are (function) terms.
     var isTerm : Bool {
         guard let nodes = self.nodes else { return true; } // a variable is a term
         guard let category = Symbols.defined[self.symbol]?.category else { return nodes.reduce(true) { $0 && $1.isTerm } }
@@ -105,7 +106,7 @@ public extension Node {
     
     /// Costly check if `self` represents a valid inequation or the negation of a valid equation.
     ///
-    /// - an expression `s ≠ t` is an inequation if `s` and `t` are functions.
+    /// - an expression `s ≠ t` is an inequation if `s` and `t` are function terms.
     /// - an expression `~E` is the negation of an equation, if `E` is an equation.
     private var isInequation : Bool {
         guard let type = Symbols.defined[self.symbol]?.type else { return false }
@@ -124,7 +125,7 @@ public extension Node {
     
     /// Costly check if `self` represents an equation.
     ///
-    /// - an expression `s = t` is an equation if `s` and `t` are functions.
+    /// - an expression `s = t` is an equation if `s` and `t` are function terms.
     public var isEquation : Bool {
         guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Equation else { return false }
         guard let nodes = self.nodes where nodes.count == 2 else { return false }

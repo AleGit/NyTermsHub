@@ -22,7 +22,7 @@ infix operator ~?= {
     associativity none
 }
 
-/// `s ** ` substitutes all variables in `s` with term `t`.
+/// `s ** t` substitutes all variables in `s` with term `t`.
 infix operator ** {
 associativity left
 }

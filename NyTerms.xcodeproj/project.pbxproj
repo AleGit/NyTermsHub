@@ -165,10 +165,10 @@
 		51B26B731B8DAC3300CC59AD /* SMTLIBTutorial.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SMTLIBTutorial.pdf; sourceTree = "<group>"; };
 		51B26B741B8DAC3300CC59AD /* smt-lib-v2.5.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "smt-lib-v2.5.pdf"; sourceTree = "<group>"; };
 		51B26B751B8DB46500CC59AD /* NyTermsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NyTermsTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		51B26B761B8DB46500CC59AD /* example1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = example1.c; sourceTree = "<group>"; };
+		51B26B761B8DB46500CC59AD /* example1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = example1.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		51B26B771B8DB46500CC59AD /* example2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = example2.c; sourceTree = "<group>"; };
 		51B883EF1B8DED89008D7F22 /* Yices Search Path.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Yices Search Path.jpg"; sourceTree = "<group>"; };
-		51B883F01B8E3D5B008D7F22 /* names.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = names.c; sourceTree = "<group>"; };
+		51B883F01B8E3D5B008D7F22 /* names.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = names.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		51B883F21B8E3DAC008D7F22 /* minimal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minimal.c; sourceTree = "<group>"; };
 		51B883F31B8E3DAC008D7F22 /* test_pp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_pp.c; sourceTree = "<group>"; };
 		51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesExamples.swift; sourceTree = "<group>"; };

@@ -33,7 +33,7 @@ class YicesSatTrials : XCTestCase {
         super.tearDown()
     }
     
-    func testPropositions() {
+    func testTryPropositions() {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
         
@@ -69,7 +69,7 @@ class YicesSatTrials : XCTestCase {
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
     
-    func testEquations() {
+    func testTryEquations() {
         let ctx = yices_new_context(nil)
         defer { yices_free_context(ctx) }
         
@@ -116,7 +116,7 @@ class YicesSatTrials : XCTestCase {
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
     
-    func testPredicates() {
+    func testTryPredicates() {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
         
@@ -182,6 +182,16 @@ class YicesSatTrials : XCTestCase {
             var args = terms.map { build_yices_term($0, range_tau: bool_tau) }
             return yices_and( UInt32(terms.count), &args)
             
+        case "!=":
+            assert(terms.count == 2)
+            let args = terms.map { build_yices_term($0, range_tau: free_tau) }
+            return yices_neq(args.first!,args.last!)
+            
+        case "=":
+            assert(terms.count == 2)
+            let args = terms.map { build_yices_term($0, range_tau: free_tau) }
+            return yices_eq(args.first!,args.last!)
+            
         default:
             
             var t = yices_get_term_by_name(term.symbol)     // constant c, function f
@@ -210,7 +220,7 @@ class YicesSatTrials : XCTestCase {
         
     }
     
-    func testEmptyJunctions() {
+    func testTryEmptyJunctions() {
         let emptyDisjunction = NodeStruct(connective:"|", terms:[NodeStruct]())
         let emtpyConjunction = NodeStruct(connective:"&", terms:[NodeStruct]())
         XCTAssertEqual(0, emptyDisjunction.terms?.count)
@@ -225,7 +235,7 @@ class YicesSatTrials : XCTestCase {
         XCTAssertEqual("true",String(term:T))       // an empty conjunction is valid
     }
     
-    func testPUZ001m1_step1() {
+    func testTryPUZ001cnf1() {
         
         // parse
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
@@ -316,27 +326,122 @@ class YicesSatTrials : XCTestCase {
                 }
             }
         }
+    }
+    
+  
+// Mac mini Server (Late 2012)
+//    Test Suite 'Selected tests' started at 2015-10-27 08:44:34.855
+//    Test Suite 'YicesSatTrials' started at 2015-10-27 08:44:34.855
+//    Test Case '-[NyTermsTests.YicesSatTrials testTryHWV134cnf1]' started.
+//    (2015-10-27 07:44:34 +0000, "parsePath()", "start")
+//    (2015-10-27 07:45:19 +0000, "parsePath()", "finish")
+//    (2015-10-27 07:45:19 +0000, "yices_assert_formula()", "start")
+//    (2015-10-27 07:46:12 +0000, "yices_assert_formula()", "finish")
+//    (2015-10-27 07:46:12 +0000, "yices_check_context()", "start")
+//    (2015-10-27 09:12:30 +0000, "yices_check_context()", "finish")
+//    (2015-10-27 09:12:30 +0000, "yices_get_model()", "start")
+//    (2015-10-27 09:12:31 +0000, "yices_get_model()", "finish")
+//    44575.461 ms parsePath() start  -  parsePath() finish
+//    0.465 ms parsePath() finish  -  yices_assert_formula() start
+//    52867.222 ms yices_assert_formula() start  -  yices_assert_formula() finish
+//    0.192 ms yices_assert_formula() finish  -  yices_check_context() start
+//    5178591.118 ms yices_check_context() start  -  yices_check_context() finish
+//    0.192 ms yices_check_context() finish  -  yices_get_model() start
+//    1063.906 ms yices_get_model() start  -  yices_get_model() finish
+//    5277.0985609889 start - finish
+//    Test Case '-[NyTermsTests.YicesSatTrials testTryHWV134cnf1]' passed (5277.853 seconds).
+    
+    /// (inactive) test run
+    /// - parse ~ 45 s
+    ///     - HWV134-1.p
+    ///     - 2_332_428 clauses
+    ///     - ~ 4,3 GB RAM
+    /// - yices 
+    ///     - new context
+    ///     - assert formula(e) ~ 53 s
+    ///     - check context ~ 5179 s
+    ///     - get model ~ 1s
+    func testTryHWV134cnf1() {
+        let startText = "will start"
+        let completionText = "has finished"
+        let path = "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p"
         
+        var ts = [(NSDate(),"parsePath()",startText)]
+        print(ts.last!)
+        let (result,tptpFormulae,_) = parsePath(path)
+        ts.append((NSDate(),ts.last!.1,completionText))
+        print(ts.last!)
+        
+        XCTAssertEqual(1, result.count)
+        XCTAssertEqual(0, result[0])
+        XCTAssertEqual(2332428, tptpFormulae.count)
+        
+        // check
+        ts.append((NSDate(),"yices_new_context()",startText))
+        let ctx = yices_new_context(nil)
+        defer { yices_free_context(ctx) }
+        ts.append((NSDate(),ts.last!.1,completionText))
+        
+        
+        ts.append((NSDate(),"yices_assert_formula()",startText))
+        print(ts.last!)
+        for tptpFormula in tptpFormulae {
+            
+            let tptpClause = tptpFormula.formula
+            let yices_clause = build_yices_term(tptpClause, range_tau:bool_tau)
+            
+            // XCTAssertEqual(1, yices_term_is_bool(yices_clause),"a yices clause must be bool")
+            
+            yices_assert_formula(ctx, yices_clause)
+        }
+        ts.append((NSDate(),ts.last!.1,completionText))
+        print(ts.last!)
+        
+        ts.append((NSDate(),"yices_check_context()",startText))
+        print(ts.last!)
+        XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
+        ts.append((NSDate(),ts.last!.1,completionText))
+        print(ts.last!)
+        
+        ts.append((NSDate(),"yices_get_model()",startText))
+        print(ts.last!)
+        let mdl = yices_get_model(ctx, 1);
+        defer { yices_free_model(mdl) }
+        
+        ts.append((NSDate(),ts.last!.1,completionText))
+        print(ts.last!)
+        
+        var d0 = ts.first!
+        
+        for d1 in ts[1..<ts.count] {
+            let d = floor(d1.0.timeIntervalSinceDate(d0.0)*1000_000)/1000.0
+            
+            print(d,"ms",d0.1,d0.2," - ",d1.1, d1.2)
+            
+            d0 = d1
+        }
+        
+        print(ts.last!.0.timeIntervalSinceDate(ts.first!.0),startText,"-",completionText)
+        
+        XCTAssertNotNil(mdl)
         
     }
     
-    func testSymbols() {
+    func testTrySymbols() {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
         
-        let tau = yices_new_uninterpreted_type()
-        
-        let a = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        let a = yices_new_uninterpreted_term(free_tau)   // 'constant' with unknown value of free type
         yices_set_term_name(a, "1")
         
-        let b = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        let b = yices_new_uninterpreted_term(free_tau)   // 'constant' with unknown value of free type
         yices_set_term_name(b, "⊥")
         
-        let c = yices_new_uninterpreted_term(tau)   // 'constant' with unknown value of unknown type
+        let c = yices_new_uninterpreted_term(free_tau)   // 'constant' with unknown value of free type
         yices_set_term_name(c, "'Hällo, Wörld!'")
         //  ⊕ ⊖ ⊗ ⊘
         
-        let binary = yices_function_type(2, [tau,tau], tau)
+        let binary = yices_function_type(2, [free_tau,free_tau], free_tau)
         let xor = yices_new_uninterpreted_term(binary)
         yices_set_term_name(xor, "⊕")
         

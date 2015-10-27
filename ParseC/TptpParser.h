@@ -14,7 +14,7 @@
 
 #pragma mark - formulae, includes
 
-TptpFormula* _Nonnull  create_formula(TptpLanguage language,  NSString * _Nonnull name, TptpRole role, TptpNode * _Nonnull term, NSArray * _Nullable annotations);
+TptpFormula* _Nonnull  create_formula(TptpLanguage language,  NSString * _Nonnull name, TptpRole role, TptpNode * _Nonnull node, NSArray * _Nullable annotations);
 TptpInclude * _Nonnull create_include(NSString * _Nonnull fileName,  NSArray<NSString*>* _Nullable  selection);
 
 #pragma mark - string

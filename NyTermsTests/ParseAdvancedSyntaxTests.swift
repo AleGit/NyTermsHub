@@ -23,7 +23,7 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         
         XCTAssertEqual(1, tptpIncludes.count)
         
-        let formulae = tptpFormulae.map { NodeStruct($0.formula) }
+        let formulae = tptpFormulae.map { NodeStruct($0.root) }
         
         // 1 quoted symbol
         var index = 0
@@ -31,7 +31,7 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         XCTAssertEqual("distinct_object",tptpFormula.name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormula.role)
         
-        let clause = tptpFormula.formula
+        let clause = tptpFormula.root
         XCTAssertEqual("|", clause.symbol)
         
         let literals = clause.nodes!

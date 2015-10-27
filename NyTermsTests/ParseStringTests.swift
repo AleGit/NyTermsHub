@@ -16,7 +16,7 @@ class ParseStringTests: XCTestCase {
         XCTAssertEqual(0, result)
         XCTAssertEqual(2, tptpFormulae.count)
         
-        let myformulae = tptpFormulae.map{ $0.formula }
+        let myformulae = tptpFormulae.map{ $0.root }
         for myformula in myformulae {
             let myterm = NodeStruct(myformulae[0]);
             
@@ -51,7 +51,7 @@ class ParseStringTests: XCTestCase {
                 let fofa = fof_annotated(input)
                 let (result,formulae) = parseString(fofa)
                 XCTAssertEqual(0, result)
-                XCTAssertEqual(value, formulae[0].formula.description)
+                XCTAssertEqual(value, formulae[0].root.description)
                 
                 
         }
@@ -66,7 +66,7 @@ class ParseStringTests: XCTestCase {
         XCTAssertEqual(0, result)
         XCTAssertEqual(2, tptpFormulae.count)
         
-        let myformulae = tptpFormulae.map{ $0.formula }
+        let myformulae = tptpFormulae.map{ $0.root }
         for myformula in myformulae {
             let myterm = NodeStruct(myformula)
             XCTAssertEqual(expected,myterm.description)

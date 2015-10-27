@@ -21,15 +21,15 @@ class ParsePuzzleFileTests: XCTestCase {
         XCTAssertEqual(12, tptpFormulae.count)
         
         // test transformation
-        let tptpNodes = tptpFormulae.map { NodeStruct($0.formula) }
+        let tptpNodes = tptpFormulae.map { NodeStruct($0.root) }
         
         XCTAssertEqual("lives(agatha)",tptpNodes[0].description)
         XCTAssertEqual("killed(butler,agatha)|killed(charles,agatha)",tptpNodes[11].description)
-        XCTAssertEqual("String","\(tptpFormulae[11].formula.symbol.dynamicType)")
+        XCTAssertEqual("String","\(tptpFormulae[11].root.symbol.dynamicType)")
         
-        for formula in tptpFormulae {
-            XCTAssertTrue(formula.formula.isFormula)
-            XCTAssertTrue(formula.formula.isClause)
+        for root in tptpFormulae {
+            XCTAssertTrue(root.root.isFormula)
+            XCTAssertTrue(root.root.isClause)
         }
     }
     
@@ -53,8 +53,8 @@ class ParsePuzzleFileTests: XCTestCase {
             XCTAssertEqual(tptpFormulae[index].language, TptpLanguage.CNF)
             XCTAssertEqual(tptpFormulae[index].name, "intermediate_state")
             XCTAssertEqual(tptpFormulae[index].role, TptpRole.Hypothesis)
-            XCTAssertTrue(tptpFormulae[index].formula.isFormula)
-            XCTAssertTrue(tptpFormulae[index].formula.isClause)
+            XCTAssertTrue(tptpFormulae[index].root.isFormula)
+            XCTAssertTrue(tptpFormulae[index].root.isClause)
         }
         
         index = 1
@@ -64,11 +64,11 @@ class ParsePuzzleFileTests: XCTestCase {
             XCTAssertEqual(tptpFormulae[index].role, TptpRole.NegatedConjecture)
         }
         
-        for formula in tptpFormulae[2..<tptpFormulae.count] {
-            XCTAssertEqual(formula.language, TptpLanguage.CNF)
-            XCTAssertEqual(formula.role, TptpRole.Axiom)
-            XCTAssertTrue(formula.formula.isFormula)
-            XCTAssertTrue(formula.formula.isClause)
+        for root in tptpFormulae[2..<tptpFormulae.count] {
+            XCTAssertEqual(root.language, TptpLanguage.CNF)
+            XCTAssertEqual(root.role, TptpRole.Axiom)
+            XCTAssertTrue(root.root.isFormula)
+            XCTAssertTrue(root.root.isClause)
         }
     }
     

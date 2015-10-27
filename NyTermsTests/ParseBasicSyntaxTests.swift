@@ -42,7 +42,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         // *** 'HWV134-1.p' total:45.392s, limit:150.0s, count:2332428 avg:0.019ms *** (2015-10-05 09:42:29 +0000) (26) MacBookPro
         // *** 'HWV134-1.p' total:42.139s, limit:150.0s, count:2332428 avg:0.018ms *** (2015-10-22 14:17:27 +0000) (27) Mac mini
         
-        let myformula = MyTestTerm(tptpFormulae[2_332_427].formula)
+        let myformula = MyTestTerm(tptpFormulae[2_332_427].root)
         XCTAssertEqual("~(v437(VarCurr,bitIndex128))|v4403(VarCurr,bitIndex0)", myformula.description)
         
     }
@@ -58,7 +58,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("u61248", myformula.name)
         XCTAssertEqual(TptpRole.Axiom, myformula.role)
         
-        let myterm = MyTestTerm(myformula.formula)
+        let myterm = MyTestTerm(myformula.root)
         XCTAssertEqual("~(v2339(VarCurr,bitIndex5))|v2338(VarCurr,bitIndex129)", myterm.description)
         
     }
@@ -73,7 +73,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         // *** 'HWV134+1.p' total:18.978s, limit:90.0s, count:128975 avg:0.147ms *** (2015-10-05 09:42:48 +0000) (26) MacBookPro
         // *** 'HWV134+1.p' total:17.459s, limit:90.0s, count:128975 avg:0.135ms *** (2015-10-22 14:17:44 +0000) (27) Mac mini
         
-        let myformula = MyTestTerm(tptpFormulae[128_974].formula)
+        let myformula = MyTestTerm(tptpFormulae[128_974].root)
         XCTAssertEqual("(![VarCurr]:(v34(VarCurr)<=>v36(VarCurr)))", myformula.description)
     }
     
@@ -85,7 +85,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         // *** 'HWV062+1.p' total:0.479s, limit:2.0s, count:2 avg:239.766ms *** (2015-10-05 09:41:32 +0000) (26) MacBookPro
         // *** 'HWV062+1.p' total:0.504s, limit:2.0s, count:2 avg:252.009ms *** (2015-10-22 14:16:34 +0000) (27) Mac mini
         
-        let last = MyTestTerm(tptpFormulae.last!.formula)
+        let last = MyTestTerm(tptpFormulae.last!.root)
         XCTAssertEqual("!=", last.symbol)
         XCTAssertNotNil(Symbols.defined[last.symbol])
         let quadruple = Symbols.defined[last.symbol]!
@@ -95,7 +95,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         XCTAssertEqual("true!=false", actual)
         
-        let forall = tptpFormulae.first!.formula
+        let forall = tptpFormulae.first!.root
         XCTAssertEqual("?", forall.symbol)
         XCTAssertEqual(2,forall.nodes!.count)
         
@@ -174,7 +174,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("|", conjunction.nodes!.last!.symbol)
         XCTAssertEqual("~(p(V2912))|p(V2896)|~(p(V2932))", conjunction.nodes!.last!.description)
         
-        let nodes = tptpFormulae.map { NodeStruct($0.formula) }
+        let nodes = tptpFormulae.map { NodeStruct($0.root) }
         XCTAssertEqual(2,nodes.count)
         
         let a = nodes.first!.nodes!.last!.nodes!.last!.nodes!.last!

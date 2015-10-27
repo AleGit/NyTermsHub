@@ -128,15 +128,15 @@ extension TptpNode : StringLiteralConvertible {
 
         if value.containsOne(Symbols.symbols(category:SymbolCategory.Connective)) {
             // fof_formula or cnf_formula (i.e. fof_formula in connjective normal form)
-            return TptpFormula.FOF(stringLiteral: value).formula
+            return TptpFormula.FOF(stringLiteral: value).root
         }
         else if value.containsOne(Symbols.symbols(type:SymbolType.LeftParenthesis)) {
             
             // single equation, predicate or (function) term
             let cnf = TptpFormula.CNF(stringLiteral: value)
-            assert(Symbols.defined[cnf.formula.symbol]?.type == SymbolType.Disjunction)
-            assert(cnf.formula.nodes!.count == 1)
-            let predicate = cnf.formula.nodes!.first!
+            assert(Symbols.defined[cnf.root.symbol]?.type == SymbolType.Disjunction)
+            assert(cnf.root.nodes!.count == 1)
+            let predicate = cnf.root.nodes!.first!
             // self.init(symbol: predicate.symbol, nodes: predicate.nodes)
             return predicate
         }

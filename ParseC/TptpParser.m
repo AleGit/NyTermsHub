@@ -38,12 +38,12 @@ NSMutableArray* create_array(int n, ...) {
 
 #pragma mark - formulae, includes
 
-TptpFormula *create_formula(TptpLanguage language,  NSString *name, TptpRole role,  TptpNode *term,  NSArray<NSString*> *annotations) {
+TptpFormula *create_formula(TptpLanguage language,  NSString *name, TptpRole role,  TptpNode *node,  NSArray<NSString*> *annotations) {
     assert(name != nil);
-    assert(term != nil);
+    assert(node != nil);
     // annoatations can be nil, i.e. there are no annotations at all.
     
-    TptpFormula *formula = [[TptpFormula alloc] initWithLanguage:language name:name role:role formula:term annotations:annotations];
+    TptpFormula *formula = [[TptpFormula alloc] initWithLanguage:language name:name role:role root:node annotations:annotations];
     [_parser_formulae_ addObject:formula];
     return formula;
 }

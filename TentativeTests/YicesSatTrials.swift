@@ -249,7 +249,7 @@ class YicesSatTrials : XCTestCase {
         let ctx = yices_new_context(nil)
         defer { yices_free_context(ctx) }
         
-        var tptpClauses = tptpFormulae.map { $0.formula }
+        var tptpClauses = tptpFormulae.map { $0.root }
         
         let clauses = tptpClauses.map {
             (tptpClause) -> (TptpNode,term_t) in
@@ -387,7 +387,7 @@ class YicesSatTrials : XCTestCase {
         print(ts.last!)
         for tptpFormula in tptpFormulae {
             
-            let tptpClause = tptpFormula.formula
+            let tptpClause = tptpFormula.root
             let yices_clause = build_yices_term(tptpClause, range_tau:bool_tau)
             
             // XCTAssertEqual(1, yices_term_is_bool(yices_clause),"a yices clause must be bool")

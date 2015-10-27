@@ -10,7 +10,7 @@
 typedef NS_ENUM(NSInteger, TptpLanguage) {
     /// A clause, i.e. a disjunctions of literals.
     TptpLanguageCNF,
-    /// An arbitrary first order formula.
+    /// An arbitrary first order root.
     TptpLanguageFOF,
     
     TptpLanguageTPI,

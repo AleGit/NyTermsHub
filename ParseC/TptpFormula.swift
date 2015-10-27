@@ -51,23 +51,23 @@ public final class TptpFormula: NSObject {
     public let language : TptpLanguage
     public let name : String
     public let role : TptpRole
-    public let formula : TptpNode
+    public let root : TptpNode
     public let annotations : [String]?
     
-    public init(language:TptpLanguage, name:String, role:TptpRole, formula:TptpNode, annotations:[String]?) {
+    public init(language:TptpLanguage, name:String, role:TptpRole, root:TptpNode, annotations:[String]?) {
         
         self.language = language
         self.name = name
         self.role = role
-        self.formula = formula
+        self.root = root
         self.annotations = annotations
     }
     
     public override var description : String {
         if let annos = annotations {
-            return "\(language)(\(name), \(role), \(formula), \(annos))."
+            return "\(language)(\(name), \(role), \(root), \(annos))."
         }
-        return "\(language)(\(name),\(role),\(formula))."
+        return "\(language)(\(name),\(role),\(root))."
     }
 }
 
@@ -93,9 +93,9 @@ extension TptpFormula : StringLiteralConvertible {
         
         switch formulae.count {
         case 0:
-            self.init(language: TptpLanguage.CNF, name: "parse_error", role: TptpRole.Unknown, formula: TptpNode(constant:"parse_error"), annotations:nil)
+            self.init(language: TptpLanguage.CNF, name: "parse_error", role: TptpRole.Unknown, root: TptpNode(constant:"parse_error"), annotations:nil)
         default:
-            self.init(language: formulae[0].language, name: formulae[0].name, role: formulae[0].role, formula: formulae[0].formula, annotations: formulae[0].annotations)
+            self.init(language: formulae[0].language, name: formulae[0].name, role: formulae[0].role, root: formulae[0].root, annotations: formulae[0].annotations)
         }
     }
     
@@ -104,11 +104,11 @@ extension TptpFormula : StringLiteralConvertible {
         self.init(stringLiteral: literal)
     }
     
-    /// Convenience factory method to create a cnf formula
+    /// Convenience factory method to create a cnf root
     public static func CNF(stringLiteral value:String) -> TptpFormula {
         return TptpFormula(language: TptpLanguage.CNF, stringLiteral: value)
     }
-    ///  Convenience factory method to create a fof formula
+    ///  Convenience factory method to create a fof root
     public static func FOF(stringLiteral value:String) -> TptpFormula {
         return TptpFormula(language: TptpLanguage.FOF, stringLiteral: value)
     }

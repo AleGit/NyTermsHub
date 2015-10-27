@@ -167,29 +167,29 @@ class YicesSatTrials : XCTestCase {
     
     func build_yices_term<N:Node>(term:N, range_tau:type_t) -> term_t {
         
-        guard let terms = term.terms else { return general_constant }   // map variables to constant '⊥'
+        guard let nodes = term.nodes else { return general_constant }   // map variables to constant '⊥'
         
         switch term.symbol {
         case "~":
-            assert(terms.count == 1)
-            return yices_not( build_yices_term(terms.first!, range_tau:bool_tau))
+            assert(nodes.count == 1)
+            return yices_not( build_yices_term(nodes.first!, range_tau:bool_tau))
             
         case "|":
-            var args = terms.map { build_yices_term($0, range_tau: bool_tau) }
-            return yices_or( UInt32(terms.count), &args)
+            var args = nodes.map { build_yices_term($0, range_tau: bool_tau) }
+            return yices_or( UInt32(nodes.count), &args)
             
         case "&":
-            var args = terms.map { build_yices_term($0, range_tau: bool_tau) }
-            return yices_and( UInt32(terms.count), &args)
+            var args = nodes.map { build_yices_term($0, range_tau: bool_tau) }
+            return yices_and( UInt32(nodes.count), &args)
             
         case "!=":
-            assert(terms.count == 2)
-            let args = terms.map { build_yices_term($0, range_tau: free_tau) }
+            assert(nodes.count == 2)
+            let args = nodes.map { build_yices_term($0, range_tau: free_tau) }
             return yices_neq(args.first!,args.last!)
             
         case "=":
-            assert(terms.count == 2)
-            let args = terms.map { build_yices_term($0, range_tau: free_tau) }
+            assert(nodes.count == 2)
+            let args = nodes.map { build_yices_term($0, range_tau: free_tau) }
             return yices_eq(args.first!,args.last!)
             
         default:
@@ -197,21 +197,21 @@ class YicesSatTrials : XCTestCase {
             var t = yices_get_term_by_name(term.symbol)     // constant c, function f
             
             if t == NULL_TERM {
-                if terms.count == 0 {
+                if nodes.count == 0 {
                     // proposition or (function) constant
                     t = yices_new_uninterpreted_term(range_tau)
                     yices_set_term_name(t, term.symbol)
                 }
                 else {
-                    let domain_taus = [type_t](count:terms.count, repeatedValue:free_tau)
-                    let func_tau = yices_function_type(UInt32(terms.count), domain_taus, range_tau) // (tau,...,tau) -> range_tau
+                    let domain_taus = [type_t](count:nodes.count, repeatedValue:free_tau)
+                    let func_tau = yices_function_type(UInt32(nodes.count), domain_taus, range_tau) // (tau,...,tau) -> range_tau
                     t = yices_new_uninterpreted_term(func_tau)
                     yices_set_term_name(t, term.symbol)
                 }
             }
             
-            if terms.count > 0 {
-                let args = terms.map { build_yices_term($0, range_tau:free_tau) }
+            if nodes.count > 0 {
+                let args = nodes.map { build_yices_term($0, range_tau:free_tau) }
                 t = yices_application(t, UInt32(args.count), args)
             }
             
@@ -221,10 +221,10 @@ class YicesSatTrials : XCTestCase {
     }
     
     func testTryEmptyJunctions() {
-        let emptyDisjunction = NodeStruct(connective:"|", terms:[NodeStruct]())
-        let emtpyConjunction = NodeStruct(connective:"&", terms:[NodeStruct]())
-        XCTAssertEqual(0, emptyDisjunction.terms?.count)
-        XCTAssertEqual(0, emtpyConjunction.terms?.count)
+        let emptyDisjunction = NodeStruct(connective:"|", nodes:[NodeStruct]())
+        let emtpyConjunction = NodeStruct(connective:"&", nodes:[NodeStruct]())
+        XCTAssertEqual(0, emptyDisjunction.nodes?.count)
+        XCTAssertEqual(0, emtpyConjunction.nodes?.count)
         
         // no context needed
         
@@ -265,7 +265,7 @@ class YicesSatTrials : XCTestCase {
             yices_assert_formula(ctx, clause)
             XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
             
-            let tcount = tptpClause.terms!.count
+            let tcount = tptpClause.nodes!.count
             let ccount = Int(yices_term_num_children(clause))
             
             if tcount > 1 {
@@ -283,11 +283,11 @@ class YicesSatTrials : XCTestCase {
         let selected = clauses.map {
             (tptpClause,clause) -> TptpNode in
             
-            guard let terms = tptpClause.terms else { return TptpNode(connective:"|",terms:[TptpNode]()) } // false
+            guard let nodes = tptpClause.nodes else { return TptpNode(connective:"|",nodes:[TptpNode]()) } // false
             
-            switch terms.count {
+            switch nodes.count {
             case 0:
-                return TptpNode(connective:"|",terms:[TptpNode]())  // false
+                return TptpNode(connective:"|",nodes:[TptpNode]())  // false
             case 1:
                 XCTAssertEqual(1, yices_formula_true_in_model(mdl, clause))
                 return tptpClause
@@ -299,12 +299,12 @@ class YicesSatTrials : XCTestCase {
                     let child = yices_term_child(clause, Int32(idx))
                     XCTAssertEqual(1, yices_term_is_bool(child))
                     if yices_formula_true_in_model(mdl, child) == 1 {
-                        return terms[idx]
+                        return nodes[idx]
                     }
                 }
             }
             
-            return TptpNode(connective:"|",terms:[TptpNode]())  // false
+            return TptpNode(connective:"|",nodes:[TptpNode]())  // false
         }
         
         var newClauses = [TptpNode]()

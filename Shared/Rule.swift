@@ -21,7 +21,7 @@ public func ==(lhs:SymbolCountArityDictonary,rhs:SymbolCountArityDictonary) -> B
 public extension Node {
     /// Get the set of all variable terms.
     public var allVariables : Set<Self> {
-        guard let ts = self.terms else { return Set(arrayLiteral: self) }
+        guard let ts = self.nodes else { return Set(arrayLiteral: self) }
         
         return Set(ts.flatMap { $0.allVariables })
     }
@@ -29,11 +29,11 @@ public extension Node {
     /// **(tentative)** Get a dictionary of all symbols as keys and
     /// the number of the occurencies and arities of each symbol as values
     var countedSymbols : SymbolCountArityDictonary {
-        guard let terms = self.terms else { return [self.symbol:(1,Set<Int>())] } // variables has no arities at all
+        guard let nodes = self.nodes else { return [self.symbol:(1,Set<Int>())] } // variables has no arities at all
         
-        var soas = [self.symbol:(count:1,arities:Set(arrayLiteral: terms.count))]
+        var soas = [self.symbol:(count:1,arities:Set(arrayLiteral: nodes.count))]
         
-        let tsoas = terms.flatMap { $0.countedSymbols }
+        let tsoas = nodes.flatMap { $0.countedSymbols }
         
         for (symbol, (count:occurs,arities:arities)) in tsoas {
             if let (ao,aa) = soas[symbol] {
@@ -53,11 +53,11 @@ public extension Node {
     var countedVariableSymbols : VariableSymbolCountDictonary {
         assert(!self.symbol.isEmpty)
         
-        guard let terms = self.terms else { return [self.symbol:1] }    // variable
+        guard let nodes = self.nodes else { return [self.symbol:1] }    // variable
         
         var vscd = VariableSymbolCountDictonary()
         
-        let tvscd = terms.flatMap { $0.countedVariableSymbols }
+        let tvscd = nodes.flatMap { $0.countedVariableSymbols }
         
         for (symbol, subcount) in tvscd {
             if let count = vscd[symbol] {
@@ -76,11 +76,11 @@ public extension Node {
     /// - Vars(r) is a subset of Vars(l)
     static public func Rule(lhs:Self, _ rhs:Self) -> Self? {
         
-        if lhs.terms == nil { return nil }  // the left-hand side is a variable, hence the equation is not a rule
+        if lhs.nodes == nil { return nil }  // the left-hand side is a variable, hence the equation is not a rule
         
         if !(rhs.allVariables.isSubsetOf(lhs.allVariables)) { return nil }  // allVariables(rhs) is not a subset of allVariables(lhs), hence the equation is not a rule
         
-        return Self(symbol: Symbols.EQUALS, terms: [lhs,rhs]) // the equation is a rule
+        return Self(symbol: Symbols.EQUALS, nodes: [lhs,rhs]) // the equation is a rule
     }
     
     
@@ -127,13 +127,13 @@ extension Node {
         
         var positionUnifiers = [ PositionUnifier ]()
         
-        guard let terms = self.terms else { return positionUnifiers }   // variables do not have non-variable subterms
+        guard let nodes = self.nodes else { return positionUnifiers }   // variables do not have non-variable subnodes
         
         if let mgu = (self =?= other) {
             positionUnifiers.append(position: actual, unifier: mgu)
         }
         
-        for (index,term) in terms.enumerate() {
+        for (index,term) in nodes.enumerate() {
             // if array index is i, then position is i+1.
             positionUnifiers += term.positionUnifiers(actual+[index+1], other: other)
         }
@@ -149,11 +149,11 @@ extension Node {
         assert(self.allVariables.intersect(other.allVariables).isEmpty)
         
         // self is rule l1->r1
-        guard let l1 = self.terms?.first else { return [CriticalPeak]() }
-        guard let r1 = self.terms?.last else { return [CriticalPeak]() }
+        guard let l1 = self.nodes?.first else { return [CriticalPeak]() }
+        guard let r1 = self.nodes?.last else { return [CriticalPeak]() }
         // other is rule l2->r2
-        guard let l2 = other.terms?.first else { return [CriticalPeak]() }
-        guard let r2 = other.terms?.last else { return [CriticalPeak]() }
+        guard let l2 = other.nodes?.first else { return [CriticalPeak]() }
+        guard let r2 = other.nodes?.last else { return [CriticalPeak]() }
         
         return l2.positionUnifiers([], other: l1).filter {
             // - if p = [] then l1->r1 and l2</sub>->r2</sub> are not variants
@@ -170,15 +170,15 @@ extension Node {
     /// obtained from overlap (l<sub>1</sub>→r<sub>1</sub>,p,l<sub>2</sub>→r<sub>2</sub>).
     func criticalPairs(other:Self) -> [Self] {
         return self.criticalPeaks(other).map {
-            Self(equational:"=", terms: [$0.l2r1, $0.r2])
+            Self(equational:"=", nodes: [$0.l2r1, $0.r2])
         }
     }
     
     public func hasOverlap(at position:Position, with rule2: Self) -> Bool {
         assert(self.allVariables.intersect(rule2.allVariables).count == 0)
         
-        guard let l1 = self.terms?.first else { return false }
-        guard let l2p = rule2.terms?.first?[position] else { return false }        
+        guard let l1 = self.nodes?.first else { return false }
+        guard let l2p = rule2.nodes?.first?[position] else { return false }        
         return l1.isUnifiable(l2p) && !(position.isEmpty && self.isVariant(rule2))
     }
 }

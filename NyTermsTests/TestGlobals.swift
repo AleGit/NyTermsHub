@@ -6,7 +6,7 @@ import NyTerms
 
 typealias TestNode = NodeStruct
 
-// terms
+// predefined test terms
 
 let a = TestNode(constant:"a")
 let b = TestNode(constant:"b")
@@ -15,13 +15,13 @@ let cbot = TestNode(constant:"⊥")
 let x = TestNode(variable:"X")
 let y = TestNode(variable:"Y")
 let z = TestNode(variable:"Z")
-let fxy = TestNode(function:"f", terms: [x,y])
+let fxy = TestNode(function:"f", nodes: [x,y])
 let fax = fxy * [x:a,y:x]
 let fxa = fxy * [y:a]
 let faa = fxy * [x:a,y:a]
-let gx = TestNode(function:"g", terms: [x])
+let gx = TestNode(function:"g", nodes: [x])
 let gb = gx * [x:b]
-let gfaa = TestNode(function:"g",terms: [faa])
+let gfaa = TestNode(function:"g",nodes: [faa])
 
 // rules
 

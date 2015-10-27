@@ -9,11 +9,11 @@ import Cocoa
 /// - fof_formula
 public final class TptpNode: NSObject, Node {
     public let symbol: String
-    public var terms: [TptpNode]?
+    public var nodes: [TptpNode]?
     
-    public init(symbol: String, terms: [TptpNode]?) {
+    public init(symbol: String, nodes: [TptpNode]?) {
         self.symbol = symbol
-        self.terms = terms
+        self.nodes = nodes
     }
     
     /// Since TptpNode inherits description from NSObject
@@ -26,8 +26,8 @@ public final class TptpNode: NSObject, Node {
     /// - fof_or_formula '|' fof_unitary_formula
     /// - fof_and_formula '&' fof_unitary_formula
     public func append(term: TptpNode) {
-        if self.terms == nil { self.terms = [term] }
-        else { self.terms!.append(term) }
+        if self.nodes == nil { self.nodes = [term] }
+        else { self.nodes!.append(term) }
     }
     
     /// Since TptpNode inherits isEqual from NSObject
@@ -47,11 +47,11 @@ public final class TptpNode: NSObject, Node {
     
     func setPredicate() {
         #if PREDICATE_TABLE
-        guard let terms = self.terms else {
+        guard let nodes = self.nodes else {
             assert(false)
             return
         }
-            Symbols.add(predicate: self.symbol, arity: terms.count)
+            Symbols.add(predicate: self.symbol, arity: nodes.count)
         #endif
     }
 
@@ -69,7 +69,7 @@ extension TptpNode {
         #if VARIABLE_TABLE || FULL_TABLE
             Symbols.add(variable: symbol)
         #endif
-        self.init(symbol:symbol,terms: nil)
+        self.init(symbol:symbol,nodes: nil)
     }
     
     public convenience init(constant symbol:Symbol) {
@@ -80,44 +80,44 @@ extension TptpNode {
         #if FUNCTION_TABLE || FULL_TABLE
             Symbols.add(constant: symbol)
         #endif
-        self.init(symbol:symbol,terms: [TptpNode]())
+        self.init(symbol:symbol,nodes: [TptpNode]())
     }
     
-    public convenience init(functional symbol:Symbol, terms:[TptpNode]) {
-        assert(terms.count > 0, "uninterpreted functions must have one argumument at least")
+    public convenience init(functional symbol:Symbol, nodes:[TptpNode]) {
+        assert(nodes.count > 0, "uninterpreted functions must have one argumument at least")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted function symbols must not overlap equational symbols")
         
         #if FUNCTION_TABLE || FULL_TABLE
-            Symbols.add(function: symbol, arity: terms.count)
+            Symbols.add(function: symbol, arity: nodes.count)
         #endif
-        self.init(symbol:symbol,terms: terms)
+        self.init(symbol:symbol,nodes: nodes)
     }
     
-    public convenience init(predicate symbol:Symbol, terms:[TptpNode]) {
+    public convenience init(predicate symbol:Symbol, nodes:[TptpNode]) {
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted predicate symbols must not overlap auxiliary symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
         
-        assert(terms.reduce(true) { $0 && $1.isTerm },"predicate subterms must be functional terms")
+        assert(nodes.reduce(true) { $0 && $1.isTerm },"predicate subnodes must be functional nodes")
         
         #if FUNCTION_TABLE || FULL_TABLE
-            Symbols.add(predicate: symbol, arity: terms.count)
+            Symbols.add(predicate: symbol, arity: nodes.count)
         #endif
-        self.init(symbol:symbol,terms: terms)
+        self.init(symbol:symbol,nodes: nodes)
     }
     
-    public convenience init(equational symbol:Symbol, terms:[TptpNode]) {
-        assert(terms.count == 2)
+    public convenience init(equational symbol:Symbol, nodes:[TptpNode]) {
+        assert(nodes.count == 2)
         assert(Symbols.defined[symbol]?.category == SymbolCategory.Equational, "equational symbols must be predefined")
-        self.init(symbol:symbol,terms: terms)
+        self.init(symbol:symbol,nodes: nodes)
     }
     
-    public convenience init(connective symbol:Symbol, terms:[TptpNode]) {
-        assert(terms.count > 0)
+    public convenience init(connective symbol:Symbol, nodes:[TptpNode]) {
+        assert(nodes.count > 0)
         assert(Symbols.defined[symbol]?.category == SymbolCategory.Connective, "connective symbols must be predefined")
-        self.init(symbol:symbol,terms: terms)
+        self.init(symbol:symbol,nodes: nodes)
     }
     
 }
@@ -135,9 +135,9 @@ extension TptpNode : StringLiteralConvertible {
             // single equation, predicate or (function) term
             let cnf = TptpFormula.CNF(stringLiteral: value)
             assert(Symbols.defined[cnf.formula.symbol]?.type == SymbolType.Disjunction)
-            assert(cnf.formula.terms!.count == 1)
-            let predicate = cnf.formula.terms!.first!
-            // self.init(symbol: predicate.symbol, terms: predicate.terms)
+            assert(cnf.formula.nodes!.count == 1)
+            let predicate = cnf.formula.nodes!.first!
+            // self.init(symbol: predicate.symbol, nodes: predicate.nodes)
             return predicate
         }
         else {
@@ -158,7 +158,7 @@ extension TptpNode : StringLiteralConvertible {
     /// Parse a single (function) term or a single equation between two terms.
     public convenience init(stringLiteral value: StringLiteralType) {
         let term = TptpNode.parse(stringLiteral: value)
-        self.init(symbol: term.symbol, terms: term.terms)
+        self.init(symbol: term.symbol, nodes: term.nodes)
     }
 }
 

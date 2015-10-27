@@ -97,91 +97,91 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let forall = tptpFormulae.first!.formula
         XCTAssertEqual("?", forall.symbol)
-        XCTAssertEqual(2,forall.terms!.count)
+        XCTAssertEqual(2,forall.nodes!.count)
         
-        // let forallvars = forall.terms!.first!
+        // let forallvars = forall.nodes!.first!
         let forallvars = forall[[1]]!
         XCTAssertEqual(",", forallvars.symbol)
-        XCTAssertEqual(332, forallvars.terms!.count)
+        XCTAssertEqual(332, forallvars.nodes!.count)
         
-        // let exists = forall.terms!.last!
+        // let exists = forall.nodes!.last!
         let exists = forall[[2]]!
         XCTAssertEqual("!", exists.symbol)
-        XCTAssertEqual(2,exists.terms!.count)
+        XCTAssertEqual(2,exists.nodes!.count)
         
-        // let existsvars = exists.terms!.first!
+        // let existsvars = exists.nodes!.first!
         let existsvars = forall[[2,1]]!
         XCTAssertEqual(",", existsvars.symbol)
-        XCTAssertEqual(4, existsvars.terms!.count)
+        XCTAssertEqual(4, existsvars.nodes!.count)
         
-        // let forall2 = exists.terms!.last!
+        // let forall2 = exists.nodes!.last!
         let forall2 = forall[[2,2]]!
         XCTAssertEqual("?", forall2.symbol)
-        XCTAssertEqual(2,forall2.terms!.count)
+        XCTAssertEqual(2,forall2.nodes!.count)
         
-        // let forall2vars = forall2.terms!.first!
+        // let forall2vars = forall2.nodes!.first!
         let forall2vars = forall[[2,2,1]]!
         XCTAssertEqual(",", forall2vars.symbol)
-        XCTAssertEqual(16448, forall2vars.terms!.count)
+        XCTAssertEqual(16448, forall2vars.nodes!.count)
         
-        for (index,term) in forall2vars.terms!.enumerate() {
+        for (index,term) in forall2vars.nodes!.enumerate() {
             let symbol = "V\(index+1)"
             // if index > 3 { break; }
             XCTAssertEqual(symbol, term.symbol)
         }
         
-        // let conjunction = forall2.terms!.last!
+        // let conjunction = forall2.nodes!.last!
         let conjunction = forall[[2,2,2]]!
         XCTAssertEqual("&", conjunction.symbol)
         
         let expected = 39512;
-        XCTAssertEqual(expected, conjunction.terms!.count)
-        XCTAssertEqual(1, conjunction.terms![0].terms!.count)   // 36
-        XCTAssertEqual(1, conjunction.terms![1].terms!.count)   // 37
-        XCTAssertEqual(2, conjunction.terms![2].terms!.count)   // 38
-        XCTAssertEqual(2, conjunction.terms![3].terms!.count)   // 40
-        XCTAssertEqual(2, conjunction.terms![4].terms!.count)   // 42
-        XCTAssertEqual(2, conjunction.terms![5].terms!.count)   // 44
-        XCTAssertEqual(3, conjunction.terms![6].terms!.count)   // 46
-        XCTAssertEqual(3, conjunction.terms![7].terms!.count)   // 49
-        XCTAssertEqual(2, conjunction.terms![8].terms!.count)   // 52
-        XCTAssertEqual(2, conjunction.terms![9].terms!.count)   // 54
-        XCTAssertEqual(3, conjunction.terms![10].terms!.count)   // 56
+        XCTAssertEqual(expected, conjunction.nodes!.count)
+        XCTAssertEqual(1, conjunction.nodes![0].nodes!.count)   // 36
+        XCTAssertEqual(1, conjunction.nodes![1].nodes!.count)   // 37
+        XCTAssertEqual(2, conjunction.nodes![2].nodes!.count)   // 38
+        XCTAssertEqual(2, conjunction.nodes![3].nodes!.count)   // 40
+        XCTAssertEqual(2, conjunction.nodes![4].nodes!.count)   // 42
+        XCTAssertEqual(2, conjunction.nodes![5].nodes!.count)   // 44
+        XCTAssertEqual(3, conjunction.nodes![6].nodes!.count)   // 46
+        XCTAssertEqual(3, conjunction.nodes![7].nodes!.count)   // 49
+        XCTAssertEqual(2, conjunction.nodes![8].nodes!.count)   // 52
+        XCTAssertEqual(2, conjunction.nodes![9].nodes!.count)   // 54
+        XCTAssertEqual(3, conjunction.nodes![10].nodes!.count)   // 56
         
         
-        XCTAssertEqual(2, conjunction.terms![25].terms!.count)  // 92
-        XCTAssertEqual(2, conjunction.terms![26].terms!.count)  // 94
-        XCTAssertEqual(2, conjunction.terms![27].terms!.count)  // 96
-        XCTAssertEqual(6, conjunction.terms![28].terms!.count)  // 98
-        XCTAssertEqual(2, conjunction.terms![29].terms!.count)  // 104
+        XCTAssertEqual(2, conjunction.nodes![25].nodes!.count)  // 92
+        XCTAssertEqual(2, conjunction.nodes![26].nodes!.count)  // 94
+        XCTAssertEqual(2, conjunction.nodes![27].nodes!.count)  // 96
+        XCTAssertEqual(6, conjunction.nodes![28].nodes!.count)  // 98
+        XCTAssertEqual(2, conjunction.nodes![29].nodes!.count)  // 104
         
-        XCTAssertEqual(2, conjunction.terms![50].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![100].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![250].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![500].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![1000].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![2500].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![5000].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![10000].terms!.count)
-        XCTAssertEqual(2, conjunction.terms![20000].terms!.count)
-        XCTAssertEqual(3, conjunction.terms![30000].terms!.count)
+        XCTAssertEqual(2, conjunction.nodes![50].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![100].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![250].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![500].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![1000].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![2500].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![5000].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![10000].nodes!.count)
+        XCTAssertEqual(2, conjunction.nodes![20000].nodes!.count)
+        XCTAssertEqual(3, conjunction.nodes![30000].nodes!.count)
 
         
-        XCTAssertEqual(2, conjunction.terms![expected-2].terms!.count)      // 95563
-        XCTAssertEqual("p(V6641)|p(V6673)", conjunction.terms![expected-2].description)
+        XCTAssertEqual(2, conjunction.nodes![expected-2].nodes!.count)      // 95563
+        XCTAssertEqual("p(V6641)|p(V6673)", conjunction.nodes![expected-2].description)
         
-        XCTAssertEqual(3, conjunction.terms!.last!.terms!.count)    // 95565
-        XCTAssertEqual("|", conjunction.terms!.last!.symbol)
-        XCTAssertEqual("~(p(V2912))|p(V2896)|~(p(V2932))", conjunction.terms!.last!.description)
+        XCTAssertEqual(3, conjunction.nodes!.last!.nodes!.count)    // 95565
+        XCTAssertEqual("|", conjunction.nodes!.last!.symbol)
+        XCTAssertEqual("~(p(V2912))|p(V2896)|~(p(V2932))", conjunction.nodes!.last!.description)
         
-        let terms = tptpFormulae.map { NodeStruct($0.formula) }
-        XCTAssertEqual(2,terms.count)
+        let nodes = tptpFormulae.map { NodeStruct($0.formula) }
+        XCTAssertEqual(2,nodes.count)
         
-        let a = terms.first!.terms!.last!.terms!.last!.terms!.last!
+        let a = nodes.first!.nodes!.last!.nodes!.last!.nodes!.last!
         XCTAssertEqual("&", a.symbol)
-        XCTAssertEqual(expected, a.terms!.count)
+        XCTAssertEqual(expected, a.nodes!.count)
         
-        let b = terms[[1,2,2,2]]!   // terms[0][[2,2,2]] position 1 is array index 0
+        let b = nodes[[1,2,2,2]]!   // nodes[0][[2,2,2]] position 1 is array index 0
         XCTAssertEqual(a, b)
         
         let bvars = b.allVariables

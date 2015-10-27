@@ -22,9 +22,9 @@ public extension Node {
     public var allPositions : [Position] {
         var positions = [Position](arrayLiteral: Position())
         
-        guard let terms = self.terms else { return positions }
+        guard let nodes = self.nodes else { return positions }
         
-        let list = terms.map { $0.allPositions }
+        let list = nodes.map { $0.allPositions }
         
         for (index, element) in list.enumerate() {
             for var e in element {
@@ -71,31 +71,31 @@ private func subterm<T:Node>(root:T, position: Position) -> T? {
     
     guard let first = position.first else { return root }   // position == []
     
-    guard let terms = root.terms else { return nil }        // postiion != 0, but variables has no subterms at all
+    guard let nodes = root.nodes else { return nil }        // postiion != 0, but variables has no subnodes at all
     
-    if first < 1 || first > terms.count { return nil }     // function (constant) does not have a subterm at given position
+    if first < 1 || first > nodes.count { return nil }     // function (constant) does not have a subterm at given position
     
     // term cannot be a variable or constant at this point
     let tail = Array<Int>(position[1..<position.count])
     
-    return subterm(terms[first-1], position:tail)
+    return subterm(nodes[first-1], position:tail)
 }
 
 private func replace<T:Node>(root:T, position:Position, term:T) -> T? {
     
     guard let first = position.first else { return term }   // position == []
     
-    guard var terms = root.terms else { return nil }        // postiion != 0, but variables has no subterms at all
+    guard var nodes = root.nodes else { return nil }        // postiion != 0, but variables has no subnodes at all
     
-    if first < 1 || first > terms.count { return nil }      // function (constant) does not have a subterm at given position
+    if first < 1 || first > nodes.count { return nil }      // function (constant) does not have a subterm at given position
     
     // term cannot be a variable or constant at this point
     let tail = Array<Int>(position[1..<position.count])
     
-    guard let replacement = replace(terms[first-1], position: tail, term:term) else { return nil }
+    guard let replacement = replace(nodes[first-1], position: tail, term:term) else { return nil }
     
-    terms[first-1] = replacement
+    nodes[first-1] = replacement
     
-    return T(function:root.symbol, terms:terms)
+    return T(function:root.symbol, nodes:nodes)
 }
 

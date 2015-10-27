@@ -34,19 +34,19 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         let clause = tptpFormula.formula
         XCTAssertEqual("|", clause.symbol)
         
-        let literals = clause.terms!
+        let literals = clause.nodes!
         XCTAssertEqual("Array<TptpNode>", "\(literals.dynamicType)")
         XCTAssertEqual(1, literals.count)
         
         let literal = literals.first!
         XCTAssertEqual("!=", literal.symbol)
         
-        let terms = literal.terms!
-        XCTAssertEqual("Array<TptpNode>", "\(terms.dynamicType)")
-        XCTAssertEqual(2, terms.count)
+        let nodes = literal.nodes!
+        XCTAssertEqual("Array<TptpNode>", "\(nodes.dynamicType)")
+        XCTAssertEqual(2, nodes.count)
         
-        let l = terms.first!
-        let r = terms.last!
+        let l = nodes.first!
+        let r = nodes.last!
         
         XCTAssertEqual("\"An Apple\"", l.symbol)
         XCTAssertEqual("\"A \\\"Microsoft \\\\ escape\\\"\"", r.symbol)

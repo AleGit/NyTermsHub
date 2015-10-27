@@ -25,8 +25,8 @@ class TptpTermTests: XCTestCase {
         XCTAssertEqual("Y", TermType(y))
         XCTAssertEqual("Z", TermType(z))
         XCTAssertEqual("f(X,Y)", TermType(fxy))
-        XCTAssertEqual(TermType(function:"f",terms: ["X","Y"]), TermType(fxy))
-        XCTAssertEqual(TermType(function:"f",terms: [TermType(variable:"X"),TermType(variable:"Y")]), TermType(fxy))
+        XCTAssertEqual(TermType(function:"f",nodes: ["X","Y"]), TermType(fxy))
+        XCTAssertEqual(TermType(function:"f",nodes: [TermType(variable:"X"),TermType(variable:"Y")]), TermType(fxy))
         XCTAssertEqual("f(a,X)", TermType(fax))
         XCTAssertEqual("f(X,a)", TermType(fxa))
         XCTAssertEqual("f(a,a)", TermType(faa))
@@ -103,54 +103,54 @@ class TptpTermTests: XCTestCase {
         let constant = TermType(constant:"a")   // LOWER_WORD
         XCTAssertEqual(constant, "a")
         
-        let function = TermType(function:"f", terms: [variable, constant])
+        let function = TermType(function:"f", nodes: [variable, constant])
         XCTAssertEqual(function, "f(X,a)")
         
-        let equation = TermType(predicate:"=", terms:[function,constant])
+        let equation = TermType(predicate:"=", nodes:[function,constant])
         XCTAssertEqual(equation, "f(X,a)=a")
         
-        let inequation = TermType(predicate:"!=", terms:[function,constant])
+        let inequation = TermType(predicate:"!=", nodes:[function,constant])
         XCTAssertEqual(inequation, "f(X,a)!=a")
         
-        let predicate = TermType(predicate:"p", terms:[variable,constant])
+        let predicate = TermType(predicate:"p", nodes:[variable,constant])
         XCTAssertEqual(predicate, "p(X,a)")
         
-        let negation = TermType(connective:"~", terms: [predicate])
+        let negation = TermType(connective:"~", nodes: [predicate])
         XCTAssertEqual(negation, "~p(X,a)")
         
-        var disjunction = TermType(connective:"|", terms:[equation, predicate, negation])
+        var disjunction = TermType(connective:"|", nodes:[equation, predicate, negation])
         XCTAssertEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        disjunction = TermType(connective:"|", terms:[equation, TermType(connective:"|", terms: [predicate,negation])])
+        disjunction = TermType(connective:"|", nodes:[equation, TermType(connective:"|", nodes: [predicate,negation])])
         XCTAssertNotEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        var conjunction = TermType(connective:"&", terms:[equation, predicate, negation])
+        var conjunction = TermType(connective:"&", nodes:[equation, predicate, negation])
         XCTAssertEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        conjunction = TermType(connective:"&", terms:[equation, TermType(connective:"&", terms: [predicate,negation])])
+        conjunction = TermType(connective:"&", nodes:[equation, TermType(connective:"&", nodes: [predicate,negation])])
         XCTAssertNotEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        var fof = TermType(connective:"|", terms:[equation, TermType(connective:"&", terms: [predicate,negation])])
+        var fof = TermType(connective:"|", nodes:[equation, TermType(connective:"&", nodes: [predicate,negation])])
         expected = "f(X,a)=a | (p(X,a) & ~p(X,a) )"
         XCTAssertEqual(fof, expected)
         
-        fof = TermType(connective:"&", terms:[equation, TermType(connective:"|", terms: [predicate,negation])])
+        fof = TermType(connective:"&", nodes:[equation, TermType(connective:"|", nodes: [predicate,negation])])
         expected = "f(X,a)=a & (p(X,a) | ~p(X,a)) "
         XCTAssertEqual(fof, expected)
         
-        let universal = TermType(connective:"!", terms: [TermType(connective:",", terms:["X"]), disjunction])
+        let universal = TermType(connective:"!", nodes: [TermType(connective:",", nodes:["X"]), disjunction])
         expected = "![X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(universal, expected)
         
-        let existential = TermType(connective:"?", terms: [TermType(connective:",", terms:["X"]), disjunction])
+        let existential = TermType(connective:"?", nodes: [TermType(connective:",", nodes:["X"]), disjunction])
         expected = "?[X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(existential, expected)
     }

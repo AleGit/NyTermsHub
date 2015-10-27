@@ -6,7 +6,7 @@
 
 #pragma mark - global storage for parser
 
-NSMutableArray *_parser_storage_;                   // created strings, terms, arrays
+NSMutableArray *_parser_storage_;                   // created strings, nodes, arrays
 NSMutableArray<TptpFormula*> *_parser_formulae_;    // list of correctly parsed formulae
 NSMutableArray<TptpInclude*> *_parser_includes_;    // list of correctly parsed includes
 
@@ -100,14 +100,14 @@ TptpNode *create_quantified(NSString *name, TptpNode* unitary, NSArray<NSString*
     }
     TptpNode *tuple = create_connective(@",", vnodes);
     
-    TptpNode *term = [[TptpNode alloc] initWithSymbol:name terms:@[tuple,unitary]];
+    TptpNode *term = [[TptpNode alloc] initWithSymbol:name nodes:@[tuple,unitary]];
     [_parser_storage_ addObject:term];
     return term;
 }
 
 /// Create term with symbol and list of subterms.
 TptpNode *create_functional(NSString *name, NSArray<TptpNode*> *subnodes) {
-    TptpNode *term = [[TptpNode alloc] initWithFunctional:name terms:subnodes];
+    TptpNode *term = [[TptpNode alloc] initWithFunctional:name nodes:subnodes];
     [_parser_storage_ addObject:term];
     return term;
 }
@@ -117,7 +117,7 @@ void register_predicate(TptpNode * _Nonnull term) {
 }
 
 TptpNode *create_equational(NSString *name, NSArray<TptpNode*> *subnodes) {
-    TptpNode *term = [[TptpNode alloc] initWithEquational:name terms:subnodes];
+    TptpNode *term = [[TptpNode alloc] initWithEquational:name nodes:subnodes];
     [_parser_storage_ addObject:term];
     return term;
 }
@@ -126,7 +126,7 @@ TptpNode *create_connective(NSString *name, NSArray<TptpNode*> *subnodes) {
     assert(name != nil);
     assert(subnodes != nil);
     
-    TptpNode *term = [[TptpNode alloc] initWithConnective:name terms:subnodes];
+    TptpNode *term = [[TptpNode alloc] initWithConnective:name nodes:subnodes];
     [_parser_storage_ addObject:term];
     return term;
 }
@@ -192,7 +192,7 @@ TptpNode* append(TptpNode* parent, TptpNode* child) {
     assert(parent != child);
     [parent append:child];
     
-    return parent; // create_node(parent.symbol, terms);
+    return parent; // create_node(parent.symbol, nodes);
 }
 
 #pragma mark - roles

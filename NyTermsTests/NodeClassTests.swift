@@ -10,11 +10,11 @@ import NyTerms
 /// Basically just the data representation has to be defined, but nearly no functions.
 final class NodeClass : Node {
     let symbol : String
-    let terms : [NodeClass]?
+    let nodes : [NodeClass]?
     
-    required init(symbol:String, terms:[NodeClass]?) {
+    required init(symbol:String, nodes:[NodeClass]?) {
         self.symbol = symbol
-        self.terms = terms
+        self.nodes = nodes
     }
 }
 
@@ -30,7 +30,7 @@ extension NodeClass : StringLiteralConvertible {
     // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpNode`.
     convenience init(stringLiteral value: StringLiteralType) {
         let term = NodeClass(TptpNode(stringLiteral:value))
-        self.init(symbol: term.symbol, terms: term.terms)
+        self.init(symbol: term.symbol, nodes: term.nodes)
     }
 }
 
@@ -51,8 +51,8 @@ class NodeClassTests: XCTestCase {
         XCTAssertEqual("Y", NodeImpl(y))
         XCTAssertEqual("Z", NodeImpl(z))
         XCTAssertEqual("f(X,Y)", NodeImpl(fxy))
-        XCTAssertEqual(NodeImpl(function:"f",terms: ["X","Y"]), NodeImpl(fxy))
-        XCTAssertEqual(NodeImpl(function:"f",terms: [NodeImpl(variable:"X"),NodeImpl(variable:"Y")]), NodeImpl(fxy))
+        XCTAssertEqual(NodeImpl(function:"f",nodes: ["X","Y"]), NodeImpl(fxy))
+        XCTAssertEqual(NodeImpl(function:"f",nodes: [NodeImpl(variable:"X"),NodeImpl(variable:"Y")]), NodeImpl(fxy))
         XCTAssertEqual("f(a,X)", NodeImpl(fax))
         XCTAssertEqual("f(X,a)", NodeImpl(fxa))
         XCTAssertEqual("f(a,a)", NodeImpl(faa))
@@ -129,54 +129,54 @@ class NodeClassTests: XCTestCase {
         let constant = NodeImpl(constant:"a")   // LOWER_WORD
         XCTAssertEqual(constant, "a")
         
-        let function = NodeImpl(function:"f", terms: [variable, constant])
+        let function = NodeImpl(function:"f", nodes: [variable, constant])
         XCTAssertEqual(function, "f(X,a)")
         
-        let equation = NodeImpl(predicate:"=", terms:[function,constant])
+        let equation = NodeImpl(predicate:"=", nodes:[function,constant])
         XCTAssertEqual(equation, "f(X,a)=a")
         
-        let inequation = NodeImpl(predicate:"!=", terms:[function,constant])
+        let inequation = NodeImpl(predicate:"!=", nodes:[function,constant])
         XCTAssertEqual(inequation, "f(X,a)!=a")
         
-        let predicate = NodeImpl(predicate:"p", terms:[variable,constant])
+        let predicate = NodeImpl(predicate:"p", nodes:[variable,constant])
         XCTAssertEqual(predicate, "p(X,a)")
         
-        let negation = NodeImpl(connective:"~", terms: [predicate])
+        let negation = NodeImpl(connective:"~", nodes: [predicate])
         XCTAssertEqual(negation, "~p(X,a)")
         
-        var disjunction = NodeImpl(connective:"|", terms:[equation, predicate, negation])
+        var disjunction = NodeImpl(connective:"|", nodes:[equation, predicate, negation])
         XCTAssertEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        disjunction = NodeImpl(connective:"|", terms:[equation, NodeImpl(connective:"|", terms: [predicate,negation])])
+        disjunction = NodeImpl(connective:"|", nodes:[equation, NodeImpl(connective:"|", nodes: [predicate,negation])])
         XCTAssertNotEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        var conjunction = NodeImpl(connective:"&", terms:[equation, predicate, negation])
+        var conjunction = NodeImpl(connective:"&", nodes:[equation, predicate, negation])
         XCTAssertEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        conjunction = NodeImpl(connective:"&", terms:[equation, NodeImpl(connective:"&", terms: [predicate,negation])])
+        conjunction = NodeImpl(connective:"&", nodes:[equation, NodeImpl(connective:"&", nodes: [predicate,negation])])
         XCTAssertNotEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        var fof = NodeImpl(connective:"|", terms:[equation, NodeImpl(connective:"&", terms: [predicate,negation])])
+        var fof = NodeImpl(connective:"|", nodes:[equation, NodeImpl(connective:"&", nodes: [predicate,negation])])
         expected = "f(X,a)=a | (p(X,a) & ~p(X,a) )"
         XCTAssertEqual(fof, expected)
         
-        fof = NodeImpl(connective:"&", terms:[equation, NodeImpl(connective:"|", terms: [predicate,negation])])
+        fof = NodeImpl(connective:"&", nodes:[equation, NodeImpl(connective:"|", nodes: [predicate,negation])])
         expected = "f(X,a)=a & (p(X,a) | ~p(X,a)) "
         XCTAssertEqual(fof, expected)
         
-        let universal = NodeImpl(connective:"!", terms: [NodeImpl(connective:",", terms:["X"]), disjunction])
+        let universal = NodeImpl(connective:"!", nodes: [NodeImpl(connective:",", nodes:["X"]), disjunction])
         expected = "![X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(universal, expected)
         
-        let existential = NodeImpl(connective:"?", terms: [NodeImpl(connective:",", terms:["X"]), disjunction])
+        let existential = NodeImpl(connective:"?", nodes: [NodeImpl(connective:",", nodes:["X"]), disjunction])
         expected = "?[X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(existential, expected)
     }

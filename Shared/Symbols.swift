@@ -22,7 +22,7 @@ struct Symbols {
     static let SEPARATOR = ","
     
     /// no arity at all, arities: 0..<0,
-    /// i.e. variable.terms == nil
+    /// i.e. variable.nodes == nil
     static func add(variable symbol: Symbol) {
         guard let quadruple = Symbols.defined[symbol] else {
             cachedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
@@ -39,14 +39,14 @@ struct Symbols {
     }
     
     /// aritiy is zero, arities: 0...0 == 0..<1,
-    /// i.e. constant.terms.count == 0
+    /// i.e. constant.nodes.count == 0
     static func add(constant symbol: Symbol) {
         // a constant is just a constant function, hence it has arity zero
         Symbols.add(function: symbol, arity: 0)
     }
     
     /// arity is greater than zero, arities: value...value == value..<value+1,
-    /// i.e. function.terms.count == value > 0
+    /// i.e. function.nodes.count == value > 0
     static func add(function symbol: Symbol, arity value:Int) {
         guard var quadruple = Symbols.defined[symbol] else {
             cachedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
@@ -69,7 +69,7 @@ struct Symbols {
     }
     
     /// /// aritiy is zero, arities: 0...0 == 0..<1,
-    /// i.e. proposition.terms.count == 0
+    /// i.e. proposition.nodes.count == 0
     static func add(proposition symbol:Symbol) {
         Symbols.add(predicate:symbol,arity:0)
     }

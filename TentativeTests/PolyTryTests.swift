@@ -24,9 +24,9 @@ class PolyTryTests: XCTestCase {
     }
     
     private func poly<T:Node>(t:T) -> String {
-        guard let terms = t.terms else { return t.symbol } // variable
+        guard let nodes = t.nodes else { return t.symbol } // variable
         
-        let args = terms.map { poly($0) }
+        let args = nodes.map { poly($0) }
         
         
         switch t.symbol {
@@ -128,7 +128,7 @@ class PolyTryTests: XCTestCase {
     }
     
     private func polyices<T:Node>(t:T) -> term_t {
-        guard let terms = t.terms else {
+        guard let nodes = t.nodes else {
             var v = yices_get_term_by_name(t.symbol)
             if v == NULL_TERM {
                 v = yices_new_uninterpreted_term(yices_int_type())
@@ -136,7 +136,7 @@ class PolyTryTests: XCTestCase {
             return v
         } // variable
         
-        let args = terms.map { polyices($0) }
+        let args = nodes.map { polyices($0) }
         
         
         switch t.symbol {

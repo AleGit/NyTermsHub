@@ -12,14 +12,14 @@ extension Dictionary where Key:Node, Value:Node { // , Key == Value does not wor
     /// Are *variables* mapped to terms?
     private var allKeysAreVariables : Bool {
         return Array(self.keys).reduce(true) {
-            $0 && $1.terms == nil
+            $0 && $1.nodes == nil
         }
     }
     
     /// Are terms mapped to *variables*?
     private var allValuesAreVariables : Bool {
         return Array(self.values).reduce(true) {
-            $0 && $1.terms == nil
+            $0 && $1.nodes == nil
         }
     }
     
@@ -61,11 +61,11 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     case (_,true):
         assert(!lhs.allVariables.contains(rhs)) // occur check
         return [rhs:lhs]
-    case (_, _) where lhs.symbol == rhs.symbol && lhs.terms!.count == rhs.terms!.count:
+    case (_, _) where lhs.symbol == rhs.symbol && lhs.nodes!.count == rhs.nodes!.count:
         
         var result = [T:T]()
         
-        for (s,t) in zip(lhs.terms!, rhs.terms!) {
+        for (s,t) in zip(lhs.nodes!, rhs.nodes!) {
             guard let mappings = s =?= t else { return nil }
             for (variable, term) in mappings {
                 let value = result[variable]
@@ -75,7 +75,7 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
         }
         return result
     case (_,_) where lhs.symbol == rhs.symbol:
-        assert(false, "\(lhs.symbol) must not be variadic (\(lhs.terms!.count),\(rhs.terms!.count)")
+        assert(false, "\(lhs.symbol) must not be variadic (\(lhs.nodes!.count),\(rhs.nodes!.count)")
         return nil
     default:
         return nil
@@ -106,17 +106,17 @@ public func *<T:Node>(t:T, σ:[T:T]) -> T {
     
     if let tσ = σ[t] { return tσ }      // t is (variable) in σ.keys
     
-    guard let terms = t.terms else { return t }
+    guard let nodes = t.nodes else { return t }
     
-    return T(symbol:t.symbol, terms: terms.map { $0 * σ })
+    return T(symbol:t.symbol, nodes: nodes.map { $0 * σ })
     
 }
 
 /// 't ** s' replaces all variables in t with term s.
 public func **<T:Node>(t:T, s:T) -> T {
-    guard let terms = t.terms else { return s }
+    guard let nodes = t.nodes else { return s }
     
-    return T(symbol:t.symbol, terms: terms.map { $0 ** s })
+    return T(symbol:t.symbol, nodes: nodes.map { $0 ** s })
 }
 
 /// 't**' replaces all variables in t with constant '⊥'.

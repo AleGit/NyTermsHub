@@ -44,17 +44,17 @@ public struct LexicographicPathOrder : Order {
         assert(t.isTerm)
 
         // a variable can never be greater than a term
-        guard let sterms = s.terms else { return false }
+        guard let snodes = s.nodes else { return false }
         
         // now we know, that s is not a variable
         
         func checkCaseOne() -> Bool {
             guard s.symbol == t.symbol else { return false }
-            guard let tterms = t.terms else { return false }
-            guard sterms.count == tterms.count else { return false }
+            guard let tnodes = t.nodes else { return false }
+            guard snodes.count == tnodes.count else { return false }
             
             var equal = true
-            for (sj,tj) in zip(sterms, tterms) {
+            for (sj,tj) in zip(snodes, tnodes) {
                 if equal {
                     // we check: sj = tj for j in 1..<i
                     equal = (sj == tj)
@@ -78,15 +78,15 @@ public struct LexicographicPathOrder : Order {
         
         func checkCaseTwo() -> Bool {
             // we compare s=f(...,s_n) with t=g(...,t_m)
-            guard let tterms = t.terms else { return false } // case is not applicable for a variable on the right side
+            guard let tnodes = t.nodes else { return false } // case is not applicable for a variable on the right side
             guard self.p(s.symbol,t.symbol) else { return false } // precedence f > g
             
             // we check s > tj for all j in 1...m
-            return tterms.reduce(true) { $0 && self.greaterThan(s, t: $1) }
+            return tnodes.reduce(true) { $0 && self.greaterThan(s, t: $1) }
         }
         
         func checkCaseThree() -> Bool {
-            let matches = sterms.reduce(false) { $0 || $1 == t || self.greaterThan($1, t: t) }
+            let matches = snodes.reduce(false) { $0 || $1 == t || self.greaterThan($1, t: t) }
             return matches
         }
         
@@ -111,9 +111,9 @@ public func makeWeighting<T:Node>(w: weight) -> ((T)->Int) {
     wt = {
         (t:T) -> Int in
         
-        guard let tterms = t.terms else { return w.w0 } // t is variable
+        guard let tnodes = t.nodes else { return w.w0 } // t is variable
         
-        return tterms.reduce(w.w(t.symbol)) {
+        return tnodes.reduce(w.w(t.symbol)) {
             $0 + wt!($1)
         }
     }
@@ -171,19 +171,19 @@ public struct KnuthBendixOrder : Order {
                 guard t.isVariable else { return false }
                 guard s.isTerm else { return false }
                 var u = s
-                while u.terms?.count == 1 {
-                    u = u.terms![0]
+                while u.nodes?.count == 1 {
+                    u = u.nodes![0]
                 }
                 return u == t
             }
             
             func checkSubCaseTwo() -> Bool {
-                guard let sterms = s.terms else { return false }
-                guard let tterms = t.terms else { return false }
+                guard let snodes = s.nodes else { return false }
+                guard let tnodes = t.nodes else { return false }
                 guard s.symbol == t.symbol else { return false }
-                guard sterms.count == tterms.count else { return false }
+                guard snodes.count == tnodes.count else { return false }
                 
-                for (sj,tj) in zip(sterms,tterms) {
+                for (sj,tj) in zip(snodes,tnodes) {
                     if sj != tj {
                         return self.greaterThan(sj, t: tj)
                     }

@@ -17,7 +17,7 @@ if Process.arguments.count > 1 {
     let path = Process.arguments[1]
     
     let start = NSDate()
-    let result = parsePath(path)
+    let result = parse(path:path)
     let duration = NSDate().timeIntervalSinceDate(start)
     
 

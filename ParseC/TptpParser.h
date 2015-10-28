@@ -32,7 +32,7 @@ TptpNode* _Nonnull create_connective(NSString * _Nonnull name,  NSArray<TptpNode
 TptpNode* _Nonnull create_constant(NSString * _Nonnull name);
 TptpNode* _Nonnull create_variable(NSString * _Nonnull name);
 TptpNode* _Nonnull create_distinct_object(const char * _Nonnull cstring);
-void register_predicate(TptpNode * _Nonnull term);
+/* void register_predicate(TptpNode * _Nonnull term); */
 
 NSMutableArray<TptpNode*>* _Nonnull create_nodes0();
 NSMutableArray<TptpNode*>* _Nonnull create_nodes1(TptpNode* _Nonnull a);

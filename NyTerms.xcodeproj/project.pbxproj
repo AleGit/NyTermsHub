@@ -29,6 +29,10 @@
 		51226E771B6D3A0B0077E34D /* TptpFormula.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51226E761B6D3A0B0077E34D /* TptpFormula.swift */; };
 		51226E791B6D3AB70077E34D /* TptpInclude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51226E781B6D3AB70077E34D /* TptpInclude.swift */; };
 		51226E7D1B6D44E20077E34D /* TptpPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51226E7C1B6D44E20077E34D /* TptpPrintable.swift */; };
+		512517B41BE0D849005C3E2D /* Yi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512517B31BE0D849005C3E2D /* Yi.swift */; };
+		512517B51BE0D849005C3E2D /* Yi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512517B31BE0D849005C3E2D /* Yi.swift */; };
+		512517B71BE110F6005C3E2D /* Prover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512517B61BE110F6005C3E2D /* Prover.swift */; };
+		512517B81BE110F6005C3E2D /* Prover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512517B61BE110F6005C3E2D /* Prover.swift */; };
 		512977191B677CAA003D3E80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512977181B677CAA003D3E80 /* AppDelegate.swift */; };
 		5129771B1B677CAA003D3E80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5129771A1B677CAA003D3E80 /* ViewController.swift */; };
 		5129771D1B677CAB003D3E80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5129771C1B677CAB003D3E80 /* Assets.xcassets */; };
@@ -118,6 +122,8 @@
 		51226E761B6D3A0B0077E34D /* TptpFormula.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TptpFormula.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51226E781B6D3AB70077E34D /* TptpInclude.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpInclude.swift; sourceTree = "<group>"; };
 		51226E7C1B6D44E20077E34D /* TptpPrintable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpPrintable.swift; sourceTree = "<group>"; };
+		512517B31BE0D849005C3E2D /* Yi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Yi.swift; sourceTree = "<group>"; };
+		512517B61BE110F6005C3E2D /* Prover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prover.swift; sourceTree = "<group>"; };
 		512977151B677CAA003D3E80 /* NyTerms.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NyTerms.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		512977181B677CAA003D3E80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5129771A1B677CAA003D3E80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -290,6 +296,7 @@
 				515F0F031B6BAB0500B470B4 /* Rule.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				515F0F051B6BB0A100B470B4 /* Symbols.swift */,
+				512517B61BE110F6005C3E2D /* Prover.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -403,6 +410,7 @@
 				51B26B6C1B8DA41200CC59AD /* Yices.swift */,
 				513CF7E01B8EF6D20063BA57 /* String+Yices.swift */,
 				26EDD91C1BB47BBB001FE0EC /* LPO.swift */,
+				512517B31BE0D849005C3E2D /* Yi.swift */,
 			);
 			path = Yices;
 			sourceTree = "<group>";
@@ -587,6 +595,8 @@
 				511E95891B8AEB320093F4E8 /* String+TptpPath.swift in Sources */,
 				51B26B6E1B8DA41200CC59AD /* Yices.swift in Sources */,
 				511E95811B8AE7B80093F4E8 /* Node.swift in Sources */,
+				512517B81BE110F6005C3E2D /* Prover.swift in Sources */,
+				512517B51BE0D849005C3E2D /* Yi.swift in Sources */,
 				511E95821B8AE7B80093F4E8 /* Substitution.swift in Sources */,
 				511E95831B8AE7B80093F4E8 /* Position.swift in Sources */,
 				513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */,
@@ -621,7 +631,9 @@
 				515D91BE1B6D2513000EDB3B /* TptpNode.swift in Sources */,
 				515F0F061B6BB0A100B470B4 /* Symbols.swift in Sources */,
 				512977371B677E1B003D3E80 /* Node.swift in Sources */,
+				512517B71BE110F6005C3E2D /* Prover.swift in Sources */,
 				51C94CB91B987E70004C3082 /* Empty.swift in Sources */,
+				512517B41BE0D849005C3E2D /* Yi.swift in Sources */,
 				51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */,
 				51226E7D1B6D44E20077E34D /* TptpPrintable.swift in Sources */,
 				51FAF9321BB70330004E6BD5 /* LPO.swift in Sources */,
@@ -689,7 +701,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "-D PREDICATE_TABLE";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "NyTerms-Swift.h";
@@ -705,7 +717,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "-D PREDICATE_TABLE";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "NyTerms-Swift.h";

@@ -113,9 +113,8 @@ extension Node {
         }
         
         guard let quadruple = Symbols.defined[self.symbol] else {
-            assert(Symbols.precachedSymbols[self.symbol] == nil, "\(self.symbol) is a predefined symbol \(Symbols.precachedSymbols[self.symbol)]")
             
-            // If the symbol is not defined in the symbol table 
+            // If the symbol is not defined in the global symbol table, i.e. a function or predicate symbol 
             // we assume prefix notation for (constant) funtions or predicates:
             switch nodes.count {
             case 0:

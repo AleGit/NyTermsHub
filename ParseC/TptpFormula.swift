@@ -8,7 +8,7 @@ import Cocoa
 /// It returns a triple with the list of parse status, 
 /// the list for successfully parsed *annotated formulae*
 /// and the list of all *include* lines.
-public func parsePath(path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
+public func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
     
     let array = parse_path(path)
     var result = [Int(array[0] as! NSNumber)]
@@ -17,7 +17,7 @@ public func parsePath(path:String) -> (status:[Int], formulae:[TptpFormula], inc
     
     for include in includes {
         let ipath = path.tptpPathTo(include)
-        let (iresult,iformulae,iincludes) = parsePath(ipath)
+        let (iresult,iformulae,iincludes) = parse(path:ipath)
         result += iresult
         includes += iincludes
         
@@ -35,7 +35,7 @@ public func parsePath(path:String) -> (status:[Int], formulae:[TptpFormula], inc
 
 /// Parses the content of `string` which may contain multiple annotated formulae, but must not contain include lines.
 /// It returns a pair with parse status and the list of successfully parsed *annotated formulae*.
-public func parseString(string:String) -> (status:Int, formulae:[TptpFormula]) {
+public func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) {
     
     let array = parse_string(string)
     let result = Int(array[0] as! NSNumber)
@@ -86,7 +86,7 @@ extension TptpFormula : StringLiteralConvertible {
     /// - cnf(agatha,hypothesis, ( lives(agatha) )).
     /// - fof(pel55_1,axiom, ( ? [X] : ( lives(X) & killed(X,agatha) ) )).
     public convenience init(stringLiteral value: StringLiteralType) {
-        let (status,formulae) = parseString(value)
+        let (status,formulae) = parse(string:value)
         
         assert(status == 0)
         assert(formulae.count == 1)

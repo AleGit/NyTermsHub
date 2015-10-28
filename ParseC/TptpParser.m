@@ -105,15 +105,11 @@ TptpNode *create_quantified(NSString *name, TptpNode* unitary, NSArray<NSString*
     return term;
 }
 
-/// Create term with symbol and list of subterms.
+/// Create term with (predicate or function) symbol and list of subterms.
 TptpNode *create_functional(NSString *name, NSArray<TptpNode*> *subnodes) {
     TptpNode *term = [[TptpNode alloc] initWithFunctional:name nodes:subnodes];
     [_parser_storage_ addObject:term];
     return term;
-}
-
-void register_predicate(TptpNode * _Nonnull term) {
-    [term setPredicate];
 }
 
 TptpNode *create_equational(NSString *name, NSArray<TptpNode*> *subnodes) {

@@ -15,7 +15,7 @@ class ParsePuzzleFileTests: XCTestCase {
     func testParsePUZ001cfn1() {
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
         
-        let (result,tptpFormulae,_) = parsePath(path)
+        let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(12, tptpFormulae.count)
@@ -39,7 +39,7 @@ class ParsePuzzleFileTests: XCTestCase {
     func testParsePUZ051cfn1() {
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p"
         
-        let (result,tptpFormulae,tptpIncludes) = parsePath(path)
+        let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(2, result.count)
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(0, result[1])

@@ -15,7 +15,7 @@ class ParseAdvancedSyntaxTests: XCTestCase {
     func testParseSYN000cnf2() {
         let path = "/Users/Shared/TPTP/Problems/SYN/SYN000-2.p"
         
-        let (result,tptpFormulae,tptpIncludes) = parsePath(path)
+        let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(2, result.count)
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(0, result[1])

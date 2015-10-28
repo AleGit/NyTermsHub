@@ -44,17 +44,6 @@ public final class TptpNode: NSObject, Node {
     public override var hashValue : Int {
         return self.hashValueDefault
     }
-    
-    func setPredicate() {
-        #if PREDICATE_TABLE
-        guard let nodes = self.nodes else {
-            assert(false)
-            return
-        }
-            Symbols.add(predicate: self.symbol, arity: nodes.count)
-        #endif
-    }
-
 }
 
 
@@ -66,9 +55,6 @@ extension TptpNode {
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "variables must not overlap connective symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "variables must not overlap equational symbols")
         
-        #if VARIABLE_TABLE || FULL_TABLE
-            Symbols.add(variable: symbol)
-        #endif
         self.init(symbol:symbol,nodes: nil)
     }
     
@@ -77,9 +63,6 @@ extension TptpNode {
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted constant symbols must not overlap connective symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted constant symbols must not overlap equational symbols")
         
-        #if FUNCTION_TABLE || FULL_TABLE
-            Symbols.add(constant: symbol)
-        #endif
         self.init(symbol:symbol,nodes: [TptpNode]())
     }
     
@@ -89,9 +72,6 @@ extension TptpNode {
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
         assert(Symbols.defined[symbol]?.category != SymbolCategory.Equational, "uninterpreted function symbols must not overlap equational symbols")
         
-        #if FUNCTION_TABLE || FULL_TABLE
-            Symbols.add(function: symbol, arity: nodes.count)
-        #endif
         self.init(symbol:symbol,nodes: nodes)
     }
     
@@ -102,9 +82,6 @@ extension TptpNode {
         
         assert(nodes.reduce(true) { $0 && $1.isTerm },"predicate subnodes must be functional nodes")
         
-        #if FUNCTION_TABLE || FULL_TABLE
-            Symbols.add(predicate: symbol, arity: nodes.count)
-        #endif
         self.init(symbol:symbol,nodes: nodes)
     }
     
@@ -125,12 +102,15 @@ extension TptpNode {
 extension TptpNode : StringLiteralConvertible {
     private static func parse(stringLiteral value:String) -> TptpNode {
         assert(!value.isEmpty)
+        
+        let connectives = Symbols.defined.filteredSetOfKeys { $0.1.category == SymbolCategory.Connective }
+        let leftpars = Symbols.defined.filteredSetOfKeys { $0.1.type == SymbolType.LeftParenthesis }
 
-        if value.containsOne(Symbols.symbols(category:SymbolCategory.Connective)) {
+        if value.containsOne(connectives) {
             // fof_formula or cnf_formula (i.e. fof_formula in connjective normal form)
             return TptpFormula.FOF(stringLiteral: value).root
         }
-        else if value.containsOne(Symbols.symbols(type:SymbolType.LeftParenthesis)) {
+        else if value.containsOne(leftpars) {
             
             // single equation, predicate or (function) term
             let cnf = TptpFormula.CNF(stringLiteral: value)

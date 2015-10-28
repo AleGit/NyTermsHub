@@ -33,6 +33,10 @@ class YicesSatTrials : XCTestCase {
         super.tearDown()
     }
     
+    /// test creates
+    /// - atom 'p'
+    /// - composites 'p', 'p p', 'p 'p', and 
+    
     func testTryPropositions() {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
@@ -47,9 +51,7 @@ class YicesSatTrials : XCTestCase {
         XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
         
         let mdl = yices_get_model(ctx, 1);
-        defer {
-            yices_free_model(mdl)
-        }
+        defer { yices_free_model(mdl) }
         
         var bvalue : Int32 = -1
         
@@ -240,7 +242,7 @@ class YicesSatTrials : XCTestCase {
         // parse
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
         
-        let (result,tptpFormulae,_) = parsePath(path)
+        let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(12, tptpFormulae.count)
@@ -333,16 +335,16 @@ class YicesSatTrials : XCTestCase {
 //    Test Suite 'Selected tests' started at 2015-10-27 08:44:34.855
 //    Test Suite 'YicesSatTrials' started at 2015-10-27 08:44:34.855
 //    Test Case '-[NyTermsTests.YicesSatTrials testTryHWV134cnf1]' started.
-//    (2015-10-27 07:44:34 +0000, "parsePath()", "start")
-//    (2015-10-27 07:45:19 +0000, "parsePath()", "finish")
+//    (2015-10-27 07:44:34 +0000, "parse(path:)", "start")
+//    (2015-10-27 07:45:19 +0000, "parse(path:)", "finish")
 //    (2015-10-27 07:45:19 +0000, "yices_assert_formula()", "start")
 //    (2015-10-27 07:46:12 +0000, "yices_assert_formula()", "finish")
 //    (2015-10-27 07:46:12 +0000, "yices_check_context()", "start")
 //    (2015-10-27 09:12:30 +0000, "yices_check_context()", "finish")
 //    (2015-10-27 09:12:30 +0000, "yices_get_model()", "start")
 //    (2015-10-27 09:12:31 +0000, "yices_get_model()", "finish")
-//    44575.461 ms parsePath() start  -  parsePath() finish
-//    0.465 ms parsePath() finish  -  yices_assert_formula() start
+//    44575.461 ms parse(path:) start  -  parse(path:) finish
+//    0.465 ms parse(path:) finish  -  yices_assert_formula() start
 //    52867.222 ms yices_assert_formula() start  -  yices_assert_formula() finish
 //    0.192 ms yices_assert_formula() finish  -  yices_check_context() start
 //    5178591.118 ms yices_check_context() start  -  yices_check_context() finish
@@ -366,9 +368,9 @@ class YicesSatTrials : XCTestCase {
         let completionText = "has finished"
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p"
         
-        var ts = [(NSDate(),"parsePath()",startText)]
+        var ts = [(NSDate(),"parse(path:)",startText)]
         print(ts.last!)
-        let (result,tptpFormulae,_) = parsePath(path)
+        let (result,tptpFormulae,_) = parse(path:path)
         ts.append((NSDate(),ts.last!.1,completionText))
         print(ts.last!)
         

@@ -16,7 +16,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     func check(path:String, limit:NSTimeInterval, count:Int) -> ([TptpFormula],[TptpInclude]) {
         
         let start = NSDate()
-        let (result,tptpFormulae,tptpIncludes) = parsePath(path)
+        let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         let total = NSDate().timeIntervalSinceDate(start)
         
         let name = (path as NSString).lastPathComponent
@@ -28,7 +28,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let message = "'\(name)' total:\(Double(Int(total*1000))/1000.0)s, limit:\(limit)s, count:\(tptpFormulae.count) avg:\(Double(Int(average*1000_000))/1000.0)ms"
         XCTAssertTrue(total < limit, message)
-        print("// (\(NSDate())) \(Symbols.info)\n// *** \(message) *** ")
+        
         return (tptpFormulae, tptpIncludes)
     }
     

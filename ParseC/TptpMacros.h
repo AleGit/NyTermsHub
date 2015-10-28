@@ -24,7 +24,7 @@
 #define CREATE_NODES1(a)            create_nodes1(a)        // unary list
 #define CREATE_NODES2(a,b)          create_nodes2(a,b)      // binary list
 
-#define PREDICATE(a)       a; register_predicate(a)
+#define PREDICATE(a)       a; /* register_predicate(a) */
 
 #define APPEND(a,b)             append(a,b)
 #define INSERT(a,b)             insert(a,b)

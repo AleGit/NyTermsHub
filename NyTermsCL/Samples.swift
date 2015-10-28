@@ -23,7 +23,7 @@ struct Samples {
 
         
         let start = NSDate()
-        let (_,tptpFormulae,_) = parsePath(file)
+        let (_,tptpFormulae,_) = parse(path:file)
         let end = NSDate()
         
         let total = end.timeIntervalSinceDate(start)

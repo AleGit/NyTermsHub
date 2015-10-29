@@ -39,32 +39,32 @@ extension NodeClass : StringLiteralConvertible {
 /// Tests for default implementation of protocol term with **swift class** data structure.
 class NodeClassTests: XCTestCase {
 
-    private typealias NodeImpl = NodeClass
+    private typealias LocalTestNode = NodeClass
     
     func testEquals() {
-        XCTAssertEqual("a", NodeImpl(a))
-        XCTAssertEqual(NodeImpl(constant:"a"), NodeImpl(a))
-        XCTAssertEqual("b", NodeImpl(b))
-        XCTAssertEqual("c", NodeImpl(c))
-        XCTAssertEqual("X", NodeImpl(x))
-        XCTAssertEqual(NodeImpl(variable:"X"), NodeImpl(x))
-        XCTAssertEqual("Y", NodeImpl(y))
-        XCTAssertEqual("Z", NodeImpl(z))
-        XCTAssertEqual("f(X,Y)", NodeImpl(fxy))
-        XCTAssertEqual(NodeImpl(function:"f",nodes: ["X","Y"]), NodeImpl(fxy))
-        XCTAssertEqual(NodeImpl(function:"f",nodes: [NodeImpl(variable:"X"),NodeImpl(variable:"Y")]), NodeImpl(fxy))
-        XCTAssertEqual("f(a,X)", NodeImpl(fax))
-        XCTAssertEqual("f(X,a)", NodeImpl(fxa))
-        XCTAssertEqual("f(a,a)", NodeImpl(faa))
-        XCTAssertEqual("g(X)", NodeImpl(gx))
-        XCTAssertEqual("g(b)", NodeImpl(gb))
-        let rule = NodeImpl.Rule("f(X,Y)","X")!
-        XCTAssertEqual(rule, NodeImpl(fxy_x!))
+        XCTAssertEqual("a", LocalTestNode(a))
+        XCTAssertEqual(LocalTestNode(constant:"a"), LocalTestNode(a))
+        XCTAssertEqual("b", LocalTestNode(b))
+        XCTAssertEqual("c", LocalTestNode(c))
+        XCTAssertEqual("X", LocalTestNode(x))
+        XCTAssertEqual(LocalTestNode(variable:"X"), LocalTestNode(x))
+        XCTAssertEqual("Y", LocalTestNode(y))
+        XCTAssertEqual("Z", LocalTestNode(z))
+        XCTAssertEqual("f(X,Y)", LocalTestNode(fxy))
+        XCTAssertEqual(LocalTestNode(function:"f",nodes: ["X","Y"]), LocalTestNode(fxy))
+        XCTAssertEqual(LocalTestNode(function:"f",nodes: [LocalTestNode(variable:"X"),LocalTestNode(variable:"Y")]), LocalTestNode(fxy))
+        XCTAssertEqual("f(a,X)", LocalTestNode(fax))
+        XCTAssertEqual("f(X,a)", LocalTestNode(fxa))
+        XCTAssertEqual("f(a,a)", LocalTestNode(faa))
+        XCTAssertEqual("g(X)", LocalTestNode(gx))
+        XCTAssertEqual("g(b)", LocalTestNode(gb))
+        let rule = LocalTestNode.Rule("f(X,Y)","X")!
+        XCTAssertEqual(rule, LocalTestNode(fxy_x!))
     }
     
     func testCriticalPeaks() {
-        guard let fagx_fxx = NodeImpl.Rule("f(a,g(X))", "f(X,X)") else { XCTAssert(false, "f(a,g(X))=f(X,X) would be a rule."); return }
-        guard let gb_c = NodeImpl.Rule("g(b)", "c") else { XCTAssert(false, "g(b)=c would be a rule"); return }
+        guard let fagx_fxx = LocalTestNode.Rule("f(a,g(X))", "f(X,X)") else { XCTAssert(false, "f(a,g(X))=f(X,X) would be a rule."); return }
+        guard let gb_c = LocalTestNode.Rule("g(b)", "c") else { XCTAssert(false, "g(b)=c would be a rule"); return }
         XCTAssertEqual(0,fagx_fxx.criticalPeaks(gb_c).count)
         
         let peaks = gb_c.criticalPeaks(fagx_fxx)
@@ -82,8 +82,8 @@ class NodeClassTests: XCTestCase {
     
     func testSymbols() {
         
-        let tt_faa = NodeImpl(faa)
-        let tt_fxy = NodeImpl(fxy)
+        let tt_faa = LocalTestNode(faa)
+        let tt_fxy = LocalTestNode(fxy)
         
         XCTAssertEqual("NodeClass","\(tt_faa.dynamicType)")
         
@@ -118,71 +118,71 @@ class NodeClassTests: XCTestCase {
     }
     
     func testCustomStringConvertible() {
-        XCTAssertEqual("f(X,Y)=X", NodeImpl(fxy_x!).description)
+        XCTAssertEqual("f(X,Y)=X", LocalTestNode(fxy_x!).description)
     }
     
     func testStringLiteralConvertible() {
-        let variable = NodeImpl(variable:"X")   // UPPER_WORD
-        var expected = "X" as NodeImpl
+        let variable = LocalTestNode(variable:"X")   // UPPER_WORD
+        var expected = "X" as LocalTestNode
         XCTAssertEqual(variable, expected)
         
-        let constant = NodeImpl(constant:"a")   // LOWER_WORD
+        let constant = LocalTestNode(constant:"a")   // LOWER_WORD
         XCTAssertEqual(constant, "a")
         
-        let function = NodeImpl(function:"f", nodes: [variable, constant])
+        let function = LocalTestNode(function:"f", nodes: [variable, constant])
         XCTAssertEqual(function, "f(X,a)")
         
-        let equation = NodeImpl(predicate:"=", nodes:[function,constant])
+        let equation = LocalTestNode(predicate:"=", nodes:[function,constant])
         XCTAssertEqual(equation, "f(X,a)=a")
         
-        let inequation = NodeImpl(predicate:"!=", nodes:[function,constant])
+        let inequation = LocalTestNode(predicate:"!=", nodes:[function,constant])
         XCTAssertEqual(inequation, "f(X,a)!=a")
         
-        let predicate = NodeImpl(predicate:"p", nodes:[variable,constant])
+        let predicate = LocalTestNode(predicate:"p", nodes:[variable,constant])
         XCTAssertEqual(predicate, "p(X,a)")
         
-        let negation = NodeImpl(connective:"~", nodes: [predicate])
+        let negation = LocalTestNode(connective:"~", nodes: [predicate])
         XCTAssertEqual(negation, "~p(X,a)")
         
-        var disjunction = NodeImpl(connective:"|", nodes:[equation, predicate, negation])
+        var disjunction = LocalTestNode(connective:"|", nodes:[equation, predicate, negation])
         XCTAssertEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        disjunction = NodeImpl(connective:"|", nodes:[equation, NodeImpl(connective:"|", nodes: [predicate,negation])])
+        disjunction = LocalTestNode(connective:"|", nodes:[equation, LocalTestNode(connective:"|", nodes: [predicate,negation])])
         XCTAssertNotEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        var conjunction = NodeImpl(connective:"&", nodes:[equation, predicate, negation])
+        var conjunction = LocalTestNode(connective:"&", nodes:[equation, predicate, negation])
         XCTAssertEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        conjunction = NodeImpl(connective:"&", nodes:[equation, NodeImpl(connective:"&", nodes: [predicate,negation])])
+        conjunction = LocalTestNode(connective:"&", nodes:[equation, LocalTestNode(connective:"&", nodes: [predicate,negation])])
         XCTAssertNotEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        var fof = NodeImpl(connective:"|", nodes:[equation, NodeImpl(connective:"&", nodes: [predicate,negation])])
+        var fof = LocalTestNode(connective:"|", nodes:[equation, LocalTestNode(connective:"&", nodes: [predicate,negation])])
         expected = "f(X,a)=a | (p(X,a) & ~p(X,a) )"
         XCTAssertEqual(fof, expected)
         
-        fof = NodeImpl(connective:"&", nodes:[equation, NodeImpl(connective:"|", nodes: [predicate,negation])])
+        fof = LocalTestNode(connective:"&", nodes:[equation, LocalTestNode(connective:"|", nodes: [predicate,negation])])
         expected = "f(X,a)=a & (p(X,a) | ~p(X,a)) "
         XCTAssertEqual(fof, expected)
         
-        let universal = NodeImpl(connective:"!", nodes: [NodeImpl(connective:",", nodes:["X"]), disjunction])
+        let universal = LocalTestNode(connective:"!", nodes: [LocalTestNode(connective:",", nodes:["X"]), disjunction])
         expected = "![X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(universal, expected)
         
-        let existential = NodeImpl(connective:"?", nodes: [NodeImpl(connective:",", nodes:["X"]), disjunction])
+        let existential = LocalTestNode(connective:"?", nodes: [LocalTestNode(connective:",", nodes:["X"]), disjunction])
         expected = "?[X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(existential, expected)
     }
     
     func testSubstitution() {
-        var subs = [NodeImpl: NodeImpl]()
+        var subs = [LocalTestNode: LocalTestNode]()
         
         // An empty term mapping is everything.
         XCTAssertTrue(subs.isSubstitution)
@@ -190,7 +190,7 @@ class NodeClassTests: XCTestCase {
         XCTAssertTrue(subs.isRenaming)
         
         // A term mapping, but not an substitution.
-        subs = ["f(g(X,a))": "g(X)"] as [NodeImpl: NodeImpl]
+        subs = ["f(g(X,a))": "g(X)"] as [LocalTestNode: LocalTestNode]
         
         XCTAssertFalse(subs.isSubstitution)
         XCTAssertFalse(subs.isVariableSubstitution)
@@ -203,7 +203,7 @@ class NodeClassTests: XCTestCase {
         XCTAssertFalse(subs.isRenaming)
         
         // An substitution, but not a variable substitution.
-        subs = ["X": "g(X)"] as [NodeImpl: NodeImpl]
+        subs = ["X": "g(X)"] as [LocalTestNode: LocalTestNode]
         
         XCTAssertTrue(subs.isSubstitution)
         XCTAssertFalse(subs.isVariableSubstitution)
@@ -216,7 +216,7 @@ class NodeClassTests: XCTestCase {
         XCTAssertFalse(subs.isRenaming)
         
         // A variable substitution, but not a renaming.
-        subs = ["X": "Z"] as [NodeImpl: NodeImpl]
+        subs = ["X": "Z"] as [LocalTestNode: LocalTestNode]
         subs["Y"] = "Z"
         
         XCTAssertTrue(subs.isSubstitution)
@@ -224,7 +224,7 @@ class NodeClassTests: XCTestCase {
         XCTAssertFalse(subs.isRenaming)
         
         // A renaming
-        subs = ["X": "Y"] as [NodeImpl: NodeImpl]
+        subs = ["X": "Y"] as [LocalTestNode: LocalTestNode]
         
         XCTAssertTrue(subs.isSubstitution)
         XCTAssertTrue(subs.isVariableSubstitution)

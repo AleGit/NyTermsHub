@@ -32,6 +32,10 @@ class YiProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
+        prover.run()
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
         
     }
     
@@ -39,6 +43,10 @@ class YiProverBasicTests: XCTestCase {
         let p = "p" as TestNode
         let np = "~p" as TestNode
         let prover = YiProver(clauses: [p,np])
+        
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
+        
+        prover.run()
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
@@ -55,6 +63,74 @@ class YiProverBasicTests: XCTestCase {
         let tptpClauses = tptpFormulae.map { $0.root }
         
         let prover = YiProver(clauses: tptpClauses)
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
+        prover.run()
+        
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
+        
+        
+        
+    }
+    
+    func _testSYO587m1() {
+        let path = "/Users/Shared/TPTP/Problems/SYO/SYO587-1.p"
+        
+        let (result,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, result.count)
+        XCTAssertEqual(0, result[0])
+        XCTAssertEqual(19862, tptpFormulae.count)
+        
+        let tptpClauses = tptpFormulae.map { $0.root }
+        
+        let prover = YiProver(clauses: tptpClauses)
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
+        prover.run()
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+    }
+    
+    
+    
+    func testPUZ056m2_030() {
+        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ056-2.030.p"
+        
+        let (result,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, result.count)
+        XCTAssertEqual(0, result[0])
+        XCTAssertEqual(41, tptpFormulae.count)
+        
+        let tptpClauses = tptpFormulae.map { $0.root }
+        
+        let prover = YiProver(clauses: tptpClauses)
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
+        prover.run()
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+    }
+    
+    
+    /// satisfiable, hence the saturation process must be optimized
+    func _testPUZ028m3() {
+        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ028-3.p"
+        
+        let (result,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, result.count)
+        XCTAssertEqual(0, result[0])
+        XCTAssertEqual(504, tptpFormulae.count)
+        
+        let tptpClauses = tptpFormulae.map { $0.root }
+        
+        let prover = YiProver(clauses: tptpClauses)
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
+        prover.run()
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         

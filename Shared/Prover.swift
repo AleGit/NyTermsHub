@@ -17,6 +17,8 @@ public final class YiProver<N:Node> {
     ///     ∀x1,∀x2,∀y2 (a(x1) ∨ c(x1)) ∧ (a(x2) ∨ b(x2,x2))
     private lazy var clauses : [(N,term_t)] = [(N,term_t)]()
     
+    private var bottom = N(connective:"|",nodes:[N]())
+    
     private var indexOfFirstUnassertedClause = 0
     
     /// a collection of symbols and their semantics
@@ -44,6 +46,7 @@ public final class YiProver<N:Node> {
     /// We assign a list of (unsatisfiable) clauses
     /// and a list of predefined symbols to our prover
     public init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple]) {
+        
         // create context
         self.ctx = yices_new_context(nil)
         self.🚧 = yices_new_uninterpreted_term(free_tau)
@@ -73,9 +76,79 @@ public extension YiProver {
     }
     
     public func run() {
+        var round = 0
         while yices_check_context(ctx, nil) == STATUS_SAT {
+            let mdl = yices_get_model(ctx, 1);
+            defer { yices_free_model(mdl) }
+            
+            let selectedLiterals = clauses.map {
+                (tptpClause,yiClause) -> N in
+                
+                guard let nodes = tptpClause.nodes else {
+                    return bottom    // false
+                }
+                
+                switch nodes.count {
+                case 0:
+                    assert(false,"there must no be model with an empty clause")
+                    return bottom
+                case 1:
+                    assert(1 == yices_formula_true_in_model(mdl, yiClause))
+                    return nodes.first!
+                case let tcount:
+                    assert(Int(yices_term_num_children(yiClause)) == tcount)
+                    for idx in 0..<tcount {
+                        let child = yices_term_child(yiClause, Int32(idx))
+                        if yices_formula_true_in_model(mdl, child) == 1 {
+                            return nodes[idx]
+                        }
+                    }
+                }
+                
+                // at this point no literal was found that holds in the model
+                assert(false,"there must no be model with a clause without a literal that holds in the model")
+                return bottom
+            }
+            
+            print("\(selectedLiterals.count) literals selected")
+            
+            var newClauses = [N]()
+            
+            for i in 0..<(selectedLiterals.count-1) {
+                if i%100 == 0 { print(i) }
+                for j in (i+1)..<selectedLiterals.count {
+                    let a = selectedLiterals[i]
+                    let b = selectedLiterals[j]
+                    
+                    if let unifier = a ~?= b {
+                        
+                        let na = clauses[i].0 * unifier
+                        let nb = clauses[j].0 * unifier
+                        
+                        // print(na,nb)
+                        
+                        newClauses.append(na)
+                        newClauses.append(nb)
+                    }
+                }
+            }
+            
+            print("round",round++, "# new clauses",newClauses.count)
+            
+            guard newClauses.count > 0 else { return }
+            
+            for tClause in newClauses {
+                
+                clauses.append((tClause, build_yices_term(tClause, range_tau: bool_tau)))
+                
+            }
+            
+            assertClauses()
+            
+            
             
         }
+
         
     }
 }

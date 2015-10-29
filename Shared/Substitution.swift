@@ -119,6 +119,12 @@ public func **<T:Node>(t:T, s:T) -> T {
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** s })
 }
 
+/// 't ** idx' appends index to variable names
+public func **<T:Node>(t:T, idx:Int) -> T {
+    guard let nodes = t.nodes else { return T(variable:"\(t.symbol).\(idx)") }
+    return T(symbol:t.symbol, nodes: nodes.map { $0 ** idx })
+}
+
 /// 't**' replaces all variables in t with constant '⊥'.
 public postfix func **<T:Node>(t:T) -> T {
     return t ** T(constant:"⊥")

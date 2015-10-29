@@ -107,14 +107,15 @@ extension Node {
         guard let nodes = self.nodes else {
             // since self has not list of subnodes at all,
             // self must be a variable term
-            assert((Symbols.defined[self.symbol]?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(Symbols.defined[self.symbol]!)")
+            assert((Symbols.defaultSymbols[self.symbol]?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(Symbols.defaultSymbols[self.symbol]!)")
             
             return self.symbol
         }
         
-        guard let quadruple = Symbols.defined[self.symbol] else {
+        guard let quadruple = Symbols.defaultSymbols[self.symbol] else {
             
-            // If the symbol is not defined in the global symbol table, i.e. a function or predicate symbol 
+            // If the symbol is not defined in the global symbol table, 
+            // i.e. a function or predicate symbol
             // we assume prefix notation for (constant) funtions or predicates:
             switch nodes.count {
             case 0:

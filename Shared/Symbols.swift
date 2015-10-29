@@ -21,9 +21,7 @@ struct Symbols {
     static let EQUALS = "=" // →≈
     static let SEPARATOR = ","
     
-    
-    
-    static private let universalSymbols : [Symbol:SymbolQuadruple] = [
+    static let universalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
         ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
@@ -40,7 +38,7 @@ struct Symbols {
         "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
         ]
     
-    static private let tptpSymbols : [Symbol:SymbolQuadruple] = [
+    static let tptpSymbols : [Symbol:SymbolQuadruple] = [
         
         // <assoc_connective> ::= <vline> | &
         "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
@@ -70,7 +68,9 @@ struct Symbols {
         "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
     
-    static var defined : [Symbol:SymbolQuadruple] { return universalSymbols + tptpSymbols }
+    // static var defined : [Symbol:SymbolQuadruple] { return universalSymbols + tptpSymbols }
+    
+    static let defaultSymbols = universalSymbols + tptpSymbols
     
 
 }
@@ -175,7 +175,7 @@ private extension Symbols {
     /// no arity at all, arities: 0..<0,
     /// i.e. variable.nodes == nil
     private static func _add(variable symbol: Symbol) {
-        guard let quadruple = Symbols.defined[symbol] else {
+        guard let quadruple = Symbols.defaultSymbols[symbol] else {
             cachedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
             return
         }
@@ -199,7 +199,7 @@ private extension Symbols {
     /// arity is greater than zero, arities: value...value == value..<value+1,
     /// i.e. function.nodes.count == value > 0
     private static func _add(function symbol: Symbol, arity value:Int) {
-        guard var quadruple = Symbols.defined[symbol] else {
+        guard var quadruple = Symbols.defaultSymbols[symbol] else {
             cachedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }
@@ -228,7 +228,7 @@ private extension Symbols {
     /// arities is greater than zero: value...value == value..<value+1,
     /// i.e. predicate == value > 0
     private static func _add(predicate symbol: Symbol, arity value:Int) {
-        guard var quadruple = Symbols.defined[symbol] else {
+        guard var quadruple = Symbols.defaultSymbols[symbol] else {
             cachedSymbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
             return
         }

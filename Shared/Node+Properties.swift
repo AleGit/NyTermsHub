@@ -20,7 +20,7 @@ public extension Node {
     
     /// Check if `self` represents a (non-empty) tuple of variables.
     public var isTupleOfVariables : Bool {
-        guard Symbols.defined[self.symbol]?.type == SymbolType.Tuple else { return false }
+        guard Symbols.defaultSymbols[self.symbol]?.type == SymbolType.Tuple else { return false }
         guard let nodes = self.nodes else { return false }
         guard nodes.count > 0 else { return false } /* a tuple of variables must not be empty */
         return nodes.reduce(true) { $0 && $1.isVariable }
@@ -32,7 +32,7 @@ public extension Node {
     /// To do: find better name for this property
     var unnegatedNode : Self? {
         guard let nodes = self.nodes else { return nil }    // a variable is not negated
-        guard let type = Symbols.defined[self.symbol]?.type else { return nil } // the type of the node must be known
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return nil } // the type of the node must be known
         
         switch type {
         case SymbolType.Negation:
@@ -76,7 +76,7 @@ public extension Node {
     /// if `f` is a function symbol and `t_1`,...,`t_n` are (function) terms.
     var isTerm : Bool {
         guard let nodes = self.nodes else { return true; } // a variable is a term
-        guard let category = Symbols.defined[self.symbol]?.category else { return nodes.reduce(true) { $0 && $1.isTerm } }
+        guard let category = Symbols.defaultSymbols[self.symbol]?.category else { return nodes.reduce(true) { $0 && $1.isTerm } }
         return category == SymbolCategory.Functor && nodes.reduce(true) { $0 && $1.isTerm }
     }
     
@@ -84,7 +84,7 @@ public extension Node {
     ///
     /// - an expression `~E` is a negative predicate, if `E` is a predicate term.
     private var isNegativePredicate : Bool {
-        guard Symbols.defined[self.symbol]?.type == SymbolType.Negation else { return false }
+        guard Symbols.defaultSymbols[self.symbol]?.type == SymbolType.Negation else { return false }
         guard let nodes = self.nodes where nodes.count == 1 else { return false }
         
         return nodes.first!.isPositivePredicate
@@ -95,7 +95,7 @@ public extension Node {
     /// - an expression `p(t_1,...t_n)` is a positive predicate term
     /// if `p` is a predicate symbol and `t_1`,...,`t_n` are (function) nodes.
     private var isPositivePredicate : Bool {
-        if let type = Symbols.defined[self.symbol]?.type {
+        if let type = Symbols.defaultSymbols[self.symbol]?.type {
             // if the symbols is defined, then it must be a predicatate symbol
             guard type == SymbolType.Predicate else { return false }
         }
@@ -109,7 +109,7 @@ public extension Node {
     /// - an expression `s ≠ t` is an inequation if `s` and `t` are function terms.
     /// - an expression `~E` is the negation of an equation, if `E` is an equation.
     private var isInequation : Bool {
-        guard let type = Symbols.defined[self.symbol]?.type else { return false }
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return false }
         guard let nodes = self.nodes else { return false }
         
         switch (type, nodes.count) {
@@ -127,7 +127,7 @@ public extension Node {
     ///
     /// - an expression `s = t` is an equation if `s` and `t` are function terms.
     public var isEquation : Bool {
-        guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Equation else { return false }
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Equation else { return false }
         guard let nodes = self.nodes where nodes.count == 2 else { return false }
         return nodes.first!.isTerm && nodes.last!.isTerm
     }
@@ -153,7 +153,7 @@ public extension Node {
     var isFormula : Bool {
         guard !self.isLiteral else { return true }
         
-        guard let quadruple = Symbols.defined[self.symbol]
+        guard let quadruple = Symbols.defaultSymbols[self.symbol]
             where quadruple.category == SymbolCategory.Connective
             else {
                 // undefined or non-connective symbol
@@ -176,7 +176,7 @@ public extension Node {
             return true
         }
         
-        guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
         
         guard let nodes = self.nodes else { return false }
         
@@ -190,7 +190,7 @@ public extension Node {
             return false
         }
         
-        guard let type = Symbols.defined[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
         
         guard let nodes = self.nodes else { return false }
         

@@ -10,9 +10,9 @@ import XCTest
 import NyTerms
 
 class YicesSatTrials : XCTestCase {
-    private var free_tau : type_t = 0
-    private var bool_tau : type_t = 0
-    private var general_constant : term_t = 0
+    private var free_tau : type_t = NULL_TYPE           // i.e. not a type
+    private var bool_tau : type_t = NULL_TYPE           // i.e. not a type
+    private var general_constant : term_t = NULL_TERM   // i.e. not a term
     
     override func setUp() {
         super.setUp()

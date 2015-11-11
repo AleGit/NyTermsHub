@@ -4,7 +4,7 @@
 import XCTest
 @testable import NyTerms
 
-/// Parse Tests with hardware verification files
+/// Parse hardware verification files
 /// - Problems/HWV/HWV134-1.p
 /// - Problems/HWV/HWV105-1.p
 /// - Problems/HWV/HWV134+1.p
@@ -36,7 +36,8 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     func testParseHWV134cfn1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p"
-        let (tptpFormulae,_) = check(path, limit:150, count: 2_332_428)
+        let limit : NSTimeInterval = 50.0
+        let (tptpFormulae,_) = check(path, limit:limit, count: 2_332_428)
         // *** 'HWV134-1.p' total:74.974s, limit:150.0s, count:2332428 avg:0.032ms *** (2015-08-29 11:43:46 +0000)
         // *** 'HWV134-1.p' total:70.208s, limit:150.0s, count:2332428 avg:0.030ms *** (2015-09-17 13:23:36 +0000)
         // *** 'HWV134-1.p' total:45.392s, limit:150.0s, count:2332428 avg:0.019ms *** (2015-10-05 09:42:29 +0000) (26) MacBookPro
@@ -49,7 +50,8 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     func testParseHWV105cfn1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
-        let (tptpFormulae,_) = check(path, limit:1.5, count: 20_900)  // <1s
+        let limit : NSTimeInterval = 0.5
+        let (tptpFormulae,_) = check(path, limit:limit, count: 20_900)  // <1s
         // *** 'HWV105-1.p' total:0.737s, limit:1.5s, count:20900 avg:0.035ms *** (2015-08-29 11:42:31 +0000)
         // *** 'HWV105-1.p' total:0.712s, limit:1.5s, count:20900 avg:0.034ms *** (2015-09-17 13:22:26 +0000)
         // *** 'HWV105-1.p' total:0.438s, limit:1.5s, count:20900 avg:0.02ms *** (2015-10-05 09:41:43 +0000) (26) MacBookPro
@@ -67,7 +69,8 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     func testParseHWV134fof1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134+1.p"
-        let (tptpFormulae,_) = check(path, limit:90.0, count: 128_975)
+        let limit : NSTimeInterval = 20.0
+        let (tptpFormulae,_) = check(path, limit:limit, count: 128_975)
         // *** 'HWV134+1.p' total:42.162s, limit:90.0s, count:128975 avg:0.326ms *** (2015-08-29 11:44:30 +0000)
         // *** 'HWV134+1.p' total:41.537s, limit:90.0s, count:128975 avg:0.322ms *** (2015-09-17 13:24:20 +0000)
         // *** 'HWV134+1.p' total:18.978s, limit:90.0s, count:128975 avg:0.147ms *** (2015-10-05 09:42:48 +0000) (26) MacBookPro
@@ -79,7 +82,8 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     func testParseHWV062fof1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV062+1.p"
-        let (tptpFormulae,_) = check(path, limit:2, count: 2) // 209
+        let limit : NSTimeInterval = 0.9
+        let (tptpFormulae,_) = check(path, limit:limit, count: 2) // 209
         // *** 'HWV062+1.p' total:0.93s, limit:2.0s, count:2 avg:465.016ms *** (2015-08-29 11:42:18 +0000)
         // *** 'HWV062+1.p' total:0.837s, limit:2.0s, count:2 avg:418.707ms *** (2015-09-17 13:22:14 +0000)
         // *** 'HWV062+1.p' total:0.479s, limit:2.0s, count:2 avg:239.766ms *** (2015-10-05 09:41:32 +0000) (26) MacBookPro

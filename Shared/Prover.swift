@@ -43,17 +43,19 @@ public final class YiProver<N:Node> {
     /// We substitute all variables with the same fresh constant.
     private var 🚧 : term_t = NULL_TERM
     
-    /// We assign a list of (unsatisfiable) clauses
-    /// and a list of predefined symbols to our prover
+    /// We assign a list of clauses and a list of predefined symbols to our prover
+    /// Goal: prove that the clauses are unsatisfiable.
     public init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple]) {
         
-        // create context
+        // create a yices context with default configuration
         self.ctx = yices_new_context(nil)
+        
+        // create a (global) fresh constant
         self.🚧 = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(self.🚧, "⊥")
         
-        // assign input
-        var idx = 0
+        var idx = 0 // append an index to all variables to make them distinct between clauses
+        // a(x)|c(x), a(x)|b(x,y) -> a(x1)|c(x1), a(x2)|b(x2,y2)
         self.clauses = clauses.map { ($0 ** idx++, build_yices_term($0, range_tau: bool_tau)) }
         self.symbols = symbols
         
@@ -81,10 +83,12 @@ public extension YiProver {
             let mdl = yices_get_model(ctx, 1);
             defer { yices_free_model(mdl) }
             
+            // calculate first holding of selected literals
             let selectedLiterals = clauses.map {
                 (tptpClause,yiClause) -> N in
                 
                 guard let nodes = tptpClause.nodes else {
+                    assert(false,"there must no be model with an empty clause")
                     return bottom    // false
                 }
                 

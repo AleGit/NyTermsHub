@@ -16,6 +16,7 @@ func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
 
 // MARK: symbol table
 
+/// Predefined symbols like auxilary, connective and equality symbols.
 struct Symbols {
     
     static let EQUALS = "=" // →≈
@@ -167,86 +168,4 @@ public enum SymbolNotation {
     case Invalid
 }
 
-#if USE_STATIC_SYMBOL_TABLE
 
-// MARK: - obsolete
-private extension Symbols {
-    
-    /// no arity at all, arities: 0..<0,
-    /// i.e. variable.nodes == nil
-    private static func _add(variable symbol: Symbol) {
-        guard let quadruple = Symbols.defaultSymbols[symbol] else {
-            cachedSymbols[symbol] = (type:SymbolType.Variable, category:SymbolCategory.Variable, notation:SymbolNotation.Prefix, arities:Range(start:0, end:0))
-            return
-        }
-        
-        // we know: the symbol was allreday in the symbol table
-        // we check: is our variable symbol consistent with the symbol in the table
-        
-        assert(quadruple.type == SymbolType.Variable)
-        assert(quadruple.category == SymbolCategory.Variable)
-        assert(quadruple.notation == SymbolNotation.Prefix)
-        assert(quadruple.arities.isEmpty)
-    }
-    
-    /// aritiy is zero, arities: 0...0 == 0..<1,
-    /// i.e. constant.nodes.count == 0
-    private static func _add(constant symbol: Symbol) {
-        // a constant is just a constant function, hence it has arity zero
-        Symbols._add(function: symbol, arity: 0)
-    }
-    
-    /// arity is greater than zero, arities: value...value == value..<value+1,
-    /// i.e. function.nodes.count == value > 0
-    private static func _add(function symbol: Symbol, arity value:Int) {
-        guard var quadruple = Symbols.defaultSymbols[symbol] else {
-            cachedSymbols[symbol] = ( type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
-            return
-        }
-        
-        // we know: the symbol was allread in the symbol table
-        // we check: is our function symbol consitent with the symbol in the table
-        // remark: a function symbol, more specifically a symbol of category functor can be a predicate symbol
-        
-        assert(quadruple.type == SymbolType.Function || quadruple.type == SymbolType.Predicate)
-        assert(quadruple.category == SymbolCategory.Functor)
-        
-        // we check: variadic function/predicate symbols are not supported yet.
-        assert(quadruple.arities.startIndex==value)
-        assert(quadruple.arities.endIndex==value+1)
-        
-        quadruple.arities.insert(value)
-        cachedSymbols[symbol] = quadruple
-    }
-    
-    /// /// aritiy is zero, arities: 0...0 == 0..<1,
-    /// i.e. proposition.nodes.count == 0
-    private static func _add(proposition symbol:Symbol) {
-        Symbols._add(predicate:symbol,arity:0)
-    }
-    
-    /// arities is greater than zero: value...value == value..<value+1,
-    /// i.e. predicate == value > 0
-    private static func _add(predicate symbol: Symbol, arity value:Int) {
-        guard var quadruple = Symbols.defaultSymbols[symbol] else {
-            cachedSymbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities:Range(start:value,end:value+1))
-            return
-        }
-        // we know: the symbol was allread in the symbol table
-        // we check: is our function symbol consitent with the symbol in the table
-        // remark: a predicate symbol, more specifically a functor could be added as function symbol before
-        assert(quadruple.type == SymbolType.Function || quadruple.type == SymbolType.Predicate)
-        assert(quadruple.category == SymbolCategory.Functor)
-        assert(quadruple.notation == SymbolNotation.Prefix)
-        
-        // we check: variadic predicate symbols are not supported yet.
-        assert(quadruple.arities.startIndex==value)
-        assert(quadruple.arities.endIndex==value+1)
-        
-        quadruple.arities.insert(value)
-        cachedSymbols[symbol] = quadruple
-    }
-    
-}
-
-#endif

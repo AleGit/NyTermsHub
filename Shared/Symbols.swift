@@ -21,6 +21,11 @@ struct Symbols {
     
     static let EQUALS = "=" // →≈
     static let SEPARATOR = ","
+    static let HOLE = "⬜︎"
+    static let CombiningEnclosingCircle:Character = " ⃝"
+    static let CombiningEnclosingSquare:Character = " ⃞"
+    static let xsquare = "x" + String(CombiningEnclosingSquare)
+    
     
     static let universalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),

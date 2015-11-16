@@ -86,7 +86,7 @@ public extension Array where Element:Node {
         if first < 1 || first >= self.count { return nil }
         
         let term = self[first-1]
-        let tail = Array<Int>(position[1..<position.count])
+        let tail = Position(position.suffixFrom(1))
         
         return term[tail]
     }
@@ -115,7 +115,7 @@ private func subterm<T:Node>(root:T, position: Position) -> T? {
     if first < 1 || first > nodes.count { return nil }     // function (constant) does not have a subterm at given position
     
     // term cannot be a variable or constant at this point
-    let tail = Array<Int>(position[1..<position.count])
+    let tail = Array(position.suffixFrom(1))
     
     return subterm(nodes[first-1], position:tail)
 }
@@ -129,7 +129,7 @@ private func replace<T:Node>(root:T, position:Position, term:T) -> T? {
     if first < 1 || first > nodes.count { return nil }      // function (constant) does not have a subterm at given position
     
     // term cannot be a variable or constant at this point
-    let tail = Array<Int>(position[1..<position.count])
+    let tail = Array(position.suffixFrom(1))
     
     guard let replacement = replace(nodes[first-1], position: tail, term:term) else { return nil }
     

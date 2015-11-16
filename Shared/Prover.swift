@@ -17,31 +17,32 @@ public final class YiProver<N:Node> {
     ///     ∀x1,∀x2,∀y2 (a(x1) ∨ c(x1)) ∧ (a(x2) ∨ b(x2,x2))
     private lazy var clauses : [(N,term_t)] = [(N,term_t)]()
     
-    private var bottom = N(connective:"|",nodes:[N]())
+    /// false or bottom in tptp syntax
+    private let bottom = N(connective:"|",nodes:[N]())
     
     private var indexOfFirstUnassertedClause = 0
     
     /// a collection of symbols and their semantics
     private lazy var symbols : [Symbol:SymbolQuadruple] = [Symbol:SymbolQuadruple]()
     
-    /// a pointer to an yices context
-    private var ctx : COpaquePointer
+    /// a pointer to a yices context
+    private let ctx : COpaquePointer
     
     /// semantics of first order logic is defined over a freely choosable carrier
     /// - the input types of functions are determined by the carrier
     /// - the input types of predicates are determined by the carrier
     /// - the output type of (constant) functions is determined by the carrier
-    private var free_tau = yices_int_type()
+    private let free_tau = yices_int_type()
     
     /// We handle predicates as characteristic functions
     /// - the input types of connectives are Boolean
     /// - the output type of propositions is Boolean
     /// - the output type of predicates is Boolean
     /// - the output type of connectives is Boolean
-    private var bool_tau = yices_bool_type()
+    private let bool_tau = yices_bool_type()
     
     /// We substitute all variables with the same fresh constant.
-    private var 🚧 : term_t = NULL_TERM
+    private let 🚧 : term_t
     
     /// We assign a list of clauses and a list of predefined symbols to our prover
     /// Goal: prove that the clauses are unsatisfiable.
@@ -50,7 +51,6 @@ public final class YiProver<N:Node> {
         // create a yices context with default configuration
         self.ctx = yices_new_context(nil)
         
-        // create a (global) fresh constant
         self.🚧 = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(self.🚧, "⊥")
         

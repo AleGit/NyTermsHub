@@ -41,35 +41,33 @@ struct Symbols {
     
     static let tptpSymbols : [Symbol:SymbolQuadruple] = [
         
-        // <assoc_connective> ::= <vline> | &
+        // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
         "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
         "|" : (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:0..<Int.max),  // false; A; A | B; A | ... & Z
-        // <unary_connective> ::= ~
+        // ⟨unary_connective⟩ ::= ~
         "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1),          // ~A
-        // <binary_connective>  ::= <=> | => | <= | <~> | ~<vline> | ~&
+        // ⟨binary_connective⟩  ::= <=> | => | <= | <~> | ~<vline> | ~&
         "=>" : (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2),       // A => B
         "<=" : (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2),          // A <= B
         "<=>" : (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2),              // A <=> B
         "~&" : (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2),              // A ~& B
         "~|" : (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2),               // A ~| B
         "<~>" : (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2),             // A <~> B
-        // <fol_quantifier> ::= ! | ?
+        // ⟨fol_quantifier⟩ ::= ! | ?
         "!" : (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arities:2...2),     // ! [X] : A
         "?" : (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arities:2...2),       // ? [X] : A
-        // <gentzen_arrow>      ::= -->
+        // ⟨gentzen_arrow⟩      ::= -->
         "-->" : (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2),          // A --> B
-        // <defined_infix_formula>  ::= <term> <defined_infix_pred> <term>
-        // <defined_infix_pred> ::= <infix_equality>
-        // <infix_equality>     ::= =
+        // ⟨defined_infix_formula⟩  ::= ⟨term⟩ ⟨defined_infix_pred⟩ ⟨term⟩
+        // ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩
+        // ⟨infix_equality⟩     ::= =
 //         "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s = t
-        // <fol_infix_unary>    ::= <term> <infix_inequality> <term>
-        // <infix_inequality>   ::= !=
+        // ⟨fol_infix_unary⟩    ::= ⟨term⟩ ⟨infix_inequality⟩ ⟨term⟩
+        // ⟨infix_inequality⟩   ::= !=
         "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s != t
         
         "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
-    
-    // static var defined : [Symbol:SymbolQuadruple] { return universalSymbols + tptpSymbols }
     
     static let defaultSymbols = universalSymbols + tptpSymbols
     
@@ -86,19 +84,19 @@ public enum SymbolType {
     
     /* CNF */
     
-    /// <disjunction> ::= <literal> | <disjunction> <vline> <literal>
+    /// ⟨disjunction⟩ ::= ⟨literal⟩ | ⟨disjunction⟩ ⟨vline⟩ ⟨literal⟩
     // Clause,          // ( ... | ... | ... )
     
     /* FOF */
     
-    /// <unary_connective>   ::= ~
+    /// ⟨unary_connective⟩ ::= ~
     case Negation   // ~    NOT
     
-    /// <assoc_connective>   ::= <vline> | &
-    case Disjunction    // |    OR                          // <fof_or_formula>
-    case Conjunction    // &    AND                         // <fof_and_formula>
+    /// ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
+    case Disjunction    // |    OR                          // ⟨fof_or_formula⟩
+    case Conjunction    // &    AND                         // ⟨fof_and_formula⟩
     
-    /// <binary_connective> ::= <=> | => | <= | <~> | ~<vline> | ~&
+    /// ⟨binary_connective⟩ ::= <=> | => | ⟨= | <~> | ~<vline> | ~&
     case Implication    // =>   IMPLY
     case Converse       // <=   YLPMI
     
@@ -107,39 +105,42 @@ public enum SymbolType {
     case NOR    // ~|   NOR
     case NAND   // ~&   NAND
     
-    ///  The seqent arrow <gentzen_arrow> ::= -->
+    /// ⟨gentzen_arrow⟩ ::= -->
     case Sequent         // -->  GANTZEN
     
     /// n-ary list
     case Tuple           // [ ... , ... ]
     
-    /// <fol_quantifier> ::= ! | ?
+    /// ⟨fol_quantifier⟩ ::= ! | ?
     case Universal       // !    FORALL
     case Existential     // ?    EXISTS
     
     // general terms
-    /// 0-ary
+    // 0-ary
     // Proposition,    // (0-ary)
-    /// n-ary prefix
-    /// Predicate,      // (n-ary prefix)
-    /// <defined_infix_pred> ::= <infix_equality> ::= =
+    // n-ary prefix
+    // Predicate,      // (n-ary prefix)
+    
+    /// ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩ ::= =
     case Equation               // =    EQUAL
-    /// <infix_inequality>  ::= !=
+    /// ⟨infix_inequality⟩  ::= !=
     case Inequation             // !=   NEQ
     
-    /// <plain_atomic_formula> ::= <plain_term>
-    /// <plain_term> ::= <constant> | <functor>(<arguments>)
-    ///
-    /// <plain_atomic_formula> :== <proposition> | <predicate>(<arguments>)
-    /// <proposition> :== <predicate>
-    /// <predicate> :== <atomic_word>
-    /// <predicate> :== <atomic_word>
-    case Predicate              // proposition and predicate symbols
+    /// Propositional and predicate symbols
+    /// - ⟨plain_atomic_formula⟩ ::= ⟨plain_term⟩
+    /// - ⟨plain_atomic_formula⟩ :== ⟨proposition⟩ | ⟨predicate⟩(⟨arguments⟩)
+    /// - ⟨proposition⟩ :== ⟨predicate⟩
+    /// - ⟨predicate⟩ :== ⟨atomic_word⟩
+    case Predicate
     
-    /// <constant> ::= <functor>
-    /// <functor> ::= <atomic_word>
+    /// constant and function symbols
+    /// - ⟨plain_term⟩ ::= ⟨constant⟩ | ⟨functor⟩(⟨arguments⟩)
+    /// - ⟨constant⟩ ::= ⟨functor⟩
+    /// - ⟨functor⟩ ::= ⟨atomic_word⟩
     case Function               // constant and function symbols
-    /// <variable> ::= <upper_word>
+    
+    /// Variable symbols
+    /// - ⟨variable⟩ ::= ⟨upper_word⟩
     case Variable
     
     case Invalid
@@ -167,5 +168,3 @@ public enum SymbolNotation {
     
     case Invalid
 }
-
-

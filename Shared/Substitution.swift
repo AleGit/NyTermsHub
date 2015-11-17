@@ -29,6 +29,8 @@ extension Dictionary where Key:Node, Value:Node { // , Key == Value does not wor
     }
     
     /// A substitution maps variables to terms.
+    ///
+    /// see **Definition 2.1.23.** in 
     public var isSubstitution : Bool {
         assert(self.isHomogenous)
         return allKeysAreVariables
@@ -79,6 +81,28 @@ public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
         return nil
     default:
         return nil
+    }
+}
+
+extension Node {
+    /// If `self` is not P then P will be returned,
+    /// if `self` is A != B then A = B will be returned.
+    /// Otherwise nil will be returned.
+    /// To do: find better name for this property
+    var unnegatedNode : Self? {
+        guard let nodes = self.nodes else { return nil }    // a variable is not negated
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return nil } // the type of the node must be known
+        
+        switch type {
+        case SymbolType.Negation:
+            assert (nodes.count == 1)
+            return nodes.first
+        case SymbolType.Inequation:
+            assert (nodes.count == 2)
+            return Self(equational: "=", nodes: nodes)
+        default:
+            return nil
+        }
     }
 }
 

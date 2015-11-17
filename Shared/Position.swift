@@ -75,66 +75,29 @@ public extension Node {
     }
 }
 
-public extension Array where Element:Node {
-    /// Get term at position in array. (for convenience)
-    /// array[[i]] := array[i-1]
-    /// array[[i,j,...]] := array[i-1][j,...]
-    public subscript(position:Position)->Element? {
-        
-        guard let first = position.first else { return nil }
-        
-        if first < 1 || first >= self.count { return nil }
-        
-        let term = self[first-1]
-        let tail = Position(position.suffixFrom(1))
-        
-        return term[tail]
-    }
-}
-
 public extension Node {
     /// Get term at position.
     /// With [] the term itself is returned.
     /// With [i] the the subterm with index (i-1) is returned.
     subscript (position: Position) -> Self? {
-        return subterm(self, position: position)
+        guard let first = position.first else { return self }   // position == []
+        guard let nodes = self.nodes else { return nil }        // position != [], but variables has no subnodes at all
+        if first < 1 || first > nodes.count { return nil }      // node does not have subnode at given position
+        // node is not a constant or variable and has a subnode at given position
+        let tail = Array(position.suffixFrom(1))
+        return nodes[first-1][tail]
     }
     
     /// Construct a new term by replacing the subterm at position.
     subscript (term: Self, position:Position) -> Self? {
-        return replace(self, position: position, term: term)
+        guard let first = position.first else { return term }   // position == []
+        guard var nodes = self.nodes else { return nil }        // position != [], but variables has no subnodes at all
+        if first < 1 || first > nodes.count { return nil }      // node does not have subnode at given position
+        // node is not a constant or variable and has a subnode at given position
+        let tail = Array(position.suffixFrom(1))
+        guard let subnode = nodes[first-1][term, tail] else { return nil }
+        nodes[first-1] = subnode
+        return Self(function:self.symbol, nodes: nodes)
     }
-}
-
-private func subterm<T:Node>(root:T, position: Position) -> T? {
-    
-    guard let first = position.first else { return root }   // position == []
-    
-    guard let nodes = root.nodes else { return nil }        // postiion != 0, but variables has no subnodes at all
-    
-    if first < 1 || first > nodes.count { return nil }     // function (constant) does not have a subterm at given position
-    
-    // term cannot be a variable or constant at this point
-    let tail = Array(position.suffixFrom(1))
-    
-    return subterm(nodes[first-1], position:tail)
-}
-
-private func replace<T:Node>(root:T, position:Position, term:T) -> T? {
-    
-    guard let first = position.first else { return term }   // position == []
-    
-    guard var nodes = root.nodes else { return nil }        // postiion != 0, but variables has no subnodes at all
-    
-    if first < 1 || first > nodes.count { return nil }      // function (constant) does not have a subterm at given position
-    
-    // term cannot be a variable or constant at this point
-    let tail = Array(position.suffixFrom(1))
-    
-    guard let replacement = replace(nodes[first-1], position: tail, term:term) else { return nil }
-    
-    nodes[first-1] = replacement
-    
-    return T(function:root.symbol, nodes:nodes)
 }
 

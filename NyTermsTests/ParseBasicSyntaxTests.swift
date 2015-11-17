@@ -198,7 +198,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("&", a.symbol)
         XCTAssertEqual(expected, a.nodes!.count)
         
-        let b = nodes[[1,2,2,2]]!   // nodes[0][[2,2,2]] position 1 is array index 0
+        let b = nodes[0][[2,2,2]]!
         XCTAssertEqual(a, b)
         
         let bvars = b.allVariables

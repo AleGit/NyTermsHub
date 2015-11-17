@@ -56,7 +56,11 @@ public extension Node {
     /// if `f` is a function symbol and `t_1`,...,`t_n` are (function) terms.
     var isTerm : Bool {
         guard let nodes = self.nodes else { return true; } // a variable is a term
-        guard let category = Symbols.defaultSymbols[self.symbol]?.category else { return nodes.reduce(true) { $0 && $1.isTerm } }
+        guard let category = Symbols.defaultSymbols[self.symbol]?.category else {
+            // category is not defined, i.e. symbol is not predefined and unregistered
+            return nodes.reduce(true) { $0 && $1.isTerm }
+        }
+        // if the category is defined it must be a functor
         return category == SymbolCategory.Functor && nodes.reduce(true) { $0 && $1.isTerm }
     }
     
@@ -76,10 +80,10 @@ public extension Node {
     /// if `p` is a predicate symbol and `t_1`,...,`t_n` are (function) nodes.
     private var isPositivePredicate : Bool {
         if let type = Symbols.defaultSymbols[self.symbol]?.type {
-            // if the symbols is defined, then it must be a predicatate symbol
+            // if the symbol is defined it must be a predicatate symbol
             guard type == SymbolType.Predicate else { return false }
         }
-        guard let nodes = self.nodes else { return false }
+        guard let nodes = self.nodes else { return false }  // a variable is not a predicate term
         
         return nodes.reduce(true) { $0 && $1.isTerm }
     }
@@ -87,16 +91,18 @@ public extension Node {
     /// Costly check if `self` represents a valid inequation or the negation of a valid equation.
     ///
     /// - an expression `s ≠ t` is an inequation if `s` and `t` are function terms.
-    /// - an expression `~E` is the negation of an equation, if `E` is an equation.
+    /// - an expression `~E` is an inequation, if `E` is an equation.
     private var isInequation : Bool {
-        guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return false }
-        guard let nodes = self.nodes else { return false }
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return false }    // an undefined node type cannot be an inequation
+        guard let nodes = self.nodes else { return false }  // a variable is not an inequation
         
         switch (type, nodes.count) {
         case (.Negation, 1):
+            // the negation of one equation is an inequation
             return nodes.first!.isEquation
             
         case (.Inequation, 2):
+            // the inequation of two terms is a inequation
             return nodes.first!.isTerm && nodes.last!.isTerm
         default:
             return false
@@ -105,7 +111,9 @@ public extension Node {
     
     /// Costly check if `self` represents an equation.
     ///
-    /// - an expression `s = t` is an equation if `s` and `t` are function terms.
+    /// - an expression `s = t` is an equation if `s` and `t` are terms (functions, constants, variables).
+    ///
+    /// `~I` will never be recognized as an equation, even when `I` is an inequation.
     public var isEquation : Bool {
         guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Equation else { return false }
         guard let nodes = self.nodes where nodes.count == 2 else { return false }

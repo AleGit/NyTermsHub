@@ -106,10 +106,10 @@ class TptpTermTests: XCTestCase {
         let function = TermType(function:"f", nodes: [variable, constant])
         XCTAssertEqual(function, "f(X,a)")
         
-        let equation = TermType(predicate:"=", nodes:[function,constant])
+        let equation = TermType(equational:"=", nodes:[function,constant])
         XCTAssertEqual(equation, "f(X,a)=a")
         
-        let inequation = TermType(predicate:"!=", nodes:[function,constant])
+        let inequation = TermType(equational:"!=", nodes:[function,constant])
         XCTAssertEqual(inequation, "f(X,a)!=a")
         
         let predicate = TermType(predicate:"p", nodes:[variable,constant])

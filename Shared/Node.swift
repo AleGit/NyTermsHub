@@ -46,7 +46,7 @@ public extension Node {
     }
     
     public init(connective symbol:Symbol, nodes:[Self]) {
-        assert(nodes.count>0,"a connective term must have at least one subnode")
+        // assert(nodes.count>0,"a connective \(symbol) \(nodes)term must have at least one subnode")
         self.init(symbol:symbol,nodes: nodes)
     }
 }

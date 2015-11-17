@@ -5,7 +5,7 @@ import Foundation
 
 // MARK: - Position
 
-/// **Definition 2.1.14.** A position is a finite sequence of positive integers.
+/// [AM2015TRS, *Definition 2.1.14.*] A position is a finite sequence of positive integers.
 /// The *root* position is the empty sequence and denoted by `ε`
 /// and `p+q` denotes the concatenation of positions `p` and `q`.
 /// We define binary relations <= , <, and || on positions as follows.
@@ -63,7 +63,7 @@ public extension Node {
     ///     [2,1,1] x
     ///     [2,1,2] y
     ///
-    /// see **Definition 2.1.16**
+    /// see [AM2015TRS,*Definition 2.1.16*]
     public var allPositions : [Position] {
         var positions = [Position](arrayLiteral: Position())
         
@@ -86,7 +86,7 @@ public extension Node {
     /// With [] the term itself is returned.
     /// With [i] the the subterm with index (i-1) is returned.
     ///
-    /// see **Definition 2.1.22**
+    /// see [AM2015TRS,*Definition 2.1.22*]
     subscript (position: Position) -> Self? {
         guard let first = position.first else { return self }   // position == []
         guard let nodes = self.nodes else { return nil }        // position != [], but variables has no subnodes at all
@@ -98,7 +98,7 @@ public extension Node {
     
     /// Construct a new term by replacing the subterm at position.
     ///
-    /// see **Definition 2.1.22**
+    /// see [AM2015TRS,*Definition 2.1.22*]
     subscript (term: Self, position:Position) -> Self? {
         guard let first = position.first else { return term }   // position == []
         guard var nodes = self.nodes else { return nil }        // position != [], but variables has no subnodes at all

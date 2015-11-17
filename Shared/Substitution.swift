@@ -145,7 +145,7 @@ public func **<T:Node>(t:T, s:T) -> T {
 
 /// 't ** idx' appends index to variable names
 public func **<T:Node>(t:T, idx:Int) -> T {
-    guard let nodes = t.nodes else { return T(variable:"\(t.symbol).\(idx)") }
+    guard let nodes = t.nodes else { return T(variable:"\(t.symbol)_\(idx)") }
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** idx })
 }
 

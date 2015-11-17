@@ -32,7 +32,7 @@ class YiProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run()
+        prover.run(1)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -46,7 +46,7 @@ class YiProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
-        prover.run()
+        prover.run(1)
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
@@ -66,7 +66,7 @@ class YiProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run()
+        prover.run(20)
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
@@ -88,13 +88,14 @@ class YiProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run()
+        prover.run(1)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
     }
     
     
-    
+   
+
     func testPUZ056m2_030() {
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ056-2.030.p"
         
@@ -109,7 +110,7 @@ class YiProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run()
+        prover.run(1)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
     }
@@ -130,11 +131,31 @@ class YiProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run()
+        prover.run(1)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         
+        
+    }
+    
+    /// see **Example 3.7** in [AlM2014SR]
+    func testInfiniteDomain() {
+        let clauses : [TestNode] = [
+            TestNode(connective:"|", nodes: ["~(p(X,X))"]),
+            TestNode(connective:"|", nodes: ["p(X,f(X))"]),
+            "~(p(X,Y))|~(p(Y,Z))|p(X,Z)"
+        ]
+        
+        XCTAssertTrue(clauses[0].isClause)
+        XCTAssertTrue(clauses[0].isClause)
+        XCTAssertTrue(clauses[2].isClause)
+        XCTAssertTrue(clauses[2].nodes?.count == 3)
+        
+        let prover = YiProver(clauses: clauses)
+        
+        prover.run(4)
+         XCTAssertEqual(STATUS_SAT, prover.status)
         
     }
 

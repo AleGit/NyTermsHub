@@ -77,14 +77,15 @@ public extension YiProver {
         return yices_check_context(ctx, nil)
     }
     
-    public func run() {
+    public func run(maxRounds:Int) {
         var round = 0
-        while yices_check_context(ctx, nil) == STATUS_SAT {
+        while yices_check_context(ctx, nil) == STATUS_SAT && round < maxRounds {
             let mdl = yices_get_model(ctx, 1);
             defer { yices_free_model(mdl) }
             
             // calculate first holding of selected literals
             let selectedLiterals = clauses.map {
+                
                 (tptpClause,yiClause) -> N in
                 
                 guard let nodes = tptpClause.nodes else {
@@ -99,14 +100,23 @@ public extension YiProver {
                 case 1:
                     assert(1 == yices_formula_true_in_model(mdl, yiClause))
                     return nodes.first!
-                case let tcount:
-                    assert(Int(yices_term_num_children(yiClause)) == tcount)
+                case let tcount where tcount == Int(yices_term_num_children(yiClause)):
                     for idx in 0..<tcount {
                         let child = yices_term_child(yiClause, Int32(idx))
                         if yices_formula_true_in_model(mdl, child) == 1 {
                             return nodes[idx]
                         }
                     }
+                default:
+                    for node in nodes {
+                        let child = build_yices_term(node, range_tau: bool_tau)
+                        if yices_formula_true_in_model(mdl, child) == 1 {
+                            return node
+                        }
+                    }
+                    assertionFailure("at least one literal of an clause must hold")
+                    return bottom
+                    
                 }
                 
                 // at this point no literal was found that holds in the model

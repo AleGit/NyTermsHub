@@ -830,7 +830,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				YACC_GENERATED_FILE_STEM = InputFileStem;
 			};
 			name = Debug;
@@ -871,7 +871,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTermsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "NyTermsTests/NyTermsTests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NyTerms.app/Contents/MacOS/NyTerms";
 				USER_HEADER_SEARCH_PATHS = /usr/local/include/;
 			};

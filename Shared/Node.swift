@@ -78,7 +78,7 @@ public func ==<T:Node> (lhs:T, rhs:T) -> Bool {
 }
 
 public extension Node {
-    public var hashValueDefault : Int {
+    public var defaultHashValue : Int {
         let val = self.symbol.hashValue //  &+ self.type.hashValue
         guard let nodes = self.nodes else { return val }
         
@@ -86,7 +86,7 @@ public extension Node {
     }
     
     public var hashValue : Int {
-        return self.hashValueDefault
+        return self.defaultHashValue
     }
 }
 

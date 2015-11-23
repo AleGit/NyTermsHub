@@ -10,22 +10,39 @@ import Cocoa
 public final class TptpNode: NSObject, Node {
     public let symbol: String
     public var nodes: [TptpNode]?
+    private var cachedDescription : String? = nil
+    private var cachedHashValue : Int? = nil
     
     public init(symbol: String, nodes: [TptpNode]?) {
         self.symbol = symbol
         self.nodes = nodes
     }
     
+    private func updateDescription() -> String {
+        let string = self.defaultDescription
+        cachedDescription = string
+        return string
+    }
+    
+    private func updateHashValue() -> Int {
+        let value = self.defaultHashValue
+        cachedHashValue = value
+        return value
+    }
+    
     /// Since TptpNode inherits description from NSObject
     /// it would not call the protocol extension's implementation.
     public override var description : String {
-        return self.defaultDescription
+        guard let description = cachedDescription else { return updateDescription() }
+        return description
     }
     
     /// Appends additonal term to subterms of connective.
     /// - fof_or_formula '|' fof_unitary_formula
     /// - fof_and_formula '&' fof_unitary_formula
     public func append(term: TptpNode) {
+        cachedDescription = nil // invalidate cached description
+        cachedHashValue = nil // invalidate cached hash value
         if self.nodes == nil { self.nodes = [term] }
         else { self.nodes!.append(term) }
     }
@@ -42,7 +59,8 @@ public final class TptpNode: NSObject, Node {
     /// Since TptpNode inherits hashValue from NSObject
     /// it would not call the protocol extension's implementation.
     public override var hashValue : Int {
-        return self.hashValueDefault
+        guard let value = cachedHashValue else { return updateHashValue() }
+        return value
     }
 }
 

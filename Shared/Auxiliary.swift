@@ -46,6 +46,17 @@ extension Range where Element : Comparable {
     }
 }
 
+extension Range where Element : Hashable, Element: Comparable {
+    init?(set: Set<Element>) {
+        guard let minimum = set.minElement() else { return nil }
+        guard let maximum = set.maxElement() else { return nil }
+        
+        assert (minimum <= maximum)
+        
+        self.init(start:minimum, end:maximum.successor())
+    }
+}
+
 extension Dictionary {
     func filteredKeys(predicate : (Element)->Bool) -> [Key] {
         return self.filter { predicate($0) }.map { $0.0 }

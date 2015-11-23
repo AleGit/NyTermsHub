@@ -15,9 +15,12 @@ class ParseBasicSyntaxTests: XCTestCase {
 
     func check(path:String, limit:NSTimeInterval, count:Int) -> ([TptpFormula],[TptpInclude]) {
         
-        let start = NSDate()
+        let startTime = CFAbsoluteTimeGetCurrent()
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-        let total = NSDate().timeIntervalSinceDate(start)
+        let finishTime = CFAbsoluteTimeGetCurrent()
+        let memory = strideof(tptpFormulae.dynamicType)
+        print(memory)
+        let total = finishTime - startTime
         
         let name = (path as NSString).lastPathComponent
         
@@ -43,11 +46,12 @@ class ParseBasicSyntaxTests: XCTestCase {
         // 'HWV134-1.p' total:74.974s, limit:99.0s, count:2332428 avg:0.032ms (2015-08-29 11:43:46 +0000)
         // 'HWV134-1.p' total:70.208s, limit:99.0s, count:2332428 avg:0.030ms (2015-09-17 13:23:36 +0000)
         // 'HWV134-1.p' total:45.392s, limit:99.0s, count:2332428 avg:0.019ms (2015-10-05 09:42:29 +0000) (26) MacBookPro
-        // 'HWV134-1.p' total:42.139s, limit:99.0s, count:2332428 avg:0.018ms (2015-10-22 14:17:27 +0000) (27) Mac mini
-        // 'HWV134-1.p' total:40.049s, limit:45.0s, count:2332428 avg:0.017ms (2015-11-12 08:08:01 +0100) Mac mini, Swift 2.1
-        // 'HWV134-1.p' total:44.083s, limit:49.0s, count:2332428 avg:0.018ms (2015-11-17 06:25:06 +0000) -"-
-        // 'HWV134-1.p' total:199.212s,limit:200.0s,count:2332428 avg:0.085ms (2015-11-17 16:31:50 +0000) -"-, unoptimized
-        // 'HWV134-1.p' total:321.691s,limit:200.0s,count:2332428 avg:0.137ms (2015-11-18 17:20:44 +0000) iMac24/2007 (8,49 GB)
+        // 'HWV134-1.p' total:42.139s, limit:99.0s, count:2332428 avg:0.018ms (2015-10-22 14:17:27 +0000) McMini/2012, optimized
+        // 'HWV134-1.p' total:40.049s, limit:45.0s, count:2332428 avg:0.017ms (2015-11-12 08:08:01 +0100) McMini/2012, Swift 2.1
+        // 'HWV134-1.p' total:44.083s, limit:49.0s, count:2332428 avg:0.018ms (2015-11-17 06:25:06 +0000) McMini/2012
+        // 'HWV134-1.p' total:199.212s,limit:200.0s,count:2332428 avg:0.085ms (2015-11-17 16:31:50 +0000) McMini/2012, unoptimized
+        // 'HWV134-1.p' total:321.691s,limit:200.0s,count:2332428 avg:0.137ms (2015-11-18 17:20:44 +0000) iMac24/2007 (8,5 GB)
+        // 'HWV134-1.p' total:185.152s,limit:330.0s,count:2332428 avg:0.079ms (2015-11-19 05:18:24 +0000) McMini/2012 (8,5 GB)
         
         let myformula = MyTestTerm(tptpFormulae[2_332_427].root)
         XCTAssertEqual("~(v437(VarCurr,bitIndex128))|v4403(VarCurr,bitIndex0)", myformula.description)
@@ -62,11 +66,13 @@ class ParseBasicSyntaxTests: XCTestCase {
         // 'HWV105-1.p' total:0.737s, limit:1.5s, count:20900 avg:0.035ms (2015-08-29 11:42:31 +0000)
         // 'HWV105-1.p' total:0.712s, limit:1.5s, count:20900 avg:0.034ms (2015-09-17 13:22:26 +0000)
         // 'HWV105-1.p' total:0.438s, limit:1.5s, count:20900 avg:0.020ms (2015-10-05 09:41:43 +0000) (26) MacBookPro
-        // 'HWV105-1.p' total:0.383s, limit:1.5s, count:20900 avg:0.018ms (2015-10-22 14:16:44 +0000) (27) Mac mini
-        // 'HWV105-1.p' total:0.337s, limit:1.0s, count:20900 avg:0.016ms (2015-11-12 08:06:33 +0100) Mac mini, Swift 2.1
-        // 'HWV105-1.p' total:0.401s, limit:1.0s, count:20900 avg:0.019ms (2015-11-17 06:24:22 +0000) -"-
-        // 'HWV105-1.p' total:1.564s, limit:3.0s, count:20900 avg:0.074ms (2015-11-17 16:28:30 +0000) -"-, unoptimized
+        // 'HWV105-1.p' total:0.383s, limit:1.5s, count:20900 avg:0.018ms (2015-10-22 14:16:44 +0000) McMini/2012, optimized
+        // 'HWV105-1.p' total:0.337s, limit:1.0s, count:20900 avg:0.016ms (2015-11-12 08:06:33 +0100) McMini/2012, Swift 2.1
+        // 'HWV105-1.p' total:0.401s, limit:1.0s, count:20900 avg:0.019ms (2015-11-17 06:24:22 +0000) McMini/2012
+        // 'HWV105-1.p' total:1.564s, limit:3.0s, count:20900 avg:0.074ms (2015-11-17 16:28:30 +0000) McMini/2012, unoptimized
         // 'HWV105-1.p' total:2.417s, limit:3.0s, count:20900 avg:0.115ms (2015-11-18 17:05:08 +0000) iMac24/2007 (76.6 MB)
+        // 'HWV105-1.p' total:1.395s, limit:3.0s, count:20900 avg:0.066ms (2015-11-19 05:22:38 +0000) McMini/2012 (80,5 MB)
+        
         let myformula = tptpFormulae[20_899]
         XCTAssertEqual("u61248", myformula.name)
         XCTAssertEqual(TptpRole.Axiom, myformula.role)
@@ -86,11 +92,12 @@ class ParseBasicSyntaxTests: XCTestCase {
         // 'HWV134+1.p' total:42.162s, limit:90.0s, count:128975 avg:0.326ms (2015-08-29 11:44:30 +0000)
         // 'HWV134+1.p' total:41.537s, limit:90.0s, count:128975 avg:0.322ms (2015-09-17 13:24:20 +0000)
         // 'HWV134+1.p' total:18.978s, limit:90.0s, count:128975 avg:0.147ms (2015-10-05 09:42:48 +0000) MacBookPro
-        // 'HWV134+1.p' total:17.459s, limit:90.0s, count:128975 avg:0.135ms (2015-10-22 14:17:44 +0000) Mac mini
-        // 'HWV134+1.p' total:12.155s, limit:20.0s, count:128975 avg:0.094ms (2015-11-12 08:04:06 +0100) Mac mini, Swift 2.1
-        // 'HWV134+1.p' total:17.803s, limit:20.0s, count:128975 avg:0.138ms (2015-11-17 06:25:24 +0000) -"-
-        // 'HWV134+1.p' total:63.087s, limit:70.0s, count:128975 avg:0.489ms (2015-11-17 16:33:00 +0000) -"-, unoptimized
-        // 'HWV134+1.p' total:87.940s, limit:70.0s, count:128975 avg:0.681ms (2015-11-18 17:07:33 +0000) iMac24/2007 (2.24 GB)
+        // 'HWV134+1.p' total:17.459s, limit:90.0s, count:128975 avg:0.135ms (2015-10-22 14:17:44 +0000) McMini/2012, optimized
+        // 'HWV134+1.p' total:12.155s, limit:20.0s, count:128975 avg:0.094ms (2015-11-12 08:04:06 +0100) McMini/2012, Swift 2.1
+        // 'HWV134+1.p' total:17.803s, limit:20.0s, count:128975 avg:0.138ms (2015-11-17 06:25:24 +0000) McMini/2012
+        // 'HWV134+1.p' total:63.087s, limit:70.0s, count:128975 avg:0.489ms (2015-11-17 16:33:00 +0000) McMini/2012, unoptimized
+        // 'HWV134+1.p' total:87.940s, limit:90.0s, count:128975 avg:0.681ms (2015-11-18 17:07:33 +0000) iMac24/2007 (2.24 GB)
+        // 'HWV134+1.p' total:53.933s, limit:90.0s, count:128975 avg:0.418ms (2015-11-19 05:40:19 +0000) McMini/2012 (2.25 GB)
         
         let myformula = MyTestTerm(tptpFormulae[128_974].root)
         XCTAssertEqual("(![VarCurr]:(v34(VarCurr)<=>v36(VarCurr)))", myformula.description)
@@ -104,12 +111,13 @@ class ParseBasicSyntaxTests: XCTestCase {
         // 'HWV062+1.p' total:0.930s, limit:2.0s, count:2 avg:465.016ms (2015-08-29 11:42:18 +0000)
         // 'HWV062+1.p' total:0.837s, limit:2.0s, count:2 avg:418.707ms (2015-09-17 13:22:14 +0000)
         // 'HWV062+1.p' total:0.479s, limit:2.0s, count:2 avg:239.766ms (2015-10-05 09:41:32 +0000) MacBookPro
-        // 'HWV062+1.p' total:0.504s, limit:2.0s, count:2 avg:252.009ms (2015-10-22 14:16:34 +0000) Mac mini
-        // 'HWV062+1.p' total:0.458s, limit:0.9s, count:2 avg:229.370ms (2015-11-12 08:01:24 +0100) Mac mini, Swift 2.1
-        // 'HWV062+1.p' total:0.493s, limit:1.0s, count:2 avg:246.690ms (2015-11-17 06:24:12 +0000) -"-
-        // 'HWV062+1.p' total:2.852s, limit:3.0s, count:2 avg:1426.434ms 2015-11-17 16:28:17 +0000) -"-, unoptimized
-        // 'HWV062+1.p' total:4.722s, limit:4.0s, count:2 avg:2361.471ms 2015-11-18 17:09:21 +0000) iMac24/2007 (115 MB RAM)
-        
+        // 'HWV062+1.p' total:0.504s, limit:2.0s, count:2 avg:252.009ms (2015-10-22 14:16:34 +0000) McMini/2012, optimized
+        // 'HWV062+1.p' total:0.458s, limit:0.9s, count:2 avg:229.370ms (2015-11-12 08:01:24 +0100) McMini/2012, Swift 2.1
+        // 'HWV062+1.p' total:0.493s, limit:1.0s, count:2 avg:246.690ms (2015-11-17 06:24:12 +0000) McMini/2012
+        // 'HWV062+1.p' total:2.852s, limit:3.0s, count:2 avg:1426.434ms 2015-11-17 16:28:17 +0000) McMini/2012, unoptimized
+        // 'HWV062+1.p' total:4.722s, limit:4.0s, count:2 avg:2361.471ms 2015-11-18 17:09:21 +0000) iMac24/2007 (115,0 MB)
+        // 'HWV062+1.p' total:2.608s, limit:5.0s, count:2 avg:1304.038ms 2015-11-19 05:42:49 +0000) McMini/2012 (119,4 MB)
+
         let last = MyTestTerm(tptpFormulae.last!.root)
         XCTAssertEqual("!=", last.symbol)
         XCTAssertNotNil(Symbols.defaultSymbols[last.symbol])

@@ -15,24 +15,12 @@ public extension String {
         defer {
             yices_free_string(cstring)
         }
-        guard let string = NSString(CString: cstring, encoding: NSUTF8StringEncoding)
-            else { return nil }
-        
-        self = string as String
+        guard let string = String.fromCString(cstring) else { return nil }
+        self = string
     }
     
-    public init?(term: term_t) {
-        let cstring = yices_term_to_string(term, UInt32.max, 0, 0)
-        guard cstring != nil else {
-            yices_print_error(stdout);
-            return nil
-        }
-        defer {
-            yices_free_string(cstring)
-        }
-        guard let string = NSString(CString: cstring, encoding: NSUTF8StringEncoding)
-            else { return nil }
-        self = string as String
+    public init?(tau: type_t) {
+        self.init(tau: tau, width:UInt32.max, height:0, offset: 0)
     }
     
     public init?(term: term_t, width:UInt32, height:UInt32, offset:UInt32) {
@@ -44,9 +32,13 @@ public extension String {
         defer {
             yices_free_string(cstring)
         }
-        guard let string = NSString(CString: cstring, encoding: NSUTF8StringEncoding)
-            else { return nil }
-        self = string as String
+        
+        guard let string = String.fromCString(cstring) else { return nil }
+        self = string
+    }
+    
+    public init?(term: term_t) {
+        self.init(term: term, width:UInt32.max, height:0, offset: 0)
     }
     
     
@@ -59,23 +51,11 @@ public extension String {
         defer {
             yices_free_string(cstring)
         }
-        guard let string = NSString(CString: cstring, encoding: NSUTF8StringEncoding)
-            else { return nil }
-        self = string as String
+        guard let string = String.fromCString(cstring) else { return nil }
+        self = string
     }
     
     public init?(model: COpaquePointer) {
-        let cstring = yices_model_to_string(model, UInt32.max, 0, 0)
-        guard cstring != nil else {
-            yices_print_error(stdout);
-            return nil
-        }
-        defer {
-            yices_free_string(cstring)
-        }
-        guard let string = NSString(CString: cstring, encoding: NSUTF8StringEncoding)
-            else { return nil }
-        self = string as String
-        
+        self.init(model:model, widht:UInt32.max, height:0, offset:0)
     }
 }

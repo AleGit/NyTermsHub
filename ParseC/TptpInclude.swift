@@ -3,7 +3,7 @@
 
 import Foundation
 
-public class TptpInclude: NSObject {
+public final class TptpInclude: NSObject {
     // TPTP Syntax:
     // <include>            ::= include(<file_name><formula_selection>)
     // <file_name>          ::= <single_quoted>

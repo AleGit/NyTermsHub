@@ -26,13 +26,11 @@ class YiProverBasicTests: XCTestCase {
     func testPropositionalTrue() {
         
         let wahr = "p|~p" as TestNode
-        // let p = "p" as TestNode
-        // let np = "~p" as TestNode
         let prover = YiProver(clauses: [wahr])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run(1)
+        prover.run(5)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -49,6 +47,20 @@ class YiProverBasicTests: XCTestCase {
         prover.run(1)
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
+        
+    }
+    
+    func testPropositionalSatisfiable() {
+        
+        let satisfiable = "p" as TestNode
+        let prover = YiProver(clauses: [satisfiable])
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
+        prover.run(5)
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
         
     }
     

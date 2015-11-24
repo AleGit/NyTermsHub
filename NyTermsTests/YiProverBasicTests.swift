@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable
 import NyTerms
 
 class YiProverBasicTests: XCTestCase {
@@ -29,12 +30,25 @@ class YiProverBasicTests: XCTestCase {
         let prover = YiProver(clauses: [wahr])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        
-        prover.run(5)
-        
+        XCTAssertEqual(prover.run(Int.max),1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
+        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        let expected = Set(["p"])
+        XCTAssertEqual(predicateSymbols,expected)
+    }
+    
+    func testEmptyClause() {
+        let empty = TestNode(connective:"|",nodes: [TestNode]())
         
+        let prover = YiProver(clauses: [empty])
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
+        XCTAssertEqual(prover.run(Int.max),0)
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
+        
+        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        let expected = Set<String>()
+        XCTAssertEqual(predicateSymbols,expected)
     }
     
     func testPropositionalFalse() {
@@ -43,11 +57,13 @@ class YiProverBasicTests: XCTestCase {
         let prover = YiProver(clauses: [p,np])
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        
-        prover.run(1)
-        
+        XCTAssertEqual(prover.run(Int.max),0)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
+        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        let expected = Set(["p"])
+        XCTAssertEqual(predicateSymbols,expected)
+
     }
     
     func testPropositionalSatisfiable() {
@@ -56,12 +72,12 @@ class YiProverBasicTests: XCTestCase {
         let prover = YiProver(clauses: [satisfiable])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        
-        prover.run(5)
-        
+        XCTAssertEqual(prover.run(Int.max),1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        
+        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        let expected = Set(["p"])
+        XCTAssertEqual(predicateSymbols,expected)
     }
     
     func testPUZ001() {
@@ -77,32 +93,53 @@ class YiProverBasicTests: XCTestCase {
         let prover = YiProver(clauses: tptpClauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        
-        prover.run(20)
-        
+        XCTAssertEqual(prover.run(Int.max),4)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         
-        
+        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        let expected = Set(["lives","killed","richer","hates"])
+        XCTAssertEqual(predicateSymbols,expected)
     }
     
-    func _testSYO587m1() {
+    func testSYO587m1() {
         let path = "/Users/Shared/TPTP/Problems/SYO/SYO587-1.p"
         
+        let start = CFAbsoluteTimeGetCurrent()
+        
         let (result,tptpFormulae,_) = parse(path:path)
+        var times = [("parsed",CFAbsoluteTimeGetCurrent()-start)]
+        print(times.last!)
+
+        
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(19862, tptpFormulae.count)
+        times.append(("check 0",CFAbsoluteTimeGetCurrent()-start))
+        print(times.last!)
         
         let tptpClauses = tptpFormulae.map { $0.root }
+        times.append(("mapped",CFAbsoluteTimeGetCurrent()-start))
+        print(times.last!)
+        
         
         let prover = YiProver(clauses: tptpClauses)
+        times.append(("prover",CFAbsoluteTimeGetCurrent()-start))
+        print(times.last!)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
+        times.append(("check 1",CFAbsoluteTimeGetCurrent()-start))
+        print(times.last!)
+        XCTAssertEqual(prover.run(1),2)
+        times.append(("run(1)",CFAbsoluteTimeGetCurrent()-start))
+        print(times.last!)
+        // XCTAssertEqual(STATUS_UNSAT, prover.status)
+        times.append(("check 2",CFAbsoluteTimeGetCurrent()-start))
+        print(times.last!)
         
-        prover.run(1)
         
-        XCTAssertEqual(STATUS_SAT, prover.status)
+        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        XCTAssertEqual(predicateSymbols.count,4480)
     }
     
     

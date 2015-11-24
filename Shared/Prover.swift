@@ -9,35 +9,8 @@ public protocol Prover {
     
     var symbols : [Symbol:SymbolQuadruple] { get set }
     
-    mutating func register(predicate symbol:String, arity:Int)
-    
     init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
 }
-
-public extension Prover {
-//    public mutating func register(predicate symbol:String, arity:Int) {
-//        guard let quadruple = symbols[symbol] else {
-//            self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arity...arity)
-//        
-//            return
-//        }
-//        
-//        
-//        assert(quadruple.type == SymbolType.Predicate)
-//        assert(quadruple.category == SymbolCategory.Functor)
-//        assert(quadruple.notation == SymbolNotation.Prefix)
-//        assert(quadruple.arities.contains(arity), "variadic predicate symbols are not allowed.")
-//        
-//        var arities = quadruple.arities
-//        arities.insert(arity)
-//        
-//        self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arities)
-//        
-//        
-//    
-//    }
-}
-
 
 public final class YiProver<N:Node> : Prover {
     /// A list of first order clauses.
@@ -84,12 +57,14 @@ public final class YiProver<N:Node> : Prover {
         // create a yices context with default configuration
         self.ctx = yices_new_context(nil)
         
+        // create global fresh constant
         self.🚧 = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(self.🚧, "⊥")
         
+        self.symbols = symbols
+        
         var idx = 0 // append an index to all variables to make them distinct between clauses
         // a(x)|c(x), a(x)|b(x,y) -> a(x1)|c(x1), a(x2)|b(x2,y2)
-        self.symbols = symbols
         self.clauses = clauses.map { ($0 ** idx++, buildYicesClause($0)) }
         
         assertClauses()
@@ -110,9 +85,9 @@ public extension YiProver {
         return yices_check_context(ctx, nil)
     }
     
-    public func run(maxRounds:Int) {
+    public func run(maxRounds:Int) -> Int {
         var round = 0
-        while yices_check_context(ctx, nil) == STATUS_SAT && round < maxRounds {
+        while yices_check_context(ctx, nil) == STATUS_SAT && round++ < maxRounds {
             let mdl = yices_get_model(ctx, 1);
             defer { yices_free_model(mdl) }
             
@@ -145,18 +120,29 @@ public extension YiProver {
 
             var newClauses = [N]()
             
+            let todo = selectedLiterals.count * (selectedLiterals.count) / 2
+            let step = todo/100 > 0 ? todo/100 : 1
+            var done = 0
+            
+            let first = CFAbsoluteTimeGetCurrent()
+            var previous = first
+            
             for i in 0..<(selectedLiterals.count-1) {
-                for j in (i+1)..<selectedLiterals.count {
+                for j in 0..<i {
+                    if (++done) % step == 0 {
+                        let next = CFAbsoluteTimeGetCurrent()
+                        print(Double(done)/Double(todo), Int(next-previous), "total:",Int(next-first))
+                        previous = next
+                    }
+                    
                     let a = selectedLiterals[i]
                     let b = selectedLiterals[j]
                     
                     
                     if let unifier = a ~?= b {
-                        print("a=",a,"# b=",b,"# u =", a ~?= b)
+                        // print("a=",a,"# b=",b,"# u =", a ~?= b)
                         let na = clauses[i].0 * unifier
                         let nb = clauses[j].0 * unifier
-                        
-                        // print(na,nb)
                         
                         newClauses.append(na)
                         newClauses.append(nb)
@@ -164,9 +150,9 @@ public extension YiProver {
                 }
             }
             
-            print("round",round++, "# new clauses",newClauses.count)
+            print("round",round, "# new clauses",newClauses.count)
             
-            guard newClauses.count > 0 else { return }
+            guard newClauses.count > 0 else { return round }
             
             var idx = indexOfFirstUnassertedClause
             
@@ -183,6 +169,8 @@ public extension YiProver {
             
             
         }
+        
+        return round
 
         
     }
@@ -198,27 +186,39 @@ private extension YiProver {
 
 public extension YiProver {
     
-    /// protocol extension Prover.register cannot be invoked in the class?
-    public func register(predicate symbol:String, arity:Int) {
-        guard let quadruple = symbols[symbol] else {
-            self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arity...arity)
-            
-            return
+    private func createQuadruple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
+        guard var quadruple = symbols[symbol] else {
+            return (type:type, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arity...arity)
         }
         
+        assert(quadruple.type == type, "type of \(symbol) is \(quadruple.type) instead of \(type)")
+        assert(quadruple.category == SymbolCategory.Functor, "category of \(symbol) is \(quadruple.category) instead of \(SymbolCategory.Functor)")
+        assert(quadruple.notation == SymbolNotation.Prefix, "notation of \(symbol) is \(quadruple.notation) instead of \(SymbolNotation.Prefix)")
+        assert(quadruple.arities.contains(arity), "arities of \(symbol): \(quadruple.arities) does not include \(arity)")
         
-        assert(quadruple.type == SymbolType.Predicate)
-        assert(quadruple.category == SymbolCategory.Functor)
-        assert(quadruple.notation == SymbolNotation.Prefix)
-        assert(quadruple.arities.contains(arity), "variadic predicate symbols are not allowed.")
+        quadruple.arities.insert(arity)
         
-        var arities = quadruple.arities
-        arities.insert(arity)
-        
-        self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arities)
+        return quadruple
         
         
+    }
+    
+    /// protocol extension Prover.register cannot be invoked in the class?
+    public func register(predicate symbol:String, arity:Int) -> SymbolQuadruple {
+        let quadruple = createQuadruple(symbol, type:SymbolType.Predicate, arity:arity)
         
+        self.symbols[symbol] = quadruple
+        
+        return quadruple
+    }
+    
+    public func register(function symbol:String, arity:Int) -> SymbolQuadruple {
+    
+        let quadruple = createQuadruple(symbol, type:SymbolType.Function, arity:arity)
+        
+        // self.symbols[symbol] = quadruple // do not register function symbols
+        
+        return quadruple
     }
     
 }
@@ -229,24 +229,21 @@ private extension YiProver {
     func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {
         guard let literals = clause.nodes else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
         
-        let quadruple = self.symbols[clause.symbol]
-        let type = quadruple?.type
-
+        let quadruple = self.symbols[clause.symbol] ?? register(predicate: clause.symbol, arity: literals.count)
         
-        switch type {
-        case .Some(SymbolType.Disjunction):
-            guard literals.count > 0 else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
+        switch quadruple.type {
+//        case SymbolType.Disjunction where literals.count == 0:
+//            // clause with literals
+//            guard literals.count > 0 else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
+//            
+        case SymbolType.Disjunction:
             
             var yicesLiterals = literals.map { buildYicesTerm($0, range_tau:bool_tau) }
             let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
             
             return (yicesClause, yicesLiterals)
             
-        case .None:
-            register(predicate: clause.symbol, arity: literals.count)
-            
-            fallthrough
-            case .Some(SymbolType.Predicate), .Some(SymbolType.Equation), .Some(SymbolType.Inequation), .Some(SymbolType.Negation):
+        case SymbolType.Predicate, SymbolType.Equation, SymbolType.Inequation, SymbolType.Negation:
             // unit clause
             let yicesUnitClause = buildYicesTerm(clause, range_tau:bool_tau)
             
@@ -254,7 +251,7 @@ private extension YiProver {
             
             
         default:
-            assertionFailure("\(clause.symbol) is not the root of a clause.")
+            assertionFailure("\(clause.symbol):\(quadruple) is not the root of a clause.")
             return (yicesClause: yices_false(), yicesLiterals: [term_t]())
         }
     }
@@ -265,26 +262,33 @@ private extension YiProver {
         // map all variables to global distinct constant '⊥'
         guard let nodes = term.nodes else { return 🚧 }
         
-        // TODO: use symbols and type
-        switch term.symbol {
-        case "~":
+        
+        let quadruple = self.symbols[term.symbol] ?? (
+            range_tau == bool_tau ?
+                register(predicate: term.symbol, arity: nodes.count)
+                :
+                (type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: nodes.count...nodes.count)
+        )
+        
+        switch quadruple.type {
+        case .Negation:
             assert(nodes.count == 1)
             return yices_not( buildYicesTerm(nodes.first!, range_tau:bool_tau))
             
-        case "|":
+        case .Disjunction:
             var args = nodes.map { buildYicesTerm($0, range_tau: bool_tau) }
             return yices_or( UInt32(nodes.count), &args)
             
-        case "&":
+        case .Conjunction:
             var args = nodes.map { buildYicesTerm($0, range_tau: bool_tau) }
             return yices_and( UInt32(nodes.count), &args)
             
-        case "!=":
+        case .Inequation:
             assert(nodes.count == 2)
             let args = nodes.map { buildYicesTerm($0, range_tau: free_tau) }
             return yices_neq(args.first!,args.last!)
             
-        case "=":
+        case .Equation:
             assert(nodes.count == 2)
             let args = nodes.map { buildYicesTerm($0, range_tau: free_tau) }
             return yices_eq(args.first!,args.last!)

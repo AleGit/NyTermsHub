@@ -4,9 +4,42 @@
 
 import Foundation
 
+public protocol Prover {
+    typealias N : Node
+    
+    var symbols : [Symbol:SymbolQuadruple] { get set }
+    
+    mutating func register(predicate symbol:String, arity:Int)
+    
+    init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
+}
+
+public extension Prover {
+//    public mutating func register(predicate symbol:String, arity:Int) {
+//        guard let quadruple = symbols[symbol] else {
+//            self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arity...arity)
+//        
+//            return
+//        }
+//        
+//        
+//        assert(quadruple.type == SymbolType.Predicate)
+//        assert(quadruple.category == SymbolCategory.Functor)
+//        assert(quadruple.notation == SymbolNotation.Prefix)
+//        assert(quadruple.arities.contains(arity), "variadic predicate symbols are not allowed.")
+//        
+//        var arities = quadruple.arities
+//        arities.insert(arity)
+//        
+//        self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arities)
+//        
+//        
+//    
+//    }
+}
 
 
-public final class YiProver<N:Node> {
+public final class YiProver<N:Node> : Prover {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     /// 
@@ -23,7 +56,7 @@ public final class YiProver<N:Node> {
     private var indexOfFirstUnassertedClause = 0
     
     /// a collection of symbols and their semantics
-    private var symbols : [Symbol:SymbolQuadruple]
+    public var symbols : [Symbol:SymbolQuadruple]
     
     /// a pointer to a yices context
     private let ctx : COpaquePointer
@@ -163,25 +196,57 @@ private extension YiProver {
     }
 }
 
+public extension YiProver {
+    
+    /// protocol extension Prover.register cannot be invoked in the class?
+    public func register(predicate symbol:String, arity:Int) {
+        guard let quadruple = symbols[symbol] else {
+            self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arity...arity)
+            
+            return
+        }
+        
+        
+        assert(quadruple.type == SymbolType.Predicate)
+        assert(quadruple.category == SymbolCategory.Functor)
+        assert(quadruple.notation == SymbolNotation.Prefix)
+        assert(quadruple.arities.contains(arity), "variadic predicate symbols are not allowed.")
+        
+        var arities = quadruple.arities
+        arities.insert(arity)
+        
+        self.symbols[symbol] = (type:SymbolType.Predicate, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arities)
+        
+        
+        
+    }
+    
+}
+
 private extension YiProver {
     
+    
     func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {
+        guard let literals = clause.nodes else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
+        
         let quadruple = self.symbols[clause.symbol]
         let type = quadruple?.type
 
         
         switch type {
         case .Some(SymbolType.Disjunction):
-            guard let literals = clause.nodes where literals.count > 0 else {
-                // a conjunction with no literals (i.e. an empty clause) is a contradiction, i.e. is unsatisfiable
-                return (yicesClause: yices_false(), yicesLiterals: [term_t]())
-            }
+            guard literals.count > 0 else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
+            
             var yicesLiterals = literals.map { buildYicesTerm($0, range_tau:bool_tau) }
             let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
             
             return (yicesClause, yicesLiterals)
             
-        case .None, .Some(SymbolType.Predicate), .Some(SymbolType.Equation), .Some(SymbolType.Inequation), .Some(SymbolType.Negation):
+        case .None:
+            register(predicate: clause.symbol, arity: literals.count)
+            
+            fallthrough
+            case .Some(SymbolType.Predicate), .Some(SymbolType.Equation), .Some(SymbolType.Inequation), .Some(SymbolType.Negation):
             // unit clause
             let yicesUnitClause = buildYicesTerm(clause, range_tau:bool_tau)
             

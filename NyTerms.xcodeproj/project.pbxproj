@@ -136,6 +136,10 @@
 		512F75E31BE20FDD007EBA4A /* Prover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prover.swift; sourceTree = "<group>"; };
 		51342AB81B92CA3A0052A72F /* Samples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
 		513CF7E01B8EF6D20063BA57 /* String+Yices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Yices.swift"; sourceTree = "<group>"; };
+		513F24051C04C13F0026A081 /* TargetTests.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetTests.jpg; sourceTree = "<group>"; };
+		513F24061C04C13F0026A081 /* TargetApp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetApp.jpg; sourceTree = "<group>"; };
+		513F24071C04C13F0026A081 /* Project.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Project.jpg; sourceTree = "<group>"; };
+		513F24081C04C13F0026A081 /* TargetCL.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetCL.jpg; sourceTree = "<group>"; };
 		5150F3981BD62E67003D69A3 /* PolyTry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTry.swift; sourceTree = "<group>"; };
 		5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTryTests.swift; sourceTree = "<group>"; };
 		5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesSatTrials.swift; sourceTree = "<group>"; };
@@ -366,6 +370,17 @@
 			name = MiscTests;
 			sourceTree = "<group>";
 		};
+		513F24021C04BD170026A081 /* optimization */ = {
+			isa = PBXGroup;
+			children = (
+				513F24071C04C13F0026A081 /* Project.jpg */,
+				513F24061C04C13F0026A081 /* TargetApp.jpg */,
+				513F24081C04C13F0026A081 /* TargetCL.jpg */,
+				513F24051C04C13F0026A081 /* TargetTests.jpg */,
+			);
+			name = optimization;
+			sourceTree = "<group>";
+		};
 		5150F3971BD62D8A003D69A3 /* Tentative */ = {
 			isa = PBXGroup;
 			children = (
@@ -405,6 +420,7 @@
 		51B26B5E1B8D9F9E00CC59AD /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				513F24021C04BD170026A081 /* optimization */,
 				8789DBF91B9B642300D2B903 /* yacc */,
 				8789DBF71B9B63EA00D2B903 /* SMT */,
 				8789DBF61B9B63C700D2B903 /* Yices */,
@@ -820,6 +836,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = NyTerms/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (

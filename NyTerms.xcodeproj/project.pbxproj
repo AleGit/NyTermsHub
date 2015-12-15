@@ -248,6 +248,7 @@
 				512977171B677CAA003D3E80 /* _GUI_ */,
 				512977351B677DBE003D3E80 /* Core */,
 				51B26B5E1B8D9F9E00CC59AD /* Docs */,
+				5132C2961C1FE65F00D1C057 /* General */,
 				51C94CB71B987D9F004C3082 /* MaxComp */,
 				515F0EED1B6B71C800B470B4 /* ParseC */,
 				512977161B677CAA003D3E80 /* Products */,
@@ -369,6 +370,13 @@
 				5129773A1B678B9C003D3E80 /* TestTermTests.swift */,
 			);
 			name = MiscTests;
+			sourceTree = "<group>";
+		};
+		5132C2961C1FE65F00D1C057 /* General */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = General;
 			sourceTree = "<group>";
 		};
 		513F24021C04BD170026A081 /* optimization */ = {

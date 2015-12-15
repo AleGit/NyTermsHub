@@ -11,12 +11,12 @@ import Foundation
 
 public struct Yices {
     
-    public static let version = NSString(UTF8String: yices_version)
-    public static let buildArch = NSString(UTF8String: yices_build_arch)
-    public static let buildMode = NSString(UTF8String: yices_build_mode)
-    public static let buildDate = NSString(UTF8String: yices_build_date)
+    public static let version = String.fromCString(yices_version) ?? "yices_version: n/a"
+    public static let buildArch = String.fromCString(yices_build_arch) ?? "yices_build_arch: n/a"
+    public static let buildMode = String.fromCString(yices_build_mode) ?? "yices_build_mode: n/a"
+    public static let buildDate = String.fromCString(yices_build_date) ?? "yices_build_date: n/a"
     
-    public static let info = "yices \(version!) (\(buildArch!),\(buildMode!),\(buildDate!))"
+    public static let info = "yices \(version) (\(buildArch),\(buildMode),\(buildDate))"
     
     public static func newIntVar(name:String) -> term_t?  {
         var term: term_t? = nil
@@ -33,6 +33,7 @@ public struct Yices {
             term = nil
         } else {
             term = t
+
         }
     
     return term;

@@ -226,4 +226,16 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         XCTAssertEqual(15312, b.allVariables.count)
     }
+    
+    /// Parse HWV134+1.p and construct tree representation in less than 19 seconds.
+    func testParseLCL129cnf1() {
+        let path = "/Users/Shared/TPTP/Problems/LCL/LCL129-1.p"
+        let limit : NSTimeInterval = 90.0
+        let (tptpFormulae,_) = check(path, limit:limit, count: 3)
+        
+        XCTAssertEqual("~(is_a_theorem(equivalent(X,Y)))|~(is_a_theorem(X))|is_a_theorem(Y)", tptpFormulae[0].root.description)
+        XCTAssertEqual("is_a_theorem(equivalent(equivalent(X,equivalent(Y,Z)),equivalent(equivalent(X,equivalent(U,Z)),equivalent(Y,U))))", tptpFormulae[1].root.description)
+        XCTAssertEqual("~(is_a_theorem(equivalent(a,equivalent(a,equivalent(equivalent(b,c),equivalent(equivalent(b,e),equivalent(c,e)))))))", tptpFormulae[2].root.description)
+    }
+
 }

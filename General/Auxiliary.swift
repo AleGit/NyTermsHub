@@ -4,33 +4,9 @@
 
 import Foundation
 
-// MARK: - additional operators
 
-/// Is left-hand side a variant of righ-hand side? (unused)
-infix operator ~~ {
-associativity none
-precedence 130
-}
 
-/// Construct unifier of left-hand side and right-hand side.
-infix operator =?= {
-associativity none
-}
-
-/// Construct unifier for clashing literals
-infix operator ~?= {
-    associativity none
-}
-
-/// `s ** t` substitutes all variables in `s` with term `t`.
-infix operator ** {
-associativity left
-}
-
-/// `t**` substitutes all veriables in `t` with constant `⊥`.
-postfix operator ** { }
-
-// MARK: - convenience extensions
+// MARK: - Range
 
 extension Range where Element : Comparable {
     /// - successor `struct Range<Element : ForwardIndexType>`
@@ -57,6 +33,8 @@ extension Range where Element : Hashable, Element: Comparable {
     }
 }
 
+// MARK: - Dictionary
+
 extension Dictionary {
     func filteredKeys(predicate : (Element)->Bool) -> [Key] {
         return self.filter { predicate($0) }.map { $0.0 }
@@ -68,7 +46,7 @@ extension Dictionary {
 }
 
 
-
+// MARK: - String
 extension String  {
     func contains(string:Symbol) -> Bool {
         return self.rangeOfString(string) != nil
@@ -78,5 +56,31 @@ extension String  {
     }
     func containsAll(strings:Set<Symbol>) -> Bool {
         return strings.reduce(true) { $0 && self.contains($1) }
+    }
+}
+
+// MARK: - Array
+
+extension Array where Element : CustomStringConvertible {
+    /// Concatinate descriptions of elements separated by separator.
+    func joinWithSeparator(separator:String) -> String {
+        return self.map { $0.description }.joinWithSeparator(separator)
+    }
+}
+
+extension Array {
+    var decompose: (Element, [Element])? {
+        return isEmpty ? nil : (self[startIndex], Array(self.dropFirst()))
+    }
+}
+
+// MARK: - Sequence Type
+
+extension SequenceType {
+    func all(predicate: Generator.Element -> Bool) -> Bool {
+        for x in self where !predicate(x) {
+            return false
+        }
+        return true
     }
 }

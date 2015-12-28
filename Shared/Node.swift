@@ -92,13 +92,6 @@ public extension Node {
 
 // MARK: CustomStringConvertible (description, pretty printing) default implementation
 
-extension Array where Element : CustomStringConvertible {
-    /// Concatinate descriptions of elements separated by separator.
-    func joinWithSeparator(separator:String) -> String {
-        return self.map { $0.description }.joinWithSeparator(separator)
-    }
-}
-
 extension Node {
     /// Representation of self:Node in TPTP Syntax.
     public var defaultDescription : String {

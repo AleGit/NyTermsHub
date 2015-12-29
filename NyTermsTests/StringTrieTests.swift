@@ -55,84 +55,75 @@ class StringTrieTests: XCTestCase {
         XCTAssertNil(trie[unknown])
     }
     
-    func myprint(ts:[(String,CFAbsoluteTime)], count:Int) {
-        
-        for (index,pair) in ts[1..<ts.count].enumerate() {
-            let duration = pair.1 - ts[index].1
-            print("\(pair.0)\t\(duration) (\(duration/Double(count)))")
-        }
-        
-    }
-    
-    func testStringTriePerformance() {
-        let prefix = "x1 a __ xx 432"
-        var words = [prefix,"a","b","c","d","e"]
-        
-        var ts = [("Start",CFAbsoluteTimeGetCurrent())]
-        let limit = 10_000
-        repeat   {
-            outer: for first in words {
+    func accumulate(inout words:[String], limit:Int) -> CFAbsoluteTime {
+        let start = CFAbsoluteTimeGetCurrent()
+        repeat {
+            for first in words {
                 for second in words {
-                    
                     words.append(first+second)
-                    
-                    guard words.count < limit else { break outer }
+                    guard words.count < limit else { return CFAbsoluteTimeGetCurrent() - start }
                 }
             }
         }
-            while words.count < limit
-        
-        
-        
-        XCTAssertEqual(limit, words.count)
-        ts.append(("WordsBuild", CFAbsoluteTimeGetCurrent()))
-        
-        // print(words)
-        // ts.append(("WordsPrint", CFAbsoluteTimeGetCurrent()))
-        
-        
-        
+            while true
+    }
+    
+    func trieSearch(words:[String]) -> (duration:CFAbsoluteTime,results:[Set<String>]) {
+        let start = CFAbsoluteTimeGetCurrent()
         
         let trie = buildStringTrie(words)
-        // ts.append(("TrieBuild", CFAbsoluteTimeGetCurrent()))
-        
-        var trieResults = [Set<String>]()
+        var results = [Set<String>]()
         
         for word in words {
             let path = Array(word.characters)
             
-            guard let trieResult = trie[path]?.payload else {
-                XCTFail(word)
-                return
+            guard let result = trie[path]?.payload else {
+                continue
             }
-            trieResults.append(trieResult)
+            results.append(result)
         }
-        ts.append(("TrieSearch", CFAbsoluteTimeGetCurrent()))
         
-        var filterResults = [[String]]()
+        return (CFAbsoluteTimeGetCurrent() - start, results)
+    }
+    
+    func filterSearch(words:[String]) -> (duration:CFAbsoluteTime,results:[[String]]) {
+        let start = CFAbsoluteTimeGetCurrent()
+        
+        var results = [[String]]()
         
         for word in words {
-            let filterResult = words.filter {
+            let result = words.filter {
                 $0.hasPrefix(word)
             }
-            filterResults.append(filterResult)
+            results.append(result)
         }
-        ts.append(("ArrayFilter", CFAbsoluteTimeGetCurrent()))
         
-        XCTAssertEqual(trieResults.count, filterResults.count)
+        return (CFAbsoluteTimeGetCurrent() - start, results)
+
+    }
+    
+    func testStringTriePerformance() {
         
-        myprint(ts, count:words.count)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        var words = ["x1 __","a","b","c","d","e"]
+        for (count, expected) in [(50,0.3), (300,1.1), (1_800, 3.4)] {
+            
+            let duration = accumulate(&words, limit:count)
+            print("build words\t",duration,duration/Double(count))
+            XCTAssertEqual(count, words.count)
+            
+            let trieResult = trieSearch(words)
+            print("trie search\t",trieResult.duration,trieResult.duration/Double(count))
+            
+            let filterResult = filterSearch(words)
+            print("filtering\t",filterResult.duration,filterResult.duration/Double(count))
+            
+            let speedup = filterResult.duration/trieResult.duration
+            let message = "\(count)-speedup: expected=\(expected), actual=\(speedup)"
+            print(message)
+            
+            XCTAssertTrue(expected < speedup, message)
+            XCTAssertEqual(trieResult.results.count, filterResult.results.count)
+        }
     }
     
 }

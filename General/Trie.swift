@@ -75,5 +75,5 @@ public func buildStringTrie(words:[String]) -> Trie<Character, String> {
     }
     
     return trie
-}
+    }
 

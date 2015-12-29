@@ -102,10 +102,15 @@ class StringTrieTests: XCTestCase {
 
     }
     
-    func testStringTriePerformance() {
+    /// This test builds a list of words, then takes each word and
+    /// searches for all words in the list that are prefixed by this word.
+    /// It does this by building (once) and using (multiple) a prefix tree (trie) 
+    /// from the words and compares the total duration of building and 
+    /// searching with the multiple linear filtering with a prefix predicate.
+    func testStringTrieSpeedup() {
         
         var words = ["x1 __","a","b","c","d","e"]
-        for (count, expected) in [(50,0.3), (300,1.1), (1_800, 3.4)] {
+        for (count, expected) in [(50,0.3), (1_800, 3.4)] {
             
             let duration = accumulate(&words, limit:count)
             print("build words\t",duration,duration/Double(count))

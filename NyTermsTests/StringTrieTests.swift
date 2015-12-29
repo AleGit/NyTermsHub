@@ -22,37 +22,24 @@ class StringTrieTests: XCTestCase {
         super.tearDown()
     }
     
-    func testSimpleStringTrie() {
+    func testStringTrie() {
+        var words = ["a", "b", "c","d"]
+        accumulate(&words,limit: 12345)
+        XCTAssertEqual(12345,words.count)
         
-        let hello = "Hello"
-        let helloComma = hello + ", "
-        let helloEurope = helloComma + "Europe!"
-        let helloAmerica = helloComma + "Amerika."
+        let trie = buildStringTrie(words)
         
+        let prefix = [ "a" as Character, "b"]
         
-        let trie = buildStringTrie([hello, helloComma, helloEurope, helloAmerica])
+        let abWords = trie[prefix]!.payload
         
-        let prefix = Array(helloComma.characters)
-        let expected = Set([helloComma, helloEurope, helloAmerica].filter {
-            $0.hasPrefix(helloComma)
-            })
+        XCTAssertEqual(1789,abWords.count)
         
-        if let subtrie = trie[prefix]  {
-            XCTAssertEqual(1, subtrie.data.count)
-            XCTAssertTrue(subtrie.data.contains(helloComma))
-            
-            XCTAssertEqual(3, subtrie.payload.count)
-            XCTAssertEqual(expected, subtrie.payload)
-            
-        }
-        else {
-            XCTFail()
-        }
+        let nabWords = Set(words).subtract(abWords)
         
-        let goodbye = "Goodbye"
-        let unknown = Array(goodbye.characters)
+        let count = nabWords.filter { $0.hasPrefix("ab") }.count
         
-        XCTAssertNil(trie[unknown])
+        XCTAssertEqual(0, count)
     }
     
     func accumulate(inout words:[String], limit:Int) -> CFAbsoluteTime {

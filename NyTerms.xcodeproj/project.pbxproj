@@ -144,7 +144,7 @@
 		5129773A1B678B9C003D3E80 /* TestTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TestTermTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5129773E1B679177003D3E80 /* Substitution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Substitution.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		512F75E31BE20FDD007EBA4A /* Prover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prover.swift; sourceTree = "<group>"; };
-		51342AB81B92CA3A0052A72F /* Samples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
+		51342AB81B92CA3A0052A72F /* Samples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Samples.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		513CF7E01B8EF6D20063BA57 /* String+Yices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Yices.swift"; sourceTree = "<group>"; };
 		513F24051C04C13F0026A081 /* TargetTests.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetTests.jpg; sourceTree = "<group>"; };
 		513F24061C04C13F0026A081 /* TargetApp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetApp.jpg; sourceTree = "<group>"; };
@@ -195,10 +195,10 @@
 		51B883F31B8E3DAC008D7F22 /* test_pp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_pp.c; sourceTree = "<group>"; };
 		51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesExamples.swift; sourceTree = "<group>"; };
 		51C94CB81B987E70004C3082 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
-		51D2765F1BC57879005A0213 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		51D2765F1BC57879005A0213 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Order.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51D276621BC5805F005A0213 /* OrderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTests.swift; sourceTree = "<group>"; };
 		51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpTermTests.swift; sourceTree = "<group>"; };
-		51EFBA241B71D37700A7B16C /* String+TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+TptpPath.swift"; sourceTree = "<group>"; };
+		51EFBA241B71D37700A7B16C /* String+TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "String+TptpPath.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };

@@ -193,4 +193,33 @@ public extension Node {
         return nodes.reduce(true) { $0 && $1.isLiteral }
     }
     
+    /// Recursive check if `self` represents as unit clause, i.e. a clause with exactly one literal
+    public var isUnitClause : Bool {
+        
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
+        guard let nodes = self.nodes where nodes.count == 1 else { return false }
+        
+        return nodes.first!.isLiteral
+    }
+    
+    /// Recursive check if `self` represents a Horn clause, i.e. a clause with at most one positive literal.
+    public var isHornClause : Bool {
+        
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false /* self is not a disjunction, hence self is not a clause */ }
+        guard let nodes = self.nodes else { return false /* nodes are nil, hences self is not a clause */ }
+        
+        var positives = 0
+        for node in nodes {
+            guard node.isLiteral else { return false /* node is not a literal, hence self is not a clause */ }
+            // node is a literal
+            guard let type = Symbols.defaultSymbols[self.symbol]?.type where (type != SymbolType.Negation && type != SymbolType.Inequation) else { continue /* it's a negative literal */}
+            // node is a positive literal
+            positives += 1
+            guard positives < 2 else { return false /* self has more than one positive literal */ }
+        }
+        // a disjunction of literals, where at most one is positive, hence self is a Horn clause
+        return true
+    }
+
+    
 }

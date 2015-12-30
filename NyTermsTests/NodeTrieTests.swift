@@ -22,23 +22,56 @@ class NodeTrieTests: XCTestCase {
         super.tearDown()
     }
     
-    func testSiPaths() {
+    func testTermPaths() {
         
         let t = "f(X,g(a,b))" as TestNode
-        let tPaths = t.siPaths
+        let tPaths = t.paths
         XCTAssertEqual(3, tPaths.count)
         
-        let fxaExpected : [[Pair<String,Int>]] = [
-            [Pair(left:"f",right:1), Pair(left:"",right:-1)],
-            [Pair(left:"f",right:2), Pair(left:"g",right:1), Pair(left:"a",right:0)],
-            [Pair(left:"f",right:2), Pair(left:"g",right:2), Pair(left:"b",right:0)]
+        let fxaExpected : [TermPath] = [
+            [.Symbol("f"),.Position(1), .Symbol("*")],
+            [.Symbol("f"),.Position(2), .Symbol("g"),.Position(1), .Symbol("a")],
+            [.Symbol("f"),.Position(2), .Symbol("g"),.Position(2), .Symbol("b")]
         ]
         
         XCTAssertEqual(fxaExpected.first!, tPaths.first!)
         XCTAssertEqual(fxaExpected.last!, tPaths.last!)
+    }
+    
+    
+    
+    func testTriePuz001m1() {
+        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
+        let (result,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, result.count)
         
+        let clauses = tptpFormulae.map { $0.root }
         
+        let trie = buildNodeTrie(clauses)
         
+        XCTAssertEqual(12, trie.payload.count)
+        
+        for clause in clauses {
+            print("clause=\(clause)")
+            
+            for path in clause.paths {
+                print("path=\(path)")
+                let subtrie = trie[path]!
+                let values = subtrie.values
+                let payload = subtrie.payload
+                XCTAssertTrue(payload.isSupersetOf(values))
+                print("values=\(values)")
+                
+                if (payload.isStrictSupersetOf(values)) {
+                    print("payload=\(payload.subtract(values))")
+                }
+                
+                XCTAssertTrue(values.contains(clause))
+                XCTAssertTrue(payload.contains(clause))
+                print("")
+            }
+            print("")
+        }
     }
     
     func testExample() {

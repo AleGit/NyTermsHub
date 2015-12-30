@@ -5,28 +5,28 @@ import Foundation
 
 public extension Node {
 
-    /// Simple check if `self` represents a variable, 
+    /// Flat check if `self` represents a variable,
     /// i.e. a leaf node without a list of subnodes.
     public var isVariable : Bool {
         return self.nodes == nil
     }
     
-    /// Simple check if `self` represents a constant (function),
+    /// Flat check if `self` represents a constant (function),
     /// i.e. a node with an empty list of subnodes.
     public var isConstant : Bool {
         guard let nodes = self.nodes else { return false }
         return nodes.count == 0
     }
     
-    /// Check if `self` represents a (non-empty) tuple of variables.
-    public var isTupleOfVariables : Bool {
+    /// Flat Check if `self` represents a (non-empty) tuple of variables.
+    private var isTupleOfVariables : Bool {
         guard Symbols.defaultSymbols[self.symbol]?.type == SymbolType.Tuple else { return false }
         guard let nodes = self.nodes else { return false }
         guard nodes.count > 0 else { return false } /* a tuple of variables must not be empty */
         return nodes.reduce(true) { $0 && $1.isVariable }
     }
     
-    /// Costly check if `self` represents a valid rewrite rule, i.e.
+    /// Recursive check if `self` represents a valid rewrite rule, i.e.
     /// an equation that satifies the follwong conditions
     /// - the left-hand side is not a variable
     /// - Vars(r) is a subset of Vars(l)
@@ -48,7 +48,7 @@ public extension Node {
         return true
     }
     
-    /// Costly check if `self` represents a valid function term
+    /// Recursive check if `self` represents a valid function term
     ///
     /// - a variable `X` is a (function) term
     /// - a constant `c` is a (function) term
@@ -64,7 +64,7 @@ public extension Node {
         return category == SymbolCategory.Functor && nodes.reduce(true) { $0 && $1.isTerm }
     }
     
-    /// Costly check if `self` represents the negation of a valid predicate term.
+    /// Recursive check if `self` represents the negation of a valid predicate term.
     ///
     /// - an expression `~E` is a negative predicate, if `E` is a predicate term.
     private var isNegativePredicate : Bool {
@@ -74,7 +74,7 @@ public extension Node {
         return nodes.first!.isPositivePredicate
     }
     
-    /// Costly check if `self` represents a valid predicate term.
+    /// Recursive check if `self` represents a valid predicate term.
     ///
     /// - an expression `p(t_1,...t_n)` is a positive predicate term
     /// if `p` is a predicate symbol and `t_1`,...,`t_n` are (function) nodes.
@@ -88,7 +88,7 @@ public extension Node {
         return nodes.reduce(true) { $0 && $1.isTerm }
     }
     
-    /// Costly check if `self` represents a valid inequation or the negation of a valid equation.
+    /// Recursive check if `self` represents a valid inequation or the negation of a valid equation.
     ///
     /// - an expression `s ≠ t` is an inequation if `s` and `t` are function terms.
     /// - an expression `~E` is an inequation, if `E` is an equation.
@@ -109,7 +109,7 @@ public extension Node {
         }
     }
     
-    /// Costly check if `self` represents an equation.
+    /// Recursive check if `self` represents an equation.
     ///
     /// - an expression `s = t` is an equation if `s` and `t` are terms (functions, constants, variables).
     ///
@@ -120,22 +120,22 @@ public extension Node {
         return nodes.first!.isTerm && nodes.last!.isTerm
     }
     
-    /// Costly check if `self` represents the negation of an valid atomic formula.
+    /// Recursive check if `self` represents the negation of an valid atomic formula.
     private var isNegativeLiteral : Bool {
         return self.isInequation || self.isNegativePredicate
     }
     
-    /// Costly check if `self` represents an atomic formula.
+    /// Recursive check if `self` represents an atomic formula.
     private var isPositiveLiteral : Bool {
         return self.isEquation || self.isPositivePredicate
     }
     
-    /// Costly check if `self` represents a literal.
+    /// Recursive check if `self` represents a literal.
     public var isLiteral : Bool {
         return self.isPositiveLiteral || self.isNegativeLiteral
     }
     
-    /// Costly check if `self` is a first order logic formula.
+    /// Recursive check if `self` is a first order logic formula.
     ///
     /// - a formula is either a literal or a connection of literals
     var isFormula : Bool {
@@ -157,35 +157,40 @@ public extension Node {
         return nodes.reduce(true) { $0 && $1.isFormula }
     }
     
-    /// Costly check if `self` represents a (tree) disjunction of literals.
+    /// Recursive check if `self` represents a disjunction of literals,
+    /// i.e. nodes are disjunctions or literals.
     private var isDisjunctionOfLiterals : Bool {
         guard !self.isLiteral else {
             // a literal is a disjunction of literals too
             return true
         }
         
+        // when the node is not a literal then it must be a disjunction
         guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
         
+        // a disjunction must have a list of subnodes
         guard let nodes = self.nodes else { return false }
         
+        // each subnode must be a disjunction of literals
         return nodes.reduce(true) { $0 && $1.isDisjunctionOfLiterals }
     }
     
-    /// Costly check if `self` represents a (flat) disjunction of literals
+    /// Recursive check if `self` represents a (flat) disjunction of literals,
+    /// i.e. the root node is a disjunction and the subnodes are literals.
     public var isClause : Bool {
         guard !self.isLiteral else {
             // a literal is not a clause
             return false
         }
         
+        // the root not of a clause must be a disjunction
         guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
         
+        // a disjunction must have a list of subnodes (even if it is empty)
         guard let nodes = self.nodes else { return false }
         
-        // even a clause with zero literals is a clause
+        // each subnode must be a literal (empty clause is possible too)
         return nodes.reduce(true) { $0 && $1.isLiteral }
-        
-        
     }
     
 }

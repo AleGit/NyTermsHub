@@ -3,8 +3,8 @@
 
 import Foundation
 
-/// Abstract data type `Node`, 
-// a tree can represent a term, e.g
+/// Abstract data type `Node`.
+/// A tree of nodes can represent a term, e.g
 ///
 /// * (leaf) variable terms: X, Y, Zustand
 /// * (leaf) constant terms: a, b, config

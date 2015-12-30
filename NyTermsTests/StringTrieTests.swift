@@ -94,10 +94,17 @@ class StringTrieTests: XCTestCase {
     /// It does this by building (once) and using (multiple) a prefix tree (trie) 
     /// from the words and compares the total duration of building and 
     /// searching with the multiple linear filtering with a prefix predicate.
+    /// - with 100 words trie prefix search is less than half as fast as linear prefix search
+    /// - with 350 words trie prefix search is approximatley as fast as linear prefix search
+    /// - with 2500 words trie prefix search is more than four times faster than linear prefix search
     func testStringTrieSpeedup() {
         
         var words = ["x1 __","a","b","c","d","e"]
-        for (count, expected) in [(50,0.3), (1_800, 3.4)] {
+        for (count, expected) in [
+            (50,0.4),
+            (350,0.95),
+            (2_500, 4.0)
+            ] {
             
             let duration = accumulate(&words, limit:count)
             print("build words\t",duration,duration/Double(count))

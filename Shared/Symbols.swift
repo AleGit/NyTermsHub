@@ -26,7 +26,7 @@ struct Symbols {
     static let CombiningEnclosingSquare:Character = " ⃞"
     static let xsquare = "x" + String(CombiningEnclosingSquare)
     
-    
+    /// a collection of universal auxilary and function symbols
     static let universalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
@@ -38,12 +38,19 @@ struct Symbols {
         "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
         "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
         
-        "×" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: Range(start:1, end:Int.max)),
-        "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: Range(start:1, end:Int.max)),    //  X, X+Y, X+...+Z
-        "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.PreInfix, arities: 1...2),          // -X, X-Y
+        // + − × ÷ (mathematical symbols)
+        "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max),      //  X, X+Y, X+...+Z
+        "−" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2),            // -X, X-Y
+        "×" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max),      // X, X*Y, X*...*X
+        "÷" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 2...2),
+        
+        // - (keyboard symbol)
+        "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2),          // -X, X-Y
+        
         "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
         ]
     
+    /// a collection of [TPTP Syntax](http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html) specific symbols
     static let tptpSymbols : [Symbol:SymbolQuadruple] = [
         
         // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
@@ -166,7 +173,7 @@ public enum SymbolNotation {
     case TptpSpecific   // ! […]:(…)
     
     case Prefix     // f(…,…)
-    case PreInfix   // prefix with single argument, infix notation with multiple arguments, e.g.: -4
+    case Minus   // -1, 1-2
     case Infix      // … + …
     
     case Postfix

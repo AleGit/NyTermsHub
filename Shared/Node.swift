@@ -138,10 +138,10 @@ extension Node {
         case (_,_,.Prefix,_):
             return "\(self.symbol)(\(nodes.joinWithSeparator(Symbols.SEPARATOR)))"
             
-        case (_,_,.PreInfix,_) where nodes.count == 1:
+        case (_,_,.Minus,_) where nodes.count == 1:
             return "\(self.symbol)(\(nodes.first!)"
             
-        case (_,_,.PreInfix,_), (_,_,.Infix,_):
+        case (_,_,.Minus,_), (_,_,.Infix,_):
             return nodes.joinWithSeparator(self.symbol)
             
         case (_,_,.Postfix,_):

@@ -3,10 +3,10 @@
 
 import Foundation
 
-public typealias SymbolCountArityDictonary = Dictionary<String,(count:Int,arities:Set<Int>)>
-public typealias VariableSymbolCountDictonary = Dictionary<String,Int>
+public typealias SymbolCensus = [ String : (count:Int,arities:Set<Int>)]
+public typealias VariableCensus = [String : Int]
 
-public func ==(lhs:SymbolCountArityDictonary,rhs:SymbolCountArityDictonary) -> Bool {
+public func ==(lhs:SymbolCensus,rhs:SymbolCensus) -> Bool {
     if lhs.count != rhs.count { return false }
     
     for (symbol,(count:occurs,arities:arities)) in lhs {
@@ -26,49 +26,46 @@ public extension Node {
         return Set(ts.flatMap { $0.allVariables })
     }
     
-    /// **(tentative)** Get a dictionary of all symbols as keys and
-    /// the number of the occurencies and arities of each symbol as values
-    var countedSymbols : SymbolCountArityDictonary {
-        guard let nodes = self.nodes else { return [self.symbol:(1,Set<Int>())] } // variables has no arities at all
+    private func fill(inout census:SymbolCensus) {
+        var arities = Set<Int>()
         
-        var soas = [self.symbol:(count:1,arities:Set(arrayLiteral: nodes.count))]
-        
-        let tsoas = nodes.flatMap { $0.countedSymbols }
-        
-        for (symbol, (count:occurs,arities:arities)) in tsoas {
-            if let (ao,aa) = soas[symbol] {
-                assert(arities == aa,"symbol \(symbol) with variadic arguments \(aa)!=\(arities) are not supported")
-                soas[symbol] = (count:occurs+ao,arities:arities.union(aa))
-            }
-            else {
-                soas[symbol] = (count:occurs,arities:arities)
+        if let nodes = self.nodes {
+            arities.insert(nodes.count)
+            
+            for node in nodes {
+                node.fill(&census)
             }
         }
         
-        return soas
+        if var entry = census[self.symbol] {
+            entry.count += 1
+            entry.arities.unionInPlace(arities)
+            census[self.symbol] = entry
+        }
+        else {
+            census[self.symbol] = (count:1, arities:arities)
+        }
+        
+        
+    }
+    
+    /// **(tentative)** Get a dictionary of all symbols as keys and
+    /// the number of the occurencies and arities of each symbol as values
+    var countedSymbols : SymbolCensus {
+        var census = SymbolCensus()
+        self.fill(&census)
+        return census
     }
     
     /// **(tentative)** Get a dictionary of all variable symbols as keys and
-    /// the number of the occurencies of each variable as values.
-    var countedVariableSymbols : VariableSymbolCountDictonary {
-        assert(!self.symbol.isEmpty)
-        
-        guard let nodes = self.nodes else { return [self.symbol:1] }    // variable
-        
-        var vscd = VariableSymbolCountDictonary()
-        
-        let tvscd = nodes.flatMap { $0.countedVariableSymbols }
-        
-        for (symbol, subcount) in tvscd {
-            if let count = vscd[symbol] {
-                vscd[symbol] = subcount + count
-            }
-            else {
-                vscd[symbol] = subcount
-            }
+    /// the number of the occurencies of each variable as values
+    var countedVariables : VariableCensus {
+        var census = VariableCensus()
+        let list = countedSymbols.filter { $0.1.arities.isEmpty }.map { ($0.0,$0.1.count) }
+        for (key,value) in list {
+            census[key] = value
         }
-        
-        return vscd
+        return census
     }
     
     /// A rewrite rule is an equation that satifies the follwong conditions

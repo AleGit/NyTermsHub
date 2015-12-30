@@ -149,8 +149,8 @@ public struct KnuthBendixOrder : Order {
         assert(s.isTerm)
         assert(t.isTerm)
         
-        let scvs = s.countedVariableSymbols
-        let tcvs = s.countedVariableSymbols
+        let scvs = s.countedVariables
+        let tcvs = s.countedVariables
         
         // we check: |s|<sub>x</sub> >= |t|<sub>x</sub> for all x ∈ V
         for (symbol, tcount) in tcvs {

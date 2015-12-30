@@ -77,13 +77,13 @@ class TptpTermTests: XCTestCase {
         XCTAssertTrue(efxy == soa_fxy)
         XCTAssertFalse(efaa == soa_fxy)
         
-        let vo_faa = tt_faa.countedVariableSymbols
-        let vo_fxy = tt_fxy.countedVariableSymbols
+        let vo_faa = tt_faa.countedVariables
+        let vo_fxy = tt_fxy.countedVariables
         
         XCTAssertEqual(0, vo_faa.count)
         XCTAssertEqual(2, vo_fxy.count)
         
-        let vfaa = VariableSymbolCountDictonary()
+        let vfaa = VariableCensus()
         let vfxy = ["X":1,"Y":1]
         
         XCTAssertTrue(vfaa == vo_faa)

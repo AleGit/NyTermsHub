@@ -1,7 +1,10 @@
 //  Created by Alexander Maringele.
 //  Copyright © 2015 Alexander Maringele. All rights reserved.
 
-public func ~=(lhs:smt_status_t, rhs:smt_status_t) -> Bool {
+@testable
+import NyTerms  // String+Yices
+
+func ~=(lhs:smt_status_t, rhs:smt_status_t) -> Bool {
     return lhs == rhs
 }
 

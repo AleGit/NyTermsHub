@@ -7,13 +7,13 @@ import Cocoa
 /// The root node of an abstract syntax tree with TptpTerms represents one of the follwing TPTP types:
 /// - cnf_formula
 /// - fof_formula
-public final class TptpNode: NSObject, Node {
-    public let symbol: String
-    public var nodes: [TptpNode]?
+final class TptpNode: NSObject, Node {
+    let symbol: String
+    var nodes: [TptpNode]?
     private var cachedDescription : String? = nil
     private var cachedHashValue : Int? = nil
     
-    public init(symbol: String, nodes: [TptpNode]?) {
+    init(symbol: String, nodes: [TptpNode]?) {
         self.symbol = symbol
         self.nodes = nodes
     }
@@ -26,13 +26,13 @@ public final class TptpNode: NSObject, Node {
     
     /// Since TptpNode inherits description from NSObject
     /// it would not call the protocol extension's implementation.
-    public override var description : String {
+    override var description : String {
         return cachedDescription ?? updateDescription()
     }
     
     /// Since TptpNode inherits isEqual from NSObject
     /// it would not call the protocol extension's implementation.
-    public override func isEqual(object: AnyObject?) -> Bool {
+    override func isEqual(object: AnyObject?) -> Bool {
        
         guard let rhs = object as? TptpNode else { return false }
         
@@ -47,14 +47,14 @@ public final class TptpNode: NSObject, Node {
     
     /// Since TptpNode inherits hashValue from NSObject
     /// it would not call the protocol extension's implementation.
-    public override var hashValue : Int {
+    override var hashValue : Int {
         return cachedHashValue ?? updateHashValue()
     }
     
     /// Appends additonal term to subterms of connective.
     /// - fof_or_formula '|' fof_unitary_formula
     /// - fof_and_formula '&' fof_unitary_formula
-    public func append(term: TptpNode) {
+    func append(term: TptpNode) {
         cachedDescription = nil // invalidate cached description
         cachedHashValue = nil // invalidate cached hash value
         
@@ -67,7 +67,7 @@ public final class TptpNode: NSObject, Node {
 
 extension TptpNode {
     
-    public convenience init(variable symbol:Symbol) {
+    convenience init(variable symbol:Symbol) {
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Connective, "variables must not overlap connective symbols")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Equational, "variables must not overlap equational symbols")
@@ -75,7 +75,7 @@ extension TptpNode {
         self.init(symbol:symbol,nodes: nil)
     }
     
-    public convenience init(constant symbol:Symbol) {
+    convenience init(constant symbol:Symbol) {
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted constant symbols must not overlap auxiliary symbols")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Connective, "uninterpreted constant symbols must not overlap connective symbols")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Equational, "uninterpreted constant symbols must not overlap equational symbols")
@@ -83,7 +83,7 @@ extension TptpNode {
         self.init(symbol:symbol,nodes: [TptpNode]())
     }
     
-    public convenience init(functional symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(functional symbol:Symbol, nodes:[TptpNode]) {
         assert(nodes.count > 0, "uninterpreted functions must have one argumument at least")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
@@ -92,7 +92,7 @@ extension TptpNode {
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    public convenience init(predicate symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(predicate symbol:Symbol, nodes:[TptpNode]) {
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Auxiliary, "uninterpreted predicate symbols must not overlap auxiliary symbols")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
@@ -102,13 +102,13 @@ extension TptpNode {
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    public convenience init(equational symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(equational symbol:Symbol, nodes:[TptpNode]) {
         assert(nodes.count == 2)
         assert(Symbols.defaultSymbols[symbol]?.category == SymbolCategory.Equational, "equational symbols must be predefined")
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    public convenience init(connective symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(connective symbol:Symbol, nodes:[TptpNode]) {
         assert(nodes.count > 0)
         assert(Symbols.defaultSymbols[symbol]?.category == SymbolCategory.Connective, "connective symbols must be predefined")
         self.init(symbol:symbol,nodes: nodes)
@@ -153,7 +153,7 @@ extension TptpNode : StringLiteralConvertible {
     
     // TODO: Implementation of `StringLiteralConvertible` is still a hack.
     /// Parse a single (function) term or a single equation between two terms.
-    public convenience init(stringLiteral value: StringLiteralType) {
+    convenience init(stringLiteral value: StringLiteralType) {
         let term = TptpNode.parse(stringLiteral: value)
         self.init(symbol: term.symbol, nodes: term.nodes)
     }

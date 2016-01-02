@@ -3,8 +3,8 @@
 
 import Foundation
 
-public typealias Symbol = String
-public typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+typealias Symbol = String
+typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
     for (key,value) in rhs {
@@ -88,7 +88,7 @@ struct Symbols {
 
 // MARK: symbol enums
 
-public enum SymbolType {
+enum SymbolType {
     case LeftParenthesis, RightParenthesis
     case LeftCurlyBracket, RightCurlyBracket
     case LeftSquareBracket, RightSquareBracket
@@ -158,7 +158,7 @@ public enum SymbolType {
     case Invalid
 }
 
-public enum SymbolCategory {
+enum SymbolCategory {
     case Auxiliary
     
     case Variable       //
@@ -169,7 +169,7 @@ public enum SymbolCategory {
     case Invalid
 }
 
-public enum SymbolNotation {
+enum SymbolNotation {
     case TptpSpecific   // ! […]:(…)
     
     case Prefix     // f(…,…)

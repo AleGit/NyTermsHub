@@ -3,17 +3,17 @@
 
 import Foundation
 
-public extension Node {
+extension Node {
 
     /// Flat check if `self` represents a variable,
     /// i.e. a leaf node without a list of subnodes.
-    public var isVariable : Bool {
+    var isVariable : Bool {
         return self.nodes == nil
     }
     
     /// Flat check if `self` represents a constant (function),
     /// i.e. a node with an empty list of subnodes.
-    public var isConstant : Bool {
+    var isConstant : Bool {
         guard let nodes = self.nodes else { return false }
         return nodes.count == 0
     }
@@ -114,7 +114,7 @@ public extension Node {
     /// - an expression `s = t` is an equation if `s` and `t` are terms (functions, constants, variables).
     ///
     /// `~I` will never be recognized as an equation, even when `I` is an inequation.
-    public var isEquation : Bool {
+    var isEquation : Bool {
         guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Equation else { return false }
         guard let nodes = self.nodes where nodes.count == 2 else { return false }
         return nodes.first!.isTerm && nodes.last!.isTerm
@@ -131,7 +131,7 @@ public extension Node {
     }
     
     /// Recursive check if `self` represents a literal.
-    public var isLiteral : Bool {
+    var isLiteral : Bool {
         return self.isPositiveLiteral || self.isNegativeLiteral
     }
     
@@ -177,7 +177,7 @@ public extension Node {
     
     /// Recursive check if `self` represents a (flat) disjunction of literals,
     /// i.e. the root node is a disjunction and the subnodes are literals.
-    public var isClause : Bool {
+    var isClause : Bool {
         guard !self.isLiteral else {
             // a literal is not a clause
             return false

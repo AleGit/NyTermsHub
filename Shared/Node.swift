@@ -13,7 +13,7 @@ import Foundation
 /// * (tree) equational terms: a = X, b ~= f(X,a)
 /// * (root) clause terms: a=X | b ~= f(X,a)
 /// * (root) formuala terms: ...
-public protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
+protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     var symbol : Symbol { get }
     var nodes : [Self]? { get }
     
@@ -22,30 +22,30 @@ public protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertib
 
 // MARK: default implementation of convenience initializers
 
-public extension Node {
-    public init(variable symbol:Symbol) {
+extension Node {
+    init(variable symbol:Symbol) {
         self.init(symbol:symbol,nodes: nil)
     }
     
-    public init(constant symbol:Symbol) {
+    init(constant symbol:Symbol) {
         self.init(symbol:symbol,nodes: [Self]())
     }
     
-    public init(function symbol:Symbol, nodes:[Self]) {
+    init(function symbol:Symbol, nodes:[Self]) {
         assert(nodes.count>0)
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    public init(predicate symbol:Symbol, nodes:[Self]) {
+    init(predicate symbol:Symbol, nodes:[Self]) {
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    public init(equational symbol:Symbol, nodes:[Self]) {
+    init(equational symbol:Symbol, nodes:[Self]) {
         assert(nodes.count==2,"an equational term must have exactly two subnodes.")
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    public init(connective symbol:Symbol, nodes:[Self]) {
+    init(connective symbol:Symbol, nodes:[Self]) {
         // assert(nodes.count>0,"a connective \(symbol) \(nodes)term must have at least one subnode")
         self.init(symbol:symbol,nodes: nodes)
     }
@@ -53,8 +53,8 @@ public extension Node {
 
 // MARK: Hashable (==, hashValue) default implementation
 
-public extension Node {
-    public func isEqual(rhs:Self) -> Bool {
+extension Node {
+    func isEqual(rhs:Self) -> Bool {
         if self.symbol != rhs.symbol  { return false }               // the symbols are equal
         
         if self.nodes == nil && rhs.nodes == nil { return true }     // both are nil (both are variables)
@@ -62,30 +62,30 @@ public extension Node {
         return self.nodes! == rhs.nodes!                             // none is nil (both are functions)
     }
     
-    public func isVariant(rhs:Self) -> Bool {
+    func isVariant(rhs:Self) -> Bool {
         guard let mgu = (self =?= rhs) else { return false }
         
         return mgu.isRenaming
     }
     
-    public func isUnifiable(rhs:Self) -> Bool {
+    func isUnifiable(rhs:Self) -> Bool {
         return (self =?= rhs) != nil
     }
 }
 
-public func ==<T:Node> (lhs:T, rhs:T) -> Bool {
+func ==<T:Node> (lhs:T, rhs:T) -> Bool {
     return lhs.isEqual(rhs)
 }
 
-public extension Node {
-    public var defaultHashValue : Int {
+extension Node {
+    var defaultHashValue : Int {
         let val = self.symbol.hashValue //  &+ self.type.hashValue
         guard let nodes = self.nodes else { return val }
         
         return nodes.reduce(val) { $0 &+ $1.hashValue }
     }
     
-    public var hashValue : Int {
+    var hashValue : Int {
         return self.defaultHashValue
     }
 }
@@ -94,7 +94,7 @@ public extension Node {
 
 extension Node {
     /// Representation of self:Node in TPTP Syntax.
-    public var defaultDescription : String {
+    var defaultDescription : String {
         assert(!self.symbol.isEmpty, "a term must not have an emtpy symbol")
         
         guard let nodes = self.nodes else {
@@ -158,7 +158,7 @@ extension Node {
         }
     }
     
-    public var description : String {
+    var description : String {
         return defaultDescription
     }
 }
@@ -172,30 +172,30 @@ private func convert <S:Node,T:Node>(s:S) -> T {
 }
 
 extension Node {
-    public init<T:Node>(_ s:T) {    // similar to Int(3.5)
+    init<T:Node>(_ s:T) {    // similar to Int(3.5)
         self = convert(s)
     }
 }
 
 // MARK: StringLiteralConvertible (initialize term with string literal) partial default implementation
 
-public extension Node {
+extension Node {
     
     // UnicodeScalarLiteralConvertible
     // typealias UnicodeScalarLiteralType = StringLiteralType
-    public init(unicodeScalarLiteral value: StringLiteralType) {
+    init(unicodeScalarLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
     
     // ExtendedGraphemeClusterLiteralConvertible:UnicodeScalarLiteralConvertible
     // typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
-    public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+    init(extendedGraphemeClusterLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
     
     // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
     // typealias StringLiteralType
-    // public init(stringLiteral value: Self.StringLiteralType)
+    // init(stringLiteral value: Self.StringLiteralType)
     // have to be provided by protocol `Node`'s implementation
 }
 

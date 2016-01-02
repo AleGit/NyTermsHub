@@ -15,43 +15,43 @@ import Foundation
 /// If `p` is above q we also say that `q` is below p or p is a *prefix* of `q`, and we write `p` <= `q`.
 /// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
-public typealias Position = [Int]
+typealias Position = [Int]
 
-public func -<T:Equatable>(lhs:[T], rhs:[T]) -> [T]? {
+func -<T:Equatable>(lhs:[T], rhs:[T]) -> [T]? {
     guard rhs <= lhs else { return nil }
     
     return Array(lhs.suffixFrom(rhs.count))
 }
 
-public func <= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
+func <= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
     // lhs must not be longer then rhs
     guard lhs.count <= rhs.count else { return false }
     
     return lhs[0..<lhs.count] == rhs[0..<lhs.count]
 }
 
-public func >= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
+func >= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
     return rhs <= lhs
 }
 
-public func < <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
+func < <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
     // lhs must be shorter then rhs
     guard lhs.count < rhs.count else { return false }
     
     return lhs[0..<lhs.count] == rhs[0..<lhs.count]
 }
 
-public func > <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
+func > <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
     return rhs < lhs
 }
 
-public func || <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
+func || <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
     return !( lhs <= rhs || lhs >= rhs)
 }
 
 // MARK: - Node + Position
 
-public extension Node {
+extension Node {
     /// Get all positions of a term, i.e. all paths from root to nodes.
     /// **`P(f(x),f(g(x,y))`** yields the positions:
     ///
@@ -64,7 +64,7 @@ public extension Node {
     ///     [2,1,2] y
     ///
     /// see [AM2015TRS,*Definition 2.1.16*]
-    public var allPositions : [Position] {
+    var allPositions : [Position] {
         var positions = [Position](arrayLiteral: Position())
         
         guard let nodes = self.nodes else { return positions }
@@ -81,7 +81,7 @@ public extension Node {
     }
 }
 
-public extension Node {
+extension Node {
     /// Get subterm at position.
     /// With [] the term itself is returned.
     /// With [i] the the subterm with index (i-1) is returned.
@@ -113,11 +113,11 @@ public extension Node {
 
 // MARK: - Array + Position
 
-public extension Array where Element:Node {
+extension Array where Element:Node {
     /// Get term at position in array. (for convenience)
     /// array[[i]] := array[i-1]
     /// array[[i,j,...]] := array[i-1][j,...]
-    public subscript(position:Position)->Element? {
+    subscript(position:Position)->Element? {
         guard let first = position.first else { return nil }    // position == [], but an array is not of type Node
         // position != []
         if first < 1 || first >= self.count { return nil }      // array does not have element at given position

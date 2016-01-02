@@ -2,6 +2,7 @@
 //  Copyright © 2015 Alexander Maringele. All rights reserved.
 
 import Foundation
+@testable
 import NyTerms
 
 typealias TestNode = NodeStruct

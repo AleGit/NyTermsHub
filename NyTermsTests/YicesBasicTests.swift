@@ -2,6 +2,7 @@
 //  Copyright © 2015 Alexander Maringele. All rights reserved.
 
 import XCTest
+@testable
 import NyTerms
 
 /// Basic Usage

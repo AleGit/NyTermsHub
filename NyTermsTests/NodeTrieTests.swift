@@ -29,9 +29,9 @@ class NodeTrieTests: XCTestCase {
         XCTAssertEqual(3, tPaths.count)
         
         let fxaExpected : [TermPath] = [
-            [.Symbol("f"),.Position(1), .Symbol("*")],
-            [.Symbol("f"),.Position(2), .Symbol("g"),.Position(1), .Symbol("a")],
-            [.Symbol("f"),.Position(2), .Symbol("g"),.Position(2), .Symbol("b")]
+            [.Symbol("f"),.Hop(1), .Symbol("*")],
+            [.Symbol("f"),.Hop(2), .Symbol("g"),.Hop(1), .Symbol("a")],
+            [.Symbol("f"),.Hop(2), .Symbol("g"),.Hop(2), .Symbol("b")]
         ]
         
         XCTAssertEqual(fxaExpected.first!, tPaths.first!)

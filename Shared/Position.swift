@@ -9,111 +9,130 @@ import Foundation
 /// The *root* position is the empty sequence and denoted by `ε`
 /// and `p+q` denotes the concatenation of positions `p` and `q`.
 /// We define binary relations <= , <, and || on positions as follows.
-/// We say that position `p` is above position `q 
+/// We say that position `p` is above position `q
 /// if there exists a (necessarily unique) position `r` such that `p+r = q`.
 /// In that case wedefine `q\p` as the position r.
 /// If `p` is above q we also say that `q` is below p or p is a *prefix* of `q`, and we write `p` <= `q`.
 /// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
 
-struct Position : Hashable, CustomStringConvertible {
-    private var sequence = [Int]()
+struct Position : Hashable, CustomStringConvertible, StringLiteralConvertible {
+    private var hops = [Int]()
     
     init() {
-    
+        
     }
     
     init(array:[Int]) {
-        sequence += array
+        hops += array
     }
-
+    
     func decompose() -> (Int, Position)? {
-        guard let (head, array) = sequence.decompose else { return nil }
+        guard let (head, array) = hops.decompose else { return nil }
         
         var tail = Position()
-        tail.sequence += array
+        tail.hops += array
         return (head,tail)
     }
     
     var hashValue : Int {
-        return sequence.description.hashValue
+        return hops.description.hashValue
     }
     
     var description : String {
-        guard !sequence.isEmpty else  { return "ε" }
+        guard !hops.isEmpty else  { return "ε" }
         
-        return sequence.joinWithSeparator(".")
+        return hops.joinWithSeparator(".")
     }
     
     var isEmpty : Bool {
-        return sequence.isEmpty
+        return hops.isEmpty
     }
 }
 
-//extension Position : StringLiteralConvertible {
-//    
-//    // UnicodeScalarLiteralConvertible
-//    // typealias UnicodeScalarLiteralType = StringLiteralType
-//    init(unicodeScalarLiteral value: StringLiteralType) {
-//        self.init(stringLiteral: value)
-//    }
-//    
-//    // ExtendedGraphemeClusterLiteralConvertible:UnicodeScalarLiteralConvertible
-//    // typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
-//    init(extendedGraphemeClusterLiteral value: StringLiteralType) {
-//        self.init(stringLiteral: value)
-//    }
-//    
-//    // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
-//    // typealias StringLiteralType
-//    init(stringLiteral value: Self.StringLiteralType) {
-//        
-//    
-//    }
-//}
+extension Position // : StringLiteralConvertible
+{
+    
+    
+    // UnicodeScalarLiteralConvertible
+    // typealias UnicodeScalarLiteralType = StringLiteralType
+    init(unicodeScalarLiteral value: StringLiteralType) {
+        self.init(stringLiteral: value)
+    }
+    
+    // ExtendedGraphemeClusterLiteralConvertible:UnicodeScalarLiteralConvertible
+    // typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
+    init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+        self.init(stringLiteral: value)
+    }
+    
+    // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
+    // typealias StringLiteralType
+    init(stringLiteral value: StringLiteralType) {
+        self.init()
+        
+        var remainder = value
+        while !remainder.isEmpty {
+            var head = remainder
+            if let range = remainder.rangeOfString(".") {
+                head = remainder[remainder.startIndex..<range.startIndex]
+                remainder.removeRange(remainder.startIndex..<range.endIndex)
+            }
+            else {
+                remainder.removeAll()
+            }
+            if let hop = Int(head) {
+                self.hops.append(hop)
+            }
+            else {
+                break
+            }
+        }
+    }
+}
 
 let ε = Position()
 
 func ==(lhs:Position, rhs:Position) -> Bool {
-    return lhs.sequence == rhs.sequence
+    return lhs.hops == rhs.hops
 }
 
 func +(lhs:Position, rhs:Int) -> Position {
-    return Position(array: lhs.sequence + [rhs])
+    return Position(array: lhs.hops + [rhs])
 }
 
 func +(lhs:Int, rhs:Position) -> Position {
-    return Position(array: [lhs] + rhs.sequence)
+    return Position(array: [lhs] + rhs.hops)
 }
 
 func +(lhs:Position, rhs: Position) -> Position {
-    return Position(array: lhs.sequence + rhs.sequence)
+    return Position(array: lhs.hops + rhs.hops)
 }
 
 func -(lhs:Position, rhs:Position) -> Position? {
-    guard let sequence = lhs.sequence - rhs.sequence else { return nil }
+    guard let hops = lhs.hops - rhs.hops else { return nil }
     
-    return Position(array: sequence)
+    return Position(array: hops)
 }
 
 func <= (lhs:Position, rhs:Position) -> Bool {
-    return lhs.sequence <= rhs.sequence
+    return lhs.hops <= rhs.hops
 }
 
 func >= (lhs:Position, rhs:Position) -> Bool {
-    return lhs.sequence >= rhs.sequence
+    return lhs.hops >= rhs.hops
 }
 
 func < (lhs:Position, rhs:Position) -> Bool {
-    return lhs.sequence < rhs.sequence
+    return lhs.hops < rhs.hops
 }
 
 func > (lhs:Position, rhs:Position) -> Bool {
-    return lhs.sequence > rhs.sequence
+    return lhs.hops > rhs.hops
 }
 
 func || (lhs:Position, rhs:Position) -> Bool {
-    return lhs.sequence || rhs.sequence
+    return lhs.hops || rhs.hops
 }
 
 // MARK: - Node + Position

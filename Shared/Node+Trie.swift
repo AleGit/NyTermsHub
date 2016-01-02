@@ -2,49 +2,43 @@
 
 import Foundation
 
-enum SymPos : Hashable, CustomStringConvertible {
+enum SymHop : Hashable, CustomStringConvertible {
     case Symbol(String)
-    case Position(Int)
+    case Hop(Int)
     
     var hashValue : Int {
         switch self {
         case let .Symbol(symbol):
             return symbol.hashValue
-        case let .Position(position):
-            return position.hashValue
+        case let .Hop(hop):
+            return hop.hashValue
         }
     }
 }
 
-extension SymPos {
+extension SymHop {
     var description : String {
         switch self {
         case let .Symbol(symbol):
             return symbol
-        case let .Position(position):
-            return "\(position)"
+        case let .Hop(hop):
+            return "\(hop)"
         }
     }
 }
 
-//extension Array where Element : SymPos {
-//    var description : String {
-//        self.joinWithSeparator(".")
-//    }
-//}
-
-func ==(lhs:SymPos, rhs:SymPos) -> Bool {
+func ==(lhs:SymHop, rhs:SymHop) -> Bool {
     switch(lhs,rhs) {
     case let (.Symbol(lsymbol), .Symbol(rsymbol)):
         return lsymbol == rsymbol
-    case let (.Position(lpos), .Position(rpos)):
-        return lpos == rpos
+    case let (.Hop(lhop), .Hop(rhop)):
+        return lhop == rhop
     default:
         return false
     }
 }
 
-typealias TermPath = [SymPos]
+typealias TermPath = [SymHop]
 
 
 
@@ -61,11 +55,11 @@ extension Node {
             return [[.Symbol(self.symbol)]]
         }
         
-        var paths = [[SymPos]]()
+        var paths = [[SymHop]]()
         
         for (index,subpaths) in (nodes.map { $0.paths }).enumerate() {
             for subpath in subpaths {
-                paths.append([.Symbol(self.symbol), .Position(index+1)] + subpath)
+                paths.append([.Symbol(self.symbol), .Hop(index+1)] + subpath)
             }
         }
         return paths
@@ -75,8 +69,8 @@ extension Node {
 
 
 
-func buildNodeTrie<N:Node>(nodes:[N]) -> Trie<SymPos, N> {
-    var trie = Trie<SymPos,N>()
+func buildNodeTrie<N:Node>(nodes:[N]) -> Trie<SymHop, N> {
+    var trie = Trie<SymHop,N>()
     
     for node in nodes {
         let paths = node.paths

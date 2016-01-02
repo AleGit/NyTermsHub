@@ -3,7 +3,7 @@
 
 import Cocoa
 
-/// Class `TptpNode` is the generic bridging implementation of protocol `Node` (Swift) to the *TPTP* parser (C).
+/// `TptpNode` is the bridging implementation of protocol `Node` (Swift) to the *TPTP* parser (C).
 /// The root node of an abstract syntax tree with TptpTerms represents one of the follwing TPTP types:
 /// - cnf_formula
 /// - fof_formula
@@ -24,27 +24,10 @@ public final class TptpNode: NSObject, Node {
         return string
     }
     
-    private func updateHashValue() -> Int {
-        let value = self.defaultHashValue
-        cachedHashValue = value
-        return value
-    }
-    
     /// Since TptpNode inherits description from NSObject
     /// it would not call the protocol extension's implementation.
     public override var description : String {
-        guard let description = cachedDescription else { return updateDescription() }
-        return description
-    }
-    
-    /// Appends additonal term to subterms of connective.
-    /// - fof_or_formula '|' fof_unitary_formula
-    /// - fof_and_formula '&' fof_unitary_formula
-    public func append(term: TptpNode) {
-        cachedDescription = nil // invalidate cached description
-        cachedHashValue = nil // invalidate cached hash value
-        if self.nodes == nil { self.nodes = [term] }
-        else { self.nodes!.append(term) }
+        return cachedDescription ?? updateDescription()
     }
     
     /// Since TptpNode inherits isEqual from NSObject
@@ -56,11 +39,27 @@ public final class TptpNode: NSObject, Node {
         return self.isEqual(rhs)
     }
     
+    private func updateHashValue() -> Int {
+        let value = self.defaultHashValue
+        cachedHashValue = value
+        return value
+    }
+    
     /// Since TptpNode inherits hashValue from NSObject
     /// it would not call the protocol extension's implementation.
     public override var hashValue : Int {
-        guard let value = cachedHashValue else { return updateHashValue() }
-        return value
+        return cachedHashValue ?? updateHashValue()
+    }
+    
+    /// Appends additonal term to subterms of connective.
+    /// - fof_or_formula '|' fof_unitary_formula
+    /// - fof_and_formula '&' fof_unitary_formula
+    public func append(term: TptpNode) {
+        cachedDescription = nil // invalidate cached description
+        cachedHashValue = nil // invalidate cached hash value
+        
+        if self.nodes == nil { self.nodes = [term] }
+        else { self.nodes!.append(term) }
     }
 }
 

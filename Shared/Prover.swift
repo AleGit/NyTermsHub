@@ -4,7 +4,7 @@
 
 import Foundation
 
-public protocol Prover {
+protocol Prover {
     typealias N : Node
     
     var symbols : [Symbol:SymbolQuadruple] { get set }
@@ -12,7 +12,7 @@ public protocol Prover {
     init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
 }
 
-public final class YiProver<N:Node> : Prover {
+final class YiProver<N:Node> : Prover {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     /// 
@@ -29,7 +29,7 @@ public final class YiProver<N:Node> : Prover {
     private var indexOfFirstUnassertedClause = 0
     
     /// a collection of symbols and their semantics
-    public var symbols : [Symbol:SymbolQuadruple]
+    var symbols : [Symbol:SymbolQuadruple]
     
     /// a pointer to a yices context
     private let ctx : COpaquePointer
@@ -52,7 +52,7 @@ public final class YiProver<N:Node> : Prover {
     
     /// We assign a list of clauses and a list of predefined symbols to our prover
     /// Goal: prove that the clauses are unsatisfiable.
-    public init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple]) {
+    init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple]) {
         
         // create a yices context with default configuration
         self.ctx = yices_new_context(nil)
@@ -76,16 +76,16 @@ public final class YiProver<N:Node> : Prover {
     }
 }
 
-public extension YiProver {
-    public convenience init(clauses:[N]) {
+extension YiProver {
+    convenience init(clauses:[N]) {
         self.init(clauses:clauses, predefined: Symbols.defaultSymbols)
     }
     
-    public var status : smt_status {
+    var status : smt_status {
         return yices_check_context(ctx, nil)
     }
     
-    public func run(maxRounds:Int) -> Int {
+    func run(maxRounds:Int) -> Int {
         var round = 0
         while yices_check_context(ctx, nil) == STATUS_SAT && round++ < maxRounds {
             let mdl = yices_get_model(ctx, 1);
@@ -184,7 +184,7 @@ private extension YiProver {
     }
 }
 
-public extension YiProver {
+extension YiProver {
     
     private func createQuadruple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
         guard var quadruple = symbols[symbol] else {
@@ -204,7 +204,7 @@ public extension YiProver {
     }
     
     /// protocol extension Prover.register cannot be invoked in the class?
-    public func register(predicate symbol:String, arity:Int) -> SymbolQuadruple {
+    func register(predicate symbol:String, arity:Int) -> SymbolQuadruple {
         let quadruple = createQuadruple(symbol, type:SymbolType.Predicate, arity:arity)
         
         self.symbols[symbol] = quadruple
@@ -212,7 +212,7 @@ public extension YiProver {
         return quadruple
     }
     
-    public func register(function symbol:String, arity:Int) -> SymbolQuadruple {
+    func register(function symbol:String, arity:Int) -> SymbolQuadruple {
     
         let quadruple = createQuadruple(symbol, type:SymbolType.Function, arity:arity)
         

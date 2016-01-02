@@ -8,7 +8,7 @@ import Cocoa
 /// It returns a triple with the list of parse status, 
 /// the list for successfully parsed *annotated formulae*
 /// and the list of all *include* lines.
-public func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
+func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
     
     let array = parse_path(path)
     var result = [Int(array[0] as! NSNumber)]
@@ -35,7 +35,7 @@ public func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], in
 
 /// Parses the content of `string` which may contain multiple annotated formulae, but must not contain include lines.
 /// It returns a pair with parse status and the list of successfully parsed *annotated formulae*.
-public func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) {
+func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) {
     
     let array = parse_string(string)
     let result = Int(array[0] as! NSNumber)
@@ -47,14 +47,14 @@ public func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) 
 /// A TptpFormula represents one of the following tptp types
 /// - cnf_annotated
 /// - fof_annotated
-public final class TptpFormula: NSObject {
-    public let language : TptpLanguage
-    public let name : String
-    public let role : TptpRole
-    public let root : TptpNode
-    public let annotations : [String]?
+final class TptpFormula: NSObject {
+    let language : TptpLanguage
+    let name : String
+    let role : TptpRole
+    let root : TptpNode
+    let annotations : [String]?
     
-    public init(language:TptpLanguage, name:String, role:TptpRole, root:TptpNode, annotations:[String]?) {
+    init(language:TptpLanguage, name:String, role:TptpRole, root:TptpNode, annotations:[String]?) {
         
         self.language = language
         self.name = name
@@ -63,7 +63,7 @@ public final class TptpFormula: NSObject {
         self.annotations = annotations
     }
     
-    public override var description : String {
+    override var description : String {
         if let annos = annotations {
             return "\(language)(\(name), \(role), \(root), \(annos))."
         }
@@ -72,20 +72,20 @@ public final class TptpFormula: NSObject {
 }
 
 extension TptpFormula : StringLiteralConvertible {
-    public typealias UnicodeScalarLiteralType = StringLiteralType
-    public convenience init(unicodeScalarLiteral value: UnicodeScalarLiteralType) {
+    typealias UnicodeScalarLiteralType = StringLiteralType
+    convenience init(unicodeScalarLiteral value: UnicodeScalarLiteralType) {
         self.init(stringLiteral: value)
     }
     
-    public typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
-    public convenience init(extendedGraphemeClusterLiteral value: ExtendedGraphemeClusterLiteralType) {
+    typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
+    convenience init(extendedGraphemeClusterLiteral value: ExtendedGraphemeClusterLiteralType) {
         self.init(stringLiteral: value)
     }
     
     /// Convenience initializer from string literal.
     /// - cnf(agatha,hypothesis, ( lives(agatha) )).
     /// - fof(pel55_1,axiom, ( ? [X] : ( lives(X) & killed(X,agatha) ) )).
-    public convenience init(stringLiteral value: StringLiteralType) {
+    convenience init(stringLiteral value: StringLiteralType) {
         let (status,formulae) = parse(string:value)
         
         assert(status == 0)
@@ -99,17 +99,17 @@ extension TptpFormula : StringLiteralConvertible {
         }
     }
     
-    public convenience init(language:TptpLanguage, stringLiteral value:String) {
+    convenience init(language:TptpLanguage, stringLiteral value:String) {
         let literal = "\(language)(anonymous,\(TptpRole.Unknown),\(value))."
         self.init(stringLiteral: literal)
     }
     
     /// Convenience factory method to create a cnf root
-    public static func CNF(stringLiteral value:String) -> TptpFormula {
+    static func CNF(stringLiteral value:String) -> TptpFormula {
         return TptpFormula(language: TptpLanguage.CNF, stringLiteral: value)
     }
     ///  Convenience factory method to create a fof root
-    public static func FOF(stringLiteral value:String) -> TptpFormula {
+    static func FOF(stringLiteral value:String) -> TptpFormula {
         return TptpFormula(language: TptpLanguage.FOF, stringLiteral: value)
     }
 }

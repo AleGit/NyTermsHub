@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable
 import NyTerms
 
 class PolyTryTests: XCTestCase {

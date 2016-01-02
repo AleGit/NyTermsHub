@@ -2,6 +2,7 @@
 //  Copyright © 2015 Alexander Maringele. All rights reserved.
 
 import XCTest
+@testable
 import NyTerms
 
 // MARK: - term implementation
@@ -96,7 +97,7 @@ class NodeEnumTests: XCTestCase {
         guard let (l2r1,p,l2,r2) = peaks.first else { XCTAssert(false, "one peak was expected"); return }
         
         XCTAssertEqual("f(a,c)",l2r1)
-        XCTAssertEqual([2], p)
+        XCTAssertEqual(Position(array: [2]), p)
         XCTAssertEqual("f(a,g(b))", l2)
         XCTAssertEqual("f(b,b)", r2)
         

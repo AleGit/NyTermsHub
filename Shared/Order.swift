@@ -9,9 +9,9 @@
 import Foundation
 
 /// (D.4.3.1) A *precedence* is a proper order on a signature
-public typealias precedence = (Symbol,Symbol) -> Bool
+typealias precedence = (Symbol,Symbol) -> Bool
 
-public protocol Order {
+protocol Order {
     
     func greaterThan<T:Node>(s:T, t:T) -> Bool
 }
@@ -32,14 +32,14 @@ public protocol Order {
 /// 2. t = g(t<sub>1</sub>,...,t<sub>m</sub>,
 /// f>g, and s><sub>LPO</sub>t<sub>i</sub> for all i in 1...m
 /// 3. s<sub>i</sub> = t or s<sub>i</sub> ><sub>LPO</sub> t for some i in 1...n
-public struct LexicographicPathOrder : Order {
+struct LexicographicPathOrder : Order {
     let p:precedence
     
-    public init(p:precedence) {
+    init(p:precedence) {
         self.p = p
     }
     
-    public func greaterThan<T:Node>(s:T, t:T) -> Bool {
+    func greaterThan<T:Node>(s:T, t:T) -> Bool {
         assert(s.isTerm)
         assert(t.isTerm)
 
@@ -97,14 +97,14 @@ public struct LexicographicPathOrder : Order {
 /// (D.4.4.1) A *weight function* for a signature *F* is a pair (*w*,w<sub>0</sub>)
 /// of a mapping *w*: *F* -> **N** and constant w<sub>0</sub> such that
 /// *w*(c) > w<sub>0</sub> for every constant c in *F*.
-public typealias weight = (w:Symbol -> Int, w0:Int)
+typealias weight = (w:Symbol -> Int, w0:Int)
 
 /// (D.4.4.2) Let *F* be a signature and (*w*,w<sub>0</sub> a weight function for *F*.
 /// The weight of a term t is defined as follows:
 /// 1. w(x) = w<sub>0</sub>
-public typealias weighting = Node -> Int
+typealias weighting = Node -> Int
 
-public func makeWeighting<T:Node>(w: weight) -> ((T)->Int) {
+func makeWeighting<T:Node>(w: weight) -> ((T)->Int) {
     
     var wt: ((T)->Int)? = nil
     
@@ -136,16 +136,16 @@ public func makeWeighting<T:Node>(w: weight) -> ((T)->Int) {
 /// s<sub>j</sub> = t<sub>j</sub>
 /// forall j<i and s<sub>i</sub> ><sub>kbo</sub> t<sub>i</sub>,or
 /// * s = f(s<sub>1</sub>,...,s<sub>n</sub>), t = g(t<sub>1</sub>,...,t<sub>m</sub>), and f > g.
-public struct KnuthBendixOrder : Order {
+struct KnuthBendixOrder : Order {
     let p:precedence
     let w:weighting
     
-    public init(p:precedence, w:weighting) {
+    init(p:precedence, w:weighting) {
         self.p = p
         self.w = w
     }
     
-    public func greaterThan<T:Node>(s:T, t:T) -> Bool {
+    func greaterThan<T:Node>(s:T, t:T) -> Bool {
         assert(s.isTerm)
         assert(t.isTerm)
         

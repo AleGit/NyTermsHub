@@ -3,10 +3,10 @@
 
 import Foundation
 
-public typealias SymbolCensus = [ String : (count:Int,arities:Set<Int>)]
-public typealias VariableCensus = [String : Int]
+typealias SymbolCensus = [ String : (count:Int,arities:Set<Int>)]
+typealias VariableCensus = [String : Int]
 
-public func ==(lhs:SymbolCensus,rhs:SymbolCensus) -> Bool {
+func ==(lhs:SymbolCensus,rhs:SymbolCensus) -> Bool {
     if lhs.count != rhs.count { return false }
     
     for (symbol,(count:occurs,arities:arities)) in lhs {
@@ -18,9 +18,9 @@ public func ==(lhs:SymbolCensus,rhs:SymbolCensus) -> Bool {
     return true
 }
 
-public extension Node {
+extension Node {
     /// Get the set of all variable terms.
-    public var allVariables : Set<Self> {
+    var allVariables : Set<Self> {
         guard let ts = self.nodes else { return Set(arrayLiteral: self) }
         
         return Set(ts.flatMap { $0.allVariables })
@@ -71,7 +71,7 @@ public extension Node {
     /// A rewrite rule is an equation that satifies the follwong conditions
     /// - the left-hand side is not a variable
     /// - Vars(r) is a subset of Vars(l)
-    static public func Rule(lhs:Self, _ rhs:Self) -> Self? {
+    static func Rule(lhs:Self, _ rhs:Self) -> Self? {
         
         if lhs.nodes == nil { return nil }  // the left-hand side is a variable, hence the equation is not a rule
         
@@ -106,7 +106,7 @@ extension Node {
     /// a *critical peak*
     /// and the equation l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub> = r<sub>2</sub>σ a *critical pair*,
     /// obtained from overlap (l<sub>1</sub>→r<sub>1</sub>,p,l<sub>2</sub>→r<sub>2</sub>).
-    public typealias CriticalPeak = (l2r1:Self,positon:Position,l2:Self,r2:Self)
+    typealias CriticalPeak = (l2r1:Self,positon:Position,l2:Self,r2:Self)
     
     /// Find all *non-variable* positions p where subterm `self`|p and term `other` are unifiable
     /// and return the (possible empty) list of positons with unifiers.
@@ -132,7 +132,7 @@ extension Node {
         
         for (index,term) in nodes.enumerate() {
             // if array index is i, then position is i+1.
-            positionUnifiers += term.positionUnifiers(actual+[index+1], other: other)
+            positionUnifiers += term.positionUnifiers(actual+(index+1), other: other)
         }
         return positionUnifiers
     }
@@ -140,7 +140,7 @@ extension Node {
     /// Find all critical peaks (l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub>, p, l<sub>2</sub>σ, r<sub>2</sub>σ)
     /// originating in left-hand side of rule `other` = l<sub>2</sub>->r<sub>2</sub>
     /// and induced by left-hand side of rule `self` = l<sub>1</sub>->r<sub>1</sub>.
-    public func criticalPeaks(other:Self) -> [CriticalPeak] {
+    func criticalPeaks(other:Self) -> [CriticalPeak] {
         assert(other.isRewriteRule,self.description)
         assert(self.isRewriteRule,self.description)
         assert(self.allVariables.intersect(other.allVariables).isEmpty)
@@ -152,9 +152,9 @@ extension Node {
         guard let l2 = other.nodes?.first else { return [CriticalPeak]() }
         guard let r2 = other.nodes?.last else { return [CriticalPeak]() }
         
-        return l2.positionUnifiers([], other: l1).filter {
+        return l2.positionUnifiers(ε, other: l1).filter {
             // - if p = [] then l1->r1 and l2</sub>->r2</sub> are not variants
-            $0.position != [] || !self.isVariant(other)
+            $0.position != ε || !self.isVariant(other)
         }.map { (p,σ) -> CriticalPeak in
             let l2σ = l2 * σ                      // _σ == l2[p]σ == l1σ -> r1σ
             let l2r1σ = l2σ[r1 * σ,p]             // l2σ[l1σ,p] -> l2σ[r1σ,p]
@@ -171,7 +171,7 @@ extension Node {
         }
     }
     
-    public func hasOverlap(at position:Position, with rule2: Self) -> Bool {
+    func hasOverlap(at position:Position, with rule2: Self) -> Bool {
         assert(self.allVariables.intersect(rule2.allVariables).count == 0)
         
         guard let l1 = self.nodes?.first else { return false }

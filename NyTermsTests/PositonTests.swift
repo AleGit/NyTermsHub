@@ -11,20 +11,20 @@ class PositonTests: XCTestCase {
         XCTAssertEqual( [Position](), x.unifiablePositions(a))
         XCTAssertEqual( [Position()], fxy.unifiablePositions(z))
         
-        XCTAssertEqual( [Position(),[1]], fax.unifiablePositions(z))
-        XCTAssertEqual( [Position(),[2]], fxa.unifiablePositions(z))
-        XCTAssertEqual( [Position(),[1],[2]], faa.unifiablePositions(z))
+        XCTAssertEqual( [Position(),Position(array:[1])], fax.unifiablePositions(z))
+        XCTAssertEqual( [Position(),Position(array:[2])], fxa.unifiablePositions(z))
+        XCTAssertEqual( [Position(),Position(array:[1]),Position(array:[2])], faa.unifiablePositions(z))
         
-        XCTAssertEqual( [Position(),[1],[1,1],[1,2]], gfaa.unifiablePositions(z))
+        XCTAssertEqual( [Position(),Position(array:[1]),Position(array:[1,1]),Position(array:[1,2])], gfaa.unifiablePositions(z))
     }
     
     func testPositionConcatination() {
         let ε = Position()
         let εε = ε + ε
-        let p1 = [1] as Position
-        let p2 = [2] as Position
-        let p12 = [1,2] as Position
-        let p21 = [2,1] as Position
+        let p1 = Position(array:[1])
+        let p2 = Position(array:[2])
+        let p12 = Position(array:[1,2])
+        let p21 = Position(array:[2,1])
         
         XCTAssertEqual(ε, ε + ε)
         XCTAssertEqual(ε, εε + ε)
@@ -42,11 +42,10 @@ class PositonTests: XCTestCase {
     }
     
     func testPositionLessOrEqual() {
-        let ε = Position()
-        let p1 = [1] as Position
-        let p2 = [2] as Position
-        let p12 = [1,2] as Position
-        let p21 = [2,1] as Position
+        let p1 = Position(array:[1])
+        let p2 = Position(array:[2])
+        let p12 = Position(array:[1,2])
+        let p21 = Position(array:[2,1])
         
         XCTAssertTrue(ε <= ε)
         XCTAssertTrue(ε <= p1)
@@ -80,11 +79,10 @@ class PositonTests: XCTestCase {
     }
     
     func testPositionLess() {
-        let ε = Position()
-        let p1 = [1] as Position
-        let p2 = [2] as Position
-        let p12 = [1,2] as Position
-        let p21 = [2,1] as Position
+        let p1 = Position(array:[1])
+        let p2 = Position(array:[2])
+        let p12 = Position(array:[1,2])
+        let p21 = Position(array:[2,1])
         
         XCTAssertFalse(ε < ε)
         XCTAssertTrue(ε < p1)
@@ -118,11 +116,10 @@ class PositonTests: XCTestCase {
     }
     
     func testPositionParallel() {
-        let ε = Position()
-        let p1 = [1] as Position
-        let p2 = [2] as Position
-        let p12 = [1,2] as Position
-        let p21 = [2,1] as Position
+        let p1 = Position(array:[1])
+        let p2 = Position(array:[2])
+        let p12 = Position(array:[1,2])
+        let p21 = Position(array:[2,1])
         
         XCTAssertFalse(ε || ε)
         XCTAssertFalse(ε || p1)
@@ -156,11 +153,10 @@ class PositonTests: XCTestCase {
     }
     
     func testPositionMinus() {
-        let ε = Position()
-        let p1 = [1] as Position
-        let p2 = [2] as Position
-        let p12 = [1,2] as Position
-        let p21 = [2,1] as Position
+        let p1 = Position(array:[1])
+        let p2 = Position(array:[2])
+        let p12 = Position(array:[1,2])
+        let p21 = Position(array:[2,1])
         
         XCTAssertEqual(ε, (ε-ε)!)
         XCTAssertEqual(p1, (p1-ε)!)

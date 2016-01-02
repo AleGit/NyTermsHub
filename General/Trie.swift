@@ -1,14 +1,14 @@
 import Foundation
 
 /// [[wikikpedia]](https://en.wikipedia.org/wiki/Trie)
-public struct Trie<Key: Hashable, Value: Hashable> {
+struct Trie<Key: Hashable, Value: Hashable> {
     private var tries = [Key: Trie<Key, Value>]()
-    private (set) public var values = Set<Value>()
+    private (set) var values = Set<Value>()
     
-    public init() {    }
+    init() {    }
 }
 
-public extension Trie {
+extension Trie {
     /// follows key path to insert value,
     /// missing key path components will be created.
     mutating func insert(path: [Key], value:Value) {
@@ -52,7 +52,7 @@ public extension Trie {
     }
 }
 
-public extension Trie {
+extension Trie {
     /// get values of `self` and all its successors
     var payload : Set<Value> {
         var collected = values
@@ -66,7 +66,7 @@ public extension Trie {
 // MARK: - String Tries 
 
 /// builds a prefix tree for a list of strings
-public func buildStringTrie(words:[String]) -> Trie<Character, String> {
+func buildStringTrie(words:[String]) -> Trie<Character, String> {
     var trie = Trie<Character,String>()
     
     for word in words {

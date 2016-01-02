@@ -27,7 +27,7 @@ extension TptpRole : CustomStringConvertible, CustomDebugStringConvertible {
         return description
     }
     
-    public init?(string:String) {
+    init?(string:String) {
         switch string {
         case "axiom": self = TptpRole.Axiom
         case "hypothesis": self = TptpRole.Hypothesis
@@ -58,12 +58,12 @@ extension TptpLanguage : CustomStringConvertible, CustomDebugStringConvertible {
         case .TPI: return "tpi"
         }
     }
-    
+  
     public var debugDescription: String {
         return description
     }
     
-    public init?(string:String) {
+    init?(string:String) {
         switch string {
         case "cnf": self = TptpLanguage.CNF
         case "fof": self = TptpLanguage.FOF

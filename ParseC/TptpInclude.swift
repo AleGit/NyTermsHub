@@ -3,17 +3,17 @@
 
 import Foundation
 
-public final class TptpInclude: NSObject {
+final class TptpInclude: NSObject {
     // TPTP Syntax:
     // <include>            ::= include(<file_name><formula_selection>)
     // <file_name>          ::= <single_quoted>
     // <formula_selection>  ::= ,[<name_list>] | <null>
     
     
-    public var fileName : String
-    public let formulaSelection : [String]?
+    var fileName : String
+    let formulaSelection : [String]?
     
-    public init(fileName: String, formulaSelection : [String]?) {
+    init(fileName: String, formulaSelection : [String]?) {
         assert(!fileName.isEmpty, "<file_name> is empty.")
         assert(fileName.hasPrefix("'") && fileName.hasSuffix("'"), "<file_name> ::= <single_quoted> is not single quoted.")
         
@@ -24,7 +24,7 @@ public final class TptpInclude: NSObject {
 }
 
 extension TptpInclude {
-    public override var description : String {
+    override var description : String {
         get {
             guard let selection = formulaSelection else { return "include('\(fileName)')." }
             

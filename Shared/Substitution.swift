@@ -31,19 +31,19 @@ extension Dictionary where Key:Node, Value:Node { // , Key == Value does not wor
     /// A substitution maps variables to terms.
     ///
     /// see **Definition 2.1.23.** in 
-    public var isSubstitution : Bool {
+    var isSubstitution : Bool {
         assert(self.isHomogenous)
         return allKeysAreVariables
     }
     
     /// A variable substitution maps variables to variables.
-    public var isVariableSubstitution : Bool {
+    var isVariableSubstitution : Bool {
         assert(self.isHomogenous)
         return allKeysAreVariables && allValuesAreVariables
     }
     
     /// A (variable) renaming maps distinct variables to distinguishable variables.
-    public var isRenaming : Bool {
+    var isRenaming : Bool {
         assert(self.isHomogenous)
         return allKeysAreVariables && allValuesAreVariables && isInjective
     }
@@ -52,7 +52,7 @@ extension Dictionary where Key:Node, Value:Node { // , Key == Value does not wor
 /// 'lhs =?= rhs' constructs most common unifier mgu(lhs,rhs)
 /// iff terms lhs and rhs are unifiable.
 /// Otherwise it returns *nil*.
-public func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
+func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     
     switch(lhs.isVariable,rhs.isVariable) {
     case (true, true):
@@ -109,7 +109,7 @@ extension Node {
 /// 'lhs ~?= rhs' contstructs mgu(~lhs,rhs) or mgu(lhs,~rhs) iff lhs and rhs are clashing,
 /// i.e. the negation of one is unifiable with the other.
 /// Otherwise it returns *nil*.
-public func ~?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
+func ~?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     
     if let l = lhs.unnegatedNode {
         return l =?= rhs
@@ -125,7 +125,7 @@ public func ~?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
 
 
 /// 't * σ' applies substitution σ on term t.
-public func *<T:Node>(t:T, σ:[T:T]) -> T {
+func *<T:Node>(t:T, σ:[T:T]) -> T {
     assert(σ.isSubstitution)
     
     if let tσ = σ[t] { return tσ }      // t is (variable) in σ.keys
@@ -137,25 +137,25 @@ public func *<T:Node>(t:T, σ:[T:T]) -> T {
 }
 
 /// 't ** s' replaces all variables in t with term s.
-public func **<T:Node>(t:T, s:T) -> T {
+func **<T:Node>(t:T, s:T) -> T {
     guard let nodes = t.nodes else { return s }
     
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** s })
 }
 
 /// 't ** idx' appends index to variable names
-public func **<T:Node>(t:T, idx:Int) -> T {
+func **<T:Node>(t:T, idx:Int) -> T {
     guard let nodes = t.nodes else { return T(variable:"\(t.symbol)_\(idx)") }
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** idx })
 }
 
 /// 't**' replaces all variables in t with constant '⊥'.
-public postfix func **<T:Node>(t:T) -> T {
+postfix func **<T:Node>(t:T) -> T {
     return t ** T(constant:"⊥")
 }
 
 /// 'σ * ρ' concatinates substitutions σ and ρ.
-public func *<T:Node> (lhs:[T:T], rhs:[T:T]) -> [T:T] {
+func *<T:Node> (lhs:[T:T], rhs:[T:T]) -> [T:T] {
     var concat = [T:T]()
     for (lkey,lvalue) in lhs {
         concat[lkey] = lvalue * rhs

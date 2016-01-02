@@ -8,7 +8,7 @@ import Foundation
 /// /Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p
 ///
 /// /Users/Shared/TPTP/Axioms/PUZ001-0.ax
-public typealias TptpPath = String
+typealias TptpPath = String
 
 /// A tptp path to a file contains three components.
 ///
@@ -21,7 +21,7 @@ public typealias TptpPath = String
 /// (root:/Users/Shared/TPTP/,local:Axioms/,last:PUZ001-0.ax)
 typealias TptpPathComponents = (root:TptpPath,local:TptpPath,last:TptpPath)
 
-public extension TptpPath {
+extension TptpPath {
     /// Splits a tptp path to its components.
     ///
     /// "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p" -> (root:"/Users/Shared/TPTP/",local:"Problems/PUZ/",last:"PUZ001-1.p")
@@ -60,7 +60,7 @@ public extension TptpPath {
     }
     
     /// Find path to tptp include file (usually an axiom).
-    public func tptpPathTo(include: TptpInclude) -> TptpPath {
+    func tptpPathTo(include: TptpInclude) -> TptpPath {
         return self.tptpPathTo(include.fileName)
     }
 }

@@ -15,43 +15,111 @@ import Foundation
 /// If `p` is above q we also say that `q` is below p or p is a *prefix* of `q`, and we write `p` <= `q`.
 /// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
-public typealias Position = [Int]
 
-public func -<T:Equatable>(lhs:[T], rhs:[T]) -> [T]? {
-    guard rhs <= lhs else { return nil }
+struct Position : Hashable, CustomStringConvertible {
+    private var sequence = [Int]()
     
-    return Array(lhs.suffixFrom(rhs.count))
-}
-
-public func <= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    // lhs must not be longer then rhs
-    guard lhs.count <= rhs.count else { return false }
+    init() {
     
-    return lhs[0..<lhs.count] == rhs[0..<lhs.count]
-}
-
-public func >= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    return rhs <= lhs
-}
-
-public func < <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    // lhs must be shorter then rhs
-    guard lhs.count < rhs.count else { return false }
+    }
     
-    return lhs[0..<lhs.count] == rhs[0..<lhs.count]
+    init(array:[Int]) {
+        sequence += array
+    }
+
+    func decompose() -> (Int, Position)? {
+        guard let (head, array) = sequence.decompose else { return nil }
+        
+        var tail = Position()
+        tail.sequence += array
+        return (head,tail)
+    }
+    
+    var hashValue : Int {
+        return sequence.description.hashValue
+    }
+    
+    var description : String {
+        guard !sequence.isEmpty else  { return "ε" }
+        
+        return sequence.joinWithSeparator(".")
+    }
+    
+    var isEmpty : Bool {
+        return sequence.isEmpty
+    }
 }
 
-public func > <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    return rhs < lhs
+//extension Position : StringLiteralConvertible {
+//    
+//    // UnicodeScalarLiteralConvertible
+//    // typealias UnicodeScalarLiteralType = StringLiteralType
+//    init(unicodeScalarLiteral value: StringLiteralType) {
+//        self.init(stringLiteral: value)
+//    }
+//    
+//    // ExtendedGraphemeClusterLiteralConvertible:UnicodeScalarLiteralConvertible
+//    // typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
+//    init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+//        self.init(stringLiteral: value)
+//    }
+//    
+//    // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
+//    // typealias StringLiteralType
+//    init(stringLiteral value: Self.StringLiteralType) {
+//        
+//    
+//    }
+//}
+
+let ε = Position()
+
+func ==(lhs:Position, rhs:Position) -> Bool {
+    return lhs.sequence == rhs.sequence
 }
 
-public func || <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    return !( lhs <= rhs || lhs >= rhs)
+func +(lhs:Position, rhs:Int) -> Position {
+    return Position(array: lhs.sequence + [rhs])
+}
+
+func +(lhs:Int, rhs:Position) -> Position {
+    return Position(array: [lhs] + rhs.sequence)
+}
+
+func +(lhs:Position, rhs: Position) -> Position {
+    return Position(array: lhs.sequence + rhs.sequence)
+}
+
+func -(lhs:Position, rhs:Position) -> Position? {
+    guard let sequence = lhs.sequence - rhs.sequence else { return nil }
+    
+    return Position(array: sequence)
+}
+
+func <= (lhs:Position, rhs:Position) -> Bool {
+    return lhs.sequence <= rhs.sequence
+}
+
+func >= (lhs:Position, rhs:Position) -> Bool {
+    return lhs.sequence >= rhs.sequence
+}
+
+func < (lhs:Position, rhs:Position) -> Bool {
+    return lhs.sequence < rhs.sequence
+}
+
+func > (lhs:Position, rhs:Position) -> Bool {
+    return lhs.sequence > rhs.sequence
+}
+
+func || (lhs:Position, rhs:Position) -> Bool {
+    return lhs.sequence || rhs.sequence
 }
 
 // MARK: - Node + Position
 
-public extension Node {
+extension Node {
+    
     /// Get all positions of a term, i.e. all paths from root to nodes.
     /// **`P(f(x),f(g(x,y))`** yields the positions:
     ///
@@ -64,67 +132,61 @@ public extension Node {
     ///     [2,1,2] y
     ///
     /// see [AM2015TRS,*Definition 2.1.16*]
-    public var allPositions : [Position] {
+    var allPositions : [Position] {
         var positions = [Position](arrayLiteral: Position())
         
         guard let nodes = self.nodes else { return positions }
         
         let list = nodes.map { $0.allPositions }
         
-        for (index, element) in list.enumerate() {
-            for var e in element {
-                e.insert(index+1, atIndex: 0)
-                positions.append(e)
-            }
+        for (index, poss) in list.enumerate() {
+            positions += poss.map { (index+1) + $0 }
         }
         return positions
     }
 }
 
-public extension Node {
+extension Node {
     /// Get subterm at position.
     /// With [] the term itself is returned.
     /// With [i] the the subterm with index (i-1) is returned.
     ///
     /// see [AM2015TRS,*Definition 2.1.22*]
     subscript (position: Position) -> Self? {
-        guard let first = position.first else { return self }   // position == []
-        guard let nodes = self.nodes else { return nil }        // position != [], but variables has no subnodes at all
-        if first < 1 || first > nodes.count { return nil }      // node does not have subnode at given position
+        guard let (head,tail) = position.decompose() else { return self }       // position == []
+        guard let nodes = self.nodes else { return nil }                        // position != [], but variables has no subnodes at all
+        if head < 1 || head > nodes.count { return nil }                        // node does not have a subnode at given position
         // node is not a constant or variable and has a subnode at given position
-        let tail = Array(position.suffixFrom(1))
-        return nodes[first-1][tail]
+        return nodes[head-1][tail]
     }
     
     /// Construct a new term by replacing the subterm at position.
     ///
     /// see [AM2015TRS,*Definition 2.1.22*]
     subscript (term: Self, position:Position) -> Self? {
-        guard let first = position.first else { return term }   // position == []
-        guard var nodes = self.nodes else { return nil }        // position != [], but variables has no subnodes at all
-        if first < 1 || first > nodes.count { return nil }      // node does not have subnode at given position
+        guard let (head,tail) = position.decompose() else { return term }       // position == []
+        guard var nodes = self.nodes else { return nil }                        // position != [], but variables has no subnodes at all
+        if head < 1 || head > nodes.count { return nil }                        // node does not have a subnode at given position
         // node is not a constant or variable and has a subnode at given position
-        let tail = Array(position.suffixFrom(1))
-        guard let subnode = nodes[first-1][term, tail] else { return nil }
-        nodes[first-1] = subnode
+        let index = head-1
+        guard let subnode = nodes[index][term, tail] else { return nil }
+        nodes[index] = subnode
         return Self(function:self.symbol, nodes: nodes)
     }
 }
 
 // MARK: - Array + Position
 
-public extension Array where Element:Node {
+extension Array where Element:Node {
     /// Get term at position in array. (for convenience)
     /// array[[i]] := array[i-1]
     /// array[[i,j,...]] := array[i-1][j,...]
-    public subscript(position:Position)->Element? {
-        guard let first = position.first else { return nil }    // position == [], but an array is not of type Node
+    subscript(position:Position)->Element? {
+        guard let (head,tail) = position.decompose() else { return nil }        // position == [], but an array is not of type Node
         // position != []
-        if first < 1 || first >= self.count { return nil }      // array does not have element at given position
+        if head < 1 || head >= self.count { return nil }                        // array does not have element at given position
         
-        let term = self[first-1]                                // subnode at position `first` is at index `first-1`
-        let tail = Position(position.suffixFrom(1))
-        
+        let term = self[head-1]                                // subnode at position `first` is at index `first-1`
         return term[tail]
     }
 }

@@ -17,14 +17,10 @@ import Foundation
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
 
 struct Position : Hashable, CustomStringConvertible, StringLiteralConvertible {
-    private var hops = [Int]()
+    private var hops : [Int]
     
     init() {
-        
-    }
-    
-    init(array:[Int]) {
-        hops += array
+        hops = [Int]()
     }
     
     func decompose() -> (Int, Position)? {
@@ -50,10 +46,26 @@ struct Position : Hashable, CustomStringConvertible, StringLiteralConvertible {
     }
 }
 
-extension Position // : StringLiteralConvertible
-{
+extension Position {
+//    init(_ sequence:Array<Int>) {
+//        self.init()
+//        self.hops += sequence
+//    }
     
-    
+    init<S: SequenceType where S.Generator.Element == Int>(_ sequence:S) {
+        self.init()
+        self.hops += sequence
+    }
+}
+
+//extension Position : ArrayLiteralConvertible {
+//    
+//    init(arrayLiteral elements:Int...) {
+//        hops = elements
+//    }
+//}
+
+extension Position {
     // UnicodeScalarLiteralConvertible
     // typealias UnicodeScalarLiteralType = StringLiteralType
     init(unicodeScalarLiteral value: StringLiteralType) {
@@ -98,21 +110,21 @@ func ==(lhs:Position, rhs:Position) -> Bool {
 }
 
 func +(lhs:Position, rhs:Int) -> Position {
-    return Position(array: lhs.hops + [rhs])
+    return Position(lhs.hops + [rhs])
 }
 
 func +(lhs:Int, rhs:Position) -> Position {
-    return Position(array: [lhs] + rhs.hops)
+    return Position([lhs] + rhs.hops)
 }
 
 func +(lhs:Position, rhs: Position) -> Position {
-    return Position(array: lhs.hops + rhs.hops)
+    return Position(lhs.hops + rhs.hops)
 }
 
 func -(lhs:Position, rhs:Position) -> Position? {
     guard let hops = lhs.hops - rhs.hops else { return nil }
     
-    return Position(array: hops)
+    return Position(hops)
 }
 
 func <= (lhs:Position, rhs:Position) -> Bool {
@@ -144,11 +156,11 @@ extension Node {
     ///
     ///     []      P(f(x),f(g(x,y))
     ///     [1]     f(x)
-    ///     [1,2]   x
+    ///     [1.2]   x
     ///     [2]     f(g(x,y))
-    ///     [2,1]   g(x,y)
-    ///     [2,1,1] x
-    ///     [2,1,2] y
+    ///     [2.1]   g(x,y)
+    ///     [2.1.1] x
+    ///     [2.1.2] y
     ///
     /// see [AM2015TRS,*Definition 2.1.16*]
     var allPositions : [Position] {

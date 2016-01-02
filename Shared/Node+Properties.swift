@@ -194,7 +194,7 @@ extension Node {
     }
     
     /// Recursive check if `self` represents as unit clause, i.e. a clause with exactly one literal
-    public var isUnitClause : Bool {
+    var isUnitClause : Bool {
         
         guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false }
         guard let nodes = self.nodes where nodes.count == 1 else { return false }
@@ -203,7 +203,7 @@ extension Node {
     }
     
     /// Recursive check if `self` represents a Horn clause, i.e. a clause with at most one positive literal.
-    public var isHornClause : Bool {
+    var isHornClause : Bool {
         
         guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false /* self is not a disjunction, hence self is not a clause */ }
         guard let nodes = self.nodes else { return false /* nodes are nil, hences self is not a clause */ }

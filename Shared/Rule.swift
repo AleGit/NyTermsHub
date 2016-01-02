@@ -132,7 +132,7 @@ extension Node {
         
         for (index,term) in nodes.enumerate() {
             // if array index is i, then position is i+1.
-            positionUnifiers += term.positionUnifiers(actual+[index+1], other: other)
+            positionUnifiers += term.positionUnifiers(actual+(index+1), other: other)
         }
         return positionUnifiers
     }
@@ -152,9 +152,9 @@ extension Node {
         guard let l2 = other.nodes?.first else { return [CriticalPeak]() }
         guard let r2 = other.nodes?.last else { return [CriticalPeak]() }
         
-        return l2.positionUnifiers([], other: l1).filter {
+        return l2.positionUnifiers(ε, other: l1).filter {
             // - if p = [] then l1->r1 and l2</sub>->r2</sub> are not variants
-            $0.position != [] || !self.isVariant(other)
+            $0.position != ε || !self.isVariant(other)
         }.map { (p,σ) -> CriticalPeak in
             let l2σ = l2 * σ                      // _σ == l2[p]σ == l1σ -> r1σ
             let l2r1σ = l2σ[r1 * σ,p]             // l2σ[l1σ,p] -> l2σ[r1σ,p]

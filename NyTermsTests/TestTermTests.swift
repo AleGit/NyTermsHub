@@ -102,21 +102,5 @@ class TermTests: XCTestCase {
         XCTAssertEqual(fax, x * ([x:fxy] * [x:a]) * [y:x])
         XCTAssertEqual(fax, x * [x:fxy] * ([x:a] * [y:x]))
     }
-    
-    func testTermPosition() {
-        XCTAssertEqual([Position()], x.allPositions)
-        XCTAssertEqual([Position(),Position([1]),Position([2])], fxy.allPositions)
-        XCTAssertEqual([Position(),Position([1]), "1.1", "1.2",Position([2])], (fxy * [x:faa]).allPositions)
-        
-        XCTAssertEqual(fax, fax[Position()]!)
-        XCTAssertEqual(a, fax["1"]!)
-        XCTAssertEqual(x, fax["2"]!)
-        XCTAssertEqual(x, fxy["1"]!)
-        XCTAssertEqual(y, fxy["2"]!)
-
-        XCTAssertEqual(fax[x,"1"]!,fxy[x,"2"]!)
-        XCTAssertEqual(fxy, fxa[y,"2"]!)
-        
-    }
 
 }

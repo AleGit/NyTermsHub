@@ -115,6 +115,24 @@ class PositionTests: XCTestCase {
             }
         }
     }
+    
+    
+    
+    func testNodePositions() {
+        XCTAssertEqual([ε], x.positions)
+        XCTAssertEqual([ε,"1","2"], fxy.positions)
+        XCTAssertEqual([ε,"1", "1.1", "1.2","2"], (fxy * [x:faa]).positions)
+        
+        XCTAssertEqual(fax, fax[ε]!)
+        XCTAssertEqual(a, fax["1"]!)
+        XCTAssertEqual(x, fax["2"]!)
+        XCTAssertEqual(x, fxy["1"]!)
+        XCTAssertEqual(y, fxy["2"]!)
+        
+        XCTAssertEqual(fax[x,"1"]!,fxy[x,"2"]!)
+        XCTAssertEqual(fxy, fxa[y,"2"]!)
+        
+    }
 
 
     func testUnifiablePositions() {

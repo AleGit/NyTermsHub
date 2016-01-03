@@ -10,6 +10,8 @@
 		265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265666B41B98432C001BF9BD /* ExampleTests.swift */; };
 		5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
 		5101485D1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
+		5116094B1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
+		5116094C1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
 		51192D1B1B67B059008C03B2 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51192D1A1B67B059008C03B2 /* Position.swift */; };
 		511E95751B8AE4070093F4E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E95741B8AE4070093F4E8 /* main.swift */; };
 		511E95811B8AE7B80093F4E8 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512977361B677E1B003D3E80 /* Node.swift */; };
@@ -128,6 +130,7 @@
 		265666B41B98432C001BF9BD /* ExampleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		26EDD91C1BB47BBB001FE0EC /* LPO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LPO.swift; sourceTree = "<group>"; };
 		5101485B1B90382B00D95B00 /* Node+Properties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Properties.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		5116094A1C3993F10090D447 /* Node+Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Position.swift"; sourceTree = "<group>"; };
 		51192D1A1B67B059008C03B2 /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Position.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		511E95721B8AE4070093F4E8 /* NyTermsCL */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NyTermsCL; sourceTree = BUILT_PRODUCTS_DIR; };
 		511E95741B8AE4070093F4E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = main.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -337,6 +340,7 @@
 				515F0F031B6BAB0500B470B4 /* Rule.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				515F0F051B6BB0A100B470B4 /* Symbols.swift */,
+				5116094A1C3993F10090D447 /* Node+Position.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -677,6 +681,7 @@
 				516D1A441C32C3A0000E152A /* Node+Trie.swift in Sources */,
 				511E95851B8AE7B80093F4E8 /* Symbols.swift in Sources */,
 				51C94CBA1B987E70004C3082 /* Empty.swift in Sources */,
+				5116094C1C3993F10090D447 /* Node+Position.swift in Sources */,
 				51FD00B91C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				51FD00BB1C3132F8008C5AD1 /* BinarySearchTree.swift in Sources */,
 				5151BDC11C3161AF006EFCE0 /* Pair.swift in Sources */,
@@ -696,6 +701,7 @@
 				5129773F1B679177003D3E80 /* Substitution.swift in Sources */,
 				51B26B6D1B8DA41200CC59AD /* Yices.swift in Sources */,
 				5151BDC01C3161AF006EFCE0 /* Pair.swift in Sources */,
+				5116094B1C3993F10090D447 /* Node+Position.swift in Sources */,
 				51D276601BC57879005A0213 /* Order.swift in Sources */,
 				5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */,
 				512977191B677CAA003D3E80 /* AppDelegate.swift in Sources */,

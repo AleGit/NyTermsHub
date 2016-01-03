@@ -109,7 +109,7 @@ extension Node {
     typealias CriticalPeak = (l2r1:Self,positon:Position,l2:Self,r2:Self)
     
     /// Find all *non-variable* positions p where subterm `self`|p and term `other` are unifiable
-    /// and return the (possible empty) list of positons with unifiers.
+    /// and return the (possible empty) list of positons.
     ///
     ///     { (p,σ) | self[p].σ = other.σ }
     func unifiablePositions(other:Self) -> [Position] {

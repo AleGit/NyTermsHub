@@ -74,38 +74,6 @@ extension Array {
     }
 }
 
-func -<T:Equatable>(lhs:[T], rhs:[T]) -> [T]? {
-    guard rhs <= lhs else { return nil }
-
-    return Array(lhs.suffixFrom(rhs.count))
-}
-
-func <= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    // lhs must not be longer then rhs
-    guard lhs.count <= rhs.count else { return false }
-    
-    return lhs[0..<lhs.count] == rhs[0..<lhs.count]
-}
-
-func >= <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    return rhs <= lhs
-}
-
-func < <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    // lhs must be shorter then rhs
-    guard lhs.count < rhs.count else { return false }
-    
-    return lhs[0..<lhs.count] == rhs[0..<lhs.count]
-}
-
-func > <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    return rhs < lhs
-}
-
-func || <T:Equatable> (lhs:[T], rhs:[T]) -> Bool {
-    return !( lhs <= rhs || lhs >= rhs)
-}
-
 // MARK: - Sequence Type
 
 extension SequenceType {

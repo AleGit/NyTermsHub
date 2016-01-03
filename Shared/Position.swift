@@ -66,6 +66,29 @@ func +=<S : SequenceType where S.Generator.Element == Int>(inout lhs: Position, 
     lhs.hops += rhs
 }
 
+func -(lhs:Position, rhs:Position) -> Position? {
+    guard rhs <= lhs else { return nil }
+    
+    return Position(lhs.hops[rhs.hops.count..<lhs.hops.count])
+}
+
+/// If `p` is above q we also say that `q` is below p or p is a *prefix* of `q`, and we write `p` <= `q`.
+func <= (lhs:Position, rhs:Position) -> Bool {
+    guard lhs.hops.count <= rhs.hops.count else { return false }
+    return lhs.hops[0..<lhs.count] == rhs.hops[0..<lhs.count]
+}
+
+/// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
+func < (lhs:Position, rhs:Position) -> Bool {
+    guard lhs.hops.count < rhs.hops.count else { return false }
+    return lhs.hops[0..<lhs.count] == rhs.hops[0..<lhs.count]
+}
+
+/// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
+func || (lhs:Position, rhs:Position) -> Bool {
+    return !( lhs <= rhs ) && !( rhs <= lhs )
+}
+
 extension Position : Indexable {
     var startIndex: Int { return self.hops.startIndex }
     var endIndex: Int { return self.hops.endIndex }
@@ -145,49 +168,6 @@ extension Position : StringLiteralConvertible {
         }
     }
 }
-
-//func +(lhs:Position, rhs:Int) -> Position {
-//    return Position(lhs.hops + [rhs])
-//}
-//
-//func +(lhs:Int, rhs:Position) -> Position {
-//    return Position([lhs] + rhs.hops)
-//}
-
-//func +(lhs:Position, rhs: Position) -> Position {
-//    var p = lhs
-//    p += rhs
-//    return p
-//    // return Position(lhs.hops + rhs.hops)
-//}
-
-//func -(lhs:Position, rhs:Position) -> Position? {
-//    guard let hops = lhs.hops - rhs.hops else { return nil }
-//    
-//    return Position(hops)
-//}
-//
-//func <= (lhs:Position, rhs:Position) -> Bool {
-//    return lhs.hops <= rhs.hops
-//}
-//
-//func >= (lhs:Position, rhs:Position) -> Bool {
-//    return lhs.hops >= rhs.hops
-//}
-//
-//func < (lhs:Position, rhs:Position) -> Bool {
-//    return lhs.hops < rhs.hops
-//}
-//
-//func > (lhs:Position, rhs:Position) -> Bool {
-//    return lhs.hops > rhs.hops
-//}
-//
-//func || (lhs:Position, rhs:Position) -> Bool {
-//    return lhs.hops || rhs.hops
-//}
-
-// MARK: - Node + Position
 
 extension Node {
     

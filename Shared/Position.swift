@@ -16,29 +16,17 @@ import Foundation
 /// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
 
-struct Position : Hashable, CustomStringConvertible, StringLiteralConvertible {
+struct Position {
+    /// internal data
     private var hops : [Int]
     
-    init() {
-        hops = [Int]()
-    }
+    /// create a root position
+    init() { hops = [Int]() }
     
     func decompose() -> (Int, Position)? {
         guard let (head, array) = hops.decompose else { return nil }
         
-        var tail = Position()
-        tail.hops += array
-        return (head,tail)
-    }
-    
-    var hashValue : Int {
-        return hops.description.hashValue
-    }
-    
-    var description : String {
-        guard !hops.isEmpty else  { return "ε" }
-        
-        return hops.joinWithSeparator(".")
+        return (head,Position(array))
     }
     
     var isEmpty : Bool {
@@ -46,26 +34,78 @@ struct Position : Hashable, CustomStringConvertible, StringLiteralConvertible {
     }
 }
 
+/// The *root* position is the empty sequence and denoted by `ε`
+let ε = Position()
+
+extension Position : Hashable { // : Equatable
+    var hashValue : Int {
+        return hops.description.hashValue
+    }
+}
+
+// Equatable
+func ==(lhs:Position, rhs:Position) -> Bool {
+    return lhs.hops == rhs.hops
+}
+
 extension Position {
-//    init(_ sequence:Array<Int>) {
-//        self.init()
-//        self.hops += sequence
-//    }
-    
     init<S: SequenceType where S.Generator.Element == Int>(_ sequence:S) {
+        
+        assert(sequence.reduce(true) { $0 && ($1 > 0) }, "A position is a finite sequence of POSITIVE integers.")
+        
         self.init()
         self.hops += sequence
     }
 }
 
-//extension Position : ArrayLiteralConvertible {
-//    
-//    init(arrayLiteral elements:Int...) {
-//        hops = elements
-//    }
-//}
+// `p + q` denotes the concatenation of positions `p` and `q`.
+func +=<S : SequenceType where S.Generator.Element == Int>(inout lhs: Position, rhs: S) {
+    
+    assert(rhs.reduce(true) { $0 && ($1 > 0) }, "A position is a finite sequence of POSITIVE integers.")
+    
+    lhs.hops += rhs
+}
 
-extension Position {
+extension Position : Indexable {
+    var startIndex: Int { return self.hops.startIndex }
+    var endIndex: Int { return self.hops.endIndex }
+    subscript (index:Int) -> Int { return self.hops[index] }
+}
+
+extension Position : SequenceType {
+    func generate() -> IndexingGenerator<[Int]> {
+        let g = self.hops.generate()
+        return g
+    }
+}
+
+extension Position : CollectionType { // CollectionType : Indexable, SequenceType
+    // var count : Int { return hops.count }
+}
+
+extension Position : RangeReplaceableCollectionType {
+    mutating func replaceRange<C : CollectionType where C.Generator.Element == Int>(subRange: Range<Index>, with newElements: C) {
+        self.hops.replaceRange(subRange, with: newElements)
+    }
+}
+
+private extension Position { // : ArrayLiteralConvertible
+    init(arrayLiteral elements: Int...) {
+        self.hops = elements
+    }
+}
+
+extension Position : CustomStringConvertible {
+    
+    var description : String {
+        guard !hops.isEmpty else  { return "ε" }
+        
+        return hops.joinWithSeparator(".")
+    }
+    
+}
+
+extension Position : StringLiteralConvertible {
     // UnicodeScalarLiteralConvertible
     // typealias UnicodeScalarLiteralType = StringLiteralType
     init(unicodeScalarLiteral value: StringLiteralType) {
@@ -93,59 +133,59 @@ extension Position {
             else {
                 remainder.removeAll()
             }
+            
             if let hop = Int(head) {
+                assert(hop > 0, "A position is a finite sequence of POSITIVE integers.")
                 self.hops.append(hop)
             }
             else {
+                assert(head == "ε", "The root position is the empty sequence and denoted by ε.")
                 break
             }
         }
     }
 }
 
-let ε = Position()
+//func +(lhs:Position, rhs:Int) -> Position {
+//    return Position(lhs.hops + [rhs])
+//}
+//
+//func +(lhs:Int, rhs:Position) -> Position {
+//    return Position([lhs] + rhs.hops)
+//}
 
-func ==(lhs:Position, rhs:Position) -> Bool {
-    return lhs.hops == rhs.hops
-}
+//func +(lhs:Position, rhs: Position) -> Position {
+//    var p = lhs
+//    p += rhs
+//    return p
+//    // return Position(lhs.hops + rhs.hops)
+//}
 
-func +(lhs:Position, rhs:Int) -> Position {
-    return Position(lhs.hops + [rhs])
-}
-
-func +(lhs:Int, rhs:Position) -> Position {
-    return Position([lhs] + rhs.hops)
-}
-
-func +(lhs:Position, rhs: Position) -> Position {
-    return Position(lhs.hops + rhs.hops)
-}
-
-func -(lhs:Position, rhs:Position) -> Position? {
-    guard let hops = lhs.hops - rhs.hops else { return nil }
-    
-    return Position(hops)
-}
-
-func <= (lhs:Position, rhs:Position) -> Bool {
-    return lhs.hops <= rhs.hops
-}
-
-func >= (lhs:Position, rhs:Position) -> Bool {
-    return lhs.hops >= rhs.hops
-}
-
-func < (lhs:Position, rhs:Position) -> Bool {
-    return lhs.hops < rhs.hops
-}
-
-func > (lhs:Position, rhs:Position) -> Bool {
-    return lhs.hops > rhs.hops
-}
-
-func || (lhs:Position, rhs:Position) -> Bool {
-    return lhs.hops || rhs.hops
-}
+//func -(lhs:Position, rhs:Position) -> Position? {
+//    guard let hops = lhs.hops - rhs.hops else { return nil }
+//    
+//    return Position(hops)
+//}
+//
+//func <= (lhs:Position, rhs:Position) -> Bool {
+//    return lhs.hops <= rhs.hops
+//}
+//
+//func >= (lhs:Position, rhs:Position) -> Bool {
+//    return lhs.hops >= rhs.hops
+//}
+//
+//func < (lhs:Position, rhs:Position) -> Bool {
+//    return lhs.hops < rhs.hops
+//}
+//
+//func > (lhs:Position, rhs:Position) -> Bool {
+//    return lhs.hops > rhs.hops
+//}
+//
+//func || (lhs:Position, rhs:Position) -> Bool {
+//    return lhs.hops || rhs.hops
+//}
 
 // MARK: - Node + Position
 
@@ -171,7 +211,7 @@ extension Node {
         let list = nodes.map { $0.allPositions }
         
         for (index, poss) in list.enumerate() {
-            positions += poss.map { (index+1) + $0 }
+            positions += poss.map { Position(arrayLiteral:index+1) + $0 }
         }
         return positions
     }

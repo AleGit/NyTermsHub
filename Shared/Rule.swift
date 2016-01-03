@@ -132,7 +132,7 @@ extension Node {
         
         for (index,term) in nodes.enumerate() {
             // if array index is i, then position is i+1.
-            positionUnifiers += term.positionUnifiers(actual+(index+1), other: other)
+            positionUnifiers += term.positionUnifiers(actual+[(index+1)], other: other)
         }
         return positionUnifiers
     }

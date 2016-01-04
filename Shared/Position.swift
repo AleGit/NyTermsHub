@@ -219,10 +219,12 @@ extension Position : StringLiteralConvertible {
         while !remainder.isEmpty {
             var head = remainder
             if let range = remainder.rangeOfString(".") {
+                // "2.1" (valid) or "x.y" (invalid)
                 head = remainder[remainder.startIndex..<range.startIndex]
                 remainder.removeRange(remainder.startIndex..<range.endIndex)
             }
             else {
+                // "2", "ε" (valid) or "", "x" (invalid)
                 remainder.removeAll()
             }
             

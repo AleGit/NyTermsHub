@@ -32,7 +32,8 @@ struct Samples {
         
         
         let name = (file as NSString).lastPathComponent
-        print("// (\(NSDate()) '\(name)'\(Symbols.info)")
+        // print("// (\(NSDate()) '\(name)'\(Symbols.info)")
+        print("// (\(NSDate()) '\(name)'")
         
         let message = "'\(name)' total:\(Double(Int(total*1000))/1000.0)s, limit:\(limit)s, count:\(tptpFormulae.count) avg:\(Double(Int(average*1000_000))/1000.0)ms"
         print("// *** \(message) *** ")

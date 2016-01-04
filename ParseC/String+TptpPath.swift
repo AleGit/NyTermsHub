@@ -50,7 +50,7 @@ extension TptpPath {
     
     /// TPTP problem files can include axioms, i.e. the local path to an axiom file.
     /// It is assumed that `file` share the same root path as `self`.
-    private func tptpPathTo(file:TptpPath) -> TptpPath {
+    func tptpPathTo(file:TptpPath) -> TptpPath {
         let (root,_,_) = self.tptpPathComponents()
         let (_,directory,name) = file.tptpPathComponents()
         

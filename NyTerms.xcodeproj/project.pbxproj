@@ -10,6 +10,7 @@
 		265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265666B41B98432C001BF9BD /* ExampleTests.swift */; };
 		5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
 		5101485D1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
+		511301351C3ACF4F0071D632 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; };
 		5116094B1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
 		5116094C1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
 		51192D1B1B67B059008C03B2 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51192D1A1B67B059008C03B2 /* Position.swift */; };
@@ -659,6 +660,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				511301351C3ACF4F0071D632 /* PolyTry.swift in Sources */,
 				511E958F1B8AEB9C0093F4E8 /* TptpLexer.lm in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,

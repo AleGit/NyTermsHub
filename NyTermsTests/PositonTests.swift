@@ -7,11 +7,25 @@ import XCTest
 class PositionTests: XCTestCase {
     
     func testRootPosition() {
+        
         XCTAssertEqual(0, ε.count)
         XCTAssertEqual(Position(),ε)
-        XCTAssertEqual("ε",ε)
         XCTAssertEqual(Position([Int]()), ε)
+        
+        XCTAssertEqual("ε",ε) // StringLiteralConvertible
+        XCTAssertEqual([], ε) // ArrayLiteralConvertible
+        
         XCTAssertEqual(ε+ε, ε)
+    }
+    
+    func testLiteralConvertible() {
+        // StringLiteralConvertible
+        let s = [ε, "ε", "1", "2", "1.1", "1.2", "2.1", "2.2", "2.3", "5.2.1.4.5.6.7.9", "1.5.2.6.7.8.9.10"]
+        
+        // ArrayLiteralConvertible
+        let a = [ε, [], [1], [2],[1,1],[1,2],[2,1],[2,2],[2,3],[5,2,1,4,5,6,7,9], [1,5,2,6,7,8,9,10]]
+        
+        XCTAssertEqual(s, a)
     }
     
     func testPositionConcatination() {

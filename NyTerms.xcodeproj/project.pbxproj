@@ -790,15 +790,21 @@
 		511E95761B8AE4070093F4E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_OPTIMIZATION_LEVEL = 0;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_STRICT_ALIASING = NO;
+				LLVM_LTO = YES;
 				OTHER_LDFLAGS = (
 					"-lyices",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "NyTerms-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				YACC_GENERATED_FILE_STEM = InputFileStem;
 			};
 			name = Debug;
@@ -806,16 +812,21 @@
 		511E95771B8AE4070093F4E8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_OPTIMIZATION_LEVEL = 0;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_STRICT_ALIASING = NO;
+				LLVM_LTO = YES;
 				OTHER_LDFLAGS = (
 					"-lyices",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "NyTerms-Swift.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				YACC_GENERATED_FILE_STEM = InputFileStem;
 			};
 			name = Release;

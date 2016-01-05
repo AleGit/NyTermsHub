@@ -2,10 +2,12 @@
 
 import Foundation
 
-enum SymHop : Hashable, CustomStringConvertible {
+enum SymHop {
     case Symbol(String)
     case Hop(Int)
-    
+}
+
+extension SymHop: Hashable {
     var hashValue : Int {
         switch self {
         case let .Symbol(symbol):
@@ -16,7 +18,7 @@ enum SymHop : Hashable, CustomStringConvertible {
     }
 }
 
-extension SymHop {
+extension SymHop : CustomStringConvertible {
     var description : String {
         switch self {
         case let .Symbol(symbol):
@@ -55,7 +57,7 @@ extension Node {
             return [[.Symbol(self.symbol)]]
         }
         
-        var paths = [[SymHop]]()
+        var paths = [TermPath]()
         
         for (index,subpaths) in (nodes.map { $0.paths }).enumerate() {
             for subpath in subpaths {

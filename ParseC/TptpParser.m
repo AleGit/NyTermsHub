@@ -260,19 +260,21 @@ NSArray* parse_file(FILE *file) {
         _parser_includes_ = includes;
         _parser_formulae_ = formulae;
         
-        
         result = tptp_parse();
+        
+        _parser_storage_ = nil;
+        _parser_includes_ = nil;
+        _parser_formulae_ = nil;
+        
         fclose(file);
     }
     else {
         result = -1;
     }
     
-    return @[
-             @(result),
-            formulae,
-            includes
-            ];
+    NSArray *array = @[ @(result), formulae, includes ];
+    
+    return array;
 }
 
 /// Open file with path and call tptp parser on it.

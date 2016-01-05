@@ -22,8 +22,8 @@ extension Node {
     ///     [2.1.2] y
     ///
     /// see [AM2015TRS,*Definition 2.1.16*]
-    var positions : [Position] {
-        var positions = [Position](arrayLiteral: Position())
+    var positions : [Position<Int>] {
+        var positions = [Position](arrayLiteral: Position<Int>())
         
         guard let nodes = self.nodes else { return positions }
         
@@ -42,7 +42,7 @@ extension Node {
     /// With [i] the the subterm with index (i-1) is returned.
     ///
     /// see [AM2015TRS,*Definition 2.1.22*]
-    subscript (position: Position) -> Self? {
+    subscript (position: Position<Int>) -> Self? {
         guard let (head,tail) = position.decompose() else { return self }       // position == []
         guard let nodes = self.nodes else { return nil }                        // position != [], but variables has no subnodes at all
         if head < 1 || head > nodes.count { return nil }                        // node does not have a subnode at given position
@@ -53,7 +53,7 @@ extension Node {
     /// Construct a new term by replacing the subterm at position.
     ///
     /// see [AM2015TRS,*Definition 2.1.22*]
-    subscript (term: Self, position:Position) -> Self? {
+    subscript (term: Self, position:Position<Int>) -> Self? {
         guard let (head,tail) = position.decompose() else { return term }       // position == []
         guard var nodes = self.nodes else { return nil }                        // position != [], but variables has no subnodes at all
         if head < 1 || head > nodes.count { return nil }                        // node does not have a subnode at given position

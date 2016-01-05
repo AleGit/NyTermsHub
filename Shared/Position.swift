@@ -14,22 +14,38 @@ import Foundation
 /// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
 
-struct Position {
+protocol Hoplike : Hashable {
+    init?(string:String)
+}
+
+struct Position<Hop:Hoplike> {
     /// internal data
-    private var hops : [Int]
+    private var hops : [Hop]
     
     /// create a root position
-    init() { hops = [Int]() }
+    init() { hops = [Hop]() }
     
-    func decompose() -> (Int, Position)? {
+    func decompose() -> (Hop, Position)? {
         guard let (head, array) = hops.decompose else { return nil }
         
         return (head,Position(array))
     }
 }
 
+extension String : Hoplike {
+    init?(string:String) {
+        self = string
+    }
+}
+
+extension Int : Hoplike {
+    init?(string:String) {
+        self.init(string)
+    }
+}
+
 /// The *root* position is the empty sequence and denoted by `ε`
-let ε = Position()
+let ε = Position<Int>()
 
 extension Position : Hashable { // : Equatable
     var hashValue : Int {
@@ -38,14 +54,12 @@ extension Position : Hashable { // : Equatable
 }
 
 // Equatable
-func ==(lhs:Position, rhs:Position) -> Bool {
+func ==<H:Hashable>(lhs:Position<H>, rhs:Position<H>) -> Bool {
     return lhs.hops == rhs.hops
 }
 
 extension Position {
-    init<S: SequenceType where S.Generator.Element == Int>(_ sequence:S) {
-        
-        assert(sequence.reduce(true) { $0 && ($1 > 0) }, "'\(sequence)' A position is a finite sequence of POSITIVE integers.")
+    init<S: SequenceType where S.Generator.Element == Hop>(_ sequence:S) {
         
         self.init()
         self.hops += sequence
@@ -53,33 +67,31 @@ extension Position {
 }
 
 // `p + q` denotes the concatenation of positions `p` and `q`.
-func +=<S : SequenceType where S.Generator.Element == Int>(inout lhs: Position, rhs: S) {
-    
-    assert(rhs.reduce(true) { $0 && ($1 > 0) }, "'\(rhs)' A position is a finite sequence of POSITIVE integers.")
+func +=<H, S : SequenceType where S.Generator.Element == H>(inout lhs: Position<H>, rhs: S) {
     
     lhs.hops += rhs
 }
 
-func -(lhs:Position, rhs:Position) -> Position? {
+func -<H>(lhs:Position<H>, rhs:Position<H>) -> Position<H>? {
     guard rhs <= lhs else { return nil }
     
     return Position(lhs.hops[rhs.hops.count..<lhs.hops.count])
 }
 
 /// If `p` is above q we also say that `q` is below p or p is a *prefix* of `q`, and we write `p` <= `q`.
-func <= (lhs:Position, rhs:Position) -> Bool {
+func <= <H>(lhs:Position<H>, rhs:Position<H>) -> Bool {
     guard lhs.hops.count <= rhs.hops.count else { return false }
     return lhs.hops[0..<lhs.count] == rhs.hops[0..<lhs.count]
 }
 
 /// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
-func < (lhs:Position, rhs:Position) -> Bool {
+func < <H> (lhs:Position<H>, rhs:Position<H>) -> Bool {
     guard lhs.hops.count < rhs.hops.count else { return false }
     return lhs.hops[0..<lhs.count] == rhs.hops[0..<lhs.count]
 }
 
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
-func || (lhs:Position, rhs:Position) -> Bool {
+func || <H>(lhs:Position<H>, rhs:Position<H>) -> Bool {
     return !( lhs <= rhs ) && !( rhs <= lhs )
 }
 
@@ -88,8 +100,8 @@ func || (lhs:Position, rhs:Position) -> Bool {
 extension Position : Indexable, MutableIndexable {
     var startIndex: Int { return self.hops.startIndex }
     var endIndex: Int { return self.hops.endIndex }
-    subscript (index:Int) -> Int {
-        get {return self.hops[index] }
+    subscript (index:Int) -> Hop {
+        get { return self.hops[index] }
         set { self.hops[index] = newValue }
     }
     
@@ -103,7 +115,7 @@ extension Position : Indexable, MutableIndexable {
 
 /// The generater of a `Position` is just the generator of the internal data.
 extension Position : SequenceType {
-    func generate() -> IndexingGenerator<[Int]> {
+    func generate() -> IndexingGenerator<[Hop]> {
         let g = self.hops.generate()
         return g
     }
@@ -137,7 +149,7 @@ extension Position : CollectionType { // : Indexable, SequenceType
 }
 
 extension Position : RangeReplaceableCollectionType {
-    mutating func replaceRange<C : CollectionType where C.Generator.Element == Int>(subRange: Range<Index>, with newElements: C) {
+    mutating func replaceRange<C : CollectionType where C.Generator.Element == Hop>(subRange: Range<Index>, with newElements: C) {
         self.hops.replaceRange(subRange, with: newElements)
     }
     
@@ -166,7 +178,7 @@ extension Position : MutableSliceable { // :  CollectionType, MutableCollectionT
 }
 
 extension Position : ArrayLiteralConvertible {
-    init(arrayLiteral elements: Int...) {
+    init(arrayLiteral elements: Hop...) {
         self.hops = elements
     }
 
@@ -192,10 +204,22 @@ extension Position : CustomStringConvertible {
     var description : String {
         guard !hops.isEmpty else  { return "ε" }
         
-        return hops.joinWithSeparator(".")
+        return hops.map { "\($0)"}.joinWithSeparator(".")
     }
     
 }
+
+//extension Int : StringLiteralConvertible {
+//    public init(unicodeScalarLiteral value: StringLiteralType) {
+//        self.init(stringLiteral: value)
+//    }
+//    public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
+//        self.init(stringLiteral: value)
+//    }
+//    public init(stringLiteral value: StringLiteralType) {
+//        self = Int(value)!    }
+//    
+//}
 
 extension Position : StringLiteralConvertible {
     // UnicodeScalarLiteralConvertible
@@ -219,7 +243,7 @@ extension Position : StringLiteralConvertible {
         while !remainder.isEmpty {
             var head = remainder
             if let range = remainder.rangeOfString(".") {
-                // "2.1" (valid) or "x.y" (invalid)
+                // "2.1" or "x.y" (invalid)
                 head = remainder[remainder.startIndex..<range.startIndex]
                 remainder.removeRange(remainder.startIndex..<range.endIndex)
             }
@@ -228,12 +252,10 @@ extension Position : StringLiteralConvertible {
                 remainder.removeAll()
             }
             
-            if let hop = Int(head) {
-                assert(hop > 0, "'\(value)' A position is a finite sequence of POSITIVE integers.")
+            if let hop = Hop(string:head) {
                 self.hops.append(hop)
             }
             else {
-                assert(head == "ε", "'\(value)' The root position is the empty sequence and denoted by ε.")
                 break
             }
         }
@@ -248,7 +270,7 @@ extension Array where Element:Node {
     /// Get term at position in array. (for convenience)
     /// array[[i]] := array[i-1]
     /// array[[i,j,...]] := array[i-1][j,...]
-    subscript(position:Position)->Element? {
+    subscript(position:Position<Int>)->Element? {
         guard let (head,tail) = position.decompose() else { return nil }        // position == [], but an array is not of type Node
         // position != []
         if head < 1 || head >= self.count { return nil }                        // array does not have element at given position

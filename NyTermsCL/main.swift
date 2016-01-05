@@ -7,8 +7,8 @@ print("NyTerms with \(Yices.info):")
 print(Process.arguments.joinWithSeparator("\n"))
 
 guard Process.arguments.count > 1 else {
-    Samples.parse4Samples()
-    
+    // Samples.parse4Samples()
+    Samples.parseHWV105m1(100)
     exit(0)
 }
 

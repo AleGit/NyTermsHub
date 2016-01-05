@@ -19,37 +19,39 @@ import Foundation
 struct Samples {
     static var tptpPath = "/Users/Shared/TPTP/Problems/"
     
-    private static func parse1Sample(file:TptpPath, limit:NSTimeInterval) {
-
-        
-        let start = NSDate()
+    private static func parse1Sample(file:TptpPath, limit:(CFTimeInterval,CFTimeInterval)) {
+        let start = CFAbsoluteTimeGetCurrent()
         let (_,tptpFormulae,_) = parse(path:file)
-        let end = NSDate()
-        
-        let total = end.timeIntervalSinceDate(start)
-        
+        let total = CFAbsoluteTimeGetCurrent() - start
         let average = total / Double(tptpFormulae.count)
-        
-        
         let name = (file as NSString).lastPathComponent
-        // print("// (\(NSDate()) '\(name)'\(Symbols.info)")
-        print("// (\(NSDate()) '\(name)'")
         
         let message = "'\(name)' total:\(Double(Int(total*1000))/1000.0)s, limit:\(limit)s, count:\(tptpFormulae.count) avg:\(Double(Int(average*1000_000))/1000.0)ms"
         print("// *** \(message) *** ")
-        
-        
-        
-        // assert(total < limit*4, message)
 
+    }
+    
+    static func parseHWV105m1(count:Int) {
+        let localPath = "Problems/HWV/HWV105-1.p"
+        let totalPath = tptpPath.tptpPathTo(localPath)
+        
+        for i in 1...count {
+            print(i, terminator:":\t")
+            parse1Sample(totalPath, limit:(0.0,0.5))
+        }
     }
     
     static func parse4Samples() {
         for (localPath,limit) in [
-            "Problems/HWV/HWV134-1.p" : 50.0,
-            "Problems/HWV/HWV105-1.p" : 2.5,
-            "Problems/HWV/HWV134+1.p" : 15,
-            "Problems/HWV/HWV062+1.p" : 1.5
+            ("Problems/HWV/HWV105-1.p",( 1.5,  0.5)),
+            ("Problems/HWV/HWV062+1.p",( 0.5,  0.7)),
+            ("Problems/HWV/HWV134+1.p",(11.0, 17.2)),
+            
+            ("Problems/HWV/HWV134-1.p",(40.0, 78.0)),
+            
+            ("Problems/HWV/HWV134+1.p",(11.0, 51.6)),
+            ("Problems/HWV/HWV062+1.p",( 0.5, 22.2)),
+            ("Problems/HWV/HWV105-1.p",( 1.5,  0.5))
             ] {
                 
                 let filePath = tptpPath.tptpPathTo(localPath)

@@ -40,7 +40,7 @@ func ==(lhs:SymHop, rhs:SymHop) -> Bool {
     }
 }
 
-typealias TermPath = [SymHop]
+typealias TermPath = Position<SymHop>
 
 
 

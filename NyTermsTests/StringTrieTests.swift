@@ -18,7 +18,7 @@ class StringTrieTests: XCTestCase {
         
         for word in words {
             let characters = Array(word.characters)
-            trie.insert(characters, value: word)
+            trie.insert(Position(characters), value: word)
         }
         
         return trie
@@ -33,7 +33,7 @@ class StringTrieTests: XCTestCase {
         
         let prefix = [ "a" as Character, "b"]
         
-        let abWords = trie[prefix]!.payload
+        let abWords = trie[Position(prefix)]!.payload
         
         XCTAssertEqual(1789,abWords.count)
         
@@ -66,7 +66,7 @@ class StringTrieTests: XCTestCase {
         for word in words {
             let path = Array(word.characters)
             
-            guard let result = trie[path]?.payload else {
+            guard let result = trie[Position(path)]?.payload else {
                 continue
             }
             results.append(result)

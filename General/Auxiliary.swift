@@ -69,7 +69,7 @@ extension Array where Element : CustomStringConvertible {
 }
 
 extension Array {
-    var decompose: (Element, [Element])? {
+    func decompose() -> (Element, [Element])? {
         return isEmpty ? nil : (self[startIndex], Array(self.dropFirst()))
     }
 }

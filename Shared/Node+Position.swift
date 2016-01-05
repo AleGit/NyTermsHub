@@ -8,6 +8,18 @@
 
 import Foundation
 
+/// [AM2015TRS, *Definition 2.1.14.*] A position is a finite sequence of positive integers.
+/// The *root* position is the empty sequence and denoted by `ε`
+/// and `p+q` denotes the concatenation of positions `p` and `q`.
+/// We define binary relations <= , <, and || on positions as follows.
+/// We say that position `p` is above position `q
+/// if there exists a (necessarily unique) position `r` such that `p+r = q`.
+/// In that case wedefine `q\p` as the position r.
+/// If `p` is above q we also say that `q` is below p or p is a *prefix* of `q`, and we write `p` <= `q`.
+/// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
+/// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
+let ε = Position<Int>()
+
 extension Node {
     
     /// Get all positions of a term, i.e. all paths from root to nodes.
@@ -62,5 +74,21 @@ extension Node {
         guard let subnode = nodes[index][term, tail] else { return nil }
         nodes[index] = subnode
         return Self(function:self.symbol, nodes: nodes)
+    }
+}
+
+// MARK: - Node Array + Position
+
+extension Array where Element:Node {
+    /// Get term at position in array. (for convenience)
+    /// array[[i]] := array[i-1]
+    /// array[[i,j,...]] := array[i-1][j,...]
+    subscript(position:Position<Int>)->Element? {
+        guard let (head,tail) = position.decompose() else { return nil }        // position == [], but an array is not of type Node
+        // position != []
+        if head < 1 || head >= self.count { return nil }                        // array does not have element at given position
+        
+        let term = self[head-1]                                // subnode at position `first` is at index `first-1`
+        return term[tail]
     }
 }

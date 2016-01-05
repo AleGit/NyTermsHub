@@ -332,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				512977361B677E1B003D3E80 /* Node.swift */,
+				5116094A1C3993F10090D447 /* Node+Position.swift */,
 				5101485B1B90382B00D95B00 /* Node+Properties.swift */,
 				516D1A421C32C3A0000E152A /* Node+Trie.swift */,
 				51FD00C11C3133E1008C5AD1 /* Operators.swift */,
@@ -341,7 +342,6 @@
 				515F0F031B6BAB0500B470B4 /* Rule.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				515F0F051B6BB0A100B470B4 /* Symbols.swift */,
-				5116094A1C3993F10090D447 /* Node+Position.swift */,
 			);
 			name = Core;
 			path = Shared;

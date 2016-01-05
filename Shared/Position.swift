@@ -22,14 +22,11 @@ struct Position<Hop:Hashable> {
     init() { hops = [Hop]() }
     
     func decompose() -> (Hop, Position)? {
-        guard let (head, array) = hops.decompose else { return nil }
+        guard let (head, array) = hops.decompose() else { return nil }
         
         return (head,Position(array))
     }
 }
-
-/// The *root* position is the empty sequence and denoted by `ε`
-let ε = Position<Int>()
 
 extension Position : Hashable { // : Equatable
     var hashValue : Int {
@@ -133,7 +130,7 @@ extension Position : CollectionType { // : Indexable, SequenceType
 }
 
 extension Position : RangeReplaceableCollectionType {
-    mutating func replaceRange<C : CollectionType where C.Generator.Element == Hop>(subRange: Range<Index>, with newElements: C) {
+    mutating func replaceRange<C : CollectionType where C.Generator.Element == Hop>(subRange: Range<Int>, with newElements: C) {
         self.hops.replaceRange(subRange, with: newElements)
     }
     
@@ -239,18 +236,3 @@ extension Position : StringLiteralConvertible {
 
 
 
-// MARK: - Array + Position
-
-extension Array where Element:Node {
-    /// Get term at position in array. (for convenience)
-    /// array[[i]] := array[i-1]
-    /// array[[i,j,...]] := array[i-1][j,...]
-    subscript(position:Position<Int>)->Element? {
-        guard let (head,tail) = position.decompose() else { return nil }        // position == [], but an array is not of type Node
-        // position != []
-        if head < 1 || head >= self.count { return nil }                        // array does not have element at given position
-        
-        let term = self[head-1]                                // subnode at position `first` is at index `first-1`
-        return term[tail]
-    }
-}

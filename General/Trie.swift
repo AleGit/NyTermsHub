@@ -63,17 +63,5 @@ extension Trie {
     }
 }
 
-// MARK: - String Tries 
 
-/// builds a prefix tree for a list of strings
-func buildStringTrie(words:[String]) -> Trie<Character, String> {
-    var trie = Trie<Character,String>()
-    
-    for word in words {
-        let characters = Array(word.characters)
-        trie.insert(characters, value: word)
-    }
-    
-    return trie
-    }
 

@@ -12,14 +12,16 @@ import NyTerms
 
 class StringTrieTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    /// builds a prefix tree for a list of strings
+    func buildStringTrie(words:[String]) -> Trie<Character, String> {
+        var trie = Trie<Character,String>()
+        
+        for word in words {
+            let characters = Array(word.characters)
+            trie.insert(characters, value: word)
+        }
+        
+        return trie
     }
     
     func testStringTrie() {

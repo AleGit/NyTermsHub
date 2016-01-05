@@ -133,27 +133,27 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(2,forall.nodes!.count)
         
         // let forallvars = forall.nodes!.first!
-        let forallvars = forall["1"]!
+        let forallvars = forall[[1]]!
         XCTAssertEqual(",", forallvars.symbol)
         XCTAssertEqual(332, forallvars.nodes!.count)
         
         // let exists = forall.nodes!.last!
-        let exists = forall["2"]!
+        let exists = forall[[2]]!
         XCTAssertEqual("!", exists.symbol)
         XCTAssertEqual(2,exists.nodes!.count)
         
         // let existsvars = exists.nodes!.first!
-        let existsvars = forall["2.1"]!
+        let existsvars = forall[[1,2]]!
         XCTAssertEqual(",", existsvars.symbol)
         XCTAssertEqual(4, existsvars.nodes!.count)
         
         // let forall2 = exists.nodes!.last!
-        let forall2 = forall["2.2"]!
+        let forall2 = forall[[1,2]]!
         XCTAssertEqual("?", forall2.symbol)
         XCTAssertEqual(2,forall2.nodes!.count)
         
         // let forall2vars = forall2.nodes!.first!
-        let forall2vars = forall["2.2.1"]!
+        let forall2vars = forall[[2,2,2]]!
         XCTAssertEqual(",", forall2vars.symbol)
         XCTAssertEqual(16448, forall2vars.nodes!.count)
         
@@ -164,7 +164,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         }
         
         // let conjunction = forall2.nodes!.last!
-        let conjunction = forall["2.2.2"]!
+        let conjunction = forall[[2,2,2]]!
         XCTAssertEqual("&", conjunction.symbol)
         
         let expected = 39512;
@@ -214,7 +214,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("&", a.symbol)
         XCTAssertEqual(expected, a.nodes!.count)
         
-        let b = nodes["1.2.2.2"]!   // nodes[0][[2,2,2]] position 1 is array index 0
+        let b = nodes[[1,2,2,2]]!   // nodes[0][[2,2,2]] position 1 is array index 0
         XCTAssertEqual(a, b)
         
         let bvars = b.allVariables

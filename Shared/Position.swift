@@ -14,11 +14,7 @@ import Foundation
 /// We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
 /// Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
 
-protocol Hoplike : Hashable {
-    init?(string:String)
-}
-
-struct Position<Hop:Hoplike> {
+struct Position<Hop:Hashable> {
     /// internal data
     private var hops : [Hop]
     
@@ -29,18 +25,6 @@ struct Position<Hop:Hoplike> {
         guard let (head, array) = hops.decompose else { return nil }
         
         return (head,Position(array))
-    }
-}
-
-extension String : Hoplike {
-    init?(string:String) {
-        self = string
-    }
-}
-
-extension Int : Hoplike {
-    init?(string:String) {
-        self.init(string)
     }
 }
 
@@ -209,17 +193,7 @@ extension Position : CustomStringConvertible {
     
 }
 
-//extension Int : StringLiteralConvertible {
-//    public init(unicodeScalarLiteral value: StringLiteralType) {
-//        self.init(stringLiteral: value)
-//    }
-//    public init(extendedGraphemeClusterLiteral value: StringLiteralType) {
-//        self.init(stringLiteral: value)
-//    }
-//    public init(stringLiteral value: StringLiteralType) {
-//        self = Int(value)!    }
-//    
-//}
+/*
 
 extension Position : StringLiteralConvertible {
     // UnicodeScalarLiteralConvertible
@@ -261,6 +235,7 @@ extension Position : StringLiteralConvertible {
         }
     }
 }
+*/
 
 
 

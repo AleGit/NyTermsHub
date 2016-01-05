@@ -1,5 +1,5 @@
 //  Created by Alexander Maringele .
-//  Copyright © 2015 Alexander Maringele. All rights reserved.
+//  Copyright © 2,15 Alexander Maringele. All rights reserved.
 
 import XCTest
 @testable import NyTerms
@@ -12,27 +12,16 @@ class PositionTests: XCTestCase {
         XCTAssertEqual(Position(),ε)
         XCTAssertEqual(Position([Int]()), ε)
         
-        XCTAssertEqual("ε",ε) // StringLiteralConvertible
         XCTAssertEqual([], ε) // ArrayLiteralConvertible
         
         XCTAssertEqual(ε+ε, ε)
     }
     
-    func testLiteralConvertible() {
-        // StringLiteralConvertible
-        let s = [ε, "ε", "1", "2", "1.1", "1.2", "2.1", "2.2", "2.3", "5.2.1.4.5.6.7.9", "1.5.2.6.7.8.9.10"]
-        
-        // ArrayLiteralConvertible
-        let a = [ε, [], [1], [2],[1,1],[1,2],[2,1],[2,2],[2,3],[5,2,1,4,5,6,7,9], [1,5,2,6,7,8,9,10]]
-        
-        XCTAssertEqual(s, a)
-    }
-    
     func testPositionConcatination() {
         var positions = [String:Position<Int>]()
         
-        for s in ["ε", "1", "2","1.1","1.2","2.1","2.2","2.3","5.2.1.4.5.6.7.9", "1.5.2.6.7.8.9.10"] {
-            positions[s] = Position(stringLiteral:s)
+        for s in [ε, [1], [2],[1,1],[1,2],[2,1],[2,2],[2,3],[5,2,1,4,5,6,7,9], [1,5,2,6,7,8,9,10]] {
+            positions[s.description] = s
         }
         
         for (s1,p1) in positions {
@@ -54,8 +43,8 @@ class PositionTests: XCTestCase {
     func testPositionCompare() {
         var positions = [String:Position<Int>]()
         
-        for s in ["ε", "1", "2","1.1","1.2","2.1","2.2","2.3","5.2.1.4.5.6.7.9", "1.5.2.6.7.8.9.10"] {
-            positions[s] = Position(stringLiteral:s)
+        for s in [ε, [1], [2],[1,1],[1,2],[2,1],[2,2],[2,3],[5,2,1,4,5,6,7,9], [1,5,2,6,7,8,9,10]] {
+            positions[s.description] = s
         }
         
         for (s1,p1) in positions {
@@ -84,8 +73,8 @@ class PositionTests: XCTestCase {
     func testPositionParallel() {
         var positions = [String:Position<Int>]()
         
-        for s in ["ε", "1", "2","1.1","1.2","2.1","2.2","2.3","5.2.1.4.5.6.7.9", "1.5.2.6.7.8.9.10"] {
-            positions[s] = Position(stringLiteral:s)
+        for s in [ε, [1], [2],[1,1],[1,2],[2,1],[2,2],[2,3],[5,2,1,4,5,6,7,9], [1,5,2,6,7,8,9,10]] {
+            positions[s.description] = s
         }
         
         for (s1,p1) in positions {
@@ -106,8 +95,8 @@ class PositionTests: XCTestCase {
         
         var positions = [String:Position<Int>]()
         
-        for s in ["ε", "1", "2","1.1","1.2","2.1","2.2","2.3","5.2.1.4.5.6.7.9", "1.5.2.6.7.8.9.10"] {
-            positions[s] = Position(stringLiteral:s)
+        for s in [ε, [1], [2],[1,1],[1,2],[2,1],[2,2],[2,3],[5,2,1,4,5,6,7,9], [1,5,2,6,7,8,9,10]] {
+            positions[s.description] = s
         }
         
         for (s1,p1) in positions {
@@ -118,7 +107,7 @@ class PositionTests: XCTestCase {
                     
                 case (_,_) where p1 < p2:
                     let s = s2[s2.rangeOfString(s1)!.endIndex.advancedBy(distance)..<s2.endIndex]
-                    XCTAssertEqual(p2 - p1, Position(stringLiteral: s) )
+                    XCTAssertEqual((p2 - p1)?.description, s )
                     
                 case (_,_) where p1 <= p2:
                     XCTAssertEqual(p2 - p1, ε)
@@ -134,17 +123,17 @@ class PositionTests: XCTestCase {
     
     func testNodePositions() {
         XCTAssertEqual([ε], x.positions)
-        XCTAssertEqual([ε,"1","2"], fxy.positions)
-        XCTAssertEqual([ε,"1", "1.1", "1.2","2"], (fxy * [x:faa]).positions)
+        XCTAssertEqual([ε,[1],[2]], fxy.positions)
+        XCTAssertEqual([ε,[1], [1,1], [1,2],[2]], (fxy * [x:faa]).positions)
         
         XCTAssertEqual(fax, fax[ε]!)
-        XCTAssertEqual(a, fax["1"]!)
-        XCTAssertEqual(x, fax["2"]!)
-        XCTAssertEqual(x, fxy["1"]!)
-        XCTAssertEqual(y, fxy["2"]!)
+        XCTAssertEqual(a, fax[[1]]!)
+        XCTAssertEqual(x, fax[[2]]!)
+        XCTAssertEqual(x, fxy[[1]]!)
+        XCTAssertEqual(y, fxy[[2]]!)
         
-        XCTAssertEqual(fax[x,"1"]!,fxy[x,"2"]!)
-        XCTAssertEqual(fxy, fxa[y,"2"]!)
+        XCTAssertEqual(fax[x,[1]]!,fxy[x,[2]]!)
+        XCTAssertEqual(fxy, fxa[y,[2]]!)
         
     }
 
@@ -154,11 +143,11 @@ class PositionTests: XCTestCase {
         XCTAssertEqual( [Position](), x.unifiablePositions(a))
         XCTAssertEqual( [ε], fxy.unifiablePositions(z))
         
-        XCTAssertEqual( [ε,"1"], fax.unifiablePositions(z))
-        XCTAssertEqual( [ε,"2"], fxa.unifiablePositions(z))
-        XCTAssertEqual( [ε,"1","2"], faa.unifiablePositions(z))
+        XCTAssertEqual( [ε,[1]], fax.unifiablePositions(z))
+        XCTAssertEqual( [ε,[2]], fxa.unifiablePositions(z))
+        XCTAssertEqual( [ε,[1],[2]], faa.unifiablePositions(z))
         
-        XCTAssertEqual( [ε,"1","1.1","1.2"], gfaa.unifiablePositions(z))
+        XCTAssertEqual( [ε,[1],[1,1],[1,2]], gfaa.unifiablePositions(z))
     }
 }
 

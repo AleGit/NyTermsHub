@@ -103,9 +103,9 @@ class StringTrieTests: XCTestCase {
         
         var words = ["x1 __","a","b","c","d","e"]
         for (count, expected) in [
-            (50,0.3),
+            (50,0.1),
             (350,0.95),
-            (2_500, 4.0)
+            (2_500, 3.0)
             ] {
             
             let duration = accumulate(&words, limit:count)

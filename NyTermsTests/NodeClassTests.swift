@@ -74,7 +74,7 @@ class NodeClassTests: XCTestCase {
         guard let (l2r1,p,l2,r2) = peaks.first else { XCTAssert(false, "one peak was expected"); return }
         
         XCTAssertEqual("f(a,c)",l2r1)
-        XCTAssertEqual("2", p)
+        XCTAssertEqual([2], p)
         XCTAssertEqual("f(a,g(b))", l2)
         XCTAssertEqual("f(b,b)", r2)
         

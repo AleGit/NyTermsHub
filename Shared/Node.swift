@@ -20,7 +20,7 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     init (symbol:Symbol, nodes:[Self]?)
 }
 
-// MARK: default implementation of convenience initializers
+// MARK: convenience initializers
 
 extension Node {
     init(variable symbol:Symbol) {
@@ -51,7 +51,7 @@ extension Node {
     }
 }
 
-// MARK: Hashable (==, hashValue) default implementation
+// MARK: Hashable : Equatable
 
 extension Node {
     func isEqual(rhs:Self) -> Bool {
@@ -90,7 +90,7 @@ extension Node {
     }
 }
 
-// MARK: CustomStringConvertible (description, pretty printing) default implementation
+// MARK: CustomStringConvertible
 
 extension Node {
     /// Representation of self:Node in TPTP Syntax.
@@ -163,40 +163,38 @@ extension Node {
     }
 }
 
-// MARK: Conversion between different implemenations of protocol `Node`.
-
-private func convert <S:Node,T:Node>(s:S) -> T {
-    guard let nodes = s.nodes else { return T(variable:s.symbol) }
-    
-    return T(symbol: s.symbol, nodes: nodes.map { convert($0) } )
-}
-
-extension Node {
-    init<T:Node>(_ s:T) {    // similar to Int(3.5)
-        self = convert(s)
-    }
-}
-
-// MARK: StringLiteralConvertible (initialize term with string literal) partial default implementation
+// MARK: StringLiteralConvertible : ExtendedGraphemeClusterLiteralConvertible : UnicodeScalarLiteralConvertible
 
 extension Node {
     
-    // UnicodeScalarLiteralConvertible
-    // typealias UnicodeScalarLiteralType = StringLiteralType
     init(unicodeScalarLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
     
-    // ExtendedGraphemeClusterLiteralConvertible:UnicodeScalarLiteralConvertible
-    // typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
     init(extendedGraphemeClusterLiteral value: StringLiteralType) {
         self.init(stringLiteral: value)
     }
-    
-    // StringLiteralConvertible:ExtendedGraphemeClusterLiteralConvertible
-    // typealias StringLiteralType
-    // init(stringLiteral value: Self.StringLiteralType)
-    // have to be provided by protocol `Node`'s implementation
+/*
+    // implemenations of the protocol must provide this initializer
+    init(stringLiteral value: StringLiteralType) {
+        self.init(constant:"failed")
+    } 
+*/
+}
+
+// MARK: Conversion between `Node` implemenations.
+
+extension Node {
+    init<T:Node>(_ s:T) {    // similar to Int(3.5)
+        // self = convert(s)
+        
+        if let nodes = s.nodes {
+            self = Self(symbol: s.symbol, nodes: nodes.map { Self($0) } )
+        }
+        else {
+            self = Self(variable:s.symbol)
+        }
+    }
 }
 
 

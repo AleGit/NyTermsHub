@@ -260,4 +260,16 @@ class NodeEnumTests: XCTestCase {
         XCTAssertTrue(subs.isVariableSubstitution)
         XCTAssertTrue(subs.isRenaming)
     }
+    
+    func testConversion() {
+        let objcF : TptpNode = "f(g(h(a)),h(X),Y)"
+        let testF = LocalTestNode(function: "f", nodes: ["g(h(a))", "h(X)", "Y"])
+        
+        XCTAssertEqual(objcF.description, testF.description)
+        XCTAssertEqual(objcF, TptpNode(testF))
+        XCTAssertEqual(TptpNode(objcF), TptpNode(testF))
+        XCTAssertEqual(LocalTestNode(objcF), LocalTestNode(testF))
+        XCTAssertEqual(LocalTestNode(objcF), testF)
+    }
+    
 }

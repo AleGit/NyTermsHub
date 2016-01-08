@@ -34,30 +34,28 @@ extension Nodal {
 
 struct NodalArray<C:Equatable> : Nodal {
     var cargo : C
-    var subnodals : [NodalArray?]
+    var nodals : [NodalArray?]
     
-    var count : Int { return subnodals.count }
+    var count : Int { return nodals.count }
     
     subscript(key:Int) -> NodalArray? {
         get {
             guard key >= 0 else { return nil }
-            guard key < subnodals.count else { return nil }
-            return subnodals[key]
+            guard key < nodals.count else { return nil }
+            return nodals[key]
         }
     }
-    
-    
 }
 
 struct NodalDictionary<K:Hashable,C> : Nodal {
-    var subnodals = [K : NodalDictionary<K,C>]()
+    var nodals = [K : NodalDictionary<K,C>]()
     var cargo : C
     
-    var count : Int { return subnodals.count }
+    var count : Int { return nodals.count }
     
     subscript(key:K) -> NodalDictionary<K,C>? {
         get {
-            return subnodals[key]
+            return nodals[key]
         }
     }
 }

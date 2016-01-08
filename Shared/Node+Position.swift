@@ -10,7 +10,6 @@ import Foundation
 
 /**
 A position is a finite sequence of non-negative integers. 
-(We start at 0 not at 1)
 The *root* position is the empty sequence and denoted by `ε`
 and `p+q` denotes the concatenation of positions `p` and `q`.
 We define binary relations <= , <, and || on positions as follows.
@@ -21,10 +20,9 @@ If `p` is above q we also say that `q` is below p or p is a *prefix* of `q`, and
 We write `p < q` if `p <= q` and `p != q`. If `p < q` we say that `p` is a proper prefix of `q`.
 Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
 **/
+
 typealias Position = [Int]
 let ε = Position()
-
-
 
 extension Node {
     
@@ -41,7 +39,7 @@ extension Node {
     ///
     /// see [AM2015TRS,*Definition 2.1.16*]
     var positions : [Position] {
-        var positions = [ε] // the root position alays exists
+        var positions = [ε] // the root position always exists
         
         guard let nodes = self.nodes else { return positions }
         

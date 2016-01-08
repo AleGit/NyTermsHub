@@ -9,6 +9,7 @@
 import Foundation
 
 protocol Nodal {
+    
     typealias Key : Hashable
     typealias Cargo
     
@@ -16,6 +17,10 @@ protocol Nodal {
     var count : Int { get }
     subscript(key:Key) -> Self? { get }
     subscript(path:[Key]) -> Self? { get }
+}
+
+extension Array where Element:Hashable {
+    
 }
 
 extension Nodal {

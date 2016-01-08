@@ -90,7 +90,7 @@ extension Node {
     /// - p in Pos(`self`)
     /// - `self`|<sub>p</sub>.σ = `other`.σ
     /// - σ = mgu(`self`|<sub>p</sub>,`other`)
-    typealias PositionUnifier = (position:Position<Int>,unifier:[Self:Self])
+    typealias PositionUnifier = (position:[Int],unifier:[Self:Self])
     
     /// **(unused)** An *overlap* of TRS(*F*,*R*) is a triple (l<sub>1</sub>->r<sub>1</sub>,p,l<sub>2</sub>->r<sub>2</sub>) satisfying:
     ///
@@ -99,28 +99,28 @@ extension Node {
     /// - l<sub>1</sub> and l<sub>2</sub>|<sub>p</sub> are unifiable,
     /// i.e. l<sub>2</sub>|<sub>p</sub>.σ == l<sub>1</sub>.σ with σ = mgu(l<sub>1</sub>,l<sub>2</sub>|<sub>p</sub>)
     /// - if p = [] then l<sub>1</sub>->r<sub>1</sub> and l<sub>2</sub>->r<sub>2</sub> are not variants
-    typealias Overlap = (l1r1:Self, position:Position<Int>, l2r2:Self)
+    typealias Overlap = (l1r1:Self, position:[Int], l2r2:Self)
     
     
     /// We call the quadruple (l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub>, p, l<sub>2</sub>σ, r<sub>2</sub>σ) 
     /// a *critical peak*
     /// and the equation l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub> = r<sub>2</sub>σ a *critical pair*,
     /// obtained from overlap (l<sub>1</sub>→r<sub>1</sub>,p,l<sub>2</sub>→r<sub>2</sub>).
-    typealias CriticalPeak = (l2r1:Self,positon:Position<Int>,l2:Self,r2:Self)
+    typealias CriticalPeak = (l2r1:Self,positon:[Int],l2:Self,r2:Self)
     
     /// Find all *non-variable* positions p where subterm `self`|p and term `other` are unifiable
     /// and return the (possible empty) list of positons.
     ///
     ///     { (p,σ) | self[p].σ = other.σ }
-    func unifiablePositions(other:Self) -> [Position<Int>] {
+    func unifiablePositions(other:Self) -> [[Int]] {
         assert(self.allVariables.intersect(other.allVariables).count == 0)
         
-        return self.positionUnifiers(Position<Int>(), other: other).map { $0.position }
+        return self.positionUnifiers([Int](), other: other).map { $0.position }
     }
     
     /// Find all of `self`'s *non-variable* subterms which are unifiable with term `other`
     /// and return a (possible empty) list of pairs with positions and unifiers.
-    private func positionUnifiers(actual:Position<Int>, other:Self) -> [PositionUnifier] {
+    private func positionUnifiers(actual:[Int], other:Self) -> [PositionUnifier] {
         
         var positionUnifiers = [ PositionUnifier ]()
         
@@ -131,8 +131,7 @@ extension Node {
         }
         
         for (index,term) in nodes.enumerate() {
-            // if array index is i, then position is i+1.
-            positionUnifiers += term.positionUnifiers(actual+[(index+1)], other: other)
+            positionUnifiers += term.positionUnifiers(actual+[index], other: other)
         }
         return positionUnifiers
     }
@@ -171,7 +170,7 @@ extension Node {
         }
     }
     
-    func hasOverlap(at position:Position<Int>, with rule2: Self) -> Bool {
+    func hasOverlap(at position:[Int], with rule2: Self) -> Bool {
         assert(self.allVariables.intersect(rule2.allVariables).count == 0)
         
         guard let l1 = self.nodes?.first else { return false }

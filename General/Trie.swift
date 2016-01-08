@@ -11,7 +11,7 @@ struct Trie<Key: Hashable, Value: Hashable> {
 extension Trie {
     /// follows key path to insert value,
     /// missing key path components will be created.
-    mutating func insert(path: Position<Key>, value:Value) {
+    mutating func insert(path: [Key], value:Value) {
         guard let (head,tail) = path.decompose() else {
             values.insert(value)
             return
@@ -43,7 +43,7 @@ extension Trie {
     
     /// retrieves subtrie at key path.
     /// if key path does not exist nil will be returned
-    subscript(path:Position<Key>) -> Trie? {
+    subscript(path:[Key]) -> Trie? {
         guard let (head,tail) = path.decompose() else { return self }
         
         guard let trie = tries[head] else { return nil }

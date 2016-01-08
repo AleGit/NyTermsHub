@@ -3,6 +3,30 @@
 
 import Foundation
 
+/// We say `p` is a *prefix* of `q`, and we write `p` <= `q`.
+func <=<E:Equatable>(lhs:[E], rhs:[E]) -> Bool {
+    return rhs.startsWith(lhs)
+}
+
+/// We say that `p` is a proper prefix of `q`, and
+/// we write `p < q` if `p <= q` and `p != q`.
+func < <E:Equatable> (lhs:[E], rhs:[E]) -> Bool {
+    guard lhs.count < rhs.count else { return false }
+    return lhs <= rhs
+}
+
+/// Positions `p`, `q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
+func || <E:Equatable>(lhs:[E], rhs:[E]) -> Bool {
+    return !( lhs <= rhs ) && !( rhs <= lhs )
+}
+
+
+/// p <= q <=> p + r = q with uique r, we write r = q - p
+func -<E:Equatable>(lhs:[E], rhs:[E]) -> [E]? {
+    guard rhs <= lhs else { return nil }
+    return Array(lhs.dropFirst(rhs.count))
+}
+
 /**
  [AM2015TRS, *Definition 2.1.14.*] A position is a finite sequence of positive integers.
  The *root* position is the empty sequence and denoted by `ε`
@@ -16,6 +40,7 @@ import Foundation
  Positions `p`, q are parallel, denoted by `p || q`, if neither `p <= q` nor `q <= p`.
  **/
 
+/*
 struct Position<Hop:Hashable> {
     /// internal data
     private var hops : [Hop]
@@ -236,6 +261,6 @@ extension Position : StringLiteralConvertible {
     }
 }
 */
-
+*/
 
 

@@ -179,8 +179,56 @@ extension Node {
 extension Node {
     
     var laTeXDescription : String {
-        return buildDescription ( LaTeX.laTeXDecorate )
+        return buildDescription ( LaTeX.Symbols.decorate )
         
+    }
+}
+
+extension Node {
+    private func buildSyntaxTree(level:Int, decorate:(symbol:String,type:SymbolType)->String) -> String {
+        
+        var s = "node "
+        
+        if let nodes = self.nodes {
+            
+            let trees = nodes.map { "child {\($0.buildSyntaxTree(level+1,decorate: decorate))}" }
+            
+            let quadruple = Symbols.defaultSymbols[self.symbol] ??
+                (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 0..<Int.max)
+            
+            let decor = decorate(symbol:self.symbol,type:quadruple.type)
+            
+            // we assume prefix notation for (constant) functions or predicates:
+            let n = nodes.count
+            
+            switch n {
+            case 0:
+                s += "{$\(decor)$}" // constant (or proposition)
+            default:
+                
+                s += "{$\(decor)$}"
+                
+                // let width = 90
+                // let (start,angle) = (n == 1) ? (-90,0) : (-90-width/2,-width/(n-1))
+                // s += "[clockwise from=\(start),sibling angle=\(angle)]"
+                
+                var separator = "\n"
+                for _ in 0..<level { separator += " " }
+                s += separator
+                
+                s += "\(trees.joinWithSeparator(separator))" // prefix function (or predicate)
+            }
+        }
+        else {
+            s += "{$\(decorate(symbol:self.symbol, type:SymbolType.Variable))$}"
+        }
+        
+        return s
+    }
+    
+    var tikzSyntaxTree : String {
+        let tree = buildSyntaxTree(0, decorate: LaTeX.Symbols.decorate)
+        return "\\\(tree);"
     }
 }
 

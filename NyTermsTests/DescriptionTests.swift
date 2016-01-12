@@ -41,7 +41,10 @@ class DescriptionTests: XCTestCase {
         
         XCTAssertEqual(faX.tptpDescription, "f(a,X)")
         XCTAssertEqual(fax.laTeXDescription, "{\\mathsf f}({\\mathsf a},x)")
+        
+        XCTAssertEqual(fax.tikzSyntaxTree, "\\node {${\\mathsf f}$}\nchild {node {${\\mathsf a}$}}\nchild {node {$x$}};")
         print(fax.laTeXDescription)
+        print(fax.tikzSyntaxTree)
     }
 
 }

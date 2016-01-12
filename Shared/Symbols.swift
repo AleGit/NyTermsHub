@@ -87,7 +87,7 @@ struct Symbols {
 // MARK: symbol enums
 
 struct LaTeX {
-    private struct Symbols {
+    struct Symbols {
         
         private static let typeDecorators : [SymbolType:String->String] = [
             
@@ -110,6 +110,7 @@ struct LaTeX {
             .NAND: { _ in "\\uparrow " },
             .NOR: { _ in "\\downarrow " },
             .Sequent: { _ in "\\longrightarrow " },
+            .Tuple : { _ in " " },
             
             .Universal : { _ in "\\forall " },
             .Existential : { _ in "\\exists " },
@@ -121,12 +122,13 @@ struct LaTeX {
             .Function : { "{\\mathsf \($0)}" },
             .Variable : { $0.lowercaseString }
         ]
+        
+        static func decorate(symbol:String, type:SymbolType) -> String {
+            return LaTeX.Symbols.typeDecorators[type]?(symbol) ?? symbol
+        }
     }
     
-    static func laTeXDecorate(symbol:String, type:SymbolType) -> String {
-        return LaTeX.Symbols.typeDecorators[type]?(symbol) ?? symbol
-        
-    }
+    
 }
 
 enum SymbolType {

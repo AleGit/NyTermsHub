@@ -44,15 +44,18 @@ class ParseStringTests: XCTestCase {
     
     func testMultipleQuantifier() {
         for (input,value) in [
-            "![A,B,C]:p(A)" : "(![A,B,C]:(p(A)))",
-            "![A]:?[B]:p(A)" : "(![A]:((?[B]:(p(A)))))",
-            "?[A]:![B]:p(A)" : "(?[A]:((![B]:(p(A)))))",
-            "?[A]:![B]:?[C]:p(A)" : "(?[A]:((![B]:((?[C]:(p(A)))))))"
+            ("![A,B,C]:p(A)" , "(![A,B,C]:(p(A)))"),
+            ("![A]:?[B]:p(A)" , "(![A]:((?[B]:(p(A)))))"),
+            ("?[A]:![B]:p(A)" , "(?[A]:((![B]:(p(A)))))"),
+            ("?[A]:![B]:?[C]:p(A)" , "(?[A]:((![B]:((?[C]:(p(A)))))))")
             ] {
                 let fofa = fof_annotated(input)
                 let (result,formulae) = parse(string:fofa)
                 XCTAssertEqual(0, result)
                 XCTAssertEqual(value, formulae[0].root.description)
+                
+                print("% ------------------")
+                print(formulae[0].root.tikzSyntaxTree)
                 
                 
         }

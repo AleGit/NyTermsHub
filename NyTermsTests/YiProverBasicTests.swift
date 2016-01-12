@@ -197,13 +197,14 @@ class YiProverBasicTests: XCTestCase {
         ]
         
         XCTAssertTrue(clauses[0].isClause)
-        XCTAssertTrue(clauses[0].isClause)
+        XCTAssertTrue(clauses[1].isClause)
         XCTAssertTrue(clauses[2].isClause)
         XCTAssertTrue(clauses[2].nodes?.count == 3)
         
         let prover = YiProver(clauses: clauses)
         
-        prover.run(4)
+        prover.run(2)
+        
          XCTAssertEqual(STATUS_SAT, prover.status)
         
     }

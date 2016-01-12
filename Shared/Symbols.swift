@@ -83,6 +83,35 @@ struct Symbols {
     
     static let defaultSymbols = universalSymbols + tptpSymbols
     
+    static let latexSymbolsDecoration : [SymbolType:String] = [
+        
+        .LeftParenthesis:"(",
+        .RightParenthesis:")",
+        .LeftCurlyBracket:"\\{",
+        .RightCurlyBracket:"\\}",
+        .LeftSquareBracket:"[",
+        .RightSquareBracket:"]",
+        .LeftAngleBracket:"\\langle",
+        .RightAngleBracket:"\\rangle",
+        
+        .Negation : "\\lnot",
+        .Disjunction : "\\lor",
+        .Conjunction : "\\land",
+        .Implication : "\\Rightarrow",
+        .Converse : "\\Leftarrow",
+        .IFF : "\\Leftrightarrow",
+        .NIFF: "\\oplus",
+        .NAND: "\\uparrow",
+        .NOR: "\\downarrow",
+        .Sequent: "\\longrightarrow",
+        
+        .Universal : "\\forall",
+        .Existential : "\\exists",
+        
+        .Equation : "\\approx",
+        .Inequation : "\\not\\approx"
+    ]
+    
 
 }
 

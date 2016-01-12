@@ -19,7 +19,7 @@ final class TptpNode: NSObject, Node {
     }
     
     private func updateDescription() -> String {
-        let string = self.defaultDescription
+        let string = self.tptpDescription
         cachedDescription = string
         return string
     }

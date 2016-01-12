@@ -40,7 +40,7 @@ class DescriptionTests: XCTestCase {
         let faX = TptpNode(function:"f",nodes: [a,X])
         
         XCTAssertEqual(faX.tptpDescription, "f(a,X)")
-        XCTAssertEqual(fax.laTeXDescription, "{\\mathsf f}({\\mathsf a},X)")
+        XCTAssertEqual(fax.laTeXDescription, "{\\mathsf f}({\\mathsf a},x)")
         print(fax.laTeXDescription)
     }
 

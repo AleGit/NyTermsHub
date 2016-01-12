@@ -82,40 +82,52 @@ struct Symbols {
     ]
     
     static let defaultSymbols = universalSymbols + tptpSymbols
-    
-    static let latexSymbolsDecoration : [SymbolType:String] = [
-        
-        .LeftParenthesis:"(",
-        .RightParenthesis:")",
-        .LeftCurlyBracket:"\\{",
-        .RightCurlyBracket:"\\}",
-        .LeftSquareBracket:"[",
-        .RightSquareBracket:"]",
-        .LeftAngleBracket:"\\langle",
-        .RightAngleBracket:"\\rangle",
-        
-        .Negation : "\\lnot",
-        .Disjunction : "\\lor",
-        .Conjunction : "\\land",
-        .Implication : "\\Rightarrow",
-        .Converse : "\\Leftarrow",
-        .IFF : "\\Leftrightarrow",
-        .NIFF: "\\oplus",
-        .NAND: "\\uparrow",
-        .NOR: "\\downarrow",
-        .Sequent: "\\longrightarrow",
-        
-        .Universal : "\\forall",
-        .Existential : "\\exists",
-        
-        .Equation : "\\approx",
-        .Inequation : "\\not\\approx"
-    ]
-    
-
 }
 
 // MARK: symbol enums
+
+struct LaTeX {
+    private struct Symbols {
+        
+        private static let typeDecorators : [SymbolType:String->String] = [
+            
+            .LeftParenthesis:{ _ in "(" },
+            .RightParenthesis:{ _ in ")" },
+            .LeftCurlyBracket:{ _ in "\\{" },
+            .RightCurlyBracket:{ _ in "\\}" },
+            .LeftSquareBracket:{ _ in "[" },
+            .RightSquareBracket:{ _ in "]" },
+            .LeftAngleBracket:{ _ in "\\langle" },
+            .RightAngleBracket:{ _ in "\\rangle" },
+            
+            .Negation : { _ in "\\lnot " },
+            .Disjunction : { _ in "\\lor " },
+            .Conjunction : { _ in "\\land " },
+            .Implication : { _ in "\\Rightarrow " },
+            .Converse : { _ in "\\Leftarrow " },
+            .IFF : { _ in "\\Leftrightarrow " },
+            .NIFF: { _ in "\\oplus " },
+            .NAND: { _ in "\\uparrow " },
+            .NOR: { _ in "\\downarrow " },
+            .Sequent: { _ in "\\longrightarrow " },
+            
+            .Universal : { _ in "\\forall " },
+            .Existential : { _ in "\\exists " },
+            
+            .Equation : { _ in "\\approx " },
+            .Inequation : { _ in "\\not\\approx " },
+            
+            .Predicate : { "{\\mathsf \($0.uppercaseString)}" },
+            .Function : { "{\\mathsf \($0)}" },
+            .Variable : { $0.lowercaseString }
+        ]
+    }
+    
+    static func laTeXDecorate(symbol:String, type:SymbolType) -> String {
+        return LaTeX.Symbols.typeDecorators[type]?(symbol) ?? symbol
+        
+    }
+}
 
 enum SymbolType {
     case LeftParenthesis, RightParenthesis

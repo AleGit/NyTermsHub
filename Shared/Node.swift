@@ -178,20 +178,8 @@ extension Node {
 
 extension Node {
     
-    private func latexDecorate(symbol:String, type:SymbolType) -> String {
-        switch(type) {
-        case SymbolType.Variable:
-            return symbol
-        case SymbolType.Predicate, SymbolType.Function:
-            return "{\\mathsf \(symbol)}"
-        default:
-            return Symbols.latexSymbolsDecoration[type] ?? symbol
-        }
-        
-    }
-    
     var laTeXDescription : String {
-        return buildDescription(latexDecorate)
+        return buildDescription ( LaTeX.laTeXDecorate )
         
     }
 }

@@ -110,7 +110,7 @@ struct LaTeX {
             .NAND: { _ in "\\uparrow " },
             .NOR: { _ in "\\downarrow " },
             .Sequent: { _ in "\\longrightarrow " },
-            .Tuple : { _ in " " },
+            .Tuple : { _ in "," },
             
             .Universal : { _ in "\\forall " },
             .Existential : { _ in "\\exists " },

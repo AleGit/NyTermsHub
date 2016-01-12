@@ -191,32 +191,41 @@ extension Node {
         
         if let nodes = self.nodes {
             
-            let trees = nodes.map { "child {\($0.buildSyntaxTree(level+1,decorate: decorate))}" }
+            
             
             let quadruple = Symbols.defaultSymbols[self.symbol] ??
                 (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 0..<Int.max)
             
             let decor = decorate(symbol:self.symbol,type:quadruple.type)
             
-            // we assume prefix notation for (constant) functions or predicates:
-            let n = nodes.count
-            
-            switch n {
-            case 0:
-                s += "{$\(decor)$}" // constant (or proposition)
+            switch quadruple.type {
+            case .Tuple:
+                let variables = nodes.map { decorate(symbol: $0.symbol, type: .Variable) }
+                s += "{$[\(variables.joinWithSeparator(","))]$}"
             default:
+                let trees = nodes.map { "child {\($0.buildSyntaxTree(level+1,decorate: decorate))}" }
                 
-                s += "{$\(decor)$}"
                 
-                // let width = 90
-                // let (start,angle) = (n == 1) ? (-90,0) : (-90-width/2,-width/(n-1))
-                // s += "[clockwise from=\(start),sibling angle=\(angle)]"
+                let n = nodes.count
                 
-                var separator = "\n"
-                for _ in 0..<level { separator += " " }
-                s += separator
-                
-                s += "\(trees.joinWithSeparator(separator))" // prefix function (or predicate)
+                switch n {
+                case 0:
+                    s += "{$\(decor)$}" // constant (or proposition)
+                default:
+                    
+                    s += "{$\(decor)$}"
+                    
+                    var width = 160
+                    for _ in 0..<level { width /= 2 }
+                    let (start,angle) = (n == 1) ? (-90,0) : (-90-width/2,-width/(n-1))
+                    s += "\n% [clockwise from=\(start),sibling angle=\(angle)]"
+                    
+                    var separator = "\n"
+                    for _ in 0..<level { separator += " " }
+                    s += separator
+                    
+                    s += "\(trees.joinWithSeparator(separator))" // prefix function (or predicate)
+                }
             }
         }
         else {

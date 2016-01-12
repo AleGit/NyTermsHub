@@ -56,6 +56,8 @@ class ParseStringTests: XCTestCase {
                 
                 print("% ------------------")
                 print(formulae[0].root.tikzSyntaxTree)
+                print("% ---")
+                print(formulae[0].root.laTeXDescription)
                 
                 
         }

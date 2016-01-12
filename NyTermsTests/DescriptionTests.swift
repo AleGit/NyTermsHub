@@ -38,13 +38,19 @@ class DescriptionTests: XCTestCase {
         let X : TptpNode = "X"
         let a : TptpNode = "a"
         let faX = TptpNode(function:"f",nodes: [a,X])
+        let fXa = TptpNode(function:"f",nodes: [X,a])
+        
+        let equation = TptpNode(equational:"=", nodes: [faX,fXa])
         
         XCTAssertEqual(faX.tptpDescription, "f(a,X)")
         XCTAssertEqual(fax.laTeXDescription, "{\\mathsf f}({\\mathsf a},x)")
         
-        XCTAssertEqual(fax.tikzSyntaxTree, "\\node {${\\mathsf f}$}\nchild {node {${\\mathsf a}$}}\nchild {node {$x$}};")
+        XCTAssertEqual(fax.tikzSyntaxTree, "\\node {${\\mathsf f}$}\n% [clockwise from=-170,sibling angle=-160]\nchild {node {${\\mathsf a}$}}\nchild {node {$x$}};")
         print(fax.laTeXDescription)
         print(fax.tikzSyntaxTree)
+        
+        print(equation.laTeXDescription)
+        print(equation.tikzSyntaxTree)
     }
 
 }

@@ -86,6 +86,7 @@
 		51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F21B8E3DAC008D7F22 /* minimal.c */; };
 		51B883F51B8E3DAC008D7F22 /* test_pp.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F31B8E3DAC008D7F22 /* test_pp.c */; };
 		51B883F71B8E3F3E008D7F22 /* YicesExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */; };
+		51C0ACB41C4A385800447594 /* ProcessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C0ACB31C4A385800447594 /* ProcessFile.swift */; };
 		51C94CB91B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; };
 		51C94CBA1B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; };
 		51CD82A61C32D090009166BB /* NodeTrieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD82A51C32D090009166BB /* NodeTrieTests.swift */; };
@@ -209,6 +210,8 @@
 		51B883F21B8E3DAC008D7F22 /* minimal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minimal.c; sourceTree = "<group>"; };
 		51B883F31B8E3DAC008D7F22 /* test_pp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_pp.c; sourceTree = "<group>"; };
 		51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesExamples.swift; sourceTree = "<group>"; };
+		51C0ACB31C4A385800447594 /* ProcessFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessFile.swift; sourceTree = "<group>"; };
+		51C0ACB51C4A5C4000447594 /* times.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = times.md; sourceTree = "<group>"; };
 		51C94CB81B987E70004C3082 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		51CD82A51C32D090009166BB /* NodeTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeTrieTests.swift; sourceTree = "<group>"; };
 		51D2765F1BC57879005A0213 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Order.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -260,6 +263,8 @@
 			children = (
 				511E95741B8AE4070093F4E8 /* main.swift */,
 				51342AB81B92CA3A0052A72F /* Samples.swift */,
+				51C0ACB31C4A385800447594 /* ProcessFile.swift */,
+				51C0ACB51C4A5C4000447594 /* times.md */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;
@@ -672,6 +677,7 @@
 				516D25201C3EB26C0075D362 /* Nodal.swift in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
+				51C0ACB41C4A385800447594 /* ProcessFile.swift in Sources */,
 				511E958D1B8AEB6D0093F4E8 /* TptpParser.m in Sources */,
 				51D276611BC57879005A0213 /* Order.swift in Sources */,
 				51FD00BD1C3132F8008C5AD1 /* Trie.swift in Sources */,

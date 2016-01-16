@@ -1,7 +1,7 @@
 import Foundation
 
 /// [[wikikpedia]](https://en.wikipedia.org/wiki/Trie)
-struct Trie<Key: Hashable, Value: Hashable> {
+struct Trie<Key: Hashable, Value: Hashable>{
     private var tries = [Key: Trie<Key, Value>]()
     private (set) var values = Set<Value>()
     
@@ -9,6 +9,15 @@ struct Trie<Key: Hashable, Value: Hashable> {
 }
 
 extension Trie {
+    func generate() -> DictionaryGenerator<Key, Trie<Key, Value>> { 
+        let generator = tries.generate()
+        return generator
+    }
+    
+    var subtries : [Key: Trie<Key, Value>] {
+        return tries
+    }
+    
     /// follows key path to insert value,
     /// missing key path components will be created.
     mutating func insert(path: [Key], value:Value) {
@@ -49,6 +58,10 @@ extension Trie {
         guard let trie = tries[head] else { return nil }
         
         return trie[tail]
+    }
+    
+    subscript(key:Key) -> Trie? {
+        return tries[key]
     }
 }
 

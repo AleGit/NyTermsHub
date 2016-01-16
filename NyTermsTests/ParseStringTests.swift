@@ -7,6 +7,7 @@ import NyTerms
 
 /// Parse tests with strings.
 class ParseStringTests: XCTestCase {
+    typealias MyTestTerm = NodeStruct
     
     func testParseString() {
         let expected = "( lives(agatha ))"
@@ -36,13 +37,13 @@ class ParseStringTests: XCTestCase {
         XCTAssertEqual("Array<TptpNode>","\(myformulae.dynamicType)")
     }
     
-    typealias MyTestTerm = NodeStruct
     
-    func fof_annotated(input:String) -> String {
-        return "fof(test,axiom,\(input))."
-    }
     
-    func testMultipleQuantifier() {
+    func testParseStringMultipleQuantifiers() {
+        func fof_annotated(input:String) -> String {
+            return "fof(test,axiom,\(input))."
+        }
+        
         for (input,value) in [
             ("![A,B,C]:p(A)" , "(![A,B,C]:(p(A)))"),
             ("![A]:?[B]:p(A)" , "(![A]:((?[B]:(p(A)))))"),
@@ -58,12 +59,10 @@ class ParseStringTests: XCTestCase {
                 print(formulae[0].root.tikzSyntaxTree)
                 print("% ---")
                 print(formulae[0].root.laTeXDescription)
-                
-                
         }
     }
     
-    func testParseQuantified() {
+    func testParseStringSingleQuantifier() {
         let expected = "(![B]:(addressVal(v83622_range_3_to_0_address_term_bound_98,B)<=>v83622(constB98,B)))"
         let fof = "fof(transient_address_definition_401,axiom,(! [B] : ( addressVal(v83622_range_3_to_0_address_term_bound_98,B) <=> v83622(constB98,B) ) ))."
             + "fof(transient_address_definition_401,axiom,\(expected))."
@@ -77,15 +76,5 @@ class ParseStringTests: XCTestCase {
             let myterm = NodeStruct(myformula)
             XCTAssertEqual(expected,myterm.description)
         }
-        
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

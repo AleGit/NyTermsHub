@@ -8,6 +8,15 @@
 
 import Foundation
 
+let tptpFiles = [
+    "hwv134" : "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p",
+    "puz001" : "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p",
+    "hwv105" : "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p",
+    "hwv074" : "/Users/Shared/TPTP/Problems/HWV/HWV074-1.p",
+    
+    "hwv119" : "/Users/Shared/TPTP/Problems/HWV/HWV119-1.p"
+]
+
 /// Parse HWV134-1.p and construct tree representation.
 private func parseFile(path:String) -> [TptpFormula] {
     

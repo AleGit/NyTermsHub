@@ -144,6 +144,7 @@
 		51226E781B6D3AB70077E34D /* TptpInclude.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpInclude.swift; sourceTree = "<group>"; };
 		51226E7C1B6D44E20077E34D /* TptpPrintable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpPrintable.swift; sourceTree = "<group>"; };
 		512517BC1BE127D6005C3E2D /* YiProverBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YiProverBasicTests.swift; sourceTree = "<group>"; };
+		51256A661C4B657F006A07C4 /* HWV134.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = HWV134.txt; path = Docs/HWV134.txt; sourceTree = SOURCE_ROOT; };
 		512977151B677CAA003D3E80 /* NyTerms.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NyTerms.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		512977181B677CAA003D3E80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5129771A1B677CAA003D3E80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -211,7 +212,7 @@
 		51B883F31B8E3DAC008D7F22 /* test_pp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_pp.c; sourceTree = "<group>"; };
 		51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesExamples.swift; sourceTree = "<group>"; };
 		51C0ACB31C4A385800447594 /* ProcessFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessFile.swift; sourceTree = "<group>"; };
-		51C0ACB51C4A5C4000447594 /* times.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = times.md; sourceTree = "<group>"; };
+		51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProcessFiles.txt; sourceTree = "<group>"; };
 		51C94CB81B987E70004C3082 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		51CD82A51C32D090009166BB /* NodeTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeTrieTests.swift; sourceTree = "<group>"; };
 		51D2765F1BC57879005A0213 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Order.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -264,7 +265,8 @@
 				511E95741B8AE4070093F4E8 /* main.swift */,
 				51342AB81B92CA3A0052A72F /* Samples.swift */,
 				51C0ACB31C4A385800447594 /* ProcessFile.swift */,
-				51C0ACB51C4A5C4000447594 /* times.md */,
+				51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */,
+				51256A661C4B657F006A07C4 /* HWV134.txt */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;

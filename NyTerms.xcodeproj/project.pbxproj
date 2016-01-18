@@ -169,6 +169,7 @@
 		5151BDBF1C3161AF006EFCE0 /* Pair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
 		5151BDC31C317021006EFCE0 /* StringTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTrieTests.swift; sourceTree = "<group>"; };
 		5151BDC51C317F0C006EFCE0 /* Perform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Perform.swift; sourceTree = "<group>"; };
+		51540DB01C4CB7D100A145DC /* HW074.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HW074.md; path = Docs/HW074.md; sourceTree = SOURCE_ROOT; };
 		515D91B61B6CFEF0000EDB3B /* TptpParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TptpParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseStringTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515D91BD1B6D2513000EDB3B /* TptpNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TptpNode.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -265,8 +266,7 @@
 				511E95741B8AE4070093F4E8 /* main.swift */,
 				51342AB81B92CA3A0052A72F /* Samples.swift */,
 				51C0ACB31C4A385800447594 /* ProcessFile.swift */,
-				51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */,
-				51256A661C4B657F006A07C4 /* HWV134.txt */,
+				51540DB11C4CBA7B00A145DC /* results */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;
@@ -464,6 +464,16 @@
 				5151BDC51C317F0C006EFCE0 /* Perform.swift */,
 			);
 			name = General;
+			sourceTree = "<group>";
+		};
+		51540DB11C4CBA7B00A145DC /* results */ = {
+			isa = PBXGroup;
+			children = (
+				51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */,
+				51256A661C4B657F006A07C4 /* HWV134.txt */,
+				51540DB01C4CB7D100A145DC /* HW074.md */,
+			);
+			name = results;
 			sourceTree = "<group>";
 		};
 		515F0EED1B6B71C800B470B4 /* ParseC */ = {

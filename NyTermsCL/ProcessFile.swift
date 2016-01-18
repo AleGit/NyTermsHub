@@ -81,7 +81,7 @@ func linearSearch(literals:[TptpNode]) -> (Int,String) {
             let total = now - start
             let round = now - temp
             
-            print("(\(processed.count),\(step)) processed in (\(Int(total))s, \(Int(round))s) (\(desc(total,processed.count)),\(desc(round,step)))",
+            print("\t(\(processed.count),\(step)) processed in (\(Int(total))s, \(Int(round))s) (\(desc(total,processed.count)),\(desc(round,step)))",
                 "\(count,count-stepcount) complementaries. ")
             temp = now
             stepcount = count
@@ -149,9 +149,9 @@ func candidates(indexed:Trie<SymHop, TptpNode>, term:TptpNode) -> Set<TptpNode>?
     }
     
     
-    guard let (head,tail) = queryTerm.paths.decompose() else { return nil }
+    guard let (first,tail) = queryTerm.paths.decompose() else { return nil }
     
-    guard var result = extract(indexed, path: head) else { return nil }
+    guard var result = extract(indexed, path: first) else { return nil }
     
     for path in tail {
         guard let next = extract(indexed, path:path) else { return nil }
@@ -193,7 +193,7 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
             let total = now - start
             let round = now - temp
             
-            print("(\(processed),\(step)) processed in (\(Int(total))s, \(Int(round))s) (\(desc(total,processed)),\(desc(round,step)))",
+            print("\t(\(processed),\(step)) processed in (\(Int(total))s, \(Int(round))s) (\(desc(total,processed)),\(desc(round,step)))",
                 "\(count,count-stepcount) complementaries. ")
             temp = now
             stepcount = count
@@ -206,18 +206,18 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
 
 
 func process(file:String, search: (literals:[TptpNode]) -> (Int,String)) {
-    print("process file \(file)")
+    print("\tprocess file \(file)")
     
     var start = CFAbsoluteTimeGetCurrent()
     let formulae = parseFile(file)
     
-    print("\(formulae.count) formulae parsed in \(desc(CFAbsoluteTimeGetCurrent() - start, 1))")
+    print("\t\(formulae.count) formulae parsed in \(desc(CFAbsoluteTimeGetCurrent() - start, 1))")
     start = CFAbsoluteTimeGetCurrent()
     
         
         let nodes = literals(formulae)
-    print("\(nodes.count) literals extracted in \(desc(CFAbsoluteTimeGetCurrent() - start, 1))")
+    print("\t\(nodes.count) literals extracted in \(desc(CFAbsoluteTimeGetCurrent() - start, 1))")
     start = CFAbsoluteTimeGetCurrent()
     let (count,info) = search(literals:nodes)
-    print("\(count) complementary literals found (\(info)) in \(desc(CFAbsoluteTimeGetCurrent() - start,1))")
+    print("\t\(count) complementary literals found (\(info)) in \(desc(CFAbsoluteTimeGetCurrent() - start,1))")
 }

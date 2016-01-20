@@ -6,6 +6,9 @@ import Foundation
 print("NyTerms with \(Yices.info):")
 print(Process.arguments.joinWithSeparator("\n"))
 
+let key = "hwv074"
+let searches = [trieSearch, linearSearch]
+
 func measure(f:()->()) {
     let start = CFAbsoluteTimeGetCurrent()
     
@@ -15,14 +18,14 @@ func measure(f:()->()) {
 }
 
 if Process.arguments.count < 2 {
-    for f in [trieSearch, linearSearch] {
+    for search in searches {
         
-        measure { process(tptpFiles["hwv119"]!, search:f) }
+        measure { process(tptpFiles[key]!, search:search) }
     }
 }
 else if let path = tptpFiles[Process.arguments[1].lowercaseString] {
-    for f in [linearSearch, trieSearch] {
-        measure { process(path, search:trieSearch) }
+    for search in searches {
+        measure { process(path, search:search) }
     }
 }
 else {

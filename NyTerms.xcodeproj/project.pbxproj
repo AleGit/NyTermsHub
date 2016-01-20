@@ -169,7 +169,7 @@
 		5151BDBF1C3161AF006EFCE0 /* Pair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
 		5151BDC31C317021006EFCE0 /* StringTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTrieTests.swift; sourceTree = "<group>"; };
 		5151BDC51C317F0C006EFCE0 /* Perform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Perform.swift; sourceTree = "<group>"; };
-		51540DB01C4CB7D100A145DC /* HW074.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HW074.md; path = Docs/HW074.md; sourceTree = SOURCE_ROOT; };
+		51540DB01C4CB7D100A145DC /* HWV074.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV074.md; path = Docs/HWV074.md; sourceTree = SOURCE_ROOT; };
 		515D91B61B6CFEF0000EDB3B /* TptpParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TptpParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseStringTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515D91BD1B6D2513000EDB3B /* TptpNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TptpNode.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -187,6 +187,7 @@
 		516D251E1C3EB26C0075D362 /* Nodal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nodal.swift; sourceTree = "<group>"; };
 		517D86371C44F94100930B61 /* DescriptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTests.swift; sourceTree = "<group>"; };
 		517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTests.swift; sourceTree = "<group>"; };
+		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
 		518D60A81C0C58B900831FE8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		519801A21B84E11F0030A61A /* NodeStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeStructTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A41B84E1780030A61A /* NodeClassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeClassTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -471,7 +472,8 @@
 			children = (
 				51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */,
 				51256A661C4B657F006A07C4 /* HWV134.txt */,
-				51540DB01C4CB7D100A145DC /* HW074.md */,
+				51540DB01C4CB7D100A145DC /* HWV074.md */,
+				5180F6A01C4F70620069E3F2 /* HWV066.md */,
 			);
 			name = results;
 			sourceTree = "<group>";

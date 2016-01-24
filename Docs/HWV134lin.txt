@@ -1,0 +1,46 @@
+NyTerms with yices 2.4.1 (x86_64-apple-darwin14.4.0,release,2015-08-10):
+/Users/alm/Desktop/Build/Products/Debug/NyTermsCL
+process file /Users/Shared/TPTP/Problems/HWV/HWV134-1.p
+2332428 formulae parsed in 41s
+6570884 literals extracted in 2s
+(1000,1000) processed in (0s, 0s) (726ns,726ns) (1960, 1960) complementaries.
+(2000,1000) processed in (2s, 1s) (1ms,2ms) (5711, 3751) complementaries.
+(3000,1000) processed in (5s, 2s) (2ms,3ms) (21151, 15440) complementaries.
+(4000,1000) processed in (9s, 3s) (2ms,4ms) (30101, 8950) complementaries.
+(5000,1000) processed in (14s, 5s) (3ms,5ms) (33294, 3193) complementaries.
+(6000,1000) processed in (21s, 6s) (4ms,7ms) (36389, 3095) complementaries.
+(7000,1000) processed in (29s, 8s) (4ms,8ms) (38858, 2469) complementaries.
+(8000,1000) processed in (38s, 8s) (5ms,9ms) (40866, 2008) complementaries.
+(9000,1000) processed in (48s, 10s) (5ms,10ms) (47163, 6297) complementaries.
+(10000,1000) processed in (60s, 11s) (6ms,12ms) (50984, 3821) complementaries.
+(11000,1000) processed in (73s, 13s) (7ms,13ms) (64520, 13536) complementaries.
+(12000,1000) processed in (86s, 13s) (7ms,13ms) (77707, 13187) complementaries.
+(13000,1000) processed in (102s, 15s) (8ms,15ms) (81492, 3785) complementaries.
+(14000,1000) processed in (117s, 15s) (8ms,16ms) (85482, 3990) complementaries.
+(15000,1000) processed in (135s, 17s) (9ms,17ms) (86810, 1328) complementaries.
+(16000,1000) processed in (156s, 21s) (10ms,21ms) (89689, 2879) complementaries.
+(17000,1000) processed in (178s, 22s) (11ms,23ms) (96294, 6605) complementaries.
+(18000,1000) processed in (203s, 24s) (11ms,24ms) (107457, 11163) complementaries.
+(19000,1000) processed in (229s, 26s) (12ms,26ms) (126135, 18678) complementaries.
+(20000,1000) processed in (255s, 25s) (13ms,26ms) (137044, 10909) complementaries.
+(21000,1000) processed in (284s, 29s) (14ms,30ms) (140600, 3556) complementaries.
+(22000,1000) processed in (317s, 32s) (14ms,32ms) (144223, 3623) complementaries.
+(23000,1000) processed in (348s, 31s) (15ms,31ms) (149952, 5729) complementaries.
+(24000,1000) processed in (381s, 32s) (16ms,33ms) (165636, 15684) complementaries.
+(25000,1000) processed in (412s, 31s) (17ms,32ms) (175916, 10280) complementaries.
+(26000,1000) processed in (445s, 32s) (17ms,33ms) (188426, 12510) complementaries.
+(27000,1000) processed in (484s, 39s) (18ms,39ms) (194376, 5950) complementaries.
+(28000,1000) processed in (521s, 37s) (19ms,37ms) (209345, 14969) complementaries.
+(29000,1000) processed in (559s, 38s) (19ms,38ms) (225437, 16092) complementaries.
+(30000,1000) processed in (599s, 39s) (20ms,39ms) (236942, 11505) complementaries.
+(31000,1000) processed in (639s, 39s) (21ms,40ms) (249667, 12725) complementaries.
+(32000,1000) processed in (679s, 40s) (21ms,40ms) (254393, 4726) complementaries.
+(33000,1000) processed in (722s, 42s) (22ms,43ms) (262796, 8403) complementaries.
+(34000,1000) processed in (762s, 40s) (22ms,40ms) (265985, 3189) complementaries.
+(35000,1000) processed in (807s, 45s) (23ms,45ms) (269502, 3517) complementaries.
+(36000,1000) processed in (853s, 45s) (24ms,46ms) (271729, 2227) complementaries.
+(37000,1000) processed in (899s, 45s) (24ms,46ms) (274432, 2703) complementaries.
+(38000,1000) processed in (951s, 51s) (25ms,52ms) (278532, 4100) complementaries.
+(39000,1000) processed in (1004s, 53s) (26ms,53ms) (283771, 5239) complementaries.
+Message from debugger: failed to send the k packet
+Program ended with exit code: 6

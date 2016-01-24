@@ -216,6 +216,7 @@
 		51C0ACB31C4A385800447594 /* ProcessFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessFile.swift; sourceTree = "<group>"; };
 		51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProcessFiles.txt; sourceTree = "<group>"; };
 		51C94CB81B987E70004C3082 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
+		51CC80F81C553B25008D4D43 /* HWV134lin.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = HWV134lin.txt; path = Docs/HWV134lin.txt; sourceTree = SOURCE_ROOT; };
 		51CD82A51C32D090009166BB /* NodeTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeTrieTests.swift; sourceTree = "<group>"; };
 		51D2765F1BC57879005A0213 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Order.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51D276621BC5805F005A0213 /* OrderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTests.swift; sourceTree = "<group>"; };
@@ -474,6 +475,7 @@
 				51256A661C4B657F006A07C4 /* HWV134.txt */,
 				51540DB01C4CB7D100A145DC /* HWV074.md */,
 				5180F6A01C4F70620069E3F2 /* HWV066.md */,
+				51CC80F81C553B25008D4D43 /* HWV134lin.txt */,
 			);
 			name = results;
 			sourceTree = "<group>";

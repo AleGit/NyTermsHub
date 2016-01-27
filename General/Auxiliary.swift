@@ -2,6 +2,16 @@
 
 import Foundation
 
+// MARK: -
+
+func measure<R>(f:()->R) -> (R, CFAbsoluteTime){
+    let start = CFAbsoluteTimeGetCurrent()
+    let result = f()
+    let end = CFAbsoluteTimeGetCurrent()
+    
+    return (result, end-start)
+}
+
 // MARK: - Range
 
 extension Range where Element : Comparable {
@@ -35,7 +45,7 @@ extension Range where Element : Hashable, Element: Comparable {
 
 extension Dictionary {
     // get all keys where the values match a predicate
-    func filteredKeys(predicate : (Element)->Bool) -> [Key] {
+    func keys(predicate : (Element)->Bool) -> [Key] {
         return self.filter { predicate($0) }.map { $0.0 }
     }
 }

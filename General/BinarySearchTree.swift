@@ -41,15 +41,16 @@ extension BinarySearchTree {
         return false
     }
     
-    var isBindarySearchTree : Bool {
+    // recursive check if tree is binary search tree
+    var isBinarySearchTree : Bool {
         switch self {
         case .Leaf:
             return true
         case let .Node(left,x,right):
             return left.elements.all { y in y < x }
                 && right.elements.all { y in y > x }
-                && left.isBindarySearchTree
-                && right.isBindarySearchTree
+                && left.isBinarySearchTree
+                && right.isBinarySearchTree
         }
     }
 }

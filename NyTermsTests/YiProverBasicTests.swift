@@ -33,8 +33,8 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(prover.run(Int.max),1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
-        let expected = Set(["p"])
+        let predicateSymbols = prover.symbols.filteredKeys { $0.1.type == SymbolType.Predicate }
+        let expected = ["p"]
         XCTAssertEqual(predicateSymbols,expected)
     }
     
@@ -46,8 +46,8 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(prover.run(Int.max),0)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
-        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
-        let expected = Set<String>()
+        let predicateSymbols = prover.symbols.filteredKeys { $0.1.type == SymbolType.Predicate }
+        let expected = [String]()
         XCTAssertEqual(predicateSymbols,expected)
     }
     
@@ -60,8 +60,8 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(prover.run(Int.max),0)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
-        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
-        let expected = Set(["p"])
+        let predicateSymbols = prover.symbols.filteredKeys { $0.1.type == SymbolType.Predicate }
+        let expected = ["p"]
         XCTAssertEqual(predicateSymbols,expected)
 
     }
@@ -75,8 +75,8 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(prover.run(Int.max),1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
-        let expected = Set(["p"])
+        let predicateSymbols = prover.symbols.filteredKeys { $0.1.type == SymbolType.Predicate }
+        let expected = ["p"]
         XCTAssertEqual(predicateSymbols,expected)
     }
     
@@ -97,9 +97,9 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         
-        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        let predicateSymbols = prover.symbols.filteredKeys { $0.1.type == SymbolType.Predicate }
         let expected = Set(["lives","killed","richer","hates"])
-        XCTAssertEqual(predicateSymbols,expected)
+        XCTAssertEqual(Set(predicateSymbols),expected)
     }
     
     func testSYO587m1() {
@@ -138,7 +138,7 @@ class YiProverBasicTests: XCTestCase {
         print(times.last!)
         
         
-        let predicateSymbols = prover.symbols.filteredSetOfKeys { $0.1.type == SymbolType.Predicate }
+        let predicateSymbols = prover.symbols.filteredKeys { $0.1.type == SymbolType.Predicate }
         XCTAssertEqual(predicateSymbols.count,4480)
     }
     

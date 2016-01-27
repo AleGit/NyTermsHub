@@ -1,14 +1,11 @@
-//  Created by Alexander Maringele.
-//  Copyright © 2015 Alexander Maringele. All rights reserved.
-//
+//  Copyright © 2016 Alexander Maringele. All rights reserved.
 
 import Foundation
-
-
 
 // MARK: - Range
 
 extension Range where Element : Comparable {
+    /// expands range if value is not in range
     /// - successor `struct Range<Element : ForwardIndexType>`
     ///
     /// - `func min<T : Comparable>(x: T, _ y: T) -> T`
@@ -23,6 +20,7 @@ extension Range where Element : Comparable {
 }
 
 extension Range where Element : Hashable, Element: Comparable {
+    /// create range such that all elements in the set are in the range
     init?(set: Set<Element>) {
         guard let minimum = set.minElement() else { return nil }
         guard let maximum = set.maxElement() else { return nil }
@@ -36,12 +34,9 @@ extension Range where Element : Hashable, Element: Comparable {
 // MARK: - Dictionary
 
 extension Dictionary {
+    // get all keys where the values match a predicate
     func filteredKeys(predicate : (Element)->Bool) -> [Key] {
         return self.filter { predicate($0) }.map { $0.0 }
-    }
-    
-    func filteredSetOfKeys(predicate : (Element)->Bool) -> Set<Key> {
-        return Set(self.filteredKeys(predicate))
     }
 }
 
@@ -51,10 +46,10 @@ extension String  {
     func contains(string:Symbol) -> Bool {
         return self.rangeOfString(string) != nil
     }
-    func containsOne(strings:Set<Symbol>) -> Bool {
+    func containsOne<S:SequenceType where S.Generator.Element == Symbol>(strings:S) -> Bool {
         return strings.reduce(false) { $0 || self.contains($1) }
     }
-    func containsAll(strings:Set<Symbol>) -> Bool {
+    func containsAll<S:SequenceType where S.Generator.Element == Symbol>(strings:S) -> Bool {
         return strings.reduce(true) { $0 && self.contains($1) }
     }
 }

@@ -120,8 +120,8 @@ extension TptpNode : StringLiteralConvertible {
     private static func parse(stringLiteral value:String) -> TptpNode {
         assert(!value.isEmpty)
         
-        let connectives = Symbols.defaultSymbols.filteredSetOfKeys { $0.1.category == SymbolCategory.Connective }
-        let leftpars = Symbols.defaultSymbols.filteredSetOfKeys { $0.1.type == SymbolType.LeftParenthesis }
+        let connectives = Symbols.defaultSymbols.filteredKeys { $0.1.category == SymbolCategory.Connective }
+        let leftpars = Symbols.defaultSymbols.filteredKeys { $0.1.type == SymbolType.LeftParenthesis }
 
         if value.containsOne(connectives) {
             // fof_formula or cnf_formula (i.e. fof_formula in connjective normal form)

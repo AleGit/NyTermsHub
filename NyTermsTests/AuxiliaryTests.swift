@@ -10,6 +10,7 @@
 import XCTest
 @testable
 import NyTerms
+
 private let tptpFiles = [
     "puz001" : ("/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p",12,21),
     "hwv057" : ("/Users/Shared/TPTP/Problems/HWV/HWV057-1.p",3671,  8503),
@@ -19,7 +20,7 @@ private let tptpFiles = [
     "hwv105" : ("/Users/Shared/TPTP/Problems/HWV/HWV105-1.p",20900,  52662),
     "hwv119" : ("/Users/Shared/TPTP/Problems/HWV/HWV119-1.p",17783,  53121),
     "hwv121" : ("/Users/Shared/TPTP/Problems/HWV/HWV121-1.p",31945,  93332),
-    "hwv134" : ("/Users/Shared/TPTP/Problems/HWV/HWV134-1.p",2332428,6570884),
+//    "hwv134" : ("/Users/Shared/TPTP/Problems/HWV/HWV134-1.p",2332428,6570884),
 ]
 
 private let key = "hwv121"
@@ -138,5 +139,37 @@ class AuxiliaryTests: XCTestCase {
             print(size,runtime,set3.count)
         }
         
+    }
+    
+    func testNodeConversion() {
+        for (akey,avalue) in tptpFiles {
+            print(akey,avalue)
+            let (array1, runtime1) = measure {
+                () -> [TptpNode] in
+                let (_,tptpFormulae,_) = parse(path:avalue.0)
+                return tptpFormulae.map { $0.root }
+            }
+            
+            print(akey, runtime1, array1.count)
+            
+            let (array2, runtime2) = measure {
+                return array1.map { SimpleNode($0) }
+            }
+            
+            print(akey, runtime2, array2.count, runtime2/runtime1)
+
+            
+            let (array3, runtime3) = measure {
+                return array1.map { TptpNode($0) }
+            }
+            
+            print(akey, runtime3, array3.count, runtime3/runtime1)
+            
+            let zipped = zip(array1,array3)
+            
+            let same = zipped.reduce(true)
+                { $0 && $1.0 === $1.1 }
+            XCTAssertTrue(same)
+        }
     }
 }

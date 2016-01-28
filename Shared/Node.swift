@@ -264,9 +264,12 @@ extension Node {
 
 extension Node {
     init<T:Node>(_ s:T) {    // similar to Int(3.5)
-        // self = convert(s)
         
-        if let nodes = s.nodes {
+        // no conversion between same types
+        if let t = s as? Self {
+            self = t
+        }
+        else if let nodes = s.nodes {
             self = Self(symbol: s.symbol, nodes: nodes.map { Self($0) } )
         }
         else {

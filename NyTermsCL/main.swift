@@ -6,8 +6,8 @@ import Foundation
 print("NyTerms with \(Yices.info):")
 print(Process.arguments.joinWithSeparator("\n"))
 
-let key = "puz001"
-let searches = [trieSearch, linearSearch]
+let key = "hwv066"
+let searches = [intTrieSearch, linearSearch]
 
 var runtime : CFAbsoluteTime = 0
 

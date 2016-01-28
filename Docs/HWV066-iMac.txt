@@ -1,0 +1,81 @@
+NyTerms with yices 2.4.1 (x86_64-apple-darwin14.4.0,release,2015-08-10):
+/Users/alm/Library/Developer/Xcode/DerivedData/NyTerms-hgbchfqcmrlaxdfodjuqnpiqzqch/Build/Products/Debug/NyTermsCL
+process file /Users/Shared/TPTP/Problems/HWV/HWV066-1.p
+15233 formulae parsed in 318ms
+35166 literals extracted in 26ms
+(1000,1000) processed in (0s, 0s) (134ns,134ns) (93, 93) complementaries.
+(2000,1000) processed in (0s, 0s) (197ns,261ns) (381, 288) complementaries.
+(3000,1000) processed in (0s, 0s) (254ns,368ns) (832, 451) complementaries.
+(4000,1000) processed in (1s, 0s) (317ns,503ns) (1511, 679) complementaries.
+(5000,1000) processed in (1s, 0s) (374ns,606ns) (2301, 790) complementaries.
+(6000,1000) processed in (2s, 0s) (415ns,620ns) (3312, 1011) complementaries.
+(7000,1000) processed in (3s, 0s) (455ns,691ns) (4491, 1179) complementaries.
+(8000,1000) processed in (3s, 0s) (499ns,808ns) (5815, 1324) complementaries.
+(9000,1000) processed in (4s, 0s) (552ns,974ns) (7482, 1667) complementaries.
+(10000,1000) processed in (5s, 1s) (598ns,1ms) (9232, 1750) complementaries.
+(11000,1000) processed in (7s, 1s) (641ns,1ms) (11116, 1884) complementaries.
+(12000,1000) processed in (8s, 1s) (677ns,1ms) (13203, 2087) complementaries.
+(13000,1000) processed in (9s, 1s) (715ns,1ms) (15555, 2352) complementaries.
+(14000,1000) processed in (10s, 1s) (746ns,1ms) (17799, 2244) complementaries.
+(15000,1000) processed in (11s, 1s) (778ns,1ms) (20281, 2482) complementaries.
+(16000,1000) processed in (12s, 1s) (805ns,1ms) (23052, 2771) complementaries.
+(17000,1000) processed in (14s, 1s) (834ns,1ms) (26418, 3366) complementaries.
+(18000,1000) processed in (15s, 1s) (859ns,1ms) (29698, 3280) complementaries.
+(19000,1000) processed in (16s, 1s) (882ns,1ms) (32840, 3142) complementaries.
+(20000,1000) processed in (18s, 1s) (903ns,1ms) (36078, 3238) complementaries.
+(21000,1000) processed in (19s, 1s) (928ns,1ms) (39704, 3626) complementaries.
+(22000,1000) processed in (20s, 1s) (949ns,1ms) (43425, 3721) complementaries.
+(23000,1000) processed in (22s, 1s) (969ns,1ms) (47361, 3936) complementaries.
+(24000,1000) processed in (23s, 1s) (982ns,1ms) (51097, 3736) complementaries.
+(25000,1000) processed in (25s, 1s) (1ms,1ms) (55419, 4322) complementaries.
+(26000,1000) processed in (26s, 1s) (1ms,2ms) (60002, 4583) complementaries.
+(27000,1000) processed in (28s, 1s) (1ms,2ms) (64732, 4730) complementaries.
+(28000,1000) processed in (29s, 1s) (1ms,1ms) (69043, 4311) complementaries.
+(29000,1000) processed in (31s, 1s) (1ms,2ms) (73913, 4870) complementaries.
+(30000,1000) processed in (32s, 1s) (1ms,1ms) (78978, 5065) complementaries.
+(31000,1000) processed in (34s, 1s) (1ms,1ms) (83830, 4852) complementaries.
+(32000,1000) processed in (35s, 1s) (1ms,2ms) (89384, 5554) complementaries.
+(33000,1000) processed in (37s, 1s) (1ms,1ms) (94907, 5523) complementaries.
+(34000,1000) processed in (38s, 1s) (1ms,2ms) (101719, 6812) complementaries.
+(35000,1000) processed in (40s, 1s) (1ms,2ms) (108197, 6478) complementaries.
+109117 complementary literals found (int index search) in 41s
+process file /Users/Shared/TPTP/Problems/HWV/HWV066-1.p
+15233 formulae parsed in 341ms
+35166 literals extracted in 30ms
+(1000,1000) processed in (1s, 1s) (1ms,1ms) (93, 93) complementaries.
+(2000,1000) processed in (4s, 3s) (2ms,3ms) (381, 288) complementaries.
+(3000,1000) processed in (9s, 5s) (3ms,5ms) (832, 451) complementaries.
+(4000,1000) processed in (16s, 7s) (4ms,7ms) (1511, 679) complementaries.
+(5000,1000) processed in (25s, 9s) (5ms,9ms) (2301, 790) complementaries.
+(6000,1000) processed in (37s, 11s) (6ms,12ms) (3312, 1011) complementaries.
+(7000,1000) processed in (52s, 14s) (8ms,15ms) (4491, 1179) complementaries.
+(8000,1000) processed in (69s, 16s) (9ms,17ms) (5815, 1324) complementaries.
+(9000,1000) processed in (88s, 19s) (10ms,20ms) (7482, 1667) complementaries.
+(10000,1000) processed in (111s, 22s) (11ms,22ms) (9232, 1750) complementaries.
+(11000,1000) processed in (134s, 22s) (12ms,23ms) (11116, 1884) complementaries.
+(12000,1000) processed in (160s, 25s) (13ms,26ms) (13203, 2087) complementaries.
+(13000,1000) processed in (188s, 28s) (14ms,28ms) (15555, 2352) complementaries.
+(14000,1000) processed in (219s, 31s) (16ms,31ms) (17799, 2244) complementaries.
+(15000,1000) processed in (252s, 32s) (17ms,32ms) (20281, 2482) complementaries.
+(16000,1000) processed in (288s, 36s) (18ms,36ms) (23052, 2771) complementaries.
+(17000,1000) processed in (327s, 39s) (19ms,39ms) (26418, 3366) complementaries.
+(18000,1000) processed in (369s, 41s) (21ms,42ms) (29698, 3280) complementaries.
+(19000,1000) processed in (413s, 43s) (22ms,44ms) (32840, 3142) complementaries.
+(20000,1000) processed in (458s, 45s) (23ms,45ms) (36078, 3238) complementaries.
+(21000,1000) processed in (504s, 46s) (24ms,46ms) (39704, 3626) complementaries.
+(22000,1000) processed in (555s, 50s) (25ms,50ms) (43425, 3721) complementaries.
+(23000,1000) processed in (615s, 60s) (27ms,60ms) (47361, 3936) complementaries.
+(24000,1000) processed in (680s, 65s) (28ms,65ms) (51097, 3736) complementaries.
+(25000,1000) processed in (742s, 61s) (30ms,61ms) (55419, 4322) complementaries.
+(26000,1000) processed in (817s, 75s) (31ms,75ms) (60002, 4583) complementaries.
+(27000,1000) processed in (902s, 85s) (33ms,86ms) (64732, 4730) complementaries.
+(28000,1000) processed in (970s, 67s) (35ms,68ms) (69043, 4311) complementaries.
+(29000,1000) processed in (1037s, 66s) (36ms,66ms) (73913, 4870) complementaries.
+(30000,1000) processed in (1109s, 72s) (37ms,72ms) (78978, 5065) complementaries.
+(31000,1000) processed in (1180s, 71s) (38ms,71ms) (83830, 4852) complementaries.
+(32000,1000) processed in (1260s, 79s) (39ms,79ms) (89384, 5554) complementaries.
+(33000,1000) processed in (1336s, 76s) (40ms,76ms) (94907, 5523) complementaries.
+(34000,1000) processed in (1412s, 76s) (42ms,77ms) (101719, 6812) complementaries.
+(35000,1000) processed in (1490s, 77s) (43ms,78ms) (108197, 6478) complementaries.
+109117 complementary literals found (linear search) in 1504s
+total runtime: 1504.46386396885

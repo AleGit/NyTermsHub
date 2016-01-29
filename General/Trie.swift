@@ -1,7 +1,17 @@
 import Foundation
 
+protocol TrieType {
+    typealias Key : Hashable
+    typealias Value : Equatable
+    
+    mutating func insert(path:[Key], value:Value)
+    mutating func delete(path:[Key], value:Value)
+}
+
 /// [[wikikpedia]](https://en.wikipedia.org/wiki/Trie)
-struct Trie<Key: Hashable, Value: Hashable>{
+struct Trie<K: Hashable, V: Hashable> : TrieType {
+    typealias Key = K
+    typealias Value = V
     private var tries = [Key: Trie<Key, Value>]()
     private (set) var values = Set<Value>()
     

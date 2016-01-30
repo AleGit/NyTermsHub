@@ -147,6 +147,7 @@
 		512117631B81D26E00E1803C /* TptpFormulaLiteralsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpFormulaLiteralsTests.swift; sourceTree = "<group>"; };
 		512123021C5A7AAB00290CB6 /* HWV066 @ Mac mini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV066 @ Mac mini.txt"; path = "Docs/HWV066 @ Mac mini.txt"; sourceTree = SOURCE_ROOT; };
 		512123031C5BDC2E00290CB6 /* HWV134 @ Mac mini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 @ Mac mini.txt"; path = "Docs/HWV134 @ Mac mini.txt"; sourceTree = SOURCE_ROOT; };
+		512123061C5D079500290CB6 /* HWV134 @ Mac mini (no checks).txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 @ Mac mini (no checks).txt"; path = "Docs/HWV134 @ Mac mini (no checks).txt"; sourceTree = SOURCE_ROOT; };
 		5121F64F1C58D5560053601D /* AuxiliaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuxiliaryTests.swift; sourceTree = "<group>"; };
 		5121F6511C58F0A70053601D /* testIntegerIntersection.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = testIntegerIntersection.txt; path = Docs/testIntegerIntersection.txt; sourceTree = SOURCE_ROOT; };
 		51226E761B6D3A0B0077E34D /* TptpFormula.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TptpFormula.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -503,6 +504,7 @@
 				516107B21C5A611800FD3637 /* HWV066-iMac.txt */,
 				512123021C5A7AAB00290CB6 /* HWV066 @ Mac mini.txt */,
 				512123031C5BDC2E00290CB6 /* HWV134 @ Mac mini.txt */,
+				512123061C5D079500290CB6 /* HWV134 @ Mac mini (no checks).txt */,
 			);
 			name = results;
 			sourceTree = "<group>";

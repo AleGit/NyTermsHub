@@ -26,7 +26,7 @@ extension Array where Element:Hashable {
 extension Nodal {
     subscript(path:[Key]) -> Self? {
         get {
-            guard let (head,tail) = path.decompose() else { return self }
+            guard let (head,tail) = path.decompose else { return self }
             return self[head]?[tail]
         }
     }

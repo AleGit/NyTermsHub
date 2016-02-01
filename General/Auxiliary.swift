@@ -64,18 +64,20 @@ extension String  {
     }
 }
 
-// MARK: - Array
+// MARK: - Collection Type
 
-extension Array where Element : CustomStringConvertible {
-    /// Concatinate descriptions of elements separated by separator.
+extension CollectionType
+where Generator.Element : CustomStringConvertible {
     func joinWithSeparator(separator:String) -> String {
         return self.map { $0.description }.joinWithSeparator(separator)
     }
 }
 
-extension Array {
-    func decompose() -> (Element, [Element])? {
-        return isEmpty ? nil : (self[startIndex], Array(self.dropFirst()))
+extension CollectionType
+where Generator.Element == SubSequence.Generator.Element {
+    var decompose: (head: Generator.Element, tail: [Generator.Element])? {
+        guard let head = first else { return nil }
+        return (head, Array(dropFirst()))
     }
 }
 

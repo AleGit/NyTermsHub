@@ -49,7 +49,7 @@ struct Position<Hop:Hashable> {
     init() { hops = [Hop]() }
     
     func decompose() -> (Hop, Position)? {
-        guard let (head, array) = hops.decompose() else { return nil }
+        guard let (head, array) = hops.decompose else { return nil }
         
         return (head,Position(array))
     }

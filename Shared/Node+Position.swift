@@ -57,7 +57,7 @@ extension Node {
     /// With [] the term itself is returned.
     /// With [i] the the subterm with array index i is returned.
     subscript (position: Position) -> Self? {
-        guard let (head,tail) = position.decompose() else { return self }       // position == []
+        guard let (head,tail) = position.decompose else { return self }       // position == []
         guard let nodes = self.nodes else { return nil }                        // position != [], but variables has no subnodes at all
         guard 0 <= head && head < nodes.count else { return nil }               // node does not have a subnode at given position
         // node is not a constant or variable and has a subnode at given position
@@ -67,7 +67,7 @@ extension Node {
     
     /// Construct a new term by replacing the subterm at position.
     subscript (term: Self, position:Position) -> Self? {
-        guard let (head,tail) = position.decompose() else { return term }       // position == []
+        guard let (head,tail) = position.decompose else { return term }       // position == []
         guard var nodes = self.nodes else { return nil }                        // position != [], but variables has no subnodes at all
         guard 0 <= head && head < nodes.count else { return nil }               // node does not have a subnode at given position
         // node is not a constant or variable and has a subnode at given position
@@ -85,7 +85,7 @@ extension Array where Element:Node {
     /// array[[i]] := array[i]
     /// array[[i,j,...]] := array[i][j,...]
     subscript(position:Position)->Element? {
-        guard let (head,tail) = position.decompose() else { return nil }        // position == [], but an array is not of type Node
+        guard let (head,tail) = position.decompose else { return nil }        // position == [], but an array is not of type Node
         guard 0 <= head && head < self.count else { return nil }                // node does not have a subnode at given position
         
         return self[head][tail]

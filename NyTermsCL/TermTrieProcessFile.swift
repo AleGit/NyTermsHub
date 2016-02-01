@@ -9,7 +9,7 @@
 import Foundation
 
 func extract<T>(trie:Trie<SymHop, T>, path:TermPath) -> Set<T>? {
-    guard let (head,tail) = path.decompose() else {
+    guard let (head,tail) = path.decompose else {
         return trie.payload
     }
     
@@ -64,7 +64,7 @@ func candidates<T:Hashable>(indexed:Trie<SymHop, T>, term:TptpNode) -> Set<T>? {
     }
     
     
-    guard let (first,tail) = queryTerm.paths.decompose() else { return nil }
+    guard let (first,tail) = queryTerm.paths.decompose else { return nil }
     
     guard var result = extract(indexed, path: first) else { return nil }
     

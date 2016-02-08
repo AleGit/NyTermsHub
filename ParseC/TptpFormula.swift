@@ -10,7 +10,10 @@ import Cocoa
 /// and the list of all *include* lines.
 func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
     
+    print("parse(\(path))",TptpFormula.mycount)
     let array = parse_path(path)
+    print(array.count,"<-",TptpFormula.mycount)
+
     var result = [Int(array[0] as! NSNumber)]
     var formulae = array[1] as! [TptpFormula]
     var includes = array[2] as! [TptpInclude]
@@ -48,6 +51,8 @@ func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) {
 /// - cnf_annotated
 /// - fof_annotated
 final class TptpFormula: NSObject {
+    static var mycount = 0
+    
     let language : TptpLanguage
     let name : String
     let role : TptpRole
@@ -55,6 +60,7 @@ final class TptpFormula: NSObject {
     let annotations : [String]?
     
     init(language:TptpLanguage, name:String, role:TptpRole, root:TptpNode, annotations:[String]?) {
+        TptpFormula.mycount++
         
         self.language = language
         self.name = name
@@ -69,6 +75,12 @@ final class TptpFormula: NSObject {
         }
         return "\(language)(\(name),\(role),\(root))."
     }
+    
+    deinit {
+        TptpFormula.mycount--
+    }
+    
+    
 }
 
 extension TptpFormula : StringLiteralConvertible {

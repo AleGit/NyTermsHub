@@ -18,8 +18,6 @@ class ParseBasicSyntaxTests: XCTestCase {
         let startTime = CFAbsoluteTimeGetCurrent()
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         let finishTime = CFAbsoluteTimeGetCurrent()
-        let memory = strideof(tptpFormulae.dynamicType)
-        print(memory)
         let total = finishTime - startTime
         
         let name = (path as NSString).lastPathComponent
@@ -35,6 +33,8 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         return (tptpFormulae, tptpIncludes)
     }
+    
+    
     
     // MARK - parse cfn files
     
@@ -55,6 +55,35 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let myformula = MyTestTerm(tptpFormulae[2_332_427].root)
         XCTAssertEqual("~(v437(VarCurr,bitIndex128))|v4403(VarCurr,bitIndex0)", myformula.description)
+        
+    }
+    
+    typealias ele = Int16
+    
+    class Wrapper {
+        static var mycount = 0
+        let i:ele
+        init(value:ele) {
+            Wrapper.mycount++
+            i = value
+        }
+        deinit {
+            Wrapper.mycount--
+        }
+        
+    }
+    
+    func checkParseMemory() {
+        let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
+        let (_,tptpFormulae,_) = parse(path:path)
+        print("TptpFormula.mycount",tptpFormulae.count,TptpFormula.mycount)
+    }
+    
+    func testParseMemory() {
+        
+        XCTAssertEqual(0, TptpFormula.mycount)
+        checkParseMemory()
+        XCTAssertEqual(0, TptpFormula.mycount)
         
     }
     

@@ -24,37 +24,42 @@ class TptpParseResult: NSObject {
 func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
     
     let parseResult = TptpParseResult()
-    var result = [Int(parse_path(path,parseResult))]
-
+    let result = parse_path(path,parseResult)
+    assert(result == 0, "parse path '\(path)' failed with code = \(result)")
+    
+    var results = [Int(result)]
     var formulae = parseResult.formulae
     var includes = parseResult.includes
     
     for include in includes {
-        let ipath = path.tptpPathTo(include)
-        let (iresult,iformulae,iincludes) = parse(path:ipath)
-        result += iresult
-        includes += iincludes
+        let includePath = path.tptpPathTo(include)
+        let (includeResults,includeFormulae,includeIncludes) = parse(path:includePath)
+        assert(includeIncludes.count == 0, "Include file '\(includePath)' contains \(includeIncludes.count). \(includeIncludes)")
+        results += includeResults
+        includes += includeIncludes
         
         if let selection = include.formulaSelection {
             let s = Set(selection)
-            formulae += iformulae.filter { s.contains($0.name) }
+            formulae += includeFormulae.filter { s.contains($0.name) }
         }
         else {
-            formulae += iformulae
+            formulae += includeFormulae
         }
     }
     
-    return (result, formulae, includes)
+    return (results, formulae, includes)
 }
 
 /// Parses the content of `string` which may contain multiple annotated formulae, but must not contain include lines.
-/// It returns a pair with parse status and the list of successfully parsed *annotated formulae*.
-func parse(string string:String) -> [TptpFormula]? {
+/// It returns the list of successfully parsed *annotated formulae*.
+func parse(string string:String) -> [TptpFormula] {
     
     let parseResult = TptpParseResult()
     let result = parse_string(string,parseResult)
+    
     assert(result == 0)
     assert(parseResult.includes.count == 0)
+
     return parseResult.formulae
 }
 
@@ -63,7 +68,7 @@ func parse(string string:String) -> [TptpFormula]? {
 /// - fof_annotated
 final class TptpFormula: NSObject {
     #if INIT_COUNT
-    static var mycount = 0
+    static var count = 0
     #endif
     
     let language : TptpLanguage
@@ -74,7 +79,7 @@ final class TptpFormula: NSObject {
     
     init(language:TptpLanguage, name:String, role:TptpRole, root:TptpNode, annotations:[String]?) {
         #if INIT_COUNT
-            TptpFormula.mycount++
+            TptpFormula.count++
         #endif
         
         self.language = language
@@ -93,7 +98,7 @@ final class TptpFormula: NSObject {
     
     #if INIT_COUNT
     deinit {
-        TptpFormula.mycount--
+        TptpFormula.count--
     }
     #endif
     
@@ -116,11 +121,7 @@ extension TptpFormula : StringLiteralConvertible {
     /// - fof(pel55_1,axiom, ( ? [X] : ( lives(X) & killed(X,agatha) ) )).
     convenience init(stringLiteral value: StringLiteralType) {
         
-        guard let formulae = parse(string:value) else {
-            self.init(language: TptpLanguage.CNF, name: "parse_error", role: TptpRole.Unknown, root: TptpNode(constant:"$false"), annotations:nil)
-            return
-        }
-
+        let formulae = parse(string:value)
         assert(formulae.count == 1)
         
         switch formulae.count {

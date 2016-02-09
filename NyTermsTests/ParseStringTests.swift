@@ -13,10 +13,7 @@ class ParseStringTests: XCTestCase {
         let expected = "( lives(agatha ))"
         let cnf = "cnf(agatha,hypothesis,( lives(agatha) )). cnf(agatha,hypothesis,\(expected))."
         
-        guard let tptpFormulae = parse(string:cnf) else {
-            XCTFail("'\(cnf)' was not parsed correctly.")
-            return
-        }
+        let tptpFormulae = parse(string:cnf)
         XCTAssertEqual(2, tptpFormulae.count)
         
         let myformulae = tptpFormulae.map{ $0.root }
@@ -50,10 +47,7 @@ class ParseStringTests: XCTestCase {
             ("?[A]:![B]:?[C]:p(A)" , "(?[A]:((![B]:((?[C]:(p(A)))))))")
             ] {
                 let fofa = fof_annotated(input)
-                guard let formulae = parse(string:fofa) else {
-                    XCTFail("'\(fofa)' was not parsed correctly.")
-                    continue
-                }
+                let formulae = parse(string:fofa)
                 XCTAssertEqual(value, formulae[0].root.description)
                 
                 print("% ------------------")
@@ -67,10 +61,7 @@ class ParseStringTests: XCTestCase {
         let expected = "(![B]:(addressVal(v83622_range_3_to_0_address_term_bound_98,B)<=>v83622(constB98,B)))"
         let fof = "fof(transient_address_definition_401,axiom,(! [B] : ( addressVal(v83622_range_3_to_0_address_term_bound_98,B) <=> v83622(constB98,B) ) ))."
             + "fof(transient_address_definition_401,axiom,\(expected))."
-        guard let tptpFormulae = parse(string:fof) else {
-            XCTFail("'\(fof)' was not parsed correctly.")
-            return
-        }
+        let tptpFormulae = parse(string:fof)
         
         XCTAssertEqual(2, tptpFormulae.count)
         

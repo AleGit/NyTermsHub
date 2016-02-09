@@ -8,15 +8,28 @@ import Cocoa
 /// - cnf_formula
 /// - fof_formula
 final class TptpNode: NSObject, Node {
+    #if INIT_COUNT
+    static var count = 0
+    #endif
+    
     let symbol: String
     var nodes: [TptpNode]?
     private var cachedDescription : String? = nil
     private var cachedHashValue : Int? = nil
     
     init(symbol: String, nodes: [TptpNode]?) {
+        #if INIT_COUNT
+            TptpNode.count++
+        #endif
         self.symbol = symbol
         self.nodes = nodes
     }
+    
+    #if INIT_COUNT
+    deinit {
+        TptpNode.count--
+    }
+    #endif
     
     private func updateDescription() -> String {
         let string = self.tptpDescription
@@ -66,6 +79,10 @@ final class TptpNode: NSObject, Node {
 
 
 extension TptpNode {
+    
+    convenience init(symbol:Symbol) {
+        self.init(symbol:symbol, nodes:[TptpNode]())
+    }
     
     convenience init(variable symbol:Symbol) {
         assert(Symbols.defaultSymbols[symbol]?.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")

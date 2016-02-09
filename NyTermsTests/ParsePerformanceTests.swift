@@ -35,5 +35,17 @@ class ParsePerformanceTests: XCTestCase {
             XCTAssertEqual(0, tptpIncludes.count)
         }
     }
+    
+    func testPerformanceHWV074cnf1() {
+        let path = "/Users/Shared/TPTP/Problems/HWV/HWV074-1.p"
+        self.measureBlock {
+            
+            let (result,tptpFormulae,tptpIncludes) = parse(path:path)
+            XCTAssertEqual(1, result.count)
+            XCTAssertEqual(0, result[0])
+            XCTAssertEqual(2581, tptpFormulae.count)
+            XCTAssertEqual(0, tptpIncludes.count)
+        }
+    }
 
 }

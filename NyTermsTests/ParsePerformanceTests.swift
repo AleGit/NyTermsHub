@@ -14,7 +14,6 @@ class ParsePerformanceTests: XCTestCase {
     func testPerformanceExample() {
         let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p"
         self.measureBlock {
-            
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             XCTAssertEqual(2, result.count)
             XCTAssertEqual(0, result[0])
@@ -27,7 +26,6 @@ class ParsePerformanceTests: XCTestCase {
     func testPerformanceHWV105cnf1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
         self.measureBlock {
-            
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])
@@ -39,7 +37,6 @@ class ParsePerformanceTests: XCTestCase {
     func testPerformanceHWV074cnf1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV074-1.p"
         self.measureBlock {
-            
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])

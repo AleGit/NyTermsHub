@@ -7,6 +7,7 @@
 @class TptpNode;
 @class TptpFormula;
 @class TptpInclude;
+@class TptpParseResult;
 
 #import <Foundation/Foundation.h>
 #import "TptpEnums.h"
@@ -63,11 +64,11 @@ int tptp_error (const char * _Nullable s);
 
 /// Parses TPTP file at path.
 /// This function  is **NOT** thread safe and must not be called concurrently.
-NSArray* _Nonnull parse_path( const NSString * _Nonnull path);
+int parse_path( const NSString * _Nonnull path, TptpParseResult * _Nonnull result);
 
 /// Parses TPTP string.
 /// This function is **NOT** thread safe and must not be called concurrently.
-NSArray* _Nonnull parse_string( const NSString * _Nonnull string);
+int parse_string( const NSString * _Nonnull string, TptpParseResult * _Nonnull result);
 
 #endif
 

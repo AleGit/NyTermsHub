@@ -58,33 +58,22 @@ class ParseBasicSyntaxTests: XCTestCase {
         
     }
     
-    typealias ele = Int16
-    
-    class Wrapper {
-        static var mycount = 0
-        let i:ele
-        init(value:ele) {
-            Wrapper.mycount++
-            i = value
-        }
-        deinit {
-            Wrapper.mycount--
-        }
-        
-    }
-    
     func checkParseMemory() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
-        let (_,tptpFormulae,_) = parse(path:path)
-        print("TptpFormula.mycount",tptpFormulae.count,TptpFormula.mycount)
+        var (_,tptpFormulae,_) = parse(path:path)
+        print("TptpFormula.mycount",TptpFormula.mycount)
+        print("TptpFormula.mycount",TptpFormula.mycount,tptpFormulae.count)
+        tptpFormulae.removeRange(tptpFormulae.count/5...tptpFormulae.count/2)
+        print("TptpFormula.mycount",TptpFormula.mycount,tptpFormulae.count)
+        print("TptpFormula.mycount",TptpFormula.mycount)
     }
     
     func testParseMemory() {
-        
+        print("TptpFormula.mycount",TptpFormula.mycount)
         XCTAssertEqual(0, TptpFormula.mycount)
         checkParseMemory()
         XCTAssertEqual(0, TptpFormula.mycount)
-        
+        print("TptpFormula.mycount",TptpFormula.mycount)
     }
     
     /// Parse HWV105-1.p and construct tree representation.

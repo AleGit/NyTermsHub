@@ -3,6 +3,19 @@
 
 import Cocoa
 
+class TptpParseResult: NSObject {
+    var formulae = [TptpFormula] ()
+    var includes = [TptpInclude] ()
+    
+    func appendFormulae(array:[TptpFormula]) {
+        formulae += array
+    }
+    
+    func appendIncludes(array:[TptpInclude]) {
+        includes += array
+    }
+}
+
 /// Parses the content of the tptp file at absolute `path`.
 /// When that tptp file contains *include* lines multiple files will be read.
 /// It returns a triple with the list of parse status, 
@@ -11,12 +24,11 @@ import Cocoa
 func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
     
     print("parse(\(path))",TptpFormula.mycount)
-    let array = parse_path(path)
-    print(array.count,"<-",TptpFormula.mycount)
+    let parseResult = TptpParseResult()
+    var result = [Int(parse_path(path,parseResult))]
 
-    var result = [Int(array[0] as! NSNumber)]
-    var formulae = array[1] as! [TptpFormula]
-    var includes = array[2] as! [TptpInclude]
+    var formulae = parseResult.formulae
+    var includes = parseResult.includes
     
     for include in includes {
         let ipath = path.tptpPathTo(include)
@@ -40,10 +52,10 @@ func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:
 /// It returns a pair with parse status and the list of successfully parsed *annotated formulae*.
 func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) {
     
-    let array = parse_string(string)
-    let result = Int(array[0] as! NSNumber)
-    let formulae = array[1] as! [TptpFormula]
-    assert((array[2] as! [TptpInclude]).count == 0)
+    let parseResult = TptpParseResult()
+    let result = Int(parse_string(string,parseResult))
+    let formulae = parseResult.formulae
+    assert(parseResult.includes.count == 0)
     return (result, formulae)
 }
 

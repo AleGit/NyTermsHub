@@ -241,14 +241,14 @@ TptpRole make_role(const char* cstring) {
 
 #pragma mark - parse
 
-NSArray* parse_file(FILE *file) {
+int parse_file(FILE *file,TptpParseResult *result) {
     assert(file != NULL);
     
     NSMutableArray *storage = [NSMutableArray array];
     NSMutableArray<TptpFormula*>* formulae = [NSMutableArray array];
     NSMutableArray<TptpInclude*>* includes = [NSMutableArray array];
     
-    int result = 0;
+    int code = 0;
     
     tptp_in = file;
     tptp_restart(file);
@@ -260,7 +260,7 @@ NSArray* parse_file(FILE *file) {
         _parser_includes_ = includes;
         _parser_formulae_ = formulae;
         
-        result = tptp_parse();
+        code = tptp_parse();
         
         _parser_storage_ = nil;
         _parser_includes_ = nil;
@@ -269,23 +269,24 @@ NSArray* parse_file(FILE *file) {
         fclose(file);
     }
     else {
-        result = -1;
+        code = -1;
     }
     
-    NSArray *array = @[ @(result), formulae, includes ];
+    [result appendFormulae:formulae];
+    [result appendIncludes:includes];
     
-    return array;
+    return code;
 }
 
 /// Open file with path and call tptp parser on it.
-NSArray* parse_path(NSString *path) {
+int parse_path(NSString *path, TptpParseResult *result) {
     const char *p = path.UTF8String;
     FILE *file = fopen(p,"r");
-    return parse_file(file);
+    return parse_file(file,result);
 }
 
 /// Create temporary file with content of string and call tptp parser on it.
-NSArray* parse_string(NSString *string) {
+int parse_string(NSString *string, TptpParseResult *result) {
     const char *s = string.UTF8String;
     
     FILE *file = tmpfile();
@@ -294,6 +295,6 @@ NSArray* parse_string(NSString *string) {
         rewind(file);
     }
     
-    return parse_file(file);
+    return parse_file(file,result);
     
 }

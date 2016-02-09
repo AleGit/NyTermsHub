@@ -936,6 +936,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-D INIT_COUNT";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				YACC_GENERATED_FILE_STEM = InputFileStem;
@@ -992,7 +993,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "${inherited}";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
@@ -1013,7 +1014,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "${inherited}";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
@@ -1033,7 +1034,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "${inherited}";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTermsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "NyTermsTests/NyTermsTests-Bridging-Header.h";
@@ -1055,7 +1056,7 @@
 					"-lyices",
 					"-L/usr/local/lib",
 				);
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "${inherited}";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTermsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "NyTermsTests/NyTermsTests-Bridging-Header.h";

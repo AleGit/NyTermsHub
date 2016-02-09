@@ -22,8 +22,10 @@ class TptpParseResult: NSObject {
 /// the list for successfully parsed *annotated formulae*
 /// and the list of all *include* lines.
 func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
+    #if INIT_COUNT
+        print("parse(\(path))",TptpFormula.mycount)
+    #endif
     
-    print("parse(\(path))",TptpFormula.mycount)
     let parseResult = TptpParseResult()
     var result = [Int(parse_path(path,parseResult))]
 
@@ -63,7 +65,9 @@ func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) {
 /// - cnf_annotated
 /// - fof_annotated
 final class TptpFormula: NSObject {
+    #if INIT_COUNT
     static var mycount = 0
+    #endif
     
     let language : TptpLanguage
     let name : String
@@ -72,7 +76,9 @@ final class TptpFormula: NSObject {
     let annotations : [String]?
     
     init(language:TptpLanguage, name:String, role:TptpRole, root:TptpNode, annotations:[String]?) {
-        TptpFormula.mycount++
+        #if INIT_COUNT
+            TptpFormula.mycount++
+        #endif
         
         self.language = language
         self.name = name
@@ -88,9 +94,11 @@ final class TptpFormula: NSObject {
         return "\(language)(\(name),\(role),\(root))."
     }
     
+    #if INIT_COUNT
     deinit {
         TptpFormula.mycount--
     }
+    #endif
     
     
 }

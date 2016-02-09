@@ -66,6 +66,9 @@ class ParseBasicSyntaxTests: XCTestCase {
     }
     
     func testTptpFormulaDeinit() {
+        #if INIT_COUNT
+            print("*** >>> init_count <<< ***")
+        #endif
         XCTAssertEqual(0, TptpFormula.mycount)
         checkTptpFormulaInits()
         XCTAssertEqual(0, TptpFormula.mycount)

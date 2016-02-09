@@ -98,22 +98,35 @@ TptpNode *create_quantified(NSString *name, TptpNode* unitary, NSArray<NSString*
     for (NSString *v in vs) {
         [vnodes addObject: create_variable(v) ];
     }
-    TptpNode *tuple = create_connective(@",", vnodes);
+    TptpNode * tuple = create_connective(@",", vnodes);
     
-    TptpNode *term = [[TptpNode alloc] initWithSymbol:name nodes:@[tuple,unitary]];
+    TptpNode * term = [[TptpNode alloc] initWithSymbol:name];
+    for (TptpNode *subterm in @[tuple, unitary]) {
+        [term append:subterm];
+    }
+    // term = [[TptpNode alloc] initWithSymbol:name nodes:@[tuple,unitary]]; // leaks
     [_parser_storage_ addObject:term];
     return term;
 }
 
 /// Create term with (predicate or function) symbol and list of subterms.
 TptpNode *create_functional(NSString *name, NSArray<TptpNode*> *subnodes) {
-    TptpNode *term = [[TptpNode alloc] initWithFunctional:name nodes:subnodes];
+    TptpNode * term = [[TptpNode alloc] initWithFunctional:name];
+    for (TptpNode *subterm in subnodes) {
+        [term append:subterm];
+    }
+    // term = [[TptpNode alloc] initWithFunctional:name nodes:subnodes]; // leaks
+    
     [_parser_storage_ addObject:term];
     return term;
 }
 
 TptpNode *create_equational(NSString *name, NSArray<TptpNode*> *subnodes) {
-    TptpNode *term = [[TptpNode alloc] initWithEquational:name nodes:subnodes];
+    TptpNode * term = [[TptpNode alloc] initWithEquational:name];
+    for (TptpNode *subterm in subnodes) {
+        [term append:subterm];
+    }
+    // term = [[TptpNode alloc] initWithEquational:name nodes:subnodes]; // leaks
     [_parser_storage_ addObject:term];
     return term;
 }
@@ -122,7 +135,11 @@ TptpNode *create_connective(NSString *name, NSArray<TptpNode*> *subnodes) {
     assert(name != nil);
     assert(subnodes != nil);
     
-    TptpNode *term = [[TptpNode alloc] initWithConnective:name nodes:subnodes];
+    TptpNode * term = [[TptpNode alloc] initWithConnective:name];
+    for (TptpNode *subterm in subnodes) {
+        [term append:subterm];
+    }
+    // term = [[TptpNode alloc] initWithConnective:name nodes:subnodes]; // leaks
     [_parser_storage_ addObject:term];
     return term;
 }

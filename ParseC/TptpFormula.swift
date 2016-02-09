@@ -22,9 +22,6 @@ class TptpParseResult: NSObject {
 /// the list for successfully parsed *annotated formulae*
 /// and the list of all *include* lines.
 func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
-    #if INIT_COUNT
-        print("parse(\(path))",TptpFormula.mycount)
-    #endif
     
     let parseResult = TptpParseResult()
     var result = [Int(parse_path(path,parseResult))]
@@ -52,13 +49,13 @@ func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:
 
 /// Parses the content of `string` which may contain multiple annotated formulae, but must not contain include lines.
 /// It returns a pair with parse status and the list of successfully parsed *annotated formulae*.
-func parse(string string:String) -> (status:Int, formulae:[TptpFormula]) {
+func parse(string string:String) -> [TptpFormula]? {
     
     let parseResult = TptpParseResult()
-    let result = Int(parse_string(string,parseResult))
-    let formulae = parseResult.formulae
+    let result = parse_string(string,parseResult)
+    assert(result == 0)
     assert(parseResult.includes.count == 0)
-    return (result, formulae)
+    return parseResult.formulae
 }
 
 /// A TptpFormula represents one of the following tptp types
@@ -118,9 +115,12 @@ extension TptpFormula : StringLiteralConvertible {
     /// - cnf(agatha,hypothesis, ( lives(agatha) )).
     /// - fof(pel55_1,axiom, ( ? [X] : ( lives(X) & killed(X,agatha) ) )).
     convenience init(stringLiteral value: StringLiteralType) {
-        let (status,formulae) = parse(string:value)
         
-        assert(status == 0)
+        guard let formulae = parse(string:value) else {
+            self.init(language: TptpLanguage.CNF, name: "parse_error", role: TptpRole.Unknown, root: TptpNode(constant:"$false"), annotations:nil)
+            return
+        }
+
         assert(formulae.count == 1)
         
         switch formulae.count {

@@ -13,9 +13,10 @@ class ParseStringTests: XCTestCase {
         let expected = "( lives(agatha ))"
         let cnf = "cnf(agatha,hypothesis,( lives(agatha) )). cnf(agatha,hypothesis,\(expected))."
         
-        let (result,tptpFormulae) = parse(string:cnf)
-        
-        XCTAssertEqual(0, result)
+        guard let tptpFormulae = parse(string:cnf) else {
+            XCTFail("'\(cnf)' was not parsed correctly.")
+            return
+        }
         XCTAssertEqual(2, tptpFormulae.count)
         
         let myformulae = tptpFormulae.map{ $0.root }
@@ -37,8 +38,6 @@ class ParseStringTests: XCTestCase {
         XCTAssertEqual("Array<TptpNode>","\(myformulae.dynamicType)")
     }
     
-    
-    
     func testParseStringMultipleQuantifiers() {
         func fof_annotated(input:String) -> String {
             return "fof(test,axiom,\(input))."
@@ -51,8 +50,10 @@ class ParseStringTests: XCTestCase {
             ("?[A]:![B]:?[C]:p(A)" , "(?[A]:((![B]:((?[C]:(p(A)))))))")
             ] {
                 let fofa = fof_annotated(input)
-                let (result,formulae) = parse(string:fofa)
-                XCTAssertEqual(0, result)
+                guard let formulae = parse(string:fofa) else {
+                    XCTFail("'\(fofa)' was not parsed correctly.")
+                    continue
+                }
                 XCTAssertEqual(value, formulae[0].root.description)
                 
                 print("% ------------------")
@@ -66,9 +67,11 @@ class ParseStringTests: XCTestCase {
         let expected = "(![B]:(addressVal(v83622_range_3_to_0_address_term_bound_98,B)<=>v83622(constB98,B)))"
         let fof = "fof(transient_address_definition_401,axiom,(! [B] : ( addressVal(v83622_range_3_to_0_address_term_bound_98,B) <=> v83622(constB98,B) ) ))."
             + "fof(transient_address_definition_401,axiom,\(expected))."
-        let (result,tptpFormulae) = parse(string:fof)
+        guard let tptpFormulae = parse(string:fof) else {
+            XCTFail("'\(fof)' was not parsed correctly.")
+            return
+        }
         
-        XCTAssertEqual(0, result)
         XCTAssertEqual(2, tptpFormulae.count)
         
         let myformulae = tptpFormulae.map{ $0.root }

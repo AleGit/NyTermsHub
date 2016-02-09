@@ -58,22 +58,17 @@ class ParseBasicSyntaxTests: XCTestCase {
         
     }
     
-    func checkParseMemory() {
+    func checkTptpFormulaInits() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
-        var (_,tptpFormulae,_) = parse(path:path)
-        print("TptpFormula.mycount",TptpFormula.mycount)
-        print("TptpFormula.mycount",TptpFormula.mycount,tptpFormulae.count)
-        tptpFormulae.removeRange(tptpFormulae.count/5...tptpFormulae.count/2)
-        print("TptpFormula.mycount",TptpFormula.mycount,tptpFormulae.count)
-        print("TptpFormula.mycount",TptpFormula.mycount)
+        let limit : NSTimeInterval = 3.0
+        let (tptpFormulae,_) = check(path, limit:limit, count: 20_900)
+        XCTAssertEqual(tptpFormulae.count, TptpFormula.mycount)
     }
     
-    func testParseMemory() {
-        print("TptpFormula.mycount",TptpFormula.mycount)
+    func testTptpFormulaDeinit() {
         XCTAssertEqual(0, TptpFormula.mycount)
-        checkParseMemory()
+        checkTptpFormulaInits()
         XCTAssertEqual(0, TptpFormula.mycount)
-        print("TptpFormula.mycount",TptpFormula.mycount)
     }
     
     /// Parse HWV105-1.p and construct tree representation.
@@ -124,7 +119,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     /// Parse HWV062+1.p and construct tree representation in less than a second.
     func testParseHWV062fof1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV062+1.p"
-        let limit : NSTimeInterval = 5.0
+        let limit : NSTimeInterval = 7.0
         let (tptpFormulae,_) = check(path, limit:limit, count: 2) // 209
         // 'HWV062+1.p' total:0.930s, limit:2.0s, count:2 avg:465.016ms (2015-08-29 11:42:18 +0000)
         // 'HWV062+1.p' total:0.837s, limit:2.0s, count:2 avg:418.707ms (2015-09-17 13:22:14 +0000)
@@ -140,51 +135,51 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("!=", last.symbol)
         XCTAssertNotNil(Symbols.defaultSymbols[last.symbol])
         let quadruple = Symbols.defaultSymbols[last.symbol]!
-        
+
         XCTAssertEqual(SymbolNotation.Infix, quadruple.notation)
         let actual = last.description
         
         XCTAssertEqual("true!=false", actual)
-        
+
         let forall = tptpFormulae.first!.root
         XCTAssertEqual("?", forall.symbol)
         XCTAssertEqual(2,forall.nodes!.count)
         
         // let forallvars = forall.nodes!.first!
-        let forallvars = forall[[1]]!
+        let forallvars = forall[[0]]!                   // positions start at 0
         XCTAssertEqual(",", forallvars.symbol)
         XCTAssertEqual(332, forallvars.nodes!.count)
-        
+
         // let exists = forall.nodes!.last!
-        let exists = forall[[2]]!
+        let exists = forall[[1]]!                       // positions start at 0
         XCTAssertEqual("!", exists.symbol)
         XCTAssertEqual(2,exists.nodes!.count)
-        
+
         // let existsvars = exists.nodes!.first!
-        let existsvars = forall[[1,2]]!
+        let existsvars = forall[[1,0]]!                 // positions start at 0
         XCTAssertEqual(",", existsvars.symbol)
         XCTAssertEqual(4, existsvars.nodes!.count)
-        
+
         // let forall2 = exists.nodes!.last!
-        let forall2 = forall[[1,2]]!
+        let forall2 = forall[[1,1]]!                    // positions start at 0
         XCTAssertEqual("?", forall2.symbol)
         XCTAssertEqual(2,forall2.nodes!.count)
-        
+
         // let forall2vars = forall2.nodes!.first!
-        let forall2vars = forall[[2,2,2]]!
+        let forall2vars = forall[[1,1,0]]!              // positions start at 0
         XCTAssertEqual(",", forall2vars.symbol)
         XCTAssertEqual(16448, forall2vars.nodes!.count)
-        
+
         for (index,term) in forall2vars.nodes!.enumerate() {
             let symbol = "V\(index+1)"
             // if index > 3 { break; }
             XCTAssertEqual(symbol, term.symbol)
         }
-        
+
         // let conjunction = forall2.nodes!.last!
-        let conjunction = forall[[2,2,2]]!
+        let conjunction = forall[[1,1,1]]!              // positions start at 0
         XCTAssertEqual("&", conjunction.symbol)
-        
+
         let expected = 39512;
         XCTAssertEqual(expected, conjunction.nodes!.count)
         XCTAssertEqual(1, conjunction.nodes![0].nodes!.count)   // 36
@@ -198,7 +193,6 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(2, conjunction.nodes![8].nodes!.count)   // 52
         XCTAssertEqual(2, conjunction.nodes![9].nodes!.count)   // 54
         XCTAssertEqual(3, conjunction.nodes![10].nodes!.count)   // 56
-        
         
         XCTAssertEqual(2, conjunction.nodes![25].nodes!.count)  // 92
         XCTAssertEqual(2, conjunction.nodes![26].nodes!.count)  // 94
@@ -217,7 +211,6 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(2, conjunction.nodes![20000].nodes!.count)
         XCTAssertEqual(3, conjunction.nodes![30000].nodes!.count)
 
-        
         XCTAssertEqual(2, conjunction.nodes![expected-2].nodes!.count)      // 95563
         XCTAssertEqual("p(V6641)|p(V6673)", conjunction.nodes![expected-2].description)
         
@@ -232,7 +225,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("&", a.symbol)
         XCTAssertEqual(expected, a.nodes!.count)
         
-        let b = nodes[[1,2,2,2]]!   // nodes[0][[2,2,2]] position 1 is array index 0
+        let b = nodes[[0,1,1,1]]!   // nodes[0][[2,2,2]] position 0 is array index 0
         XCTAssertEqual(a, b)
         
         let bvars = b.allVariables

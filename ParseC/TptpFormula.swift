@@ -67,10 +67,6 @@ func parse(string string:String) -> [TptpFormula] {
 /// - cnf_annotated
 /// - fof_annotated
 final class TptpFormula: NSObject {
-    #if INIT_COUNT
-    static var count = 0
-    #endif
-    
     let language : TptpLanguage
     let name : String
     let role : TptpRole
@@ -78,10 +74,6 @@ final class TptpFormula: NSObject {
     let annotations : [String]?
     
     init(language:TptpLanguage, name:String, role:TptpRole, root:TptpNode, annotations:[String]?) {
-        #if INIT_COUNT
-            TptpFormula.count++
-        #endif
-        
         self.language = language
         self.name = name
         self.role = role
@@ -95,14 +87,6 @@ final class TptpFormula: NSObject {
         }
         return "\(language)(\(name),\(role),\(root))."
     }
-    
-    #if INIT_COUNT
-    deinit {
-        TptpFormula.count--
-    }
-    #endif
-    
-    
 }
 
 extension TptpFormula : StringLiteralConvertible {

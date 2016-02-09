@@ -34,17 +34,8 @@ class ParseBasicSyntaxTests: XCTestCase {
         return (tptpFormulae, tptpIncludes)
     }
     
-    
-    
-    func testParseHWV134cfn1() {
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-        parseHWV134cfn1()
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-    }
     /// Parse HWV134-1.p and construct tree representation.
-    func parseHWV134cfn1() {
+    func testParseHWV134cfn1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p"
         let limit : NSTimeInterval = 330.0
         let (tptpFormulae,_) = check(path, limit:limit, count: 2_332_428)
@@ -60,18 +51,10 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let myformula = MyTestTerm(tptpFormulae[2_332_427].root)
         XCTAssertEqual("~(v437(VarCurr,bitIndex128))|v4403(VarCurr,bitIndex0)", myformula.description)
-        XCTAssertEqual(194250, TptpNode.count)
     }
     
-    func testParseHWV105cfn1() {
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-        parseHWV105cfn1()
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-    }
     /// Parse HWV105-1.p and construct tree representation.
-    func parseHWV105cfn1() {
+    func testParseHWV105cfn1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
         let limit : NSTimeInterval = 4.0
         let (tptpFormulae,_) = check(path, limit:limit, count: 20_900)  // <1s
@@ -96,15 +79,8 @@ class ParseBasicSyntaxTests: XCTestCase {
         
     }
     
+    /// Parse HWV134+1.p and construct tree representation.
     func testParseHWV134fof1() {
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-        parseHWV134fof1()
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-    }
-    /// Parse HWV134+1.p and construct tree representation in time limit.
-    func parseHWV134fof1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134+1.p"
         let limit : NSTimeInterval = 90.0
         let (tptpFormulae,_) = check(path, limit:limit, count: 128_975)
@@ -122,16 +98,8 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("(![VarCurr]:(v34(VarCurr)<=>v36(VarCurr)))", myformula.description)
     }
     
-    
+    /// Parse HWV062+1.p and construct tree representation.
     func testParseHWV062fof1() {
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-        parseHWV062fof1()
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-    }
-    /// Parse HWV062+1.p and construct tree representation in less than a second.
-    func parseHWV062fof1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV062+1.p"
         let limit : NSTimeInterval = 7.0
         let (tptpFormulae,_) = check(path, limit:limit, count: 2) // 209
@@ -252,17 +220,10 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(15312, b.allVariables.count)
     }
     
+    /// Parse HWV134+1.p and construct tree representation.
     func testParseLCL129cnf1() {
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-        parseLCL129cnf1()
-        XCTAssertEqual(0, TptpFormula.count)
-        XCTAssertEqual(0, TptpNode.count)
-    }
-    /// Parse HWV134+1.p and construct tree representation in less than 19 seconds.
-    func parseLCL129cnf1() {
         let path = "/Users/Shared/TPTP/Problems/LCL/LCL129-1.p"
-        let limit : NSTimeInterval = 90.0
+        let limit : NSTimeInterval = 0.01
         let (tptpFormulae,_) = check(path, limit:limit, count: 3)
         
         XCTAssertEqual("~(is_a_theorem(equivalent(X,Y)))|~(is_a_theorem(X))|is_a_theorem(Y)", tptpFormulae[0].root.description)

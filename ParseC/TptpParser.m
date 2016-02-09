@@ -104,18 +104,18 @@ TptpNode *create_quantified(NSString *name, TptpNode* unitary, NSArray<NSString*
     for (TptpNode *subterm in @[tuple, unitary]) {
         [term append:subterm];
     }
-    // term = [[TptpNode alloc] initWithSymbol:name nodes:@[tuple,unitary]]; // leaks
     [_parser_storage_ addObject:term];
     return term;
 }
 
 /// Create term with (predicate or function) symbol and list of subterms.
 TptpNode *create_functional(NSString *name, NSArray<TptpNode*> *subnodes) {
+    // TptpNode * term = [[TptpNode alloc] initWithFunctional:name nodes:subnodes]; // leaks when bridging arrays
     TptpNode * term = [[TptpNode alloc] initWithFunctional:name];
+    // term.nodes = subnodes; // leaks too
     for (TptpNode *subterm in subnodes) {
         [term append:subterm];
     }
-    // term = [[TptpNode alloc] initWithFunctional:name nodes:subnodes]; // leaks
     
     [_parser_storage_ addObject:term];
     return term;
@@ -126,7 +126,6 @@ TptpNode *create_equational(NSString *name, NSArray<TptpNode*> *subnodes) {
     for (TptpNode *subterm in subnodes) {
         [term append:subterm];
     }
-    // term = [[TptpNode alloc] initWithEquational:name nodes:subnodes]; // leaks
     [_parser_storage_ addObject:term];
     return term;
 }
@@ -139,7 +138,6 @@ TptpNode *create_connective(NSString *name, NSArray<TptpNode*> *subnodes) {
     for (TptpNode *subterm in subnodes) {
         [term append:subterm];
     }
-    // term = [[TptpNode alloc] initWithConnective:name nodes:subnodes]; // leaks
     [_parser_storage_ addObject:term];
     return term;
 }

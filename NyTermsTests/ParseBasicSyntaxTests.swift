@@ -10,7 +10,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     typealias MyTestTerm = NodeStruct
 
 
-    /// Parse HWV134-1.p and construct tree representation.
+    /// Parse HWV134-1.p and construct tree representation. ~10 GB, 600s
     func testParseHWV134cfn1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p"
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -23,7 +23,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("~(v437(VarCurr,bitIndex128))|v4403(VarCurr,bitIndex0)", myformula.description)
     }
     
-    /// Parse HWV105-1.p and construct tree representation.
+    /// Parse HWV105-1.p and construct tree representation. ~90 MB, 4s
     func testParseHWV105cfn1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -41,7 +41,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         
     }
     
-    /// Parse HWV134+1.p and construct tree representation.
+    /// Parse HWV134+1.p and construct tree representation. ~3 GB, 120s
     func testParseHWV134fof1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134+1.p"
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -54,7 +54,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("(![VarCurr]:(v34(VarCurr)<=>v36(VarCurr)))", myformula.description)
     }
     
-    /// Parse HWV062+1.p and construct tree representation.
+    /// Parse HWV062+1.p and construct tree representation. ~285 MB, 30s
     func testParseHWV062fof1() {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV062+1.p"
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -170,7 +170,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(15312, b.allVariables.count)
     }
     
-    /// Parse HWV134+1.p and construct tree representation.
+    /// Parse HWV134+1.p and construct tree representation. ~8 MB, 8 ms
     func testParseLCL129cnf1() {
         let path = "/Users/Shared/TPTP/Problems/LCL/LCL129-1.p"
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)

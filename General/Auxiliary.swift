@@ -83,6 +83,7 @@ where Generator.Element == SubSequence.Generator.Element {
 
 // MARK: - Sequence Type
 
+
 extension SequenceType {
     func all(predicate: Generator.Element -> Bool) -> Bool {
         for x in self where !predicate(x) {

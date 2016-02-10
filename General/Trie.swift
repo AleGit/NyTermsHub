@@ -1,12 +1,6 @@
 import Foundation
 
-protocol TrieType {
-    typealias Key : Hashable
-    typealias Value : Equatable
-    
-    mutating func insert(path:[Key], value:Value)
-    mutating func delete(path:[Key], value:Value)
-}
+/// A trie stores values at paths, i.e. sequences of keys
 
 /// [[wikikpedia]](https://en.wikipedia.org/wiki/Trie)
 struct Trie<K: Hashable, V: Hashable> : TrieType {
@@ -19,13 +13,25 @@ struct Trie<K: Hashable, V: Hashable> : TrieType {
 }
 
 extension Trie {
-    func generate() -> DictionaryGenerator<Key, Trie<Key, Value>> { 
+    func generate() -> DictionaryGenerator<Key, Trie<Key, Value>> {
         let generator = tries.generate()
         return generator
     }
     
     var subtries : [Key: Trie<Key, Value>] {
         return tries
+    }
+    
+    mutating func insert<S : CollectionType where
+        S.Generator.Element == Key, S.SubSequence.Generator.Element == Key>(path: S, value: Value) {
+            guard let (head,tail) = path.decompose else {
+                values.insert(value)
+                return
+            }
+            
+            var trie = tries[head] ?? Trie()
+            trie.insert(tail, value: value)
+            tries[head] = trie
     }
     
     /// follows key path to insert value,

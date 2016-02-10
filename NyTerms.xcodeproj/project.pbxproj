@@ -46,6 +46,11 @@
 		51342AB91B92CA3A0052A72F /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51342AB81B92CA3A0052A72F /* Samples.swift */; };
 		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
+		514AD8631C6B4CDD00652004 /* BasicTrieNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8621C6B4CDD00652004 /* BasicTrieNodeTests.swift */; };
+		514AD8651C6B7D7400652004 /* TrieNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TrieNode.swift */; };
+		514AD8661C6B7D7400652004 /* TrieNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TrieNode.swift */; };
+		514AD8681C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
+		514AD8691C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
 		5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; };
 		5150F39C1BD62F4C003D69A3 /* PolyTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */; };
 		5150F39E1BD6769C003D69A3 /* YicesSatTrials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */; };
@@ -171,6 +176,9 @@
 		513F24061C04C13F0026A081 /* TargetApp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetApp.jpg; sourceTree = "<group>"; };
 		513F24071C04C13F0026A081 /* Project.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Project.jpg; sourceTree = "<group>"; };
 		513F24081C04C13F0026A081 /* TargetCL.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetCL.jpg; sourceTree = "<group>"; };
+		514AD8621C6B4CDD00652004 /* BasicTrieNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTrieNodeTests.swift; sourceTree = "<group>"; };
+		514AD8641C6B7D7400652004 /* TrieNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieNode.swift; sourceTree = "<group>"; };
+		514AD8671C6B7DF900652004 /* TrieType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieType.swift; sourceTree = "<group>"; };
 		5150F3981BD62E67003D69A3 /* PolyTry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTry.swift; sourceTree = "<group>"; };
 		5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTryTests.swift; sourceTree = "<group>"; };
 		5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesSatTrials.swift; sourceTree = "<group>"; };
@@ -344,6 +352,7 @@
 		512977291B677CAB003D3E80 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				514AD8611C6B4CB700652004 /* General */,
 				512517B91BE12678005C3E2D /* Prover */,
 				26EBF5861B99C251006E5FF4 /* MaxCompTests */,
 				51303EB41B9C377B003011A9 /* TptpTests */,
@@ -443,6 +452,8 @@
 				51FD00B71C3132F8008C5AD1 /* Trie.swift */,
 				5151BDBF1C3161AF006EFCE0 /* Pair.swift */,
 				516D251E1C3EB26C0075D362 /* Nodal.swift */,
+				514AD8641C6B7D7400652004 /* TrieNode.swift */,
+				514AD8671C6B7DF900652004 /* TrieType.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -456,6 +467,14 @@
 				513F24051C04C13F0026A081 /* TargetTests.jpg */,
 			);
 			name = optimization;
+			sourceTree = "<group>";
+		};
+		514AD8611C6B4CB700652004 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				514AD8621C6B4CDD00652004 /* BasicTrieNodeTests.swift */,
+			);
+			name = General;
 			sourceTree = "<group>";
 		};
 		5150F3971BD62D8A003D69A3 /* Tentative */ = {
@@ -709,6 +728,8 @@
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51C0ACB41C4A385800447594 /* ProcessFile.swift in Sources */,
+				514AD8661C6B7D7400652004 /* TrieNode.swift in Sources */,
+				514AD8691C6B7DF900652004 /* TrieType.swift in Sources */,
 				511E958D1B8AEB6D0093F4E8 /* TptpParser.m in Sources */,
 				51D276611BC57879005A0213 /* Order.swift in Sources */,
 				51FD00BD1C3132F8008C5AD1 /* Trie.swift in Sources */,
@@ -749,6 +770,7 @@
 				51226E771B6D3A0B0077E34D /* TptpFormula.swift in Sources */,
 				5129771B1B677CAA003D3E80 /* ViewController.swift in Sources */,
 				516D251F1C3EB26C0075D362 /* Nodal.swift in Sources */,
+				514AD8651C6B7D7400652004 /* TrieNode.swift in Sources */,
 				51FD00B81C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				5129773F1B679177003D3E80 /* Substitution.swift in Sources */,
 				51B26B6D1B8DA41200CC59AD /* Yices.swift in Sources */,
@@ -772,6 +794,7 @@
 				515F0F061B6BB0A100B470B4 /* Symbols.swift in Sources */,
 				512977371B677E1B003D3E80 /* Node.swift in Sources */,
 				512F75E41BE20FDD007EBA4A /* Prover.swift in Sources */,
+				514AD8681C6B7DF900652004 /* TrieType.swift in Sources */,
 				51C94CB91B987E70004C3082 /* Empty.swift in Sources */,
 				51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */,
 				51226E7D1B6D44E20077E34D /* TptpPrintable.swift in Sources */,
@@ -811,6 +834,7 @@
 				265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */,
 				517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */,
 				5103EB091C6A27D60079E0A0 /* ParsePerformanceTests.swift in Sources */,
+				514AD8631C6B4CDD00652004 /* BasicTrieNodeTests.swift in Sources */,
 				517D86381C44F94100930B61 /* DescriptionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

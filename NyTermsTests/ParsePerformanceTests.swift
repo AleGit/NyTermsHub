@@ -96,8 +96,8 @@ class ParsePerformanceTests: XCTestCase {
         }
     }
     
-    /// ~2,7 GB on iMac24/7;
-    /// ~123 s
+    /// < 123 s on iMac24/7;
+    /// < 2.7 GB
     func testPerformanceHWV134fof1 () {
         let path = "/Users/Shared/TPTP/Problems/HWV/HWV134+1.p"
         
@@ -111,6 +111,8 @@ class ParsePerformanceTests: XCTestCase {
         }
     }
 
+    /// estimate: 600 s on iMac24/7, 400 s on Mm;
+    /// < 10 GB
     func testPerformanceHWV134cnf1 () {
         let path = "/Users/Shared/TPTP/Problems/HHWV/HWV134-1.p"
         

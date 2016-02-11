@@ -25,7 +25,7 @@ class NodeTrieTests: XCTestCase {
     func testTermPaths() {
         
         let t = "f(X,g(a,b))" as TestNode
-        let tPaths = t.paths
+        let tPaths = t.positionPaths
         XCTAssertEqual(3, tPaths.count)
         
         let fxaExpected : [TermPath] = [
@@ -54,7 +54,7 @@ class NodeTrieTests: XCTestCase {
         for clause in clauses {
             print("clause=\(clause)")
             
-            for path in clause.paths {
+            for path in clause.positionPaths {
                 print("path=\(path)")
                 let subtrie = trie[path]!
                 let values = subtrie.values

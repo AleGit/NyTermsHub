@@ -1,6 +1,6 @@
 import Foundation
 
-/// A trie stores values at paths, i.e. sequences of keys
+/// A trie stores values at positionPaths, i.e. sequences of keys
 /// [[wikikpedia]](https://en.wikipedia.org/wiki/Trie)
 ///
 ///

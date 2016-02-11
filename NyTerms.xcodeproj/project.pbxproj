@@ -47,8 +47,8 @@
 		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		514AD8631C6B4CDD00652004 /* BasicTrieNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8621C6B4CDD00652004 /* BasicTrieNodeTests.swift */; };
-		514AD8651C6B7D7400652004 /* TrieNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TrieNode.swift */; };
-		514AD8661C6B7D7400652004 /* TrieNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TrieNode.swift */; };
+		514AD8651C6B7D7400652004 /* TailTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TailTrie.swift */; };
+		514AD8661C6B7D7400652004 /* TailTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TailTrie.swift */; };
 		514AD8681C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
 		514AD8691C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
 		5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; };
@@ -177,7 +177,7 @@
 		513F24071C04C13F0026A081 /* Project.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Project.jpg; sourceTree = "<group>"; };
 		513F24081C04C13F0026A081 /* TargetCL.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetCL.jpg; sourceTree = "<group>"; };
 		514AD8621C6B4CDD00652004 /* BasicTrieNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTrieNodeTests.swift; sourceTree = "<group>"; };
-		514AD8641C6B7D7400652004 /* TrieNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieNode.swift; sourceTree = "<group>"; };
+		514AD8641C6B7D7400652004 /* TailTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TailTrie.swift; sourceTree = "<group>"; };
 		514AD8671C6B7DF900652004 /* TrieType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieType.swift; sourceTree = "<group>"; };
 		5150F3981BD62E67003D69A3 /* PolyTry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTry.swift; sourceTree = "<group>"; };
 		5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTryTests.swift; sourceTree = "<group>"; };
@@ -449,10 +449,10 @@
 			children = (
 				51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */,
 				51FD00B61C3132F8008C5AD1 /* BinarySearchTree.swift */,
-				51FD00B71C3132F8008C5AD1 /* Trie.swift */,
-				5151BDBF1C3161AF006EFCE0 /* Pair.swift */,
 				516D251E1C3EB26C0075D362 /* Nodal.swift */,
-				514AD8641C6B7D7400652004 /* TrieNode.swift */,
+				5151BDBF1C3161AF006EFCE0 /* Pair.swift */,
+				51FD00B71C3132F8008C5AD1 /* Trie.swift */,
+				514AD8641C6B7D7400652004 /* TailTrie.swift */,
 				514AD8671C6B7DF900652004 /* TrieType.swift */,
 			);
 			path = General;
@@ -728,7 +728,7 @@
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51C0ACB41C4A385800447594 /* ProcessFile.swift in Sources */,
-				514AD8661C6B7D7400652004 /* TrieNode.swift in Sources */,
+				514AD8661C6B7D7400652004 /* TailTrie.swift in Sources */,
 				514AD8691C6B7DF900652004 /* TrieType.swift in Sources */,
 				511E958D1B8AEB6D0093F4E8 /* TptpParser.m in Sources */,
 				51D276611BC57879005A0213 /* Order.swift in Sources */,
@@ -770,7 +770,7 @@
 				51226E771B6D3A0B0077E34D /* TptpFormula.swift in Sources */,
 				5129771B1B677CAA003D3E80 /* ViewController.swift in Sources */,
 				516D251F1C3EB26C0075D362 /* Nodal.swift in Sources */,
-				514AD8651C6B7D7400652004 /* TrieNode.swift in Sources */,
+				514AD8651C6B7D7400652004 /* TailTrie.swift in Sources */,
 				51FD00B81C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				5129773F1B679177003D3E80 /* Substitution.swift in Sources */,
 				51B26B6D1B8DA41200CC59AD /* Yices.swift in Sources */,

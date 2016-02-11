@@ -1,5 +1,5 @@
 //
-//  TrieNode.swift
+//  TailTrie.swift
 //  NyTerms
 //
 //  Created by Alexander Maringele on 10.02.16.
@@ -8,25 +8,27 @@
 
 import Foundation
 
-indirect enum TrieNode<K:Hashable,V:Hashable> {
+/// A trie that stores values at leaf nodes and only at leave nodes.
+/// Hence paths must not be prefixes of other paths:
+///
+/// - [1,2] [1,1,1] are valid paths in one trie
+/// - [1,2] [1,2,1] are clashing paths in one trie
+///
+/// This kind of trie is suitable for term path indexing where terms are stored at leaves only.
+indirect enum TailTrie<K:Hashable,V:Hashable> {
     typealias Key = K
     typealias Value = V
-    case Inner(tries:[K:TrieNode])
+    case Inner(tries:[K:TailTrie])
     case Leaf(values:Set<V>)
 }
 
-enum TrieNodeError : ErrorType {
-    case PathIsTooShort
-    case PathIsTooLong
-}
-
-extension TrieNode {
+extension TailTrie : TrieType {
     mutating func insert<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value) throws {
+        S.SubSequence.Generator.Element == Key>(path:S, value:Value) {
         guard let (head,tail) = path.decompose else {
             switch self {
             case .Inner(let tries):
-                if !tries.isEmpty { throw TrieNodeError.PathIsTooShort }
+                if !tries.isEmpty { assert(false,"path is too short!") }
                 self = .Leaf(values:Set([value]))
                 return
             case .Leaf(var values):
@@ -37,22 +39,22 @@ extension TrieNode {
         }
         switch self {
         case .Leaf(let values):
-            if !values.isEmpty { throw TrieNodeError.PathIsTooLong }
-            var trie = TrieNode.Inner(tries: [K:TrieNode]())
-            try trie.insert(tail, value:value)
+            if !values.isEmpty { assert(false,"path is too long!") }
+            var trie = TailTrie.Inner(tries: [K:TailTrie]())
+            trie.insert(tail, value:value)
             self = .Inner(tries: [head:trie])
             
         case .Inner(var tries):
             
             var trie = tries[head] ?? (tail.isEmpty ?
-                TrieNode.Leaf(values: Set<V>()) : TrieNode.Inner(tries: [K:TrieNode]()))
-            try trie.insert(tail, value: value)
+                TailTrie.Leaf(values: Set<V>()) : TailTrie.Inner(tries: [K:TailTrie]()))
+            trie.insert(tail, value: value)
             tries[head] = trie
             self = .Inner(tries: tries)
             
         }
     }
-    
+
     mutating func delete<S:CollectionType where S.Generator.Element == Key,
         S.SubSequence.Generator.Element == Key>(path:S, value:Value) -> Value? {
             guard let (head,tail) = path.decompose else {
@@ -60,9 +62,9 @@ extension TrieNode {
                 case .Inner:
                     return nil
                 case .Leaf(var values):
-                    let ele = values.remove(value)
+                    let v = values.remove(value)
                     self = .Leaf(values:values)
-                    return ele
+                    return v
                 }
             }
             switch self {
@@ -71,50 +73,16 @@ extension TrieNode {
                 
             case .Inner(var tries):
                 guard var trie = tries[head] else { return nil }
-                guard let ele = trie.delete(tail, value: value) else { return nil }
+                guard let v = trie.delete(tail, value: value) else { return nil }
                 
                 tries[head] = trie.isEmpty ? nil : trie
                 self = .Inner(tries: tries)
-                return ele
+                return v
             }
     }
-    
-    
-    
-//    mutating func insert(path: [K], value: V) throws {
-//        guard let (head,tail) = path.decompose else {
-//            switch self {
-//            case .Inner(let tries):
-//                if !tries.isEmpty { throw TrieNodeError.PathIsTooShort }
-//                self = .Leaf(values:Set([value]))
-//                return
-//            case .Leaf(var values):
-//                values.insert(value)
-//                self = .Leaf(values:values)
-//                return
-//            }
-//        }
-//        switch self {
-//        case .Leaf(let values):
-//            if !values.isEmpty { throw TrieNodeError.PathIsTooLong }
-//            var trie = TrieNode.Inner(tries: [K:TrieNode]())
-//            try trie.insert(tail, value:value)
-//            self = .Inner(tries: [head:trie])
-//            
-//        case .Inner(var tries):
-//            
-//            var trie = tries[head] ?? (tail.isEmpty ?
-//                TrieNode.Leaf(values: Set<V>()) : TrieNode.Inner(tries: [K:TrieNode]()))
-//            try trie.insert(tail, value: value)
-//            tries[head] = trie
-//            self = .Inner(tries: tries)
-//            
-//        }
-//    }
-    
 }
 
-extension TrieNode : CustomStringConvertible {
+extension TailTrie : CustomStringConvertible {
     var description : String {
         switch self {
         case .Inner(let tries):
@@ -126,7 +94,7 @@ extension TrieNode : CustomStringConvertible {
     }
 }
 
-extension TrieNode : Equatable {
+extension TailTrie : Equatable {
     var isEmpty : Bool {
         switch self {
         case .Leaf(let values):
@@ -138,7 +106,7 @@ extension TrieNode : Equatable {
     
 }
 
-func == <K,V>(lhs:TrieNode<K,V>, rhs:TrieNode<K,V>) -> Bool {
+func == <K,V>(lhs:TailTrie<K,V>, rhs:TailTrie<K,V>) -> Bool {
     switch(lhs,rhs) {
     case (.Inner(let l), .Inner(let r)):
         return l == r

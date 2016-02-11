@@ -1,9 +1,10 @@
 import Foundation
 
 /// A trie stores values at paths, i.e. sequences of keys
-
 /// [[wikikpedia]](https://en.wikipedia.org/wiki/Trie)
-struct Trie<K: Hashable, V: Hashable> : TrieType {
+///
+///
+struct Trie<K: Hashable, V: Hashable> {
     typealias Key = K
     typealias Value = V
     private var tries = [Key: Trie<Key, Value>]()
@@ -12,18 +13,10 @@ struct Trie<K: Hashable, V: Hashable> : TrieType {
     init() {    }
 }
 
-extension Trie {
-    func generate() -> DictionaryGenerator<Key, Trie<Key, Value>> {
-        let generator = tries.generate()
-        return generator
-    }
+extension Trie : TrieType {
     
-    var subtries : [Key: Trie<Key, Value>] {
-        return tries
-    }
-    
-    mutating func insert<S : CollectionType where
-        S.Generator.Element == Key, S.SubSequence.Generator.Element == Key>(path: S, value: Value) {
+    mutating func insert<S:CollectionType where S.Generator.Element == Key,
+        S.SubSequence.Generator.Element == Key>(path:S, value:Value) {
             guard let (head,tail) = path.decompose else {
                 values.insert(value)
                 return
@@ -34,8 +27,21 @@ extension Trie {
             tries[head] = trie
     }
     
-    /// follows key path to insert value,
-    /// missing key path components will be created.
+    
+    mutating func delete<S:CollectionType where S.Generator.Element == Key,
+        S.SubSequence.Generator.Element == Key>(path:S, value:Value) -> Value? {
+            guard let (head,tail) = path.decompose else {
+                return values.remove(value)
+            }
+            
+            guard var trie = tries[head] else { return nil }
+            let v = trie.delete(tail, value:value)
+            tries[head] = trie.isEmpty ? nil : trie
+            return v
+    }
+}
+
+extension Trie {
     mutating func insert(path: [Key], value:Value) {
         guard let (head,tail) = path.decompose else {
             values.insert(value)
@@ -47,23 +53,32 @@ extension Trie {
         tries[head] = trie
     }
     
-    var isEmpty: Bool {
-        return tries.reduce(values.isEmpty) { $0 && $1.1.isEmpty }
-    }
-    
-    /// deletes value at key path, empty subtries will be removed.
-    /// if key path does not exist nothing happens.
-    mutating func delete(path:[Key], value:Value) {
+    mutating func delete(path:[Key], value:Value) -> Value? {
         guard let (head,tail) = path.decompose else {
-            values.remove(value)
-            return
+            return values.remove(value)
         }
         
-        guard var trie = tries[head] else { return }
-        
-        trie.delete(tail, value:value)
-        
+        guard var trie = tries[head] else { return nil }
+        let v = trie.delete(tail, value:value)
         tries[head] = trie.isEmpty ? nil : trie
+        return v
+    }
+}
+
+extension Trie {
+    
+    
+    func generate() -> DictionaryGenerator<Key, Trie<Key, Value>> {
+        let generator = tries.generate()
+        return generator
+    }
+    
+    var subtries : [Key: Trie<Key, Value>] {
+        return tries
+    }
+    
+    var isEmpty: Bool {
+        return tries.reduce(values.isEmpty) { $0 && $1.1.isEmpty }
     }
     
     /// retrieves subtrie at key path.
@@ -79,6 +94,8 @@ extension Trie {
     subscript(key:Key) -> Trie? {
         return tries[key]
     }
+    
+
 }
 
 extension Trie {

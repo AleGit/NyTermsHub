@@ -5,7 +5,7 @@ import Foundation
 
 extension Node {
     
-
+    
     /// Flat check if `self` represents a variable,
     /// i.e. a leaf node without a list of subnodes.
     var isVariable : Bool {
@@ -207,26 +207,35 @@ extension Node {
     /// Recursive check if `self` represents a Horn clause, i.e. a clause with at most one positive literal.
     var isHornClause : Bool {
         
-        guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else { return false /* self is not a disjunction, hence self is not a clause */ }
-        guard let nodes = self.nodes else { return false /* nodes are nil, hences self is not a clause */ }
-        
-        var positives = 0
-        for node in nodes {
-            guard node.isLiteral else { return false /* node is not a literal, hence self is not a clause */ }
-            // node is a literal
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Disjunction else {
+            /* self is not a disjunction, hence self is not a clause */
+            assert(false,"not a disjunction, hence not a (horn) clause: \(self)")
             
-            if Symbols.defaultSymbols[node.symbol]?.type == nil {
-                positives += 1
-            }
-            else if let type = Symbols.defaultSymbols[node.symbol]?.type {
-                assert(type == SymbolType.Negation || type == SymbolType.Inequation)
-                continue
-            }
-            guard positives < 2 else { return false /* self has more than one positive literal */ }
+            return false
         }
-        // a disjunction of literals, where at most one is positive, hence self is a Horn clause
+        
+        // we know: type == SymbolType.Disjunction
+        
+        guard let nodes = self.nodes else {
+            assert(false,"a variable, hence not a (horn) clause: \(self)")
+            return false /* nodes are nil, hences self is not a clause */ }
+        
+        // we know: nodes != nil and we will count the number of positive literals
+        
+        var numberOfPositiveLiterals = 0
+        for node in nodes {
+            if node.isNegatedAtom { continue }
+            else if node.isAtom {
+                numberOfPositiveLiterals += 1
+            }
+            else {
+                assert(false,"not a literal, hence parent is not a (horn) clause: child:\(node) parent:\(self)")
+                return false
+            }
+            
+            guard numberOfPositiveLiterals < 2 else { return false }
+            
+        }
         return true
     }
-
-    
 }

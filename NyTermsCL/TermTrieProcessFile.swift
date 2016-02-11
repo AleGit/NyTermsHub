@@ -64,7 +64,7 @@ func candidates<T:Hashable>(indexed:Trie<SymHop, T>, term:TptpNode) -> Set<T>? {
     }
     
     
-    guard let (first,tail) = queryTerm.paths.decompose else { return nil }
+    guard let (first,tail) = queryTerm.positionPaths.decompose else { return nil }
     
     guard var result = extract(indexed, path: first) else { return nil }
     
@@ -97,7 +97,7 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
             }
         }
         
-        for path in newLiteral.paths {
+        for path in newLiteral.positionPaths {
             trie.insert(path, value: newLiteral)
             
         }

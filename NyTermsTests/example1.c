@@ -57,8 +57,10 @@ static void simple_test(void) {
 
 
   // Another way to do it
-  term_t f_var = yices_parse_term("(and (>= x 0) (>= y 0) (= (+ x y) 100))");
+  // term_t f_var = yices_parse_term("(and (>= x 0) (>= y 0) (= (+ x y) 100))");
 
+
+    term_t f_var = yices_parse_term("(and (>= x 0) (>= y 0) (= (+ x y) 0))");
 
   /*
    * Print the formulas: f and f_var should be identical

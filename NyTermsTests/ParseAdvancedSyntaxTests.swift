@@ -65,7 +65,7 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         XCTAssertEqual("reals",tptpFormulae[++index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         
-        let expected = "p(123.456)|p(-123.456)|p(123.456E789)|p(123.456e789)|p(-123.456E789)|p(123.456E-789)|p(-123.456E-789)"
+        let expected = "p(123.456)|p(-123.456)|p(123.456E78)|p(123.456e78)|p(-123.456E78)|p(123.456E-78)|p(-123.456E-78)"
         let actual = formulae[index].description
         print(expected)
         print(actual)

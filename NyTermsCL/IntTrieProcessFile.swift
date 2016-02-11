@@ -30,7 +30,7 @@ func intTrieSearch(literals:[TptpNode]) -> (Int, String) {
 */
             count += candis.count // count without unifiable check
         }
-        for path in newLiteral.paths {
+        for path in newLiteral.positionPaths {
             trie.insert(path, value: newIndex)
             
         }

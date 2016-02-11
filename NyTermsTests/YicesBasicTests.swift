@@ -13,7 +13,13 @@ class YicesBasicTests: XCTestCase {
     /// Check installed version.
     func testYicesInfo() {
         XCTAssertNotEqual("yices 2.4.0 (x86_64-apple-darwin14.4.0,release,2015-07-29)", Yices.info)
-        XCTAssertEqual("yices 2.4.1 (x86_64-apple-darwin14.4.0,release,2015-08-10)", Yices.info)
+        XCTAssertNotEqual("yices 2.4.1 (x86_64-apple-darwin14.4.0,release,2015-08-10)", Yices.info)
+        
+        
+        
+        XCTAssertEqual("yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)", Yices.info)
+        
+        
     }
     
     /// [example1](file://Users/Shared/yices-2.4.1/examples/example1.c)

@@ -139,7 +139,7 @@ extension TptpNode {
 }
 
 extension TptpNode : StringLiteralConvertible {
-    private static func parse(stringLiteral value:String) -> TptpNode {
+    private static func node(stringLiteral value:String) -> TptpNode {
         assert(!value.isEmpty)
         
         let connectives = Symbols.defaultSymbols.keys { $0.1.category == SymbolCategory.Connective }
@@ -176,9 +176,23 @@ extension TptpNode : StringLiteralConvertible {
     // TODO: Implementation of `StringLiteralConvertible` is still a hack.
     /// Parse a single (function) term or a single equation between two terms.
     convenience init(stringLiteral value: StringLiteralType) {
-        let term = TptpNode.parse(stringLiteral: value)
+        let term = TptpNode.node(stringLiteral: value)
         self.init(symbol: term.symbol, nodes: term.nodes)
     }
 }
+
+
+
+extension TptpNode {
+    static func roots(path:String) -> [TptpNode] {
+        return parse(path:path).1.map { $0.root }
+    }
+    
+    static func literals(path:String) -> [TptpNode] {
+        return parse(path:path).1.flatMap { $0.root.nodes ?? [TptpNode]() }
+    }
+}
+
+
 
 

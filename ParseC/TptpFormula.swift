@@ -63,6 +63,7 @@ func parse(string string:String) -> [TptpFormula] {
     return parseResult.formulae
 }
 
+
 /// A TptpFormula represents one of the following tptp types
 /// - cnf_annotated
 /// - fof_annotated
@@ -130,3 +131,5 @@ extension TptpFormula : StringLiteralConvertible {
         return TptpFormula(language: TptpLanguage.FOF, stringLiteral: value)
     }
 }
+
+

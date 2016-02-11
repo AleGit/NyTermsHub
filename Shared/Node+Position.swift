@@ -26,7 +26,7 @@ let ε = Position()
 
 extension Node {
     
-    /// Get all positions of a term, i.e. all paths from root to nodes.
+    /// Get all positions of a term, i.e. all positionPaths from root to nodes.
     /// **`P(f(x),f(g(x,y))`** yields the positions:
     ///
     ///     []      P(f(x),f(g(x,y))

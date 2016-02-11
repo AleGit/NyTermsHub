@@ -1,14 +1,41 @@
 import Foundation
 
-protocol TrieType {
+protocol TrieType : Equatable {
     typealias Key
     typealias Value
     
-    mutating func insert<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value)
+    init<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value)
     
-    //    mutating func delete<S:CollectionType where S.Generator.Element == Key,
-    //            S.SubSequence.Generator.Element == Key>(path:S, value:Value)
+    /// inserts value at key path
+    mutating func insert<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value)
+    
+    /// deletes and returns value at key path,
+    /// if path or value do not exist trie stays unchange and nil is returned
+    mutating func delete<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value) -> Value?
+    
+//    func retrieve<C:CollectionType,S:SequenceType where
+//        C.Generator.Element == Key, C.SubSequence.Generator.Element == Key,
+//        S.Generator.Element == Value
+//        >(path:C) -> S?
+    
+    func retrieve<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C) -> [Value]?
+    
+    var isEmpty : Bool { get }
+}
+
+extension TrieType where Key==SymHop, Value==Int {
+    
+    mutating func fill(literals:[TptpNode]) {
+        for (index,literal) in literals.enumerate() {
+            for path in literal.positionPaths {
+                self.insert(path, value:index)
+            }
+        }
+    }
 }
 
 

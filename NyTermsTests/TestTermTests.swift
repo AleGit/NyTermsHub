@@ -9,19 +9,19 @@ class TermTests: XCTestCase {
     func testTermEquality() {
         XCTAssertEqual("a", a.symbol)
         XCTAssertFalse(a.isVariable)
-        XCTAssertTrue(a.isConstant)
+        // XCTAssertTrue(a.isConstant)
         
         XCTAssertEqual("X", x.symbol)
         XCTAssertTrue(x.isVariable)
-        XCTAssertFalse(x.isConstant)
+        // XCTAssertFalse(x.isConstant)
         
         XCTAssertEqual("f", fax.symbol)
         XCTAssertFalse(fxa.isVariable)
-        XCTAssertFalse(fxa.isConstant)
+        // XCTAssertFalse(fxa.isConstant)
         
         XCTAssertEqual("f", fax.symbol)
         XCTAssertFalse(fax.isVariable)
-        XCTAssertFalse(fax.isConstant)
+        // XCTAssertFalse(fax.isConstant)
         
         XCTAssertEqual(a, a)
         XCTAssertEqual(a.hashValue, a.hashValue)

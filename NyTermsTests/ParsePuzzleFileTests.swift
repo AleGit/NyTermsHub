@@ -28,10 +28,16 @@ class ParsePuzzleFileTests: XCTestCase {
         XCTAssertEqual("killed(butler,agatha)|killed(charles,agatha)",tptpNodes[11].description)
         XCTAssertEqual("String","\(tptpFormulae[11].root.symbol.dynamicType)")
         
-        for root in tptpFormulae {
-            XCTAssertTrue(root.root.isFormula)
-            XCTAssertTrue(root.root.isClause)
+        let roots = tptpFormulae.map { $0.root }
+        
+        for root in roots {
+            XCTAssertTrue(root.isFormula)
+            XCTAssertTrue(root.isClause)
         }
+        
+        XCTAssertEqual(10, roots.countMatches { $0.isHornClause })
+        XCTAssertEqual(5, roots.countMatches { $0.isUnitClause })
+        XCTAssertEqual(21, roots.reduce(0) { $0! + $1.nodes!.count })
     }
     
     /// PUZ051-1.p: Quo vadis 6.

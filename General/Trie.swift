@@ -56,29 +56,29 @@ extension Trie : TrieType {
     }
 }
 
-extension Trie {
-    mutating func insert(path: [Key], value:Value) {
-        guard let (head,tail) = path.decompose else {
-            values.insert(value)
-            return
-        }
-        
-        var trie = tries[head] ?? Trie()
-        trie.insert(tail, value: value)
-        tries[head] = trie
-    }
-    
-    mutating func delete(path:[Key], value:Value) -> Value? {
-        guard let (head,tail) = path.decompose else {
-            return values.remove(value)
-        }
-        
-        guard var trie = tries[head] else { return nil }
-        let v = trie.delete(tail, value:value)
-        tries[head] = trie.isEmpty ? nil : trie
-        return v
-    }
-}
+//extension Trie {
+//    mutating func insert(path: [Key], value:Value) {
+//        guard let (head,tail) = path.decompose else {
+//            values.insert(value)
+//            return
+//        }
+//        
+//        var trie = tries[head] ?? Trie()
+//        trie.insert(tail, value: value)
+//        tries[head] = trie
+//    }
+//    
+//    mutating func delete(path:[Key], value:Value) -> Value? {
+//        guard let (head,tail) = path.decompose else {
+//            return values.remove(value)
+//        }
+//        
+//        guard var trie = tries[head] else { return nil }
+//        let v = trie.delete(tail, value:value)
+//        tries[head] = trie.isEmpty ? nil : trie
+//        return v
+//    }
+//}
 
 extension Trie {
     

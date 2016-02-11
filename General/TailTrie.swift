@@ -23,8 +23,14 @@ indirect enum TailTrie<K:Hashable,V:Hashable> {
 }
 
 extension TailTrie : TrieType {
-    mutating func insert<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value) {
+    init<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
+            self = TailTrie.Inner(tries: [Key:TailTrie<Key,Value>]())
+            self.insert(path, value: value)
+    }
+    
+    mutating func insert<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
         guard let (head,tail) = path.decompose else {
             switch self {
             case .Inner(let tries):
@@ -55,8 +61,8 @@ extension TailTrie : TrieType {
         }
     }
 
-    mutating func delete<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value) -> Value? {
+    mutating func delete<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value) -> Value? {
             guard let (head,tail) = path.decompose else {
                 switch self {
                 case .Inner:
@@ -80,6 +86,28 @@ extension TailTrie : TrieType {
                 return v
             }
     }
+    
+    func retrieve<C:CollectionType where
+        C.Generator.Element == Key, C.SubSequence.Generator.Element == Key>(path:C) -> [Value]? {
+            guard let (head,tail) = path.decompose else {
+                switch self {
+                case .Inner:
+                    return nil
+                case .Leaf(let values):
+                    return Array(values)
+                }
+            }
+            
+            switch self {
+            case .Leaf:
+                return nil
+            case .Inner(let tries):
+                return tries[head]?.retrieve(tail)
+            }
+            
+    }
+    
+    
 }
 
 extension TailTrie : CustomStringConvertible {

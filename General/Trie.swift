@@ -10,10 +10,17 @@ struct Trie<K: Hashable, V: Hashable> {
     private var tries = [Key: Trie<Key, Value>]()
     private (set) var values = Set<Value>()
     
+    init<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
+            
+            self.insert(path, value:value)
+    }
+    
     init() {    }
 }
 
 extension Trie : TrieType {
+    
     
     mutating func insert<S:CollectionType where S.Generator.Element == Key,
         S.SubSequence.Generator.Element == Key>(path:S, value:Value) {
@@ -38,6 +45,15 @@ extension Trie : TrieType {
             let v = trie.delete(tail, value:value)
             tries[head] = trie.isEmpty ? nil : trie
             return v
+    }
+    
+    func retrieve<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C) -> [Value]? {
+            guard let (head,tail) = path.decompose else {
+                return Array(values)
+            }
+            
+            return tries[head]?.retrieve(tail)
     }
 }
 
@@ -77,10 +93,6 @@ extension Trie {
         return tries
     }
     
-    var isEmpty: Bool {
-        return tries.reduce(values.isEmpty) { $0 && $1.1.isEmpty }
-    }
-    
     /// retrieves subtrie at key path.
     /// if key path does not exist nil will be returned
     subscript(path:[Key]) -> Trie? {
@@ -106,6 +118,22 @@ extension Trie {
             collected.unionInPlace(trie.payload)
         }
         return collected
+    }
+}
+
+extension Trie : Equatable {
+    var isEmpty: Bool {
+        return tries.reduce(values.isEmpty) { $0 && $1.1.isEmpty }
+    }
+    
+}
+
+func ==<K,V>(lhs:Trie<K,V>, rhs:Trie<K,V>) -> Bool {
+    if lhs.values == rhs.values && lhs.tries == rhs.tries {
+        return true
+    }
+    else {
+        return false
     }
 }
 

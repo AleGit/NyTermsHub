@@ -1,17 +1,30 @@
 import Foundation
 
-protocol TrieType {
+protocol TrieType : Equatable {
     typealias Key
     typealias Value
     
-    /// inserts value at key path
-    mutating func insert<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value)
+    init<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value)
     
-    /// deletes value at key path, empty tries should be removed,
-    /// if value exists at tree path, value should be returned.
-    mutating func delete<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value) -> Value?
+    /// inserts value at key path
+    mutating func insert<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value)
+    
+    /// deletes and returns value at key path,
+    /// if path or value do not exist trie stays unchange and nil is returned
+    mutating func delete<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value) -> Value?
+    
+//    func retrieve<C:CollectionType,S:SequenceType where
+//        C.Generator.Element == Key, C.SubSequence.Generator.Element == Key,
+//        S.Generator.Element == Value
+//        >(path:C) -> S?
+    
+    func retrieve<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C) -> [Value]?
+    
+    var isEmpty : Bool { get }
 }
 
 

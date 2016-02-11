@@ -91,4 +91,10 @@ extension SequenceType {
         }
         return true
     }
+    
+    func countMatches(predicate: Generator.Element -> Bool) -> Int {
+        return self.reduce(0) {
+            $0 + (predicate($1) ? 1 : 0)
+        }
+    }
 }

@@ -4,6 +4,7 @@
 import Foundation
 
 extension Node {
+    
 
     /// Flat check if `self` represents a variable,
     /// i.e. a leaf node without a list of subnodes.
@@ -13,7 +14,7 @@ extension Node {
     
     /// Flat check if `self` represents a constant (function),
     /// i.e. a node with an empty list of subnodes.
-    var isConstant : Bool {
+    private var isConstant : Bool {
         guard let nodes = self.nodes else { return false }
         return nodes.count == 0
     }
@@ -29,8 +30,8 @@ extension Node {
     /// Recursive check if `self` represents a valid rewrite rule, i.e.
     /// an equation that satifies the follwong conditions
     /// - the left-hand side is not a variable
-    /// - Vars(r) is a subset of Vars(l)
-    var isRewriteRule : Bool {
+    /// - Vars(right-hand side) is a subset of Vars(left-hand side)
+    var isRewriteRule : Bool { // assert only?
         guard self.isEquation else { return false }
         
         // Since self represents a valid equation we know that
@@ -54,31 +55,32 @@ extension Node {
     /// - a constant `c` is a (function) term
     /// - an expression `f(t_1, ..., t_n)` is a (function) term
     /// if `f` is a function symbol and `t_1`,...,`t_n` are (function) terms.
-    var isTerm : Bool {
+    /// - an expression `p(t_1, ..., t_n)` is a (predicate) term
+    var isTerm : Bool { // Order.swift; assert
         guard let nodes = self.nodes else { return true; } // a variable is a term
-        guard let category = Symbols.defaultSymbols[self.symbol]?.category else {
-            // category is not defined, i.e. symbol is not predefined and unregistered
+        guard let type = Symbols.defaultSymbols[self.symbol]?.type else {
+            // type is not defined, i.e. symbol is not predefined and not registered
             return nodes.reduce(true) { $0 && $1.isTerm }
         }
-        // if the category is defined it must be a functor
-        return category == SymbolCategory.Functor && nodes.reduce(true) { $0 && $1.isTerm }
+        // if the type is defined it must be a function
+        return type == SymbolType.Function && nodes.reduce(true) { $0 && $1.isTerm }
     }
     
-    /// Recursive check if `self` represents the negation of a valid predicate term.
+    /// Recursive check if `self` represents the negation of a valid predicate (term).
     ///
-    /// - an expression `~E` is a negative predicate, if `E` is a predicate term.
-    private var isNegativePredicate : Bool {
+    /// - an expression `~p` is a negated predicate (term), if `p` is a predicate (term).
+    private var isNegatedPredicate : Bool {
         guard Symbols.defaultSymbols[self.symbol]?.type == SymbolType.Negation else { return false }
         guard let nodes = self.nodes where nodes.count == 1 else { return false }
         
-        return nodes.first!.isPositivePredicate
+        return nodes.first!.isPredicate
     }
     
     /// Recursive check if `self` represents a valid predicate term.
     ///
     /// - an expression `p(t_1,...t_n)` is a positive predicate term
     /// if `p` is a predicate symbol and `t_1`,...,`t_n` are (function) nodes.
-    private var isPositivePredicate : Bool {
+    private var isPredicate : Bool {
         if let type = Symbols.defaultSymbols[self.symbol]?.type {
             // if the symbol is defined it must be a predicatate symbol
             guard type == SymbolType.Predicate else { return false }
@@ -114,25 +116,25 @@ extension Node {
     /// - an expression `s = t` is an equation if `s` and `t` are terms (functions, constants, variables).
     ///
     /// `~I` will never be recognized as an equation, even when `I` is an inequation.
-    var isEquation : Bool {
+    private var isEquation : Bool {
         guard let type = Symbols.defaultSymbols[self.symbol]?.type where type == SymbolType.Equation else { return false }
         guard let nodes = self.nodes where nodes.count == 2 else { return false }
         return nodes.first!.isTerm && nodes.last!.isTerm
     }
     
     /// Recursive check if `self` represents the negation of an valid atomic formula.
-    private var isNegativeLiteral : Bool {
-        return self.isInequation || self.isNegativePredicate
+    private var isNegatedAtom : Bool {
+        return self.isInequation || self.isNegatedPredicate
     }
     
     /// Recursive check if `self` represents an atomic formula.
-    private var isPositiveLiteral : Bool {
-        return self.isEquation || self.isPositivePredicate
+    private var isAtom : Bool {
+        return self.isEquation || self.isPredicate
     }
     
     /// Recursive check if `self` represents a literal.
-    var isLiteral : Bool {
-        return self.isPositiveLiteral || self.isNegativeLiteral
+    private var isLiteral : Bool {
+        return self.isAtom || self.isNegatedAtom
     }
     
     /// Recursive check if `self` is a first order logic formula.
@@ -212,9 +214,14 @@ extension Node {
         for node in nodes {
             guard node.isLiteral else { return false /* node is not a literal, hence self is not a clause */ }
             // node is a literal
-            guard let type = Symbols.defaultSymbols[self.symbol]?.type where (type != SymbolType.Negation && type != SymbolType.Inequation) else { continue /* it's a negative literal */}
-            // node is a positive literal
-            positives += 1
+            
+            if Symbols.defaultSymbols[node.symbol]?.type == nil {
+                positives += 1
+            }
+            else if let type = Symbols.defaultSymbols[node.symbol]?.type {
+                assert(type == SymbolType.Negation || type == SymbolType.Inequation)
+                continue
+            }
             guard positives < 2 else { return false /* self has more than one positive literal */ }
         }
         // a disjunction of literals, where at most one is positive, hence self is a Horn clause

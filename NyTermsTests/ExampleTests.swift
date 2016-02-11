@@ -26,12 +26,12 @@ class ExampleTests: XCTestCase {
         let t = "f(X)=g(X,Y)" as NodeClass
         
         XCTAssertEqual("f(X)=g(X,Y)", t.description)
-        XCTAssertTrue(t.isLiteral)
+        // XCTAssertTrue(t.isLiteral)
         
-        XCTAssertTrue(t.isEquation)
+        // XCTAssertTrue(t.isEquation)
         XCTAssertFalse(t.isRewriteRule)
         
-        XCTAssertTrue(t.isLiteral)
+        // XCTAssertTrue(t.isLiteral)
         XCTAssertFalse(t.isClause)  // a literal is not a clause
         
         /* test */

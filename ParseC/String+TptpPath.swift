@@ -63,4 +63,8 @@ extension TptpPath {
     func tptpPathTo(include: TptpInclude) -> TptpPath {
         return self.tptpPathTo(include.fileName)
     }
+    
+    var problem:String {
+        return "/Users/Shared/TPTP/Problems/" + self
+    }
 }

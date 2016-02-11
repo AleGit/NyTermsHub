@@ -21,7 +21,6 @@ struct Trie<K: Hashable, V: Hashable> {
 
 extension Trie : TrieType {
     
-    
     mutating func insert<S:CollectionType where S.Generator.Element == Key,
         S.SubSequence.Generator.Element == Key>(path:S, value:Value) {
             guard let (head,tail) = path.decompose else {

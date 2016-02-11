@@ -52,6 +52,7 @@
 		514AD8681C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
 		514AD8691C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
 		5150CD3C1C6CA25A00372F04 /* BasicTrieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150CD3B1C6CA25A00372F04 /* BasicTrieTests.swift */; };
+		5150CD3E1C6CA6EB00372F04 /* BuildTriePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150CD3D1C6CA6EB00372F04 /* BuildTriePerformanceTests.swift */; };
 		5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; };
 		5150F39C1BD62F4C003D69A3 /* PolyTryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */; };
 		5150F39E1BD6769C003D69A3 /* YicesSatTrials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */; };
@@ -181,6 +182,7 @@
 		514AD8641C6B7D7400652004 /* TailTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TailTrie.swift; sourceTree = "<group>"; };
 		514AD8671C6B7DF900652004 /* TrieType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieType.swift; sourceTree = "<group>"; };
 		5150CD3B1C6CA25A00372F04 /* BasicTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTrieTests.swift; sourceTree = "<group>"; };
+		5150CD3D1C6CA6EB00372F04 /* BuildTriePerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildTriePerformanceTests.swift; sourceTree = "<group>"; };
 		5150F3981BD62E67003D69A3 /* PolyTry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTry.swift; sourceTree = "<group>"; };
 		5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PolyTryTests.swift; sourceTree = "<group>"; };
 		5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesSatTrials.swift; sourceTree = "<group>"; };
@@ -476,6 +478,7 @@
 			children = (
 				514AD8621C6B4CDD00652004 /* BasicTailTrieTests.swift */,
 				5150CD3B1C6CA25A00372F04 /* BasicTrieTests.swift */,
+				5150CD3D1C6CA6EB00372F04 /* BuildTriePerformanceTests.swift */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -833,6 +836,7 @@
 				51CD82A61C32D090009166BB /* NodeTrieTests.swift in Sources */,
 				519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */,
 				5150F39E1BD6769C003D69A3 /* YicesSatTrials.swift in Sources */,
+				5150CD3E1C6CA6EB00372F04 /* BuildTriePerformanceTests.swift in Sources */,
 				51EFBA291B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift in Sources */,
 				51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */,
 				265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */,

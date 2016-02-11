@@ -64,7 +64,17 @@ extension TptpPath {
         return self.tptpPathTo(include.fileName)
     }
     
-    var problem:String {
-        return "/Users/Shared/TPTP/Problems/" + self
+    static let defaultProblemsPath = "/Users/Shared/TPTP/Problems/"
+    
+    /// construct default absolute path from file name by convention
+    var p:String {
+        assert(self.rangeOfString("/") == nil,"\(self)")
+        assert(self.rangeOfString(".") == nil,"\(self)")
+        
+        let directory = self[self.startIndex..<self.startIndex.advancedBy(3)]
+        
+        assert(directory.uppercaseString == directory,"\(directory)")
+        
+        return "\(TptpPath.defaultProblemsPath)\(directory)/\(self).p"
     }
 }

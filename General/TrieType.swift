@@ -27,5 +27,16 @@ protocol TrieType : Equatable {
     var isEmpty : Bool { get }
 }
 
+extension TrieType where Key==SymHop, Value==Int {
+    
+    mutating func fill(literals:[TptpNode]) {
+        for (index,literal) in literals.enumerate() {
+            for path in literal.paths {
+                self.insert(path, value:index)
+            }
+        }
+    }
+}
+
 
 

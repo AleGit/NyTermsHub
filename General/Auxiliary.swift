@@ -223,28 +223,35 @@ extension TptpPath {
     }
     
     private static func tptpRootPathFromProcessArguments () -> TptpPath? {
+        var result : TptpPath?
         var tptp = false
         for argument in Process.arguments {
             if tptp {
-                return argument // last argument was -tptp
+                print("-tptp \(argument)")
+                result = argument                     // last argument was -tptp
             }
             if argument == "-tptp" {
-                tptp = true // return next argument
+                tptp = true                             // return next argument
+            }
+            if result != nil {
+                break
             }
         }
-        
-        return nil
+        print("-tptp",result,tptp)
+        assert(!tptp || (result != nil && !result!.isEmpty), "-tptp was set, but root path is missing or empty")
+        return result
     }
     
+    private static func tptpRootPathFromEnvironement () -> TptpPath? {
+        let result = NSProcessInfo.processInfo().environment["TPTP_ROOT"]
+        print("TPTP_ROOT",result)
+        assert(result == nil || !result!.isEmpty,"TPTP_ROOT was set, but root path is empty")
+        return result
+    }
+    
+    /// Get root path to tptp files from process arguments or environment.
     static let tptpRootPath : TptpPath = {
-        if let argument = TptpPath.tptpRootPathFromProcessArguments() {
-            print("-tptp \(argument)")
-            return argument
-        }
-        
-        let environment = NSProcessInfo.processInfo().environment
-        if let argument = environment["TPTP_ROOT"] {
-            print("TPTP_ROOT=\"\(argument)\"")
+        if let argument = TptpPath.tptpRootPathFromProcessArguments() ?? TptpPath.tptpRootPathFromEnvironement() {
             return argument
         }
         
@@ -256,7 +263,7 @@ extension TptpPath {
     }()
     
     /// construct absolute path from file name (without local path or extension)
-    /// by process (envionment) argument and convention.
+    /// with tptp root path and convention.
     var p:String {
         assert(self.rangeOfString("/") == nil,"\(self)")    // assert file name only
         assert(!self.hasSuffix(".p"),"\(self)")    // assert without extension p

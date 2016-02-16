@@ -64,6 +64,6 @@ typealias NodalStringTrie = NodalDictionary<Character,String>
 
 typealias NodalTerm = NodalArray<String>
 
-typealias NodalTermPathTrie = NodalDictionary<String,Set<Int>>
+typealias NodalSymHopPathTrie = NodalDictionary<String,Set<Int>>
 
 

@@ -9,10 +9,10 @@
 import Foundation
 
 /// A trie that stores values at leaf nodes and only at leave nodes.
-/// Hence positionPaths must not be prefixes of other positionPaths:
+/// Hence symHopPaths must not be prefixes of other symHopPaths:
 ///
-/// - [1,2] [1,1,1] are valid positionPaths in one trie
-/// - [1,2] [1,2,1] are clashing positionPaths in one trie
+/// - [1,2] [1,1,1] are valid symHopPaths in one trie
+/// - [1,2] [1,2,1] are clashing symHopPaths in one trie
 ///
 /// This kind of trie is suitable for term path indexing where terms are stored at leaves only.
 indirect enum TailTrie<K:Hashable,V:Hashable> {

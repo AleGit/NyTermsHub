@@ -40,13 +40,13 @@ func ==(lhs:SymHop, rhs:SymHop) -> Bool {
     }
 }
 
-typealias TermPath = [SymHop]
+typealias SymHopPath = [SymHop]
 
 
 
 extension Node {
     
-    var positionPaths : [TermPath] {
+    var symHopPaths : [SymHopPath] {
         guard let nodes = self.nodes else {
             // a variable
             return [[.Symbol("*")]]
@@ -57,14 +57,14 @@ extension Node {
             return [[.Symbol(self.symbol)]]
         }
         
-        var positionPaths = [TermPath]()
+        var symHopPaths = [SymHopPath]()
         
-        for (index,subpaths) in (nodes.map { $0.positionPaths }).enumerate() {
+        for (index,subpaths) in (nodes.map { $0.symHopPaths }).enumerate() {
             for subpath in subpaths {
-                positionPaths.append([.Symbol(self.symbol), .Hop(index+1)] + subpath)
+                symHopPaths.append([.Symbol(self.symbol), .Hop(index+1)] + subpath)
             }
         }
-        return positionPaths
+        return symHopPaths
     }
 }
 
@@ -75,8 +75,8 @@ func buildNodeTrie<N:Node>(nodes:[N]) -> Trie<SymHop, N> {
     var trie = Trie<SymHop,N>()
     
     for node in nodes {
-        let positionPaths = node.positionPaths
-        for path in positionPaths {
+        let symHopPaths = node.symHopPaths
+        for path in symHopPaths {
             trie.insert(path, value: node)
         }
     }

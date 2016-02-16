@@ -31,7 +31,7 @@ extension TrieType where Key==SymHop, Value==Int {
     
     mutating func fill(literals:[TptpNode]) {
         for (index,literal) in literals.enumerate() {
-            for path in literal.positionPaths {
+            for path in literal.symHopPaths {
                 self.insert(path, value:index)
             }
         }

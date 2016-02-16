@@ -15,7 +15,7 @@ extension BuildTriePerformanceTests {
 //    func fill<T:TrieType where T.Key==SymHop, T.Value==Int>(var root:T, literals:[TptpNode]) {
 //        print(".")
 //        for (index,literal) in literals.enumerate() {
-//            for path in literal.positionPaths {
+//            for path in literal.symHopPaths {
 //                root.insert(path, value:index)
 //            }
 //        }

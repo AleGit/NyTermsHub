@@ -22,13 +22,13 @@ class NodeTrieTests: XCTestCase {
         super.tearDown()
     }
     
-    func testTermPaths() {
+    func testSymHopPaths() {
         
         let t = "f(X,g(a,b))" as TestNode
-        let tPaths = t.positionPaths
+        let tPaths = t.symHopPaths
         XCTAssertEqual(3, tPaths.count)
         
-        let fxaExpected : [TermPath] = [
+        let fxaExpected : [SymHopPath] = [
             [.Symbol("f"),.Hop(1), .Symbol("*")],
             [.Symbol("f"),.Hop(2), .Symbol("g"),.Hop(1), .Symbol("a")],
             [.Symbol("f"),.Hop(2), .Symbol("g"),.Hop(2), .Symbol("b")]
@@ -54,7 +54,7 @@ class NodeTrieTests: XCTestCase {
         for clause in clauses {
             print("clause=\(clause)")
             
-            for path in clause.positionPaths {
+            for path in clause.symHopPaths {
                 print("path=\(path)")
                 let subtrie = trie[path]!
                 let values = subtrie.values

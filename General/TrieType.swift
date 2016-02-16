@@ -47,6 +47,12 @@ extension TrieType where Key==String, Value==Int {
             }
         }
     }
+    
+    mutating func fillPreorder(literals:[TptpNode]) {
+        for (index,literal) in literals.enumerate() {
+            self.insert(literal.preorderPath, value:index)
+        }
+    }
 }
 
 

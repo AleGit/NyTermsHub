@@ -150,5 +150,61 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
             trie.fill(literals)
         }
     }
+    
+    
+    
+    func testDiscriminationTrieHWV074() {
+        let literals = TptpNode.literals("HWV074-1".p)
+        XCTAssertEqual(6017,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
+            trie.fillPreorder(literals)
+        }
+    }
+    
+    // MARK: HWV105
+    
+    func testBuildTailHWV105() {
+        let literals = TptpNode.literals("HWV105-1".p)
+        XCTAssertEqual(52662,literals.count)
+        
+        self.measureBlock {
+            var trie = TailTrie<SymHop,Int>()
+            trie.fill(literals)
+        }
+    }
+    
+    func testBuildSymHopTrieHWV105() {
+        let literals = TptpNode.literals("HWV105-1".p)
+        XCTAssertEqual(52662,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<SymHop,Int>()
+            trie.fill(literals)
+        }
+    }
+    
+    func testBuildSymbolTrieHWV105() {
+        let literals = TptpNode.literals("HWV105-1".p)
+        XCTAssertEqual(52662,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
+            trie.fill(literals)
+        }
+    }
+    
+    
+    
+    func testDiscriminationTrieHWV105() {
+        let literals = TptpNode.literals("HWV105-1".p)
+        XCTAssertEqual(52662,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
+            trie.fillPreorder(literals)
+        }
+    }
 
 }

@@ -88,6 +88,20 @@ extension Node {
         }
         return paths
     }
+    
+    var preorderPath : SymbolPath {
+        guard let nodes = self.nodes else {
+            return ["*"]
+        }
+        
+        guard nodes.count > 0 else {
+            return [self.symbol]
+        }
+        
+        return nodes.reduce([self.symbol]) { $0 + $1.preorderPath }
+        
+        
+    }
 }
 
 func buildNodeTrie<N:Node>(nodes:[N]) -> Trie<SymHop, N> {

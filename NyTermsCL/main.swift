@@ -6,9 +6,9 @@ import Foundation
 print("NyTerms with \(Yices.info):")
 print(TptpPath.tptpRootPath)
 
-Samples.parse4Samples()
+// Samples.parse4Samples()
 
-// buildTriesDemo()
+buildTriesDemo()
 
 //let key = "hwv066"
 //let searches = [intTrieSearch, linearSearch]

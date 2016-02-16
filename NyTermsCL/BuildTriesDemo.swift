@@ -15,7 +15,15 @@ func buildTriesDemo() {
         let start = CFAbsoluteTimeGetCurrent()
         trie.fill(literals)
         let duration = CFAbsoluteTimeGetCurrent() - start
-        print(floor(1_000_000*duration/Double(literals.count)), "µs", trie.dynamicType,literals.count,duration)
+        print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
+    }
+    
+    func preorder<T:TrieType where T.Key==String, T.Value==Int>(var trie:T, literals:[TptpNode]) {
+        
+        let start = CFAbsoluteTimeGetCurrent()
+        trie.fillPreorder(literals)
+        let duration = CFAbsoluteTimeGetCurrent() - start
+        print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
     }
     
     
@@ -25,6 +33,7 @@ func buildTriesDemo() {
         print("\n",name)
         execute(TailTrie<SymHop,Int>(), literals:literals)
         execute(Trie<SymHop,Int>(), literals:literals)
+        preorder(Trie<String,Int>(), literals:literals)
         
         
         

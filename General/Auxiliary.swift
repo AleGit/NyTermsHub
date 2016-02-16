@@ -237,14 +237,12 @@ extension TptpPath {
                 break
             }
         }
-        print("-tptp",result,tptp)
         assert(!tptp || (result != nil && !result!.isEmpty), "-tptp was set, but root path is missing or empty")
         return result
     }
     
     private static func tptpRootPathFromEnvironement () -> TptpPath? {
         let result = NSProcessInfo.processInfo().environment["TPTP_ROOT"]
-        print("TPTP_ROOT",result)
         assert(result == nil || !result!.isEmpty,"TPTP_ROOT was set, but root path is empty")
         return result
     }

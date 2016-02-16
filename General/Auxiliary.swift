@@ -99,7 +99,7 @@ extension SequenceType {
 
 // MARK: -
 
-extension CFAbsoluteTime {
+extension CFTimeInterval {
     static let hour = 3600.0
     static let minute = 60.0
     static let second = 1.0
@@ -115,7 +115,7 @@ extension CFAbsoluteTime {
         ns : "ns"
     ]
     
-    var niceTimeDescription : String {
+    var timeIntervalDescriptionMarkedWithUnits : String {
         var t = self
         switch self {
         case _ where floor(t/CFAbsoluteTime.hour) > 0:

@@ -33,7 +33,7 @@ class ParsePerformanceTests: XCTestCase {
     var runtime: String {
         
         let now = CFAbsoluteTimeGetCurrent()
-        let rt = (now-ti).niceTimeDescription
+        let rt = (now-ti).timeIntervalDescriptionMarkedWithUnits
         ti = now
         return rt
     

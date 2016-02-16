@@ -21,7 +21,6 @@
 		511E95831B8AE7B80093F4E8 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51192D1A1B67B059008C03B2 /* Position.swift */; };
 		511E95841B8AE7B80093F4E8 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515F0F031B6BAB0500B470B4 /* Rule.swift */; };
 		511E95851B8AE7B80093F4E8 /* Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515F0F051B6BB0A100B470B4 /* Symbols.swift */; };
-		511E95891B8AEB320093F4E8 /* String+TptpPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA241B71D37700A7B16C /* String+TptpPath.swift */; };
 		511E958A1B8AEB4D0093F4E8 /* TptpFormula.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51226E761B6D3A0B0077E34D /* TptpFormula.swift */; };
 		511E958B1B8AEB4D0093F4E8 /* TptpInclude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51226E781B6D3AB70077E34D /* TptpInclude.swift */; };
 		511E958C1B8AEB4D0093F4E8 /* TptpNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D91BD1B6D2513000EDB3B /* TptpNode.swift */; };
@@ -105,7 +104,6 @@
 		51D276611BC57879005A0213 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2765F1BC57879005A0213 /* Order.swift */; };
 		51D276631BC5805F005A0213 /* OrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D276621BC5805F005A0213 /* OrderTests.swift */; };
 		51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */; };
-		51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA241B71D37700A7B16C /* String+TptpPath.swift */; };
 		51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */; };
 		51EFBA291B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */; };
 		51FAF9321BB70330004E6BD5 /* LPO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EDD91C1BB47BBB001FE0EC /* LPO.swift */; };
@@ -248,7 +246,6 @@
 		51D2765F1BC57879005A0213 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Order.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51D276621BC5805F005A0213 /* OrderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTests.swift; sourceTree = "<group>"; };
 		51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpTermTests.swift; sourceTree = "<group>"; };
-		51EFBA241B71D37700A7B16C /* String+TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "String+TptpPath.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -526,7 +523,6 @@
 		515F0EED1B6B71C800B470B4 /* ParseC */ = {
 			isa = PBXGroup;
 			children = (
-				51EFBA241B71D37700A7B16C /* String+TptpPath.swift */,
 				51226E7C1B6D44E20077E34D /* TptpPrintable.swift */,
 				515F0EEE1B6B723E00B470B4 /* Bridging-Header.h */,
 				515F0EF91B6B746800B470B4 /* TptpEnums.h */,
@@ -746,7 +742,6 @@
 				51342AB91B92CA3A0052A72F /* Samples.swift in Sources */,
 				511E958B1B8AEB4D0093F4E8 /* TptpInclude.swift in Sources */,
 				511E958C1B8AEB4D0093F4E8 /* TptpNode.swift in Sources */,
-				511E95891B8AEB320093F4E8 /* String+TptpPath.swift in Sources */,
 				51B26B6E1B8DA41200CC59AD /* Yices.swift in Sources */,
 				511E95811B8AE7B80093F4E8 /* Node.swift in Sources */,
 				5150CD401C6CC1FD00372F04 /* BuildTriesDemo.swift in Sources */,
@@ -806,7 +801,6 @@
 				512F75E41BE20FDD007EBA4A /* Prover.swift in Sources */,
 				514AD8681C6B7DF900652004 /* TrieType.swift in Sources */,
 				51C94CB91B987E70004C3082 /* Empty.swift in Sources */,
-				51EFBA251B71D37700A7B16C /* String+TptpPath.swift in Sources */,
 				51226E7D1B6D44E20077E34D /* TptpPrintable.swift in Sources */,
 				51FAF9321BB70330004E6BD5 /* LPO.swift in Sources */,
 				5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */,

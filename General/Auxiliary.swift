@@ -72,6 +72,14 @@ where Generator.Element : CustomStringConvertible {
     }
 }
 
+//extension CollectionType
+//where Generator.Element == SubSequence.Generator.Element {
+//    var decompose: (head: Generator.Element, tail: SubSequence)? {
+//        guard let head = first else { return nil }
+//        return (head, dropFirst())
+//    }
+//}
+
 extension CollectionType
 where Generator.Element == SubSequence.Generator.Element {
     var decompose: (head: Generator.Element, tail: [Generator.Element])? {
@@ -79,6 +87,7 @@ where Generator.Element == SubSequence.Generator.Element {
         return (head, Array(dropFirst()))
     }
 }
+
 
 // MARK: -
 

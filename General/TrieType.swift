@@ -38,5 +38,16 @@ extension TrieType where Key==SymHop, Value==Int {
     }
 }
 
+extension TrieType where Key==String, Value==Int {
+    
+    mutating func fill(literals:[TptpNode]) {
+        for (index,literal) in literals.enumerate() {
+            for path in literal.symbolPaths {
+                self.insert(path, value:index)
+            }
+        }
+    }
+}
+
 
 

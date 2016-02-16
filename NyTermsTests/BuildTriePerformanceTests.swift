@@ -1,5 +1,5 @@
 //
-//  BuildTriePerformanceTests.swift
+//  BuildSymHopTriePerformanceTests.swift
 //  TptpNode
 //
 //  Created by Alexander Maringele on 11.02.16.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import NyTerms
 
-extension BuildTriePerformanceTests {
+extension BuildSymHopTriePerformanceTests {
     
     
 //    func fill<T:TrieType where T.Key==SymHop, T.Value==Int>(var root:T, literals:[TptpNode]) {
@@ -22,7 +22,7 @@ extension BuildTriePerformanceTests {
 //    }
 }
 
-class BuildTriePerformanceTests: XCTestCase {
+class BuildSymHopTriePerformanceTests: XCTestCase {
     // MARK: LCL129
     
     func testBuildTailLCL129() {
@@ -35,12 +35,22 @@ class BuildTriePerformanceTests: XCTestCase {
         }
     }
     
-    func testBuildTrieLCL129() {
+    func testBuildSymHopTrieLCL129() {
         let literals = TptpNode.literals("LCL129-1".p)
         XCTAssertEqual(5,literals.count)
         
         self.measureBlock {
             var trie = Trie<SymHop,Int>()
+            trie.fill(literals)
+        }
+    }
+    
+    func testBuildSymbolTrieLCL129() {
+        let literals = TptpNode.literals("LCL129-1".p)
+        XCTAssertEqual(5,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
             trie.fill(literals)
         }
     }
@@ -57,12 +67,22 @@ class BuildTriePerformanceTests: XCTestCase {
         }
     }
     
-    func testBuildTrieSYN000() {
+    func testBuildSymHopTrieSYN000() {
         let literals = TptpNode.literals("SYN000-1".p)
         XCTAssertEqual(27,literals.count)
         
         self.measureBlock {
             var trie = Trie<SymHop,Int>()
+            trie.fill(literals)
+        }
+    }
+    
+    func testBuildSymbolTrieSYN000() {
+        let literals = TptpNode.literals("SYN000-1".p)
+        XCTAssertEqual(27,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
             trie.fill(literals)
         }
     }
@@ -79,12 +99,22 @@ class BuildTriePerformanceTests: XCTestCase {
         }
     }
     
-    func testBuildTriePUZ051() {
+    func testBuildSymHopTriePUZ051() {
         let literals = TptpNode.literals("PUZ051-1".p)
         XCTAssertEqual(84,literals.count)
         
         self.measureBlock {
             var trie = Trie<SymHop,Int>()
+            trie.fill(literals)
+        }
+    }
+    
+    func testBuildSymbolTriePUZ051() {
+        let literals = TptpNode.literals("PUZ051-1".p)
+        XCTAssertEqual(84,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
             trie.fill(literals)
         }
     }
@@ -101,12 +131,22 @@ class BuildTriePerformanceTests: XCTestCase {
         }
     }
     
-    func testBuildTrieHWV074() {
+    func testBuildSymHopTrieHWV074() {
         let literals = TptpNode.literals("HWV074-1".p)
         XCTAssertEqual(6017,literals.count)
         
         self.measureBlock {
             var trie = Trie<SymHop,Int>()
+            trie.fill(literals)
+        }
+    }
+    
+    func testBuildSymbolTrieHWV074() {
+        let literals = TptpNode.literals("HWV074-1".p)
+        XCTAssertEqual(6017,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
             trie.fill(literals)
         }
     }

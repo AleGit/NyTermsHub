@@ -6,6 +6,8 @@ import Foundation
 print("NyTerms with \(Yices.info):")
 print(TptpPath.tptpRootPath)
 
+Samples.parse4Samples()
+
 // buildTriesDemo()
 
 //let key = "hwv066"
@@ -33,6 +35,6 @@ print(TptpPath.tptpRootPath)
 //
 //print ("total runtime:",runtime)
 
-
+print("*** DONE ***")
 
 

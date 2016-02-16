@@ -17,7 +17,6 @@ import Foundation
 // *** 'HWV134+1.p' total:39.361s, limit:90.0s, count:128975 avg:0.305ms ***
 
 struct Samples {
-    static var tptpPath = "/Users/Shared/TPTP/Problems/"
     
     private static func parse1Sample(file:TptpPath, limit:(CFTimeInterval,CFTimeInterval)) {
         let start = CFAbsoluteTimeGetCurrent()
@@ -32,30 +31,28 @@ struct Samples {
     }
     
     static func parseHWV105m1(count:Int) {
-        let localPath = "Problems/HWV/HWV105-1.p"
-        let totalPath = tptpPath.tptpPathTo(localPath)
+       let path = "HWV105-1".p
         
         for i in 1...count {
             print(i, terminator:":\t")
-            parse1Sample(totalPath, limit:(0.0,0.5))
+            parse1Sample(path, limit:(0.0,0.5))
         }
     }
     
     static func parse4Samples() {
-        for (localPath,limit) in [
-            ("Problems/HWV/HWV105-1.p",( 1.5,  0.5)),
-            ("Problems/HWV/HWV062+1.p",( 0.5,  0.7)),
-            ("Problems/HWV/HWV134+1.p",(11.0, 17.2)),
+        for (path,limit) in [
+            ("HWV105-1".p,( 1.5,  0.5)),
+            ("HWV062+1".p,( 0.5,  0.7)),
+            ("HWV134+1".p,(11.0, 17.2)),
             
-            ("Problems/HWV/HWV134-1.p",(40.0, 78.0)),
+            ("HWV134-1".p,(40.0, 78.0)),
             
-            ("Problems/HWV/HWV134+1.p",(11.0, 51.6)),
-            ("Problems/HWV/HWV062+1.p",( 0.5, 22.2)),
-            ("Problems/HWV/HWV105-1.p",( 1.5,  0.5))
+            ("HWV134+1".p,(11.0, 51.6)),
+            ("HWV062+1".p,( 0.5, 22.2)),
+            ("HWV105-1".p,( 1.5,  0.5))
             ] {
                 
-                let filePath = tptpPath.tptpPathTo(localPath)
-                parse1Sample(filePath, limit:limit)
+                parse1Sample(path, limit:limit)
                 
         }
     }

@@ -5,16 +5,15 @@ import Foundation
 
 /// Absolute path to a tptp file, i.e. a problem or an axiom.
 ///
-/// /Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p
-///
-/// /Users/Shared/TPTP/Axioms/PUZ001-0.ax
+///     /Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p
+///     /Users/Shared/TPTP/Axioms/PUZ001-0.ax
 typealias TptpPath = String
 
 /// A tptp path to a file contains three components.
 ///
 /// - 'root' is the TPTP directory with problems and axioms,
 /// - 'local' is a local path from root and starts with 'Axioms' or 'Problems',
-/// - 'last' and the file name of the axiom or problem.
+/// - 'last' is the file name with extension of the axiom or problem.
 ///
 /// (root:/Users/Shared/TPTP/,local:Problems/PUZ/,last:PUZ001-1.p)
 ///
@@ -52,11 +51,11 @@ extension TptpPath {
     /// It is assumed that `file` share the same root path as `self`.
     func tptpPathTo(file:TptpPath) -> TptpPath {
         let (root,_,_) = self.tptpPathComponents()
-        let (_,directory,name) = file.tptpPathComponents()
+        let (_,local,last) = file.tptpPathComponents()
         
-        guard !directory.isEmpty else { return (root as NSString).stringByAppendingPathComponent(name) }
+        guard !local.isEmpty else { return (root as NSString).stringByAppendingPathComponent(last) }
         
-        return ((root as NSString).stringByAppendingPathComponent(directory) as NSString).stringByAppendingPathComponent(name)
+        return ((root as NSString).stringByAppendingPathComponent(local) as NSString).stringByAppendingPathComponent(last)
     }
     
     /// Find path to tptp include file (usually an axiom).
@@ -64,17 +63,47 @@ extension TptpPath {
         return self.tptpPathTo(include.fileName)
     }
     
-    static let defaultProblemsPath = "/Users/Shared/TPTP/Problems/"
+    private static func tptpRootPathFromProcessArguments () -> TptpPath? {
+        var tptp = false
+        for argument in Process.arguments {
+            if tptp {
+                return argument // last argument was -tptp
+            }
+            if argument == "-tptp" {
+                tptp = true // return next argument
+            }
+        }
+        
+        return nil
+    }
     
-    /// construct default absolute path from file name by convention
+    static let tptpRootPath : TptpPath = {
+        if let argument = TptpPath.tptpRootPathFromProcessArguments() {
+            return argument
+        }
+        
+        let environment = NSProcessInfo.processInfo().environment
+        if let argument = environment["TPTP_ROOT"] {
+            return argument
+        }
+        
+        assert(false,"neither -tptp nor TPTP_ROOT are set")
+        
+        return "/Users/Shared/TPTP"
+    }()
+    
+    /// construct default absolute path from file name (without local path or extension) 
+    /// process arguments, environment and convention.
     var p:String {
-        assert(self.rangeOfString("/") == nil,"\(self)")
-        assert(self.rangeOfString(".") == nil,"\(self)")
+        assert(self.rangeOfString("/") == nil,"\(self)")    // assert without local path
+        assert(self.rangeOfString(".") == nil,"\(self)")    // assert without extension
         
         let directory = self[self.startIndex..<self.startIndex.advancedBy(3)]
         
         assert(directory.uppercaseString == directory,"\(directory)")
         
-        return "\(TptpPath.defaultProblemsPath)\(directory)/\(self).p"
+        let path = NSString.pathWithComponents([TptpPath.tptpRootPath,"Problems",directory,self])
+        let full = (path as NSString).stringByAppendingPathExtension("p")!
+        return full
     }
 }

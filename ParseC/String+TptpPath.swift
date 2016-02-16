@@ -79,31 +79,41 @@ extension TptpPath {
     
     static let tptpRootPath : TptpPath = {
         if let argument = TptpPath.tptpRootPathFromProcessArguments() {
+            print("-tptp \(argument)")
             return argument
         }
         
         let environment = NSProcessInfo.processInfo().environment
         if let argument = environment["TPTP_ROOT"] {
+            print("TPTP_ROOT=\"\(argument)\"")
             return argument
         }
         
-        assert(false,"neither -tptp nor TPTP_ROOT are set")
-        
-        return "/Users/Shared/TPTP"
+        let message = "neither -tptp nor TPTP_ROOT were set"
+        assert(false,message)
+        let defaultTptpRootPath = "/Users/Shared/TPTP"
+        print(message, defaultTptpRootPath)
+        return defaultTptpRootPath
     }()
     
-    /// construct default absolute path from file name (without local path or extension) 
-    /// process arguments, environment and convention.
+    /// construct absolute path from file name (without local path or extension)
+    /// by process (envionment) argument and convention.
     var p:String {
-        assert(self.rangeOfString("/") == nil,"\(self)")    // assert without local path
-        assert(self.rangeOfString(".") == nil,"\(self)")    // assert without extension
+        assert(self.rangeOfString("/") == nil,"\(self)")    // assert file name only
+        assert(!self.hasSuffix(".p"),"\(self)")    // assert without extension p
+        assert(!self.hasSuffix(".ax"),"\(self)")    // assert without extension ax
+        //        let components = (self as NSString).pathComponents
+        //        assert(components.size < 3)
         
-        let directory = self[self.startIndex..<self.startIndex.advancedBy(3)]
+        let ABC = self[self.startIndex..<self.startIndex.advancedBy(3)]
+        assert(ABC.uppercaseString == ABC,"\(ABC)")
         
-        assert(directory.uppercaseString == directory,"\(directory)")
-        
-        let path = NSString.pathWithComponents([TptpPath.tptpRootPath,"Problems",directory,self])
+        let path = NSString.pathWithComponents([
+            TptpPath.tptpRootPath, // e.g. /Users/Shared/TPTP
+            "Problems", // by convention problem files are in the local directory
+            ABC, // 'Problems/ABC' where ABC matches the first three letters of the file name
+            self]) // self is the file name without extension, e.g. XYZ001-1
         let full = (path as NSString).stringByAppendingPathExtension("p")!
-        return full
+        return full // e.g. /Users/Shared/TPTP/Problems/XYZ/XYZ001-1.p
     }
 }

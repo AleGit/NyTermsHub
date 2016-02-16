@@ -106,7 +106,7 @@ class ParsePerformanceTests: XCTestCase {
     
     /// ~ 1.2 ms on iMac24/7
     func testPerformanceLCL129cnf1() {
-        let path = "/Users/Shared/TPTP/Problems/LCL/LCL129-1.p"         // 2.1K
+        let path = "LCL129-1".p         // 2.1K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             print(self.runtime, self.i++, path)
@@ -119,7 +119,7 @@ class ParsePerformanceTests: XCTestCase {
     
     /// ~ 3 ms on iMac24/7
     func testPerformanceSYN000cnf2() {
-        let path = "/Users/Shared/TPTP/Problems/SYN/SYN000-2.p"         // 3.0K
+        let path = "SYN000-2".p         // 3.0K
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -134,7 +134,7 @@ class ParsePerformanceTests: XCTestCase {
     
     ///  32 ms on iMac24/7
     func testPerformancePUZ051cfn() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p"         // 1.9K
+        let path = "PUZ051-1".p         // 1.9K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             print(self.runtime, self.i++, path)
@@ -148,7 +148,7 @@ class ParsePerformanceTests: XCTestCase {
     
     /// ~ 3.3 s on iMac24/7
     func testPerformanceHWV074cnf1() {
-        let path = "/Users/Shared/TPTP/Problems/HWV/HWV074-1.p"         // 996K
+        let path = "HWV074-1".p         // 996K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             print(self.runtime, self.i++, path)

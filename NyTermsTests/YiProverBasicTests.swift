@@ -81,7 +81,7 @@ class YiProverBasicTests: XCTestCase {
     }
     
     func testPUZ001() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
+        let path = "PUZ001-1".p
         
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
@@ -103,7 +103,7 @@ class YiProverBasicTests: XCTestCase {
     }
     
     func testSYO587m1() {
-        let path = "/Users/Shared/TPTP/Problems/SYO/SYO587-1.p"
+        let path = "SYO587-1".p
         
         let start = CFAbsoluteTimeGetCurrent()
         
@@ -146,7 +146,7 @@ class YiProverBasicTests: XCTestCase {
    
 
     func testPUZ056m2_030() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ056-2.030.p"
+        let path = "PUZ056-2.030".p
         
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
@@ -167,7 +167,7 @@ class YiProverBasicTests: XCTestCase {
     
     /// satisfiable, hence the saturation process must be optimized
     func _testPUZ028m3() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ028-3.p"
+        let path = "PUZ028-3".p
         
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)

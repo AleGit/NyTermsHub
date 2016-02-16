@@ -4,13 +4,9 @@
 import Foundation
 
 print("NyTerms with \(Yices.info):")
-print(Process.arguments.joinWithSeparator("\n"))
-let dict = NSProcessInfo.processInfo().environment
-if let env = dict["TPTP_ROOT"] {
-    print(env)
-}
+print(TptpPath.tptpRootPath)
 
-buildTriesDemo()
+// buildTriesDemo()
 
 //let key = "hwv066"
 //let searches = [intTrieSearch, linearSearch]

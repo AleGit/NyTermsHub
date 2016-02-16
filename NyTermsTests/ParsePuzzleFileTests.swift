@@ -35,8 +35,8 @@ class ParsePuzzleFileTests: XCTestCase {
             XCTAssertTrue(root.isClause)
         }
         
-        XCTAssertEqual(10, roots.countMatches { $0.isHornClause })
-        XCTAssertEqual(5, roots.countMatches { $0.isUnitClause })
+        XCTAssertEqual(10, roots.count { $0.isHornClause })
+        XCTAssertEqual(5, roots.count { $0.isUnitClause })
         XCTAssertEqual(21, roots.reduce(0) { $0! + $1.nodes!.count })
     }
     

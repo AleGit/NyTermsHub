@@ -27,12 +27,13 @@ extension Range where Element : Comparable {
     }
 }
 
-extension Range where Element : Hashable, Element: Comparable {
-    /// create range such that all elements in the set are in the range
-    init?(set: Set<Element>) {
-        guard let minimum = set.minElement() else { return nil }
-        guard let maximum = set.maxElement() else { return nil }
-        
+extension Range where Element: Comparable {
+    /// create range such that all elements in the sequence are in the range
+    init?<S:SequenceType where S.Generator.Element == Element>(sequence: S) {
+        guard let
+            minimum = sequence.minElement(),
+            maximum = sequence.maxElement()
+            else { return nil }
         assert (minimum <= maximum)
         
         self.init(start:minimum, end:maximum.successor())
@@ -81,19 +82,18 @@ where Generator.Element == SubSequence.Generator.Element {
 
 // MARK: -
 
-
 extension SequenceType {
+    
     func all(predicate: Generator.Element -> Bool) -> Bool {
-        for x in self where !predicate(x) {
-            return false
-        }
-        return true
+        return self.reduce(true) { $0 && predicate($1) }
     }
     
-    func countMatches(predicate: Generator.Element -> Bool) -> Int {
-        return self.reduce(0) {
-            $0 + (predicate($1) ? 1 : 0)
-        }
+    func one(predicate: Generator.Element -> Bool) -> Bool {
+        return self.reduce(false) { $0 || predicate($1) }
+    }
+    
+    func count(predicate: Generator.Element -> Bool) -> Int {
+        return self.reduce(0) { $0 + (predicate($1) ? 1 : 0) }
     }
 }
 

@@ -236,10 +236,10 @@ extension TptpPath {
         var tptp = false
         for argument in Process.arguments {
             if tptp {
-                print("-tptp \(argument)")
+                print("-tptp_root \(argument)")
                 result = argument                     // last argument was -tptp
             }
-            if argument == "-tptp" {
+            if argument == "-tptp_root" {
                 tptp = true                             // return next argument
             }
             if result != nil {

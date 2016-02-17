@@ -3,12 +3,15 @@
 
 import Foundation
 
-print("NyTerms with \(Yices.info):")
-print(TptpPath.tptpRootPath)
+let line = "========================="
+print(line,NSDate(),line)
+print(line,line,line)
 
-// Samples.parse4Samples()
+print("NyTerms with \(Yices.info)")
+print("TPTP_ROOT",TptpPath.tptpRootPath)
 
-buildTriesDemo()
+BuildTries.demo()
+// ParseFiles.demo()
 
 //let key = "hwv066"
 //let searches = [intTrieSearch, linearSearch]
@@ -35,6 +38,7 @@ buildTriesDemo()
 //
 //print ("total runtime:",runtime)
 
-print("*** DONE ***")
+print(line,line,line)
+print(line,NSDate(),line)
 
 

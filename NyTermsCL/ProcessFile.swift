@@ -15,12 +15,12 @@ let tptpFiles = [
     "hwv105" : "HWV105-1".p, //   20900,  52662
     "hwv119" : "HWV119-1".p, //   17783,  53121
     "hwv134" : "HWV134-1".p, // 2332428,6570884
-
+    
 ]
 
 /// Parse HWV134-1.p and construct tree representation.
 private func parseFile(path:String) -> [TptpFormula] {
-
+    
     let (result,tptpFormulae,tptpIncludes) = parse(path:path)
     
     assert(1 == result.count)
@@ -54,13 +54,13 @@ func process(file:String, search: (literals:[TptpNode]) -> (Int,String)) {
     var start = CFAbsoluteTimeGetCurrent()
     let formulae = parseFile(file)
     
-    print("\t\(formulae.count) formulae parsed in \(desc(CFAbsoluteTimeGetCurrent() - start, 1))")
+    print("\t\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start, 1))")
     start = CFAbsoluteTimeGetCurrent()
     
-        
-        let nodes = literals(formulae)
-    print("\t\(nodes.count) literals extracted in \(desc(CFAbsoluteTimeGetCurrent() - start, 1))")
+    
+    let nodes = literals(formulae)
+    
     start = CFAbsoluteTimeGetCurrent()
     let (count,info) = search(literals:nodes)
-    print("\t\(count) complementary literals found (\(info)) in \(desc(CFAbsoluteTimeGetCurrent() - start,1))")
+    
 }

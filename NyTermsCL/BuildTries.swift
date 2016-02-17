@@ -36,12 +36,14 @@ struct BuildTries {
             print("")
             print(name, literals.count,"literals read in",
                 duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
+            print("Term Paths")
             
             multiple(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
             multiple(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
             multiple(Trie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
             multiple(Trie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
             
+            print("Discrimination Tree")
             multiple(Trie<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
             single(Trie<Symbol,Int>(), literals:literals) { $0.preorderPath }
             
@@ -49,6 +51,63 @@ struct BuildTries {
     }
 }
 /*
+========================= 2016-02-17 11:52:29 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+
+LCL129-1 5 literals read in 2ms 149µs from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+Term Paths
+1ms 616µs TailTrie<SymHop, Int> 5 0.00161600112915039
+2ms 975µs TailTrie<String, Int> 5 0.00297504663467407
+1ms 12µs Trie<SymHop, Int> 5 0.00101202726364136
+1ms 108µs Trie<String, Int> 5 0.00110799074172974
+Discrimination Tree
+321µs 31ns Trie<String, Int> 5 0.000321030616760254
+218µs 987ns Trie<String, Int> 5 0.000218987464904785
+
+SYN000-2 28 literals read in 1ms 273µs from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+Term Paths
+707µs 984ns TailTrie<SymHop, Int> 28 0.00070798397064209
+756µs 979ns TailTrie<String, Int> 28 0.000756978988647461
+609µs 40ns Trie<SymHop, Int> 28 0.000609040260314941
+653µs 28ns Trie<String, Int> 28 0.00065302848815918
+Discrimination Tree
+440µs 1ns Trie<String, Int> 28 0.000440001487731934
+421µs 47ns Trie<String, Int> 28 0.000421047210693359
+
+PUZ051-1 84 literals read in 4ms 937µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+Term Paths
+40ms 303µs TailTrie<SymHop, Int> 84 0.0403029918670654
+43ms 898µs TailTrie<String, Int> 84 0.0438979864120483
+40ms 485µs Trie<SymHop, Int> 84 0.0404850244522095
+53ms 513µs Trie<String, Int> 84 0.0535129904747009
+Discrimination Tree
+14ms 233µs Trie<String, Int> 84 0.0142329931259155
+10ms 84µs Trie<String, Int> 84 0.0100839734077454
+
+HWV074-1 6017 literals read in 394ms 110µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+Term Paths
+1m 2s TailTrie<SymHop, Int> 6017 61.5492870211601
+1m 7s TailTrie<String, Int> 6017 67.1801300048828
+39s 450ms Trie<SymHop, Int> 6017 39.4499650001526
+47s 997ms Trie<String, Int> 6017 47.9972169995308
+Discrimination Tree
+3s 619ms Trie<String, Int> 6017 3.61944401264191
+3s 826ms Trie<String, Int> 6017 3.82632201910019
+
+HWV105-1 52662 literals read in 1s 418ms from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+Term Paths
+2m 4s TailTrie<SymHop, Int> 52662 124.100395023823
+1m 38s TailTrie<String, Int> 52662 98.4727579951286
+36s 419ms Trie<SymHop, Int> 52662 36.4185609817505
+38s 650ms Trie<String, Int> 52662 38.6495990157127
+Discrimination Tree
+20s 633ms Trie<String, Int> 52662 20.6329929828644
+20s 933ms Trie<String, Int> 52662 20.9329180121422
+========================= ========================= =========================
+========================= 2016-02-17 12:01:58 +0000 =========================
+
 ========================= 2016-02-17 11:23:59 +0000 =========================
 ========================= ========================= =========================
 NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)

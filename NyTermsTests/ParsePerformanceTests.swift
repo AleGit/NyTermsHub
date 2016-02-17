@@ -141,7 +141,8 @@ class ParsePerformanceTests: XCTestCase {
         }
     }
 
-    /// estimate: 600 s on iMac24/7, 400 s on Mm;
+    /// estimate: 600 s on iMac24/7, 
+    /// 262 s on Mm;
     /// < 10 GB
     func testPerformanceHWV134cnf1 () {
         let path = "HWV134-1".p         // 264M

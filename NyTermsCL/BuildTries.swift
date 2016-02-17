@@ -12,17 +12,17 @@ struct BuildTries {
     
     static func demo() {
         
-        func execute<T:TrieType where T.Key==SymHop, T.Value==Int>(var trie:T, literals:[TptpNode]) {
+        func multiple<T:TrieType,
+            S:SequenceType where T.Value==Int, S.Generator.Element == [T.Key]>(var trie:T, literals:[TptpNode], f:(TptpNode)->S) {
             let (_,duration) = measure {
-                trie.fill(literals)
+                trie.fill(literals) { f($0) }
             }
             print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
         }
         
-        func preorder<T:TrieType where T.Key==String, T.Value==Int>(var trie:T, literals:[TptpNode]) {
-            
+        func single<T:TrieType where T.Value==Int>(var trie:T, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
             let (_,duration) = measure {
-                trie.fillPreorder(literals)
+                trie.fill(literals) { f($0) }
             }
             print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
         }
@@ -37,14 +37,135 @@ struct BuildTries {
             print(name, literals.count,"literals read in",
                 duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
             
-            execute(TailTrie<SymHop,Int>(), literals:literals)
-            execute(Trie<SymHop,Int>(), literals:literals)
-            preorder(Trie<String,Int>(), literals:literals)
+            multiple(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+            multiple(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+            multiple(Trie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+            multiple(Trie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+            
+            multiple(Trie<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
+            single(Trie<Symbol,Int>(), literals:literals) { $0.preorderPath }
+            
         }
     }
 }
-
 /*
+========================= 2016-02-17 11:23:59 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+
+LCL129-1 5 literals read in 856µs 42ns from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+1ms 770µs TailTrie<SymHop, Int> 5 0.00177001953125
+1ms 314µs TailTrie<String, Int> 5 0.00131404399871826
+1ms 73µs Trie<SymHop, Int> 5 0.00107300281524658
+1ms 390µs Trie<String, Int> 5 0.00139003992080688
+364µs 959ns Trie<String, Int> 5 0.000364959239959717
+310µs 4ns Trie<String, Int> 5 0.000310003757476807
+
+SYN000-2 28 literals read in 1ms 290µs from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+914µs 37ns TailTrie<SymHop, Int> 28 0.000914037227630615
+948µs 12ns TailTrie<String, Int> 28 0.000948011875152588
+698µs 30ns Trie<SymHop, Int> 28 0.0006980299949646
+753µs 999ns Trie<String, Int> 28 0.000753998756408691
+526µs 11ns Trie<String, Int> 28 0.000526010990142822
+627µs 995ns Trie<String, Int> 28 0.000627994537353516
+
+PUZ051-1 84 literals read in 3ms 958µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+36ms 493µs TailTrie<SymHop, Int> 84 0.0364930033683777
+42ms 698µs TailTrie<String, Int> 84 0.0426980257034302
+40ms 987µs Trie<SymHop, Int> 84 0.0409870147705078
+38ms 800µs Trie<String, Int> 84 0.0388000011444092
+8ms 660µs Trie<String, Int> 84 0.00866001844406128
+8ms 632µs Trie<String, Int> 84 0.00863200426101685
+
+HWV074-1 6017 literals read in 387ms 168µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+46s 738ms TailTrie<SymHop, Int> 6017 46.7380290031433
+48s 408ms TailTrie<String, Int> 6017 48.4083880186081
+28s 687ms Trie<SymHop, Int> 6017 28.6866199970245
+29s 724ms Trie<String, Int> 6017 29.724130988121
+1s 811ms Trie<String, Int> 6017 1.81139302253723
+1s 801ms Trie<String, Int> 6017 1.8007670044899
+
+HWV105-1 52662 literals read in 619ms 586µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+56s 425ms TailTrie<SymHop, Int> 52662 56.4249269962311
+56s 320ms TailTrie<String, Int> 52662 56.3197460174561
+28s 214ms Trie<SymHop, Int> 52662 28.2139509916306
+28s 228ms Trie<String, Int> 52662 28.2283940315247
+16s 8ms Trie<String, Int> 52662 16.0084500312805
+15s 868ms Trie<String, Int> 52662 15.8676519989967
+========================= ========================= =========================
+========================= 2016-02-17 11:30:00 +0000 =========================
+
+========================= 2016-02-17 11:16:40 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+
+LCL129-1 5 literals read in 867µs 963ns from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+1ms 733µs TailTrie<SymHop, Int> 5 0.00173300504684448
+1ms 331µs TailTrie<String, Int> 5 0.00133103132247925
+1ms 16µs Trie<SymHop, Int> 5 0.00101596117019653
+1ms 387µs Trie<String, Int> 5 0.00138700008392334
+
+SYN000-2 28 literals read in 1ms 284µs from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+921µs 11ns TailTrie<SymHop, Int> 28 0.000921010971069336
+949µs 979ns TailTrie<String, Int> 28 0.000949978828430176
+698µs 984ns Trie<SymHop, Int> 28 0.000698983669281006
+735µs 998ns Trie<String, Int> 28 0.000735998153686523
+
+PUZ051-1 84 literals read in 4ms 27µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+34ms 669µs TailTrie<SymHop, Int> 84 0.0346689820289612
+41ms 6µs TailTrie<String, Int> 84 0.0410060286521912
+38ms 762µs Trie<SymHop, Int> 84 0.0387620329856873
+37ms 442µs Trie<String, Int> 84 0.0374420285224915
+
+HWV074-1 6017 literals read in 367ms 340µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+46s 388ms TailTrie<SymHop, Int> 6017 46.3879140019417
+47s 447ms TailTrie<String, Int> 6017 47.4466829895973
+29s 566ms Trie<SymHop, Int> 6017 29.5655919909477
+30s 565ms Trie<String, Int> 6017 30.5648579597473
+
+HWV105-1 52662 literals read in 657ms 324µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+1m 4s TailTrie<SymHop, Int> 52662 63.807433962822
+57s 36ms TailTrie<String, Int> 52662 57.0359500050545
+31s 717ms Trie<SymHop, Int> 52662 31.7174170017242
+29s 668ms Trie<String, Int> 52662 29.6677749752998
+========================= ========================= =========================
+========================= 2016-02-17 11:22:19 +0000 =========================
+Program ended with exit code: 0
+
+========================= 2016-02-17 10:59:27 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+
+LCL129-1 5 literals read in 4ms 51µs from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+1ms 553µs TailTrie<SymHop, Int> 5 0.0015529990196228
+1ms 58µs Trie<SymHop, Int> 5 0.00105798244476318
+303µs 30ns Trie<String, Int> 5 0.000303030014038086
+
+SYN000-2 28 literals read in 2ms 363µs from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+790µs 0ns TailTrie<SymHop, Int> 28 0.000789999961853027
+937µs 998ns Trie<SymHop, Int> 28 0.000937998294830322
+418µs 7ns Trie<String, Int> 28 0.000418007373809814
+
+PUZ051-1 84 literals read in 3ms 826µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+34ms 507µs TailTrie<SymHop, Int> 84 0.0345070362091064
+31ms 564µs Trie<SymHop, Int> 84 0.0315639972686768
+8ms 275µs Trie<String, Int> 84 0.00827497243881226
+
+HWV074-1 6017 literals read in 407ms 3µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+50s 777ms TailTrie<SymHop, Int> 6017 50.776987016201
+30s 709ms Trie<SymHop, Int> 6017 30.7091730237007
+1s 711ms Trie<String, Int> 6017 1.71072000265121
+
+HWV105-1 52662 literals read in 592ms 720µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+56s 0ms TailTrie<SymHop, Int> 52662 56.0002590417862
+29s 347ms Trie<SymHop, Int> 52662 29.3466069698334
+16s 82ms Trie<String, Int> 52662 16.0820810198784
+========================= ========================= =========================
+========================= 2016-02-17 11:02:34 +0000 =========================
+Program ended with exit code: 0
 
 ========================= 2016-02-17 07:51:20 +0000 =========================
 ========================= ========================= =========================

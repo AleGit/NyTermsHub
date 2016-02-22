@@ -60,6 +60,79 @@ struct BuildTries {
     }
 }
 /*
+========================= 2016-02-22 13:27:04 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+
+LCL129-1 5 literals read in 2ms 714µs from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+Term Paths
+1ms 584µs TailTrie<SymHop, Int> 5 0.00158399343490601
+1ms 362µs TailTrie<String, Int> 5 0.00136202573776245
+1ms 40µs TrieStruct<SymHop, Int> 5 0.00104004144668579
+1ms 140µs TrieStruct<String, Int> 5 0.00113999843597412
+759µs 6ns TrieClass<SymHop,Int> 5 0.000759005546569824
+965µs 953ns TrieClass<Symbol,Int> 5 0.00096595287322998
+Discrimination Tree
+527µs 978ns TrieStruct<String, Int> 5 0.00052797794342041
+320µs 17ns TrieStruct<String, Int> 5 0.000320017337799072
+313µs 997ns TrieClass<Symbol,Int> 5 0.000313997268676758
+
+SYN000-2 28 literals read in 2ms 138µs from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+Term Paths
+880µs 3ns TailTrie<SymHop, Int> 28 0.000880002975463867
+829µs 995ns TailTrie<String, Int> 28 0.000829994678497314
+698µs 30ns TrieStruct<SymHop, Int> 28 0.0006980299949646
+1ms 424µs TrieStruct<String, Int> 28 0.00142401456832886
+720µs 978ns TrieClass<SymHop,Int> 28 0.000720977783203125
+729µs 24ns TrieClass<Symbol,Int> 28 0.000729024410247803
+Discrimination Tree
+521µs 4ns TrieStruct<String, Int> 28 0.000521004199981689
+499µs 964ns TrieStruct<String, Int> 28 0.000499963760375977
+427µs 8ns TrieClass<Symbol,Int> 28 0.000427007675170898
+
+PUZ051-1 84 literals read in 4ms 192µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+Term Paths
+40ms 412µs TailTrie<SymHop, Int> 84 0.0404119491577148
+43ms 451µs TailTrie<String, Int> 84 0.0434510111808777
+36ms 212µs TrieStruct<SymHop, Int> 84 0.0362120270729065
+40ms 459µs TrieStruct<String, Int> 84 0.0404589772224426
+20ms 421µs TrieClass<SymHop,Int> 84 0.020421028137207
+30ms 926µs TrieClass<Symbol,Int> 84 0.030925989151001
+Discrimination Tree
+8ms 678µs TrieStruct<String, Int> 84 0.00867801904678345
+8ms 320µs TrieStruct<String, Int> 84 0.00831997394561768
+9ms 511µs TrieClass<Symbol,Int> 84 0.00951099395751953
+
+HWV074-1 6017 literals read in 412ms 312µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+Term Paths
+46s 338ms TailTrie<SymHop, Int> 6017 46.3377429842949
+47s 669ms TailTrie<String, Int> 6017 47.6687960028648
+28s 794ms TrieStruct<SymHop, Int> 6017 28.7935120463371
+30s 0ms TrieStruct<String, Int> 6017 30.0004360079765
+3s 410ms TrieClass<SymHop,Int> 6017 3.41026902198792
+4s 297ms TrieClass<Symbol,Int> 6017 4.29727798700333
+Discrimination Tree
+1s 841ms TrieStruct<String, Int> 6017 1.84086298942566
+1s 837ms TrieStruct<String, Int> 6017 1.83684599399567
+970ms 68µs TrieClass<Symbol,Int> 6017 0.970068037509918
+
+HWV105-1 52662 literals read in 653ms 781µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+Term Paths
+58s 100ms TailTrie<SymHop, Int> 52662 58.0997920036316
+55s 876ms TailTrie<String, Int> 52662 55.8761669993401
+28s 267ms TrieStruct<SymHop, Int> 52662 28.2672550082207
+28s 396ms TrieStruct<String, Int> 52662 28.3957919478416
+1s 643ms TrieClass<SymHop,Int> 52662 1.64326798915863
+1s 965ms TrieClass<Symbol,Int> 52662 1.96546697616577
+Discrimination Tree
+16s 124ms TrieStruct<String, Int> 52662 16.1242799758911
+15s 998ms TrieStruct<String, Int> 52662 15.9975399971008
+951ms 864µs TrieClass<Symbol,Int> 52662 0.951864004135132
+========================= ========================= =========================
+========================= 2016-02-22 13:33:21 +0000 =========================
+Program ended with exit code: 0
+
 ========================= 2016-02-22 09:38:03 +0000 =========================
 ========================= ========================= =========================
 NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)

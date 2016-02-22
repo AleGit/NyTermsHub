@@ -57,7 +57,7 @@ class NodeTrieTests: XCTestCase {
             for path in clause.symHopPaths {
                 print("path=\(path)")
                 let subtrie = trie[path]!
-                let values = subtrie.values
+                let values = subtrie.valueSet
                 let payload = subtrie.payload
                 XCTAssertTrue(payload.isSupersetOf(values))
                 print("values=\(values)")

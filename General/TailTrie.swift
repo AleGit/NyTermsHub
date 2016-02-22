@@ -25,85 +25,61 @@ indirect enum TailTrie<K:Hashable,V:Hashable> {
 extension TailTrie : TrieType {
     init() { self = TailTrie.Inner(tries: [Key:TailTrie<Key,Value>]()) }
     
-    mutating func insert<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
-        guard let (head,tail) = path.decompose else {
-            switch self {
-            case .Inner(let tries):
-                if !tries.isEmpty { assert(false,"path is too short!") }
-                self = .Leaf(values:Set([value]))
-                return
-            case .Leaf(var values):
-                values.insert(value)
-                self = .Leaf(values:values)
-                return
-            }
-        }
+    mutating func insert(value: Value) {
         switch self {
-        case .Leaf(let values):
-            if !values.isEmpty { assert(false,"path is too long!") }
-            var trie = TailTrie.Inner(tries: [K:TailTrie]())
-            trie.insert(tail, value:value)
-            self = .Inner(tries: [head:trie])
-            
-        case .Inner(var tries):
-            
-            var trie = tries[head] ?? (tail.isEmpty ?
-                TailTrie.Leaf(values: Set<V>()) : TailTrie.Inner(tries: [K:TailTrie]()))
-            trie.insert(tail, value: value)
-            tries[head] = trie
-            self = .Inner(tries: tries)
-            
+        case .Inner(let tries):
+            if !tries.isEmpty { assert(false,"path is too short!") }
+            self = .Leaf(values:Set([value]))
+            return
+        case .Leaf(var values):
+            values.insert(value)
+            self = .Leaf(values:values)
+            return
         }
     }
-
-    mutating func delete<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value) -> Value? {
-            guard let (head,tail) = path.decompose else {
-                switch self {
-                case .Inner:
-                    return nil
-                case .Leaf(var values):
-                    let v = values.remove(value)
-                    self = .Leaf(values:values)
-                    return v
-                }
-            }
-            switch self {
-            case .Leaf:
-                return nil
-                
-            case .Inner(var tries):
-                guard var trie = tries[head] else { return nil }
-                guard let v = trie.delete(tail, value: value) else { return nil }
-                
-                tries[head] = trie.isEmpty ? nil : trie
-                self = .Inner(tries: tries)
-                return v
-            }
+    
+    mutating func delete(value: Value) -> Value? {
+        switch self {
+        case .Inner:
+            return nil
+        case .Leaf(var values):
+            let v = values.remove(value)
+            self = .Leaf(values:values)
+            return v
+        }
     }
     
-    func retrieve<C:CollectionType where
-        C.Generator.Element == Key, C.SubSequence.Generator.Element == Key>(path:C) -> [Value]? {
-            guard let (head,tail) = path.decompose else {
-                switch self {
-                case .Inner:
-                    return nil
-                case .Leaf(let values):
-                    return Array(values)
-                }
-            }
-            
+    subscript(key:Key) -> TailTrie? {
+        get {
             switch self {
-            case .Leaf:
-                return nil
             case .Inner(let tries):
-                return tries[head]?.retrieve(tail)
-            }
+                return tries[key]
+            case .Leaf:
+                return nil            }
+        }
+        
+        set {
             
+            switch self {
+            case .Inner(var tries):
+                tries[key] = newValue
+                self = .Inner(tries: tries)
+            case .Leaf:
+                guard let trie = newValue else { return }
+                let tries = [key : trie]
+                self = .Inner(tries: tries)
+            }
+        }
     }
     
-    
+    var values : [Value]? {
+        switch self {
+        case .Inner:
+            return nil
+        case .Leaf(let values):
+            return Array(values)
+        }
+    }
 }
 
 extension TailTrie : CustomStringConvertible {

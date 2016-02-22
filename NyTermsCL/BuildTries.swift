@@ -10,23 +10,21 @@ import Foundation
 
 struct BuildTries {
     
+    static private func execute<T:TrieType where T.Value==Int>(var trie:T, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
+        let (_,duration) = measure {
+            trie.fill(literals) { f($0) }
+        }
+        print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
+    }
+    
+    static private func execute<T:TrieType where T.Value==Int>(var trie:T, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
+        let (_,duration) = measure {
+            trie.fill(literals) { f($0) }
+        }
+        print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
+    }
+    
     static func demo() {
-        
-        func multiple<T:TrieType,
-            S:SequenceType where T.Value==Int, S.Generator.Element == [T.Key]>(var trie:T, literals:[TptpNode], f:(TptpNode)->S) {
-            let (_,duration) = measure {
-                trie.fill(literals) { f($0) }
-            }
-            print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
-        }
-        
-        func single<T:TrieType where T.Value==Int>(var trie:T, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
-            let (_,duration) = measure {
-                trie.fill(literals) { f($0) }
-            }
-            print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
-        }
-        
         for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1" ] {
             let path = name.p
             let (literals, duration) = measure {
@@ -38,14 +36,14 @@ struct BuildTries {
                 duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
             print("Term Paths")
             
-            multiple(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
-            multiple(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
-            multiple(Trie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
-            multiple(Trie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+            execute(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+            execute(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+            execute(Trie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+            execute(Trie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
             
             print("Discrimination Tree")
-            multiple(Trie<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
-            single(Trie<Symbol,Int>(), literals:literals) { $0.preorderPath }
+            execute(Trie<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
+            execute(Trie<Symbol,Int>(), literals:literals) { $0.preorderPath }
             
         }
     }

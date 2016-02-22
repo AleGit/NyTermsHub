@@ -55,6 +55,18 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         }
     }
     
+    
+    
+    func testDiscriminationTrieCL129() {
+        let literals = TptpNode.literals("LCL129-1".p)
+        XCTAssertEqual(5,literals.count)
+        
+        self.measureBlock {
+            var trie = Trie<Symbol,Int>()
+            trie.fill(literals)  { $0.preorderPath }
+        }
+    }
+    
     // MARK: SYN000
     
     func testBuildTailSYN000() {

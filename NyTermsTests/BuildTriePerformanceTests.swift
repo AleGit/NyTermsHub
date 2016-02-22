@@ -57,6 +57,18 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
     
     
     
+    func testBuildSymbolTrieClassLCL129() {
+        let literals = TptpNode.literals("LCL129-1".p)
+        XCTAssertEqual(5,literals.count)
+        
+        self.measureBlock {
+            var trie = TrieClass<Symbol,Int>()
+            trie.fill(literals)  { $0.symbolPaths }
+        }
+    }
+    
+    
+    
     func testDiscriminationTrieCL129() {
         let literals = TptpNode.literals("LCL129-1".p)
         XCTAssertEqual(5,literals.count)
@@ -99,6 +111,16 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         }
     }
     
+    func testBuildSymbolTrieClassSYN000() {
+        let literals = TptpNode.literals("SYN000-1".p)
+        XCTAssertEqual(27,literals.count)
+        
+        self.measureBlock {
+            var trie = TrieClass<Symbol,Int>()
+            trie.fill(literals)  { $0.symbolPaths }
+        }
+    }
+    
     // MARK: PUZ051
     
     func testBuildTailPUZ051() {
@@ -127,6 +149,16 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = Trie<Symbol,Int>()
+            trie.fill(literals)  { $0.symbolPaths }
+        }
+    }
+    
+    func testBuildSymbolTrieClassPUZ051() {
+        let literals = TptpNode.literals("PUZ051-1".p)
+        XCTAssertEqual(84,literals.count)
+        
+        self.measureBlock {
+            var trie = TrieClass<Symbol,Int>()
             trie.fill(literals)  { $0.symbolPaths }
         }
     }

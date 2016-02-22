@@ -10,11 +10,11 @@ struct Trie<K: Hashable, V: Hashable> {
     private var tries = [Key: Trie<Key, Value>]()
     private (set) var values = Set<Value>()
     
-    init<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
-            
-            self.insert(path, value:value)
-    }
+//    init<C:CollectionType where C.Generator.Element == Key,
+//        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
+//            
+//            self.insert(path, value:value)
+//    }
     
     init() {    }
 }

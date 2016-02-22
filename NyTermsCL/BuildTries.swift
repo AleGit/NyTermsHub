@@ -10,18 +10,26 @@ import Foundation
 
 struct BuildTries {
     
-    static private func execute<T:TrieType where T.Value==Int>(var trie:T, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
-        let (_,duration) = measure {
-            trie.fill(literals) { f($0) }
-        }
-        print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
+    static private func execute<T:TrieType where T.Value==Int>(
+        var trie:T, message:String? = nil, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
+            
+            let msg = message ?? "\(trie.dynamicType)"
+            let (_,duration) = measure {
+                trie.fill(literals) { f($0) }
+            }
+            
+            
+            print(duration.timeIntervalDescriptionMarkedWithUnits, msg,literals.count,duration)
     }
     
-    static private func execute<T:TrieType where T.Value==Int>(var trie:T, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
-        let (_,duration) = measure {
-            trie.fill(literals) { f($0) }
-        }
-        print(duration.timeIntervalDescriptionMarkedWithUnits, trie.dynamicType,literals.count,duration)
+    static private func execute<T:TrieType where T.Value==Int>(
+        var trie:T, message:String? = nil, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
+            let msg = message ?? "\(trie.dynamicType)"
+            let (_,duration) = measure {
+                trie.fill(literals) { f($0) }
+            }
+            
+            print(duration.timeIntervalDescriptionMarkedWithUnits,msg,literals.count,duration)
     }
     
     static func demo() {
@@ -40,15 +48,91 @@ struct BuildTries {
             execute(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
             execute(Trie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
             execute(Trie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+            execute(TrieClass<SymHop,Int>(), message:"TrieClass<SymHop,Int>", literals:literals) { $0.symHopPaths }
+            execute(TrieClass<Symbol,Int>(), message:"TrieClass<Symbol,Int>", literals:literals) { $0.symbolPaths }
             
             print("Discrimination Tree")
             execute(Trie<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
             execute(Trie<Symbol,Int>(), literals:literals) { $0.preorderPath }
+            execute(TrieClass<Symbol,Int>(), message:"TrieClass<Symbol,Int>", literals:literals) { $0.preorderPath }
             
         }
     }
 }
 /*
+========================= 2016-02-22 09:38:03 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+
+LCL129-1 5 literals read in 615µs 1ns from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+Term Paths
+1ms 300µs TailTrie<SymHop, Int> 5 0.00130003690719604
+1ms 359µs TailTrie<String, Int> 5 0.00135898590087891
+936µs 31ns Trie<SymHop, Int> 5 0.000936031341552734
+1ms 112µs Trie<String, Int> 5 0.00111198425292969
+768µs 960ns TrieClass<SymHop,Int> 5 0.000768959522247314
+919µs 998ns TrieClass<Symbol,Int> 5 0.000919997692108154
+Discrimination Tree
+351µs 12ns Trie<String, Int> 5 0.000351011753082275
+316µs 978ns Trie<String, Int> 5 0.000316977500915527
+420µs 988ns TrieClass<Symbol,Int> 5 0.000420987606048584
+
+SYN000-2 28 literals read in 1ms 76µs from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+Term Paths
+917µs 971ns TailTrie<SymHop, Int> 28 0.000917971134185791
+831µs 962ns TailTrie<String, Int> 28 0.000831961631774902
+721µs 991ns Trie<SymHop, Int> 28 0.000721991062164307
+753µs 999ns Trie<String, Int> 28 0.000753998756408691
+589µs 967ns TrieClass<SymHop,Int> 28 0.000589966773986816
+645µs 995ns TrieClass<Symbol,Int> 28 0.000645995140075684
+Discrimination Tree
+449µs 2ns Trie<String, Int> 28 0.000449001789093018
+680µs 983ns Trie<String, Int> 28 0.000680983066558838
+531µs 18ns TrieClass<Symbol,Int> 28 0.000531017780303955
+
+PUZ051-1 84 literals read in 3ms 999µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+Term Paths
+38ms 280µs TailTrie<SymHop, Int> 84 0.0382800102233887
+50ms 745µs TailTrie<String, Int> 84 0.0507450103759766
+32ms 13µs Trie<SymHop, Int> 84 0.0320129990577698
+54ms 414µs Trie<String, Int> 84 0.0544140338897705
+20ms 198µs TrieClass<SymHop,Int> 84 0.0201979875564575
+25ms 504µs TrieClass<Symbol,Int> 84 0.0255039930343628
+Discrimination Tree
+9ms 992µs Trie<String, Int> 84 0.00999200344085693
+10ms 229µs Trie<String, Int> 84 0.0102289915084839
+7ms 261µs TrieClass<Symbol,Int> 84 0.00726097822189331
+
+HWV074-1 6017 literals read in 375ms 650µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+Term Paths
+46s 278ms TailTrie<SymHop, Int> 6017 46.2779850363731
+1m 1s TailTrie<String, Int> 6017 61.4154630303383
+35s 387ms Trie<SymHop, Int> 6017 35.3867089748383
+35s 991ms Trie<String, Int> 6017 35.9908230304718
+3s 406ms TrieClass<SymHop,Int> 6017 3.40615302324295
+4s 282ms TrieClass<Symbol,Int> 6017 4.28221499919891
+Discrimination Tree
+1s 854ms Trie<String, Int> 6017 1.85435199737549
+1s 870ms Trie<String, Int> 6017 1.86960101127625
+978ms 561µs TrieClass<Symbol,Int> 6017 0.978560984134674
+
+HWV105-1 52662 literals read in 658ms 247µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+Term Paths
+58s 296ms TailTrie<SymHop, Int> 52662 58.295657992363
+1m 1s TailTrie<String, Int> 52662 60.7028260231018
+30s 348ms Trie<SymHop, Int> 52662 30.3479439616203
+30s 541ms Trie<String, Int> 52662 30.5408920049667
+1s 660ms TrieClass<SymHop,Int> 52662 1.65990298986435
+1s 958ms TrieClass<Symbol,Int> 52662 1.9579850435257
+Discrimination Tree
+16s 489ms Trie<String, Int> 52662 16.4887549877167
+16s 254ms Trie<String, Int> 52662 16.2544739842415
+949ms 660µs TrieClass<Symbol,Int> 52662 0.949660003185272
+========================= ========================= =========================
+========================= 2016-02-22 09:44:56 +0000 =========================
+Program ended with exit code: 0
+
 ========================= 2016-02-17 11:52:29 +0000 =========================
 ========================= ========================= =========================
 NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)

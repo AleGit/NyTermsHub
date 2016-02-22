@@ -25,12 +25,6 @@ indirect enum TailTrie<K:Hashable,V:Hashable> {
 extension TailTrie : TrieType {
     init() { self = TailTrie.Inner(tries: [Key:TailTrie<Key,Value>]()) }
     
-    init<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
-            self = TailTrie.Inner(tries: [Key:TailTrie<Key,Value>]())
-            self.insert(path, value: value)
-    }
-    
     mutating func insert<C:CollectionType where C.Generator.Element == Key,
         C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
         guard let (head,tail) = path.decompose else {

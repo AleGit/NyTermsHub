@@ -21,6 +21,16 @@ protocol TrieType : Equatable {
         C.SubSequence.Generator.Element == Key>(path:C) -> [Value]?
     
     var isEmpty : Bool { get }
+    
+    init()
+}
+
+extension TrieType {
+    init<C:CollectionType where C.Generator.Element == Key,
+        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
+            self.init()
+            self.insert(path, value:value)
+    }
 }
 
 extension TrieType where Value==Int {

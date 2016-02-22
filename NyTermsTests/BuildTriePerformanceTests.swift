@@ -40,7 +40,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(5,literals.count)
         
         self.measureBlock {
-            var trie = Trie<SymHop,Int>()
+            var trie = TrieStruct<SymHop,Int>()
             trie.fill(literals)  { $0.symHopPaths }
         }
     }
@@ -50,7 +50,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(5,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.symbolPaths }
         }
     }
@@ -74,7 +74,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(5,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.preorderPath }
         }
     }
@@ -96,7 +96,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(27,literals.count)
         
         self.measureBlock {
-            var trie = Trie<SymHop,Int>()
+            var trie = TrieStruct<SymHop,Int>()
             trie.fill(literals)  { $0.symHopPaths }
         }
     }
@@ -106,7 +106,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(27,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.symbolPaths }
         }
     }
@@ -138,7 +138,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(84,literals.count)
         
         self.measureBlock {
-            var trie = Trie<SymHop,Int>()
+            var trie = TrieStruct<SymHop,Int>()
             trie.fill(literals)  { $0.symHopPaths }
         }
     }
@@ -148,7 +148,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(84,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.symbolPaths }
         }
     }
@@ -180,7 +180,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(6017,literals.count)
         
         self.measureBlock {
-            var trie = Trie<SymHop,Int>()
+            var trie = TrieStruct<SymHop,Int>()
             trie.fill(literals)  { $0.symHopPaths }
         }
     }
@@ -190,7 +190,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(6017,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.symbolPaths }
         }
     }
@@ -202,7 +202,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(6017,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.preorderPath }
         }
     }
@@ -224,7 +224,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(52662,literals.count)
         
         self.measureBlock {
-            var trie = Trie<SymHop,Int>()
+            var trie = TrieStruct<SymHop,Int>()
             trie.fill(literals)  { $0.symHopPaths }
         }
     }
@@ -234,7 +234,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(52662,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.symbolPaths }
         }
     }
@@ -245,7 +245,7 @@ class BuildSymHopTriePerformanceTests: XCTestCase {
         XCTAssertEqual(52662,literals.count)
         
         self.measureBlock {
-            var trie = Trie<Symbol,Int>()
+            var trie = TrieStruct<Symbol,Int>()
             trie.fill(literals)  { $0.preorderPath }
         }
     }

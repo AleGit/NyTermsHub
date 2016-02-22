@@ -1,13 +1,13 @@
 import Foundation
 
 /// A trie stores values at paths, i.e. sequences of keys
-/// [[wikikpedia]](https://en.wikipedia.org/wiki/Trie)
+/// [[wikikpedia]](https://en.wikipedia.org/wiki/TrieStruct)
 ///
 ///
-struct Trie<K: Hashable, V: Hashable> {
+struct TrieStruct<K: Hashable, V: Hashable> {
     typealias Key = K
     typealias Value = V
-    private var tries = [Key: Trie<Key, Value>]()
+    private var tries = [Key: TrieStruct<Key, Value>]()
     private (set) var values = Set<Value>()
     
 //    init<C:CollectionType where C.Generator.Element == Key,
@@ -19,7 +19,7 @@ struct Trie<K: Hashable, V: Hashable> {
     init() {    }
 }
 
-extension Trie : TrieType {
+extension TrieStruct : TrieType {
     
     mutating func insert<S:CollectionType where S.Generator.Element == Key,
         S.SubSequence.Generator.Element == Key>(path:S, value:Value) {
@@ -28,7 +28,7 @@ extension Trie : TrieType {
                 return
             }
             
-            var trie = tries[head] ?? Trie()
+            var trie = tries[head] ?? TrieStruct()
             trie.insert(tail, value: value)
             tries[head] = trie
     }
@@ -56,21 +56,21 @@ extension Trie : TrieType {
     }
 }
 
-extension Trie {
+extension TrieStruct {
     
     
-    func generate() -> DictionaryGenerator<Key, Trie<Key, Value>> {
+    func generate() -> DictionaryGenerator<Key, TrieStruct<Key, Value>> {
         let generator = tries.generate()
         return generator
     }
     
-    var subtries : [Key: Trie<Key, Value>] {
+    var subtries : [Key: TrieStruct<Key, Value>] {
         return tries
     }
     
     /// retrieves subtrie at key path.
     /// if key path does not exist nil will be returned
-    subscript(path:[Key]) -> Trie? {
+    subscript(path:[Key]) -> TrieStruct? {
         guard let (head,tail) = path.decompose else { return self }
         
         guard let trie = tries[head] else { return nil }
@@ -78,14 +78,14 @@ extension Trie {
         return trie[tail]
     }
     
-    subscript(key:Key) -> Trie? {
+    subscript(key:Key) -> TrieStruct? {
         return tries[key]
     }
     
 
 }
 
-extension Trie {
+extension TrieStruct {
     /// get values of `self` and all its successors
     var payload : Set<Value> {
         var collected = values
@@ -96,14 +96,14 @@ extension Trie {
     }
 }
 
-extension Trie : Equatable {
+extension TrieStruct : Equatable {
     var isEmpty: Bool {
         return tries.reduce(values.isEmpty) { $0 && $1.1.isEmpty }
     }
     
 }
 
-func ==<K,V>(lhs:Trie<K,V>, rhs:Trie<K,V>) -> Bool {
+func ==<K,V>(lhs:TrieStruct<K,V>, rhs:TrieStruct<K,V>) -> Bool {
     if lhs.values == rhs.values && lhs.tries == rhs.tries {
         return true
     }

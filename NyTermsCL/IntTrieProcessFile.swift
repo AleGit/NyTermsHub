@@ -14,7 +14,7 @@ func intTrieSearch(literals:[TptpNode]) -> (Int, String) {
     let step = 1000
     var count = 0
     var stepcount = count
-    var trie = Trie<SymHop,Int>()
+    var trie = TrieStruct<SymHop,Int>()
     let start = CFAbsoluteTimeGetCurrent()
     var temp = start
     var processed = 0

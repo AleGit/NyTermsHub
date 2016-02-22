@@ -8,7 +8,7 @@
 
 import Foundation
 
-func extract<T>(trie:Trie<SymHop, T>, path:SymHopPath) -> Set<T>? {
+func extract<T>(trie:TrieStruct<SymHop, T>, path:SymHopPath) -> Set<T>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
@@ -48,7 +48,7 @@ func extract<T>(trie:Trie<SymHop, T>, path:SymHopPath) -> Set<T>? {
     
 }
 
-func candidates<T:Hashable>(indexed:Trie<SymHop, T>, term:TptpNode) -> Set<T>? {
+func candidates<T:Hashable>(indexed:TrieStruct<SymHop, T>, term:TptpNode) -> Set<T>? {
     var queryTerm : TptpNode
     switch term.symbol {
     case "~":
@@ -83,7 +83,7 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
     var count = 0
     var stepcount = count
     
-    var trie = Trie<SymHop,TptpNode>()
+    var trie = TrieStruct<SymHop,TptpNode>()
     
     let start = CFAbsoluteTimeGetCurrent()
     var temp = start

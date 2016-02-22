@@ -11,7 +11,7 @@ import XCTest
 
 class BasicTrieTests: XCTestCase {
 
-    typealias TestTrie = Trie<Int,String>
+    typealias TestTrie = TrieStruct<Int,String>
     
     func testTailTrieInsert() {
         //        var root = TestTrie.Inner(tries: [Int:TestTrie<Int,String>]())

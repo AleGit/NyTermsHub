@@ -104,8 +104,8 @@ extension Node {
     }
 }
 
-func buildNodeTrie<N:Node>(nodes:[N]) -> Trie<SymHop, N> {
-    var trie = Trie<SymHop,N>()
+func buildNodeTrie<N:Node>(nodes:[N]) -> TrieStruct<SymHop, N> {
+    var trie = TrieStruct<SymHop,N>()
     
     for node in nodes {
         let symHopPaths = node.symHopPaths

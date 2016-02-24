@@ -246,7 +246,7 @@ extension TptpPath {
                 break
             }
         }
-        assert(!tptp || (result != nil && !result!.isEmpty), "-tptp was set, but root path is missing or empty")
+        assert(!tptp || (result != nil && !result!.isEmpty), "-tptp_root was set, but root path is missing or empty")
         return result
     }
     
@@ -262,7 +262,7 @@ extension TptpPath {
             return argument
         }
         
-        let message = "neither -tptp nor TPTP_ROOT were set"
+        let message = "neither argument -tptp_root nor environment variable TPTP_ROOT were set"
         assert(false,message)
         let defaultTptpRootPath = "/Users/Shared/TPTP"
         print(message, defaultTptpRootPath)

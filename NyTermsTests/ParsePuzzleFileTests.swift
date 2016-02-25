@@ -14,7 +14,7 @@ class ParsePuzzleFileTests: XCTestCase {
     ///
     /// Who killed Aunt Agatha?
     func testParsePUZ001m1() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
+        let path = "PUZ001-1".p
         
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
@@ -35,8 +35,8 @@ class ParsePuzzleFileTests: XCTestCase {
             XCTAssertTrue(root.isClause)
         }
         
-        XCTAssertEqual(10, roots.countMatches { $0.isHornClause })
-        XCTAssertEqual(5, roots.countMatches { $0.isUnitClause })
+        XCTAssertEqual(10, roots.count { $0.isHornClause })
+        XCTAssertEqual(5, roots.count { $0.isUnitClause })
         XCTAssertEqual(21, roots.reduce(0) { $0! + $1.nodes!.count })
     }
     
@@ -44,7 +44,7 @@ class ParsePuzzleFileTests: XCTestCase {
     ///
     /// includes Axioms/PUZ004-0.ax
     func testParsePUZ051m1() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p"
+        let path = "PUZ051-1".p
         
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(2, result.count)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-func extract<T>(trie:Trie<SymHop, T>, path:TermPath) -> Set<T>? {
+func extract<T>(trie:TrieStruct<SymHop, T>, path:SymHopPath) -> Set<T>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
@@ -19,7 +19,7 @@ func extract<T>(trie:Trie<SymHop, T>, path:TermPath) -> Set<T>? {
         return extract(subtrie, path: tail)
     case .Symbol("*"):
         // collect everything
-        return Set(trie.subtries.flatMap { $0.1.payload })
+        return Set(trie.tries.flatMap { $0.1.payload })
         
     default:
         // collect variable and exact match
@@ -48,7 +48,7 @@ func extract<T>(trie:Trie<SymHop, T>, path:TermPath) -> Set<T>? {
     
 }
 
-func candidates<T:Hashable>(indexed:Trie<SymHop, T>, term:TptpNode) -> Set<T>? {
+func candidates<T:Hashable>(indexed:TrieStruct<SymHop, T>, term:TptpNode) -> Set<T>? {
     var queryTerm : TptpNode
     switch term.symbol {
     case "~":
@@ -64,7 +64,7 @@ func candidates<T:Hashable>(indexed:Trie<SymHop, T>, term:TptpNode) -> Set<T>? {
     }
     
     
-    guard let (first,tail) = queryTerm.positionPaths.decompose else { return nil }
+    guard let (first,tail) = queryTerm.symHopPaths.decompose else { return nil }
     
     guard var result = extract(indexed, path: first) else { return nil }
     
@@ -83,7 +83,7 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
     var count = 0
     var stepcount = count
     
-    var trie = Trie<SymHop,TptpNode>()
+    var trie = TrieStruct<SymHop,TptpNode>()
     
     let start = CFAbsoluteTimeGetCurrent()
     var temp = start
@@ -97,7 +97,7 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
             }
         }
         
-        for path in newLiteral.positionPaths {
+        for path in newLiteral.symHopPaths {
             trie.insert(path, value: newLiteral)
             
         }
@@ -108,8 +108,6 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
             let total = now - start
             let round = now - temp
             
-            print("\t(\(processed),\(step)) processed in (\(Int(total))s, \(Int(round))s) (\(desc(total,processed)),\(desc(round,step)))",
-                "\(count,count-stepcount) complementaries. ")
             temp = now
             stepcount = count
         }

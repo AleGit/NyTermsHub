@@ -40,13 +40,13 @@ func ==(lhs:SymHop, rhs:SymHop) -> Bool {
     }
 }
 
-typealias TermPath = [SymHop]
-
+typealias SymHopPath = [SymHop]
+typealias SymbolPath = [Symbol]
 
 
 extension Node {
     
-    var positionPaths : [TermPath] {
+    var symHopPaths : [SymHopPath] {
         guard let nodes = self.nodes else {
             // a variable
             return [[.Symbol("*")]]
@@ -57,26 +57,59 @@ extension Node {
             return [[.Symbol(self.symbol)]]
         }
         
-        var positionPaths = [TermPath]()
+        var symHopPaths = [SymHopPath]()
         
-        for (index,subpaths) in (nodes.map { $0.positionPaths }).enumerate() {
+        for (index,subpaths) in (nodes.map { $0.symHopPaths }).enumerate() {
             for subpath in subpaths {
-                positionPaths.append([.Symbol(self.symbol), .Hop(index+1)] + subpath)
+                symHopPaths.append([.Symbol(self.symbol), .Hop(index)] + subpath)
             }
         }
-        return positionPaths
+        return symHopPaths
+    }
+    
+    var symbolPaths : [SymbolPath] {
+        guard let nodes = self.nodes else {
+            // a variable
+            return [["*"]]
+        }
+        
+        guard nodes.count > 0 else {
+            // a constant
+            return [[self.symbol]]
+        }
+        
+        var paths = [[Symbol]]()
+        
+        for (index,subpaths) in (nodes.map { $0.symbolPaths }).enumerate() {
+            for subpath in subpaths {
+                let path = [self.symbol, "\(index)"] + subpath
+                paths.append(path)
+            }
+        }
+        return paths
+    }
+    
+    var preorderPath : SymbolPath {
+        guard let nodes = self.nodes else {
+            return ["*"]
+        }
+        
+        guard nodes.count > 0 else {
+            return [self.symbol]
+        }
+        
+        return nodes.reduce([self.symbol]) { $0 + $1.preorderPath }
+        
+        
     }
 }
 
-
-
-
-func buildNodeTrie<N:Node>(nodes:[N]) -> Trie<SymHop, N> {
-    var trie = Trie<SymHop,N>()
+func buildNodeTrie<N:Node>(nodes:[N]) -> TrieStruct<SymHop, N> {
+    var trie = TrieStruct<SymHop,N>()
     
     for node in nodes {
-        let positionPaths = node.positionPaths
-        for path in positionPaths {
+        let symHopPaths = node.symHopPaths
+        for path in symHopPaths {
             trie.insert(path, value: node)
         }
     }

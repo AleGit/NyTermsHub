@@ -32,8 +32,7 @@ func linearSearch(literals:[TptpNode]) -> (Int,String) {
             let total = now - start
             let round = now - temp
             
-            print("\t(\(processed),\(step)) processed in (\(Int(total))s, \(Int(round))s) (\(desc(total,processed)),\(desc(round,step)))",
-                "\(count,count-stepcount) complementaries. ")
+
             temp = now
             stepcount = count
         }

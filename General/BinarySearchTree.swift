@@ -1,6 +1,6 @@
 import Foundation
 
-/// binary search tree
+/// binary search tree (unused)
 indirect enum BinarySearchTree<Element: Comparable> {
     case Leaf
     case Node(BinarySearchTree<Element>, Element, BinarySearchTree<Element>)

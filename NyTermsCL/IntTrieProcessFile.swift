@@ -14,7 +14,7 @@ func intTrieSearch(literals:[TptpNode]) -> (Int, String) {
     let step = 1000
     var count = 0
     var stepcount = count
-    var trie = Trie<SymHop,Int>()
+    var trie = TrieStruct<SymHop,Int>()
     let start = CFAbsoluteTimeGetCurrent()
     var temp = start
     var processed = 0
@@ -30,7 +30,7 @@ func intTrieSearch(literals:[TptpNode]) -> (Int, String) {
 */
             count += candis.count // count without unifiable check
         }
-        for path in newLiteral.positionPaths {
+        for path in newLiteral.symHopPaths {
             trie.insert(path, value: newIndex)
             
         }
@@ -41,8 +41,7 @@ func intTrieSearch(literals:[TptpNode]) -> (Int, String) {
             let total = now - start
             let round = now - temp
             
-            print("\t(\(processed),\(step)) processed in (\(Int(total))s, \(Int(round))s) (\(desc(total,processed)),\(desc(round,step)))",
-                "\(count,count-stepcount) complementaries. ")
+           
             temp = now
             stepcount = count
         }

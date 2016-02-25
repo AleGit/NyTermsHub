@@ -22,16 +22,16 @@ class NodeTrieTests: XCTestCase {
         super.tearDown()
     }
     
-    func testTermPaths() {
+    func testSymHopPaths() {
         
         let t = "f(X,g(a,b))" as TestNode
-        let tPaths = t.positionPaths
+        let tPaths = t.symHopPaths
         XCTAssertEqual(3, tPaths.count)
         
-        let fxaExpected : [TermPath] = [
-            [.Symbol("f"),.Hop(1), .Symbol("*")],
-            [.Symbol("f"),.Hop(2), .Symbol("g"),.Hop(1), .Symbol("a")],
-            [.Symbol("f"),.Hop(2), .Symbol("g"),.Hop(2), .Symbol("b")]
+        let fxaExpected : [SymHopPath] = [
+            [.Symbol("f"),.Hop(0), .Symbol("*")],
+            [.Symbol("f"),.Hop(1), .Symbol("g"),.Hop(0), .Symbol("a")],
+            [.Symbol("f"),.Hop(1), .Symbol("g"),.Hop(1), .Symbol("b")]
         ]
         
         XCTAssertEqual(fxaExpected.first!, tPaths.first!)
@@ -41,7 +41,7 @@ class NodeTrieTests: XCTestCase {
     
     
     func testTriePuz001m1() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p"
+        let path = "PUZ001-1".p
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
         
@@ -54,10 +54,10 @@ class NodeTrieTests: XCTestCase {
         for clause in clauses {
             print("clause=\(clause)")
             
-            for path in clause.positionPaths {
+            for path in clause.symHopPaths {
                 print("path=\(path)")
                 let subtrie = trie[path]!
-                let values = subtrie.values
+                let values = subtrie.valueSet
                 let payload = subtrie.payload
                 XCTAssertTrue(payload.isSupersetOf(values))
                 print("values=\(values)")

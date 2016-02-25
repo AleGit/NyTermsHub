@@ -9,68 +9,6 @@
 import XCTest
 @testable import NyTerms
 
-extension CFAbsoluteTime {
-    static let hour = 3600.0
-    static let minute = 60.0
-    static let second = 1.0
-    static let ms = 0.001
-    static let µs = 0.000_001
-    static let ns = 0.000_000_001
-    static let units = [
-        hour : "h",
-        minute : "m",
-        second : "s",
-        ms: "ms",
-        µs : "µs",
-        ns : "ns"
-    ]
-    
-    var niceTimeDescription : String {
-        var t = self
-        switch self {
-        case _ where floor(t/CFAbsoluteTime.hour) > 0:
-            t += 0.5*CFAbsoluteTime.minute // round minute
-            let hour = t/CFAbsoluteTime.hour
-            t -= floor(hour)*CFAbsoluteTime.hour
-            let minute = t/CFAbsoluteTime.minute
-            return "\(Int(hour))\(CFAbsoluteTime.units[CFAbsoluteTime.hour]!)" + " \(Int(minute))\(CFAbsoluteTime.units[CFAbsoluteTime.minute]!)"
-            
-        case _ where floor(t/CFAbsoluteTime.minute) > 0:
-            t += 0.5*CFAbsoluteTime.second // round second
-            let minute = t/CFAbsoluteTime.minute
-            t -= floor(minute)*CFAbsoluteTime.minute
-            let second = t/CFAbsoluteTime.second
-            return "\(Int(minute))\(CFAbsoluteTime.units[CFAbsoluteTime.minute]!)" + " \(Int(second))\(CFAbsoluteTime.units[CFAbsoluteTime.second]!)"
-            
-        case _ where floor(t/CFAbsoluteTime.second) > 0:
-            t += 0.5*CFAbsoluteTime.ms // round ms
-            let second = t/CFAbsoluteTime.second
-            t -= floor(second)*CFAbsoluteTime.second
-            let ms = t/CFAbsoluteTime.ms
-            return "\(Int(second))\(CFAbsoluteTime.units[CFAbsoluteTime.second]!)" + " \(Int(ms))\(CFAbsoluteTime.units[CFAbsoluteTime.ms]!)"
-            
-        case _ where floor(t/CFAbsoluteTime.ms) > 0:
-            t += 0.5*CFAbsoluteTime.µs // round µs
-            let ms = t/CFAbsoluteTime.ms
-            t -= floor(ms)*CFAbsoluteTime.ms
-            let µs = t/CFAbsoluteTime.µs
-            return "\(Int(ms))\(CFAbsoluteTime.units[CFAbsoluteTime.ms]!)" + " \(Int(µs))\(CFAbsoluteTime.units[CFAbsoluteTime.µs]!)"
-            
-        case _ where floor(t/CFAbsoluteTime.µs) > 0:
-            t += 0.5*CFAbsoluteTime.ns // round µs
-            let µs = t/CFAbsoluteTime.µs
-            t -= floor(µs)*CFAbsoluteTime.µs
-            let ns = t/CFAbsoluteTime.ns
-            return "\(Int(µs))\(CFAbsoluteTime.units[CFAbsoluteTime.µs]!)" + " \(Int(ns))\(CFAbsoluteTime.units[CFAbsoluteTime.ns]!)"
-            
-        default:
-            let ns = t/CFAbsoluteTime.ns
-            return "\(ns)\(CFAbsoluteTime.units[CFAbsoluteTime.ns]!)"
-            
-        }
-    }
-}
-
 class ParsePerformanceTests: XCTestCase {
     var i = 0
     var t0 = 0.0
@@ -95,7 +33,7 @@ class ParsePerformanceTests: XCTestCase {
     var runtime: String {
         
         let now = CFAbsoluteTimeGetCurrent()
-        let rt = (now-ti).niceTimeDescription
+        let rt = (now-ti).timeIntervalDescriptionMarkedWithUnits
         ti = now
         return rt
     
@@ -106,7 +44,7 @@ class ParsePerformanceTests: XCTestCase {
     
     /// ~ 1.2 ms on iMac24/7
     func testPerformanceLCL129cnf1() {
-        let path = "/Users/Shared/TPTP/Problems/LCL/LCL129-1.p"         // 2.1K
+        let path = "LCL129-1".p         // 2.1K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             print(self.runtime, self.i++, path)
@@ -119,7 +57,7 @@ class ParsePerformanceTests: XCTestCase {
     
     /// ~ 3 ms on iMac24/7
     func testPerformanceSYN000cnf2() {
-        let path = "/Users/Shared/TPTP/Problems/SYN/SYN000-2.p"         // 3.0K
+        let path = "SYN000-2".p         // 3.0K
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -134,7 +72,7 @@ class ParsePerformanceTests: XCTestCase {
     
     ///  32 ms on iMac24/7
     func testPerformancePUZ051cfn() {
-        let path = "/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p"         // 1.9K
+        let path = "PUZ051-1".p         // 1.9K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             print(self.runtime, self.i++, path)
@@ -148,7 +86,7 @@ class ParsePerformanceTests: XCTestCase {
     
     /// ~ 3.3 s on iMac24/7
     func testPerformanceHWV074cnf1() {
-        let path = "/Users/Shared/TPTP/Problems/HWV/HWV074-1.p"         // 996K
+        let path = "HWV074-1".p         // 996K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             print(self.runtime, self.i++, path)
@@ -162,7 +100,7 @@ class ParsePerformanceTests: XCTestCase {
     /// ~ 3.4 s on iMac24/7
     /// < 90 MB
     func testPerformanceHWV105cnf1() {
-        let path = "/Users/Shared/TPTP/Problems/HWV/HWV105-1.p"         // 2.0M
+        let path = "HWV105-1".p         // 2.0M
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             print(self.runtime, self.i++, path)
@@ -176,7 +114,7 @@ class ParsePerformanceTests: XCTestCase {
     /// ~ 5.9 s on iMac24/7;
     /// < 150 MB
     func testPerformanceHWV062fof1 () {
-        let path = "/Users/Shared/TPTP/Problems/HWV/HWV062+1.p"         // 2.0M
+        let path = "HWV062+1".p         // 2.0M
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -191,7 +129,7 @@ class ParsePerformanceTests: XCTestCase {
     /// < 123 s on iMac24/7;
     /// < 2.7 GB
     func testPerformanceHWV134fof1 () {
-        let path = "/Users/Shared/TPTP/Problems/HWV/HWV134+1.p"         // 84 M
+        let path = "HWV134+1".p         // 84 M
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
@@ -203,10 +141,11 @@ class ParsePerformanceTests: XCTestCase {
         }
     }
 
-    /// estimate: 600 s on iMac24/7, 400 s on Mm;
+    /// estimate: 600 s on iMac24/7, 
+    /// 262 s on Mm;
     /// < 10 GB
     func testPerformanceHWV134cnf1 () {
-        let path = "/Users/Shared/TPTP/Problems/HWV/HWV134-1.p"         // 264M
+        let path = "HWV134-1".p         // 264M
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)

@@ -99,5 +99,39 @@ struct Yices {
         return yices_ite(c,t,f)
     }
     
+    static func big_or(ts : [term_t]) -> term_t {
+      return ts.reduce(bot(), combine: or)
+    }
+    
+    static func big_and(ts : [term_t]) -> term_t {
+        return ts.reduce(top(), combine: and)
+    }
+    
+    static func gt(t1:term_t, t2:term_t) -> term_t  {
+        return yices_arith_gt_atom(t1,t2)
+    }
+    
+    static func ge(t1:term_t, t2:term_t) -> term_t  {
+        return yices_arith_geq_atom(t1,t2)
+    }
+    
+    static func add(t1:term_t, t2:term_t) -> term_t  {
+        return yices_add(t1, t2)
+    }
+    
+    static var zero: term_t {
+        return yices_int32(0)
+    }
+    
+    static var one: term_t {
+        return yices_int32(1)
+    }
+    
+    /*static func eval_int(t: term_t, m: model_t){
+        term_t val;
+        return yices_get_int32_value(m, t, val)
+        return val;
+    }*/
+    
 }
 

@@ -20,20 +20,22 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("LCL129-1".p!)
         XCTAssertEqual(5,literals.count)
         
+        var trie = SymHopTrie()
         self.measureBlock {
-            var trie = SymHopTrie()
             trie.fill(literals) { $0.symHopPaths }
         }
+        XCTAssertEqual(literals.count, trie.payload.count)
     }
     
     func testBuildSymbolTrieLCL129() {
         let literals = TptpNode.literals("LCL129-1".p!)
         XCTAssertEqual(5,literals.count)
         
+        var trie = SymbolTrie()
         self.measureBlock {
-            var trie = SymbolTrie()
             trie.fill(literals)  { $0.symbolPaths }
         }
+        XCTAssertEqual(literals.count, trie.payload.count)
     }
     
     // MARK: SYN000-1 (27)

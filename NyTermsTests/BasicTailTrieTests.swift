@@ -13,7 +13,7 @@ class BasicTailTrieTests: XCTestCase {
     
     typealias TestTrie = TailTrie<Int,String>
     
-    func testTailTrieInsert() {
+    func testTrieInsert() {
 //        var root = TestTrie.Inner(tries: [Int:TestTrie<Int,String>]())
 //        root.insert([1],value:"B")
         var root = TestTrie(path: [1], value: "B")
@@ -47,7 +47,7 @@ class BasicTailTrieTests: XCTestCase {
         
     }
     
-    func testTailTrieDelete() {
+    func testTrieDelete() {
         var root = TestTrie(path: [1], value: "B")
         XCTAssertFalse(root.isEmpty)
         
@@ -80,7 +80,7 @@ class BasicTailTrieTests: XCTestCase {
         
     }
     
-    func testTailTrieRetrieve() {
+    func testTrieRetrieve() {
         var root = TestTrie(path: [1], value: "B")
         root.insert([1],value:"A")
         root.insert([1],value:"A")

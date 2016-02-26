@@ -9,11 +9,11 @@
 import XCTest
 @testable import NyTerms
 
-class BasicTrieTests: XCTestCase {
+class BasicTrieStructTests: XCTestCase {
 
     typealias TestTrie = TrieStruct<Int,String>
     
-    func testTailTrieInsert() {
+    func testTrieInsert() {
         //        var root = TestTrie.Inner(tries: [Int:TestTrie<Int,String>]())
         //        root.insert([1],value:"B")
         var root = TestTrie(path: [1], value: "B")
@@ -30,6 +30,7 @@ class BasicTrieTests: XCTestCase {
         root.insert([0,2], value:"F")
         root.insert([0,2], value:"G")
         
+        XCTAssertEqual(7, root.payload.count)
         XCTAssertNotEqual(root, copy)
         
         XCTAssertNotEqual(root, copy)
@@ -47,7 +48,7 @@ class BasicTrieTests: XCTestCase {
         
     }
     
-    func testTailTrieDelete() {
+    func testTrieDelete() {
         var root = TestTrie(path: [1], value: "B")
         XCTAssertFalse(root.isEmpty)
         
@@ -80,7 +81,7 @@ class BasicTrieTests: XCTestCase {
         
     }
     
-    func testTailTrieRetrieve() {
+    func testTrieRetrieve() {
         var root = TestTrie(path: [1], value: "B")
         root.insert([1],value:"A")
         root.insert([1],value:"A")

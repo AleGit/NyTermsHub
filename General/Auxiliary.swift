@@ -231,7 +231,7 @@ extension TptpPath {
         return self.tptpPathTo(include.fileName)
     }
     
-    private static func tptpRootPathFromProcessArguments () -> TptpPath? {
+    private static var tptpRootPathFromProcessArguments : TptpPath? {
         var result : TptpPath?
         var tptp = false
         for argument in Process.arguments {
@@ -250,23 +250,31 @@ extension TptpPath {
         return result
     }
     
-    private static func tptpRootPathFromEnvironement () -> TptpPath? {
+    private static var tptpRootPathFromEnvironement : TptpPath? {
         let result = NSProcessInfo.processInfo().environment["TPTP_ROOT"]
         assert(result == nil || !result!.isEmpty,"TPTP_ROOT was set, but root path is empty")
         return result
     }
     
+    private static let tptpRootPathDefault = "/Users/Shared/TPTP"
+    
     /// Get root path to tptp files from process arguments or environment.
     static let tptpRootPath : TptpPath = {
-        if let argument = TptpPath.tptpRootPathFromProcessArguments() ?? TptpPath.tptpRootPathFromEnvironement() {
-            return argument
+        guard let result = TptpPath.tptpRootPathFromProcessArguments ?? TptpPath.tptpRootPathFromEnvironement else {
+            let message = "Neither argument -tptp_root nor environment variable TPTP_ROOT were set."
+            assert(false,message)
+            print(message)
+            return tptpRootPathDefault
         }
         
-        let message = "neither argument -tptp_root nor environment variable TPTP_ROOT were set"
-        assert(false,message)
-        let defaultTptpRootPath = "/Users/Shared/TPTP"
-        print(message, defaultTptpRootPath)
-        return defaultTptpRootPath
+        guard !result.isEmpty else {
+            let message = "Tptp root path was empty."
+            assert(false,message)
+            print(message)
+            return tptpRootPathDefault
+        }
+        
+        return result
     }()
     
     /// construct absolute path from file name (without local path or extension)

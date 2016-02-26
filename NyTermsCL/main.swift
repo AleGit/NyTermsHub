@@ -11,6 +11,7 @@ print("NyTerms with \(Yices.info)")
 print("TPTP_ROOT",TptpPath.tptpRootPath)
 
 BuildTries.demo()
+// BuildTries.demo134()
 // ParseFiles.demo()
 
 //let key = "hwv066"

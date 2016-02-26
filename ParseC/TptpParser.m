@@ -256,6 +256,7 @@ TptpRole make_role(const char* cstring) {
 
 #pragma mark - parse
 
+/// 'private'
 int parse_file(FILE *file,TptpParseResult *result) {
     assert(file != NULL);
     
@@ -284,7 +285,8 @@ int parse_file(FILE *file,TptpParseResult *result) {
         fclose(file);
     }
     else {
-        code = -1;
+        assert(false);  // impossible
+        code = errno;
     }
     
     [result appendFormulae:formulae];

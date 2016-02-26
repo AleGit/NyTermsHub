@@ -1,4 +1,4 @@
-To build and run the the app, the command line toounit tests some data and libraries have to be installed.
+To build and run the the app, the command line tool, or the unit tests some data and libraries have to be installed.
 
 Flex and Yacc
 ====
@@ -14,6 +14,8 @@ that contains problems, axiom sets, documents, and utilities.
 Unpack the archive, 
 move the resulting directory to any place you like, 
 and create a symbolic link `TPTP` to the directory in `/Users/Shared/`.
+(Or you edit the xcode scheme to set -tptp_root or TPTP_ROOT 
+to the path where directories 'Axioms' and 'Problems' are residing)
 
 
     
@@ -21,6 +23,8 @@ and create a symbolic link `TPTP` to the directory in `/Users/Shared/`.
     tar -xzf ~/Downloads/TPTP-v6.3.0.tgz 
     tar -xz ~/Downloads/TPTP-v6.3.0.tar
     ln -s TPTP-v6.3.0 TPTP
+
+The tptp root path default is `/Users/Shared/TPTP`.
 
 Yices
 =====

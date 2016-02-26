@@ -32,7 +32,13 @@ func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:
     var includes = parseResult.includes
     
     for include in includes {
-        let includePath = path.tptpPathTo(include)
+        guard let includePath = path.tptpPathTo(include) else {
+            assert(false,"include \(include) is not accessible")
+            let err = errorNumberAndDescription()
+            results.append(Int(err.0))
+            
+            continue
+        }
         let (includeResults,includeFormulae,includeIncludes) = parse(path:includePath)
         assert(includeIncludes.count == 0, "Include file '\(includePath)' contains \(includeIncludes.count). \(includeIncludes)")
         results += includeResults

@@ -12,14 +12,14 @@ import XCTest
 class TptpPathTests: XCTestCase {
 
     func testTptpRootPath() {
-        let expected = "/Users/Shared/TPTP"
-        let actual = TptpPath.tptpRootPath
-        XCTAssertEqual(expected, actual,"arbitrary root paths are not supported yet.")
+        let supportedPaths = [ "/Users/Shared/TPTP", "/Users/Shared/TPTP-v6.3.0"]
+        let actualRootPath = TptpPath.tptpRootPath
+        XCTAssertTrue(supportedPaths.contains(actualRootPath),"\(actualRootPath) is not supported yet.")
     }
     
-    func testP() {
-        XCTAssertNotNil("HWV001-1".p)
-        XCTAssertNil("HWV999-9".p)
+    func testAccessibleProblem() {
+        XCTAssertNotNil("HWV001-1".p, "Problem file must be accessible.")
+        XCTAssertNil("HWV999-9".p, "File must not exist.")
     }
 
 }

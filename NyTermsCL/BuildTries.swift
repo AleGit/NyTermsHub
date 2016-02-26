@@ -34,7 +34,7 @@ struct BuildTries {
     
     static func demo134() {
         let name = "HWV134-1"
-        let path = name.p
+        let path = name.p! // file must be accessible
         let (literals, duration) = measure {
             TptpNode.literals(path)
         }
@@ -51,8 +51,10 @@ struct BuildTries {
     }
     
     static func demo() {
-        for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1" ] {
-            let path = name.p
+        for name in [ "LCL129-1", "SYN000-2", "PUZ051-1",
+            // "HWV074-1", "HWV105-1" 
+            ] {
+            let path = name.p! // file must be accessible
             let (literals, duration) = measure {
                 TptpNode.literals(path)
             }

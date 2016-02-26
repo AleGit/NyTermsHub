@@ -11,7 +11,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     /// Parse LCL129-1.p and construct tree representation. ~8 MB, 8 ms
     func testParseLCL129cnf1() {
-        let path = "LCL129-1".p
+        let path = "LCL129-1".p!
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
@@ -25,7 +25,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     /// Parse HWV105-1.p and construct tree representation. ~90 MB, 4s
     func testParseHWV105cnf1() {
-        let path = "HWV105-1".p
+        let path = "HWV105-1".p!
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
@@ -43,7 +43,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     /// Parse HWV062+1.p and construct tree representation. ~285 MB, 30s
     func testParseHWV062fof1() {
-        let path = "HWV062+1".p
+        let path = "HWV062+1".p!
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
@@ -159,7 +159,7 @@ class ParseBasicSyntaxTests: XCTestCase {
     
     /// Parse HWV134+1.p and construct tree representation. ~3 GB, 120s
     func testParseHWV134fof1() {
-        let path = "HWV134+1".p
+        let path = "HWV134+1".p!
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
@@ -173,7 +173,7 @@ class ParseBasicSyntaxTests: XCTestCase {
 
     /// Parse HWV134-1.p and construct tree representation. ~10 GB, 600s
     func testParseHWV134cnf1() {
-        let path = "HWV134-1".p
+        let path = "HWV134-1".p!
         let (result,tptpFormulae,tptpIncludes) = parse(path:path)
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])

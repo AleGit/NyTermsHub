@@ -241,7 +241,7 @@ class YicesSatTrials : XCTestCase {
     func testTryPUZ001cnf1() {
         
         // parse
-        let path = "PUZ001-1".p
+        let path = "PUZ001-1".p!
         
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
@@ -367,7 +367,7 @@ class YicesSatTrials : XCTestCase {
     func testTryHWV134cnf1() {
         let startText = "will start"
         let completionText = "has finished"
-        let path = "HWV134-1".p
+        let path = "HWV134-1".p!
         
         var ts = [(NSDate(),"parse(path:)",startText)]
         print(ts.last!)

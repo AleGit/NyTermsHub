@@ -8,7 +8,7 @@ struct ParseFiles {
     static func demo() {
         
         for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1", "HWV134-1" ] {
-            let path = name.p
+            let path = name.p!  // file must be accessible
             
             let (formulae, duration) = measure {
                 TptpNode.roots(path)

@@ -10,6 +10,16 @@ func measure<R>(f:()->R) -> (R, CFAbsoluteTime){
     return (result, end-start)
 }
 
+func errorNumberAndDescription() -> (Int32,String) {
+    let errorNumber = errno
+    let cstring = strerror(errorNumber) // will always return a valid c string.
+    guard let errorString = String.fromCString(cstring) else {
+        let message = "Invalid Error Number: \(errorNumber) (this should be impossible)"
+        return (errorNumber,message)
+    }
+    return (errorNumber,errorString)
+}
+
 // MARK: -
 
 extension Range where Element : Comparable {
@@ -212,18 +222,56 @@ extension TptpPath {
             }
         }
         
+        assert(localPath.count>0)
+        assert(localPath.first == "Problems" || localPath.first == "Axioms")
+        
         return (NSString.pathWithComponents(rootPath), NSString.pathWithComponents(localPath), (self as NSString).lastPathComponent)
     }
     
-    /// TPTP problem files can include axioms, i.e. the local path to an axiom file.
-    /// It is assumed that `file` share the same root path as `self`.
+    /// TPTP problem files can include axioms, i.e. a path to an axiom file.
+    /// 1. `file` is absolute path (untested)
+    /// 2. `file` shares path prefix with `self` (default)
+    /// 3. `file` is relative tptp root path. (untested)
     func tptpPathTo(file:TptpPath) -> TptpPath {
+        
+        // 1, `file` is absolute path
+        
+        if file.isAccessibleFile {
+            assert(false,"\(self).tptpPathTo(file:\(file)) with absolute path is still an untested use case.")
+            return file // allready a tptpPath, i.e. a absolute path to a file
+        }
+        
         let (root,_,_) = self.tptpPathComponents()
-        let (_,local,last) = file.tptpPathComponents()
         
-        guard !local.isEmpty else { return (root as NSString).stringByAppendingPathComponent(last) }
+        assert(root==TptpPath.tptpRootPath,"\(self).tptpPathTo(file:\(file)): Files outside the tptp root path are still an untested use case.")
         
-        return ((root as NSString).stringByAppendingPathComponent(local) as NSString).stringByAppendingPathComponent(last)
+        let (empty,axiom,last) = file.tptpPathComponents()
+        assert(empty.isEmpty,"untested use case")
+        assert(axiom.hasPrefix("Axiom"),"untested use case")
+        
+        // 2. `file` shares path prefix with `self`
+        
+        let path = axiom.isEmpty ? (root as NSString).stringByAppendingPathComponent(last)
+            : ((root as NSString).stringByAppendingPathComponent(axiom) as NSString).stringByAppendingPathComponent(last)
+        
+        print(self,"tptpPathTo(file:",file,") ->",path)
+        
+        if path.isAccessibleFile { return path }
+        
+        assert(false,"untested use case")
+        
+        // 3. `file` is relative to tptp root path.
+        
+        let rootPath = axiom.isEmpty ? (TptpPath.tptpRootPath as NSString).stringByAppendingPathComponent(last)
+            : ((TptpPath.tptpRootPath as NSString).stringByAppendingPathComponent(axiom) as NSString).stringByAppendingPathComponent(last)
+        
+        if rootPath.isAccessibleFile { return rootPath }
+        
+        // `file` is not accessible
+        
+        assert(false,"\(self).tptpPathTo(file:\(file)): Neither '\(path)' nor '\(rootPath)' are accessible.")
+        
+        return ""
     }
     
     /// Find path to tptp include file (usually an axiom).
@@ -231,29 +279,42 @@ extension TptpPath {
         return self.tptpPathTo(include.fileName)
     }
     
+    private static func accessibleDirectory(path:TptpPath?, label : String = "no label") -> TptpPath? {
+        guard let path = path else {
+            let message = "\(label) was set, but root path is missing or empty."
+            assert(false, message)
+            return nil
+        }
+        
+        guard path.isAccessibleDirectory else {
+            let message = "Directory '\(path)' is not an accessible. (\(label))"
+            assert(false, message)
+            return nil
+        }
+        
+        return path
+    }
+    
     private static var tptpRootPathFromProcessArguments : TptpPath? {
-        var result : TptpPath?
+        let name = "-tptp_root"
+        
         var tptp = false
         for argument in Process.arguments {
             if tptp {
-                print("-tptp_root \(argument)")
-                result = argument                     // last argument was -tptp
+                return accessibleDirectory(argument, label:name)    // last argument was -tptp_root
             }
-            if argument == "-tptp_root" {
+            if argument == name {
                 tptp = true                             // return next argument
             }
-            if result != nil {
-                break
-            }
         }
-        assert(!tptp || (result != nil && !result!.isEmpty), "-tptp_root was set, but root path is missing or empty")
-        return result
+        
+        return nil
     }
     
     private static var tptpRootPathFromEnvironement : TptpPath? {
-        let result = NSProcessInfo.processInfo().environment["TPTP_ROOT"]
-        assert(result == nil || !result!.isEmpty,"TPTP_ROOT was set, but root path is empty")
-        return result
+        let name = "TPTP_ROOT"
+        let result = NSProcessInfo.processInfo().environment[name]
+        return accessibleDirectory(result, label: name)
     }
     
     private static let tptpRootPathDefault = "/Users/Shared/TPTP"
@@ -274,12 +335,19 @@ extension TptpPath {
             return tptpRootPathDefault
         }
         
+        guard result.isAccessibleDirectory else {
+            let message = "Tptp root path \(result) is not an accessible directory."
+            assert(false,message)
+            print(message)
+            return tptpRootPathDefault
+        }
+        
         return result
     }()
     
-    /// construct absolute path from file name (without local path or extension)
+    /// construct absolute path from problem file name (without local path or extension)
     /// with tptp root path and convention.
-    var p:String {
+    var p:TptpPath? {
         assert(self.rangeOfString("/") == nil,"\(self)")    // assert file name only
         assert(!self.hasSuffix(".p"),"\(self)")    // assert without extension p
         assert(!self.hasSuffix(".ax"),"\(self)")    // assert without extension ax
@@ -295,6 +363,32 @@ extension TptpPath {
             ABC, // 'Problems/ABC' where ABC matches the first three letters of the file name
             self]) // self is the file name without extension, e.g. XYZ001-1
         let full = (path as NSString).stringByAppendingPathExtension("p")!
+        
+        guard full.isAccessibleFile else {
+            let (errorNumber,errorString) = errorNumberAndDescription()
+            print(errorNumber,errorString)
+            return nil
+        }
+        
         return full // e.g. /Users/Shared/TPTP/Problems/XYZ/XYZ001-1.p
+    }
+    
+    private var isAccessibleDirectory : Bool {
+        let d = opendir(self)
+        guard d != nil else {
+            return false
+        }
+        closedir(d)
+        return true
+    }
+    
+    private var isAccessibleFile : Bool {
+        let f = fopen(self,"r")
+        guard f != nil else {
+            return false
+        }
+        fclose(f)
+        return true
+        
     }
 }

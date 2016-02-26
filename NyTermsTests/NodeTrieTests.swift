@@ -41,7 +41,7 @@ class NodeTrieTests: XCTestCase {
     
     
     func testTriePuz001m1() {
-        let path = "PUZ001-1".p
+        let path = "PUZ001-1".p!
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)
         

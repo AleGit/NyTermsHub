@@ -21,5 +21,19 @@ class TptpPathTests: XCTestCase {
         XCTAssertNotNil("HWV001-1".p, "Problem file must be accessible.")
         XCTAssertNil("HWV999-9".p, "File must not exist.")
     }
+    
+    func testValidInclude() {
+        let string = "include('Axioms/SYN000-0.ax',[ia1,ia3])."
+        let result = parse(string:string)
+        XCTAssertEqual(2, result.formulae.count)
+        print(result)
+    }
+
+    func testMissingInclude() {
+        let string = "include('Axioms/SYN999-9.ax',[ia1,ia3])."
+        let result = parse(string:string)
+        XCTAssertEqual(0, result.formulae.count)
+        print(result)
+    }
 
 }

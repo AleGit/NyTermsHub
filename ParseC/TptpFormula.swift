@@ -16,24 +16,31 @@ class TptpParseResult: NSObject {
     }
 }
 
+typealias TptpParseResultTriple = (status:[Int], formulae:[TptpFormula], includes:[TptpInclude])
+
 /// Parses the content of the tptp file at absolute `path`.
 /// When that tptp file contains *include* lines multiple files will be read.
 /// It returns a triple with the list of parse status, 
 /// the list for successfully parsed *annotated formulae*
 /// and the list of all *include* lines.
-func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:[TptpInclude]) {
+func parse(path path:String) -> TptpParseResultTriple {
     
     let parseResult = TptpParseResult()
-    let result = parse_path(path,parseResult)
-    assert(result == 0, "parse path '\(path)' failed with code = \(result)")
+    let status = parse_path(path,parseResult)
     
-    var results = [Int(result)]
+    return process(status, path:path, parseResult:parseResult)
+}
+
+private func process(status:Int32, path:String, parseResult:TptpParseResult) -> TptpParseResultTriple {
+    
+    assert(status == 0, "parse path '\(path)' failed with code = \(status)")
+    
+    var results = [Int(status)]
     var formulae = parseResult.formulae
     var includes = parseResult.includes
     
     for include in includes {
         guard let includePath = path.tptpPathTo(include) else {
-            assert(false,"include \(include) is not accessible")
             let err = errorNumberAndDescription()
             results.append(Int(err.0))
             
@@ -58,15 +65,12 @@ func parse(path path:String) -> (status:[Int], formulae:[TptpFormula], includes:
 
 /// Parses the content of `string` which may contain multiple annotated formulae, but must not contain include lines.
 /// It returns the list of successfully parsed *annotated formulae*.
-func parse(string string:String) -> [TptpFormula] {
+func parse(string string:String) -> TptpParseResultTriple {
     
     let parseResult = TptpParseResult()
-    let result = parse_string(string,parseResult)
-    
-    assert(result == 0)
-    assert(parseResult.includes.count == 0)
+    let status = parse_string(string,parseResult)
 
-    return parseResult.formulae
+    return process(status, path:TptpPath.tptpRootPath, parseResult:parseResult)
 }
 
 
@@ -112,7 +116,7 @@ extension TptpFormula : StringLiteralConvertible {
     /// - fof(pel55_1,axiom, ( ? [X] : ( lives(X) & killed(X,agatha) ) )).
     convenience init(stringLiteral value: StringLiteralType) {
         
-        let formulae = parse(string:value)
+        let formulae = parse(string:value).formulae
         assert(formulae.count == 1)
         
         switch formulae.count {

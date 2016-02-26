@@ -45,8 +45,8 @@ extension TptpPath {
             }
         }
         
-        assert(localPath.count > 0)
-        assert(localPath.first == "Problems" || localPath.first == "Axioms")
+        // assert(localPath.count > 0)
+        // assert(localPath.first == "Problems" || localPath.first == "Axioms")
         
         return (NSString.pathWithComponents(rootPath), NSString.pathWithComponents(localPath), (self as NSString).lastPathComponent)
     }
@@ -66,7 +66,6 @@ extension TptpPath {
         
         let (root,_,_) = self.tptpPathComponents()
         
-        assert(root == TptpPath.tptpRootPath,"\(self).tptpPathTo(file:\(file)): use case with paths outside of root path is untested.")
         
         let (empty,axiom,last) = file.tptpPathComponents()
         
@@ -82,8 +81,6 @@ extension TptpPath {
         
         if path.isAccessibleFile { return path }
         
-        assert(false,"untested use case: \(self) does not share root path with \(file)")
-        
         // 3. `file` is relative to tptp root path.
         
         let rootPath = axiom.isEmpty ? (TptpPath.tptpRootPath as NSString).stringByAppendingPathComponent(last)
@@ -92,8 +89,6 @@ extension TptpPath {
         if rootPath.isAccessibleFile { return rootPath }
         
         // `file` is not accessible
-        
-        assert(false,"\(self).tptpPathTo(file:\(file)): Neither '\(path)' nor '\(rootPath)' are accessible.")
         
         return nil
     }

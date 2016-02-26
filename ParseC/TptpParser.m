@@ -258,7 +258,7 @@ TptpRole make_role(const char* cstring) {
 
 /// 'private'
 int parse_file(FILE *file,TptpParseResult *result) {
-    assert(file != NULL);
+    // assert(file != NULL);
     
     NSMutableArray *storage = [NSMutableArray array];
     NSMutableArray<TptpFormula*>* formulae = [NSMutableArray array];
@@ -285,7 +285,7 @@ int parse_file(FILE *file,TptpParseResult *result) {
         fclose(file);
     }
     else {
-        assert(false);  // impossible
+        // assert(false);  // impossible
         code = errno;
     }
     

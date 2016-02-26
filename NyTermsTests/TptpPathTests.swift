@@ -22,18 +22,67 @@ class TptpPathTests: XCTestCase {
         XCTAssertNil("HWV999-9".p, "File must not exist.")
     }
     
-    func testValidInclude() {
+    func testParseInclude() {
         let string = "include('Axioms/SYN000-0.ax',[ia1,ia3])."
         let result = parse(string:string)
         XCTAssertEqual(2, result.formulae.count)
         print(result)
     }
 
-    func testMissingInclude() {
+    func testParseIncludeNoFile() {
         let string = "include('Axioms/SYN999-9.ax',[ia1,ia3])."
         let result = parse(string:string)
         XCTAssertEqual(0, result.formulae.count)
         print(result)
+    }
+    
+    func testPathSampleA() {
+        let path = "/Users/Shared/SampleA.p"
+        let result = parse(path:path)
+        XCTAssertEqual(19, result.formulae.count)
+        print(result)
+        
+    }
+    
+    func testPathToAxiomB() {
+        let path = "/Users/Shared/SampleA.p"
+        let file = "AxiomB.ax"
+        let expected = "/Users/Shared/AxiomB.ax"
+        let actual = path.tptpPathTo(file)
+        XCTAssertEqual(expected,actual)
+        
+        let result = parse(path:expected)
+        XCTAssertEqual(3, result.formulae.count)
+    }
+    
+    func testPathToAxiomC() {
+        let path = "/Users/Shared/SampleA.p"
+        let file = "Axioms/AxiomC.ax"
+        let expected = "/Users/Shared/Axioms/AxiomC.ax"
+        let actual = path.tptpPathTo(file)
+        XCTAssertEqual(expected,actual)
+        
+        let result = parse(path:expected)
+        XCTAssertEqual(3, result.formulae.count)
+    }
+    
+    func testPathToAxiomS() {
+        
+        let path = "/Users/Shared/SampleA.p"
+        let file = "Axioms/SYN000-0.ax"
+        let expected = TptpPath.tptpRootPath + "/Axioms/SYN000-0.ax"
+        let actual = path.tptpPathTo(file)
+        XCTAssertEqual(expected,actual)
+        
+        let result = parse(path:expected)
+        XCTAssertEqual(3, result.formulae.count)
+    }
+    
+    func testPathToAxiomX() {
+        let path = "/Users/Shared/SampleA.p"
+        let file = "AxiomX.ax"
+        let actual = path.tptpPathTo(file)
+        XCTAssertNil(actual)
     }
 
 }

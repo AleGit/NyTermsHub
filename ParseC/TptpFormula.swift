@@ -33,7 +33,7 @@ func parse(path path:String) -> TptpParseResultTriple {
 
 private func process(status:Int32, path:String, parseResult:TptpParseResult) -> TptpParseResultTriple {
     
-    assert(status == 0, "parse path '\(path)' failed with code = \(status)")
+    // assert(status == 0, "parse path '\(path)' failed with code = \(status)")
     
     var results = [Int(status)]
     var formulae = parseResult.formulae

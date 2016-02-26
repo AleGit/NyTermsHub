@@ -69,7 +69,6 @@ extension TptpPath {
         
         let (empty,axiom,last) = file.tptpPathComponents()
         
-        assert(axiom.hasPrefix("Axioms"),"\(self).tptpPathTo(file:\(file)): use case with local file path component different form 'Axioms' is untested.")
         assert(empty.isEmpty,"\(self).tptpPathTo(file:\(file)): use case with non-empty file path component before 'Axioms' is untested.")
         
         // 2. `file` shares path prefix with `self`

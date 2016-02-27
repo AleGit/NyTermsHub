@@ -11,8 +11,8 @@ import Foundation
 final class TrieClass<K: Hashable, V: Hashable> {
     typealias Key = K
     typealias Value = V
-    private (set) var tries = [Key: TrieClass<Key, Value>]()
-    private (set) var valueSet = Set<Value>()
+    private var trieStore = [Key: TrieClass<Key, Value>]()
+    private var valueStore = Set<Value>()
     
     init() {    }
 }
@@ -20,28 +20,28 @@ final class TrieClass<K: Hashable, V: Hashable> {
 extension TrieClass : TrieType {
     
     func insert(value: Value) {
-        valueSet.insert(value)
+        valueStore.insert(value)
     }
     
     func delete(value: Value) -> Value? {
-        return valueSet.remove(value)
+        return valueStore.remove(value)
     }
     
     subscript(key:Key) -> TrieClass? {
-        get { return tries[key] }
-        set { tries[key] = newValue }
+        get { return trieStore[key] }
+        set { trieStore[key] = newValue }
     }
     
     var values : [Value]? {
-        return Array(valueSet)
+        return Array(valueStore)
     }
 }
 
 extension TrieClass {
-    /// get valueSet of `self` and all its successors
+    /// get valueStore of `self` and all its successors
     var payload : Set<Value> {
-        var collected = valueSet
-        for (_,trie) in tries {
+        var collected = valueStore
+        for (_,trie) in trieStore {
             collected.unionInPlace(trie.payload)
         }
         return collected
@@ -50,16 +50,23 @@ extension TrieClass {
 
 extension TrieClass : Equatable {
     var isEmpty: Bool {
-        return tries.reduce(valueSet.isEmpty) { $0 && $1.1.isEmpty }
+        return trieStore.reduce(valueStore.isEmpty) { $0 && $1.1.isEmpty }
     }
     
 }
 
 func ==<K,V>(lhs:TrieClass<K,V>, rhs:TrieClass<K,V>) -> Bool {
-    if lhs.valueSet == rhs.valueSet && lhs.tries == rhs.tries {
+    if lhs.valueStore == rhs.valueStore && lhs.trieStore == rhs.trieStore {
         return true
     }
     else {
         return false
+    }
+}
+
+extension TrieClass {
+    var tries : [TrieClass] {
+        let ts = trieStore.values
+        return Array(ts)
     }
 }

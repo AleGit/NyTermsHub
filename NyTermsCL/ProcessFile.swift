@@ -41,13 +41,6 @@ private func literals(formulae:[TptpFormula]) -> [TptpNode] {
     }
 }
 
-
-
-
-
-
-
-
 func process(file:String, search: (literals:[TptpNode]) -> (Int,String)) {
     print("\tprocess file \(file)")
     

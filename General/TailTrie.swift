@@ -116,3 +116,14 @@ func == <K,V>(lhs:TailTrie<K,V>, rhs:TailTrie<K,V>) -> Bool {
         return false
     }
 }
+
+extension TailTrie {
+    var tries : [TailTrie] {
+        switch self {
+        case .Leaf:
+            return [TailTrie]() //empty
+        case .Inner(let tries):
+            return Array(tries.values)
+        }
+    }
+}

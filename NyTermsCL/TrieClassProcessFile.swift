@@ -19,7 +19,7 @@ func extract<T>(trie:TrieClass<SymHop, T>, path:SymHopPath) -> Set<T>? {
         return extract(subtrie, path: tail)
     case .Symbol("*"):
         // collect everything
-        return Set(trie.tries.flatMap { $0.1.payload })
+        return Set(trie.tries.flatMap { $0.payload })
         
     default:
         // collect variable and exact match

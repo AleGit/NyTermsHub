@@ -7,8 +7,8 @@ import Foundation
 struct TrieStruct<K: Hashable, V: Hashable> {
     typealias Key = K
     typealias Value = V
-    private (set) var tries = [Key: TrieStruct<Key, Value>]()
-    private (set) var valueSet = Set<Value>()
+    private var trieStore = [Key: TrieStruct<Key, Value>]()
+    private var valueStore = Set<Value>()
     
     init() {    }
 }
@@ -16,28 +16,28 @@ struct TrieStruct<K: Hashable, V: Hashable> {
 extension TrieStruct : TrieType {
     
     mutating func insert(value: Value) {
-        valueSet.insert(value)
+        valueStore.insert(value)
     }
     
     mutating func delete(value: Value) -> Value? {
-        return valueSet.remove(value)
+        return valueStore.remove(value)
     }
     
     subscript(key:Key) -> TrieStruct? {
-        get { return tries[key] }
-        set { tries[key] = newValue }
+        get { return trieStore[key] }
+        set { trieStore[key] = newValue }
     }
     
     var values : [Value]? {
-        return Array(valueSet)
+        return Array(valueStore)
     }
 }
 
 extension TrieStruct {
-    /// get valueSet of `self` and all its successors
+    /// get valueStore of `self` and all its successors
     var payload : Set<Value> {
-        var collected = valueSet
-        for (_,trie) in tries {
+        var collected = valueStore
+        for (_,trie) in trieStore {
             collected.unionInPlace(trie.payload)
         }
         return collected
@@ -46,13 +46,13 @@ extension TrieStruct {
 
 extension TrieStruct : Equatable {
     var isEmpty: Bool {
-        return tries.reduce(valueSet.isEmpty) { $0 && $1.1.isEmpty }
+        return trieStore.reduce(valueStore.isEmpty) { $0 && $1.1.isEmpty }
     }
     
 }
 
 func ==<K,V>(lhs:TrieStruct<K,V>, rhs:TrieStruct<K,V>) -> Bool {
-    if lhs.valueSet == rhs.valueSet && lhs.tries == rhs.tries {
+    if lhs.valueStore == rhs.valueStore && lhs.trieStore == rhs.trieStore {
         return true
     }
     else {
@@ -60,5 +60,10 @@ func ==<K,V>(lhs:TrieStruct<K,V>, rhs:TrieStruct<K,V>) -> Bool {
     }
 }
 
-
+extension TrieStruct {
+    var tries : [TrieStruct] {
+        let ts = trieStore.values
+        return Array(ts)
+    }
+}
 

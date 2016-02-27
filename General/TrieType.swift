@@ -36,8 +36,13 @@ protocol TrieType : Equatable {
     /// get values at trie node
     var values : [Value]? { get }
     
-    /// get subnode with key
+    /// get (or set) subnode with key
     subscript(key:Key) -> Self? { get set }
+    
+    /// get all immediate subnodes
+    var tries : [Self] { get }
+    
+    
     
 }
 

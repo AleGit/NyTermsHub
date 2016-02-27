@@ -20,7 +20,9 @@ func linearSearch<N:Node>(literals:[N]) -> (Int,String) {
     
     print("\t"+message)
     
-    for newLiteral in literals {
+    processed = 0
+    
+    for newLiteral in literals[processed..<literals.count] {
         for oldLiteral in literals[0..<processed] {
             if ((newLiteral ~?= oldLiteral) != nil) {
                 count += 1

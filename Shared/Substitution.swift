@@ -95,10 +95,10 @@ extension Node {
         
         switch type {
         case SymbolType.Negation:
-            assert (nodes.count == 1)
+            assert (nodes.count == 1, "a negation with \(nodes.count) subnodes!")
             return nodes.first
         case SymbolType.Inequation:
-            assert (nodes.count == 2)
+            assert (nodes.count == 2, "an inequation with \(nodes.count) subnodes!")
             return Self(equational: "=", nodes: nodes)
         default:
             return nil

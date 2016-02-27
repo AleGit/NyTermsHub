@@ -74,7 +74,13 @@ struct Complementaries {
     static func demo105Linear() {
         print("\(self.self) \(__FUNCTION__)")
         demo(3...3,linear..<searches.count)
-        
+    }
+    
+    
+    
+    static func demo105Fastest() {
+        print("\(self.self) \(__FUNCTION__)")
+        demo(3...3,fastest...fastest)
     }
     
     private static var classSearch = {

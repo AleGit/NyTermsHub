@@ -14,7 +14,7 @@ print("TPTP_ROOT",TptpPath.tptpRootPath)
 // BuildTries.demo134()
 // ParseFiles.demo()
 
-SearchComplementaries.demo()
+Complementaries.demo()
 
 
 print(line,line,line)

@@ -42,7 +42,7 @@ private func literals(formulae:[TptpFormula]) -> [TptpNode] {
 }
 
 
-struct SearchComplementaries {
+struct Complementaries {
     
     static let files = [
         "PUZ001-1",
@@ -90,8 +90,8 @@ struct SearchComplementaries {
     
     static func demo() {
         
-        let searches = [trieClassSearch, classSearch, structSerach, tailSearch, trieStructSearch]
-        for file in files[0...1] {
+        let searches = [classSearch, structSerach, tailSearch]
+        for file in files[0...2] {
         guard let problem = file.p else {
             let d = errorNumberAndDescription()
             let message = "file \(file) was not accessible. \(d)"

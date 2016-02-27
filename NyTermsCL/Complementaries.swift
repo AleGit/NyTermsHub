@@ -100,7 +100,7 @@ struct Complementaries {
     }
 
     private static func demo(franges:Range<Int>, _ sranges:Range<Int>) {
-        print("\(self.self) \(__FUNCTION__) \(franges) \(sranges)\n")
+        print("\(self.self) \(__FUNCTION__) files[\(franges)],searches[\(sranges)]\n")
         
         for file in files[franges] {
             guard let problem = file.p else {

@@ -266,6 +266,16 @@
 		51E28CE81C81DC8B00404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComplementariesFastest.txt; sourceTree = "<group>"; };
 		51E28CE91C81DC8B00404842 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProcessFiles.txt; sourceTree = "<group>"; };
 		51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
+		51E28CEC1C81E17400404842 /* demo105linear.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = demo105linear.txt; path = Docs/demo105linear.txt; sourceTree = SOURCE_ROOT; };
+		51E28CED1C81E23200404842 /* demo105fastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = demo105fastest.txt; sourceTree = "<group>"; };
+		51E28CEE1C81E28100404842 /* demo105fastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = demo105fastest.txt; path = Docs/demo105fastest.txt; sourceTree = SOURCE_ROOT; };
+		51E28CEF1C81E28100404842 /* demo105linear.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = demo105linear.txt; path = Docs/demo105linear.txt; sourceTree = SOURCE_ROOT; };
+		51E28CF01C81E28100404842 /* Complementaries.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Complementaries.txt; path = Docs/Complementaries.txt; sourceTree = SOURCE_ROOT; };
+		51E28CF11C81E28100404842 /* HWV134 G C @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 G C @ MacMini.txt"; path = "Docs/HWV134 G C @ MacMini.txt"; sourceTree = SOURCE_ROOT; };
+		51E28CF21C81E28100404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 G S @ MacMini.txt"; path = "Docs/HWV134 G S @ MacMini.txt"; sourceTree = SOURCE_ROOT; };
+		51E28CF31C81E28100404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v1.txt"; path = "Docs/Complementaries v1.txt"; sourceTree = SOURCE_ROOT; };
+		51E28CF41C81E28100404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ComplementariesFastest.txt; path = Docs/ComplementariesFastest.txt; sourceTree = SOURCE_ROOT; };
+		51E28CF51C81E28100404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "Docs/Complementaries v0.txt"; sourceTree = SOURCE_ROOT; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -527,6 +537,15 @@
 		51540DB11C4CBA7B00A145DC /* results */ = {
 			isa = PBXGroup;
 			children = (
+				51E28CEE1C81E28100404842 /* demo105fastest.txt */,
+				51E28CEF1C81E28100404842 /* demo105linear.txt */,
+				51E28CF01C81E28100404842 /* Complementaries.txt */,
+				51E28CF11C81E28100404842 /* HWV134 G C @ MacMini.txt */,
+				51E28CF21C81E28100404842 /* HWV134 G S @ MacMini.txt */,
+				51E28CF31C81E28100404842 /* Complementaries v1.txt */,
+				51E28CF41C81E28100404842 /* ComplementariesFastest.txt */,
+				51E28CF51C81E28100404842 /* Complementaries v0.txt */,
+				51E28CED1C81E23200404842 /* demo105fastest.txt */,
 				51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */,
 				51E28CE61C81DC8B00404842 /* Complementaries v0.txt */,
 				51E28CE71C81DC8B00404842 /* Complementaries v1.txt */,
@@ -550,8 +569,10 @@
 				516107A81C5A18E000FD3637 /* ParsingConversion.txt */,
 				51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */,
 				5121F6511C58F0A70053601D /* testIntegerIntersection.txt */,
+				51E28CEC1C81E17400404842 /* demo105linear.txt */,
 			);
 			name = results;
+			path = ../Docs;
 			sourceTree = "<group>";
 		};
 		515F0EED1B6B71C800B470B4 /* ParseC */ = {

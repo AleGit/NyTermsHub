@@ -259,6 +259,13 @@
 		51E28CE11C81A02D00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v1.txt"; sourceTree = "<group>"; };
 		51E28CE21C81AE4E00404842 /* HWV134 G C @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 G C @ MacMini.txt"; path = "Docs/HWV134 G C @ MacMini.txt"; sourceTree = SOURCE_ROOT; };
 		51E28CE31C81B1B900404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
+		51E28CE41C81D6E500404842 /* Complementaries.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Complementaries.txt; path = Docs/Complementaries.txt; sourceTree = SOURCE_ROOT; };
+		51E28CE51C81DC0C00404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComplementariesFastest.txt; sourceTree = "<group>"; };
+		51E28CE61C81DC8B00404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v0.txt"; sourceTree = "<group>"; };
+		51E28CE71C81DC8B00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v1.txt"; sourceTree = "<group>"; };
+		51E28CE81C81DC8B00404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComplementariesFastest.txt; sourceTree = "<group>"; };
+		51E28CE91C81DC8B00404842 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProcessFiles.txt; sourceTree = "<group>"; };
+		51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -520,22 +527,29 @@
 		51540DB11C4CBA7B00A145DC /* results */ = {
 			isa = PBXGroup;
 			children = (
-				51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */,
-				51256A661C4B657F006A07C4 /* HWV134.txt */,
-				51540DB01C4CB7D100A145DC /* HWV074.md */,
-				5180F6A01C4F70620069E3F2 /* HWV066.md */,
-				51CC80F81C553B25008D4D43 /* HWV134lin.txt */,
-				5121F6511C58F0A70053601D /* testIntegerIntersection.txt */,
-				516107A81C5A18E000FD3637 /* ParsingConversion.txt */,
-				516107B11C5A605800FD3637 /* HWV119-iMac.txt */,
-				516107B21C5A611800FD3637 /* HWV066-iMac.txt */,
-				512123021C5A7AAB00290CB6 /* HWV066 @ Mac mini.txt */,
-				512123031C5BDC2E00290CB6 /* HWV134 @ Mac mini.txt */,
-				512123061C5D079500290CB6 /* HWV134 @ Mac mini (no checks).txt */,
-				51E28CE11C81A02D00404842 /* Complementaries v1.txt */,
+				51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */,
+				51E28CE61C81DC8B00404842 /* Complementaries v0.txt */,
+				51E28CE71C81DC8B00404842 /* Complementaries v1.txt */,
+				51E28CE81C81DC8B00404842 /* ComplementariesFastest.txt */,
+				51E28CE91C81DC8B00404842 /* ProcessFiles.txt */,
 				51E28CE01C819F2600404842 /* Complementaries v0.txt */,
+				51E28CE11C81A02D00404842 /* Complementaries v1.txt */,
+				51E28CE41C81D6E500404842 /* Complementaries.txt */,
+				51E28CE51C81DC0C00404842 /* ComplementariesFastest.txt */,
+				512123021C5A7AAB00290CB6 /* HWV066 @ Mac mini.txt */,
+				516107B21C5A611800FD3637 /* HWV066-iMac.txt */,
+				5180F6A01C4F70620069E3F2 /* HWV066.md */,
+				51540DB01C4CB7D100A145DC /* HWV074.md */,
+				516107B11C5A605800FD3637 /* HWV119-iMac.txt */,
+				512123061C5D079500290CB6 /* HWV134 @ Mac mini (no checks).txt */,
+				512123031C5BDC2E00290CB6 /* HWV134 @ Mac mini.txt */,
 				51E28CE21C81AE4E00404842 /* HWV134 G C @ MacMini.txt */,
 				51E28CE31C81B1B900404842 /* HWV134 G S @ MacMini.txt */,
+				51256A661C4B657F006A07C4 /* HWV134.txt */,
+				51CC80F81C553B25008D4D43 /* HWV134lin.txt */,
+				516107A81C5A18E000FD3637 /* ParsingConversion.txt */,
+				51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */,
+				5121F6511C58F0A70053601D /* testIntegerIntersection.txt */,
 			);
 			name = results;
 			sourceTree = "<group>";

@@ -13,7 +13,7 @@ print(line,line,line)
 // BuildTries.demo()
 // BuildTries.demo134()
 // ParseFiles.demo()
-Complementaries.demo()
+Complementaries.demo105Linear()
 
 print(line,line,line)
 print(line,NSDate(),line)

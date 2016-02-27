@@ -44,43 +44,65 @@ private func literals(formulae:[TptpFormula]) -> [TptpNode] {
 
 struct Complementaries {
     
-    static let files = [
-        "PUZ001-1",
-        "HWV066-1", //   15233,  35166
-        "HWV074-1", //    2581,   6017
-        "HWV105-1", //   20900,  52662
-        "HWV119-1", //   17783,  53121
-        "HWV134-1", // 2332428,6570884
+    private static let files = [
+        "PUZ001-1", // 0
+        "HWV066-1", // 1    15233,   35166
+        "HWV074-1", // 2     2581,    6017
+        "HWV105-1", // 3    20900,   52662
+        "HWV119-1", // 4    17783,   53121
+        "HWV134-1", // 5  2332428, 6570884
         
     ]
     
-    static var classSearch = {
+    private static let searches = [classSearch, structSerach, tailSearch, linearSearch]
+    
+    static let fastest = 0
+    static let faster = 1
+    static let fast = 2
+    static let linear = 3
+    
+    static func demoFastest() {
+        print("\(self.self) \(__FUNCTION__)")
+        demo(0..<files.count, fastest...fastest)
+    }
+    
+    static func demo134Fastest() {
+        print("\(self.self) \(__FUNCTION__)")
+        demo(5...5, fastest...fastest)
+    }
+    
+    static func demo105Linear() {
+        print("\(self.self) \(__FUNCTION__)")
+        demo(3...3,linear..<searches.count)
+        
+    }
+    
+    private static var classSearch = {
         (literals :[TptpNode]) -> (Int,String) in
         return trieSearch(TrieClass<SymHop,Int>(), literals:literals)
     }
     
-    static var structSerach = {
+    private static var structSerach = {
         (literals :[TptpNode]) -> (Int,String) in
         return trieSearch(TrieStruct<SymHop,Int>(), literals:literals)
     }
     
-    static var tailSearch = {
+    private static var tailSearch = {
         (literals :[TptpNode]) -> (Int,String) in
         return trieSearch(TailTrie<SymHop,Int>(), literals:literals)
     }
     
-    static func process<N:Node>(literals:[N], search: (literals:[N]) -> (Int,String)) {
+    private static func process<N:Node>(literals:[N], search: (literals:[N]) -> (Int,String)) {
         print("\tProcessing \(literals.count) literals ...:")
         let (count,info) = search(literals:literals)
         print(count,info)
         
     }
 
-    static func demo() {
-        print("\n\(self.self)\n")
+    private static func demo(franges:Range<Int>, _ sranges:Range<Int>) {
+        print("\(self.self) \(__FUNCTION__) \(franges) \(sranges)\n")
         
-        let searches = [classSearch, structSerach, tailSearch, linearSearch]
-        for file in files[0...1] {
+        for file in files[franges] {
             guard let problem = file.p else {
                 let d = errorNumberAndDescription()
                 let message = "file \(file) was not accessible. \(d)"
@@ -96,7 +118,7 @@ struct Complementaries {
             let nodes = literals(formulae)
             print("\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
             
-            for search in searches {
+            for search in searches[sranges] {
                 print("")
                 var runtime : CFAbsoluteTime = 0
                 
@@ -106,6 +128,8 @@ struct Complementaries {
                 print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
                 
             }
+            
+            print("\n")
         }
         
     }

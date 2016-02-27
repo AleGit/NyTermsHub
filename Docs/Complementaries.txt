@@ -1,0 +1,316 @@
+========================= 2016-02-27 13:24:00 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+========================= ========================= =========================
+Complementaries demoFastest()
+Complementaries demo 0..<6 0..<1
+
+PUZ001-1 /Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p
+12 formulae parsed in 584µs 6ns
+21 literals) extracted in 14µs 7ns
+
+Processing 21 literals ...:
+search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+21 search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+runtime: 2ms 348µs
+
+
+HWV066-1 /Users/Shared/TPTP/Problems/HWV/HWV066-1.p
+15233 formulae parsed in 201ms 965µs
+35166 literals) extracted in 7ms 639µs
+
+Processing 35166 literals ...:
+search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+(1000,1000) processed in (31ms 915µs,31ms 915µs) (31µs 915ns, 31µs 915ns) (93,93) complementaries
+(2000,1000) processed in (70ms 162µs,38ms 247µs) (35µs 81ns, 38µs 247ns) (381,288) complementaries
+(3000,1000) processed in (115ms 508µs,45ms 346µs) (38µs 503ns, 45µs 346ns) (832,451) complementaries
+(4000,1000) processed in (160ms 807µs,45ms 299µs) (40µs 202ns, 45µs 299ns) (1511,679) complementaries
+(5000,1000) processed in (209ms 560µs,48ms 753µs) (41µs 912ns, 48µs 753ns) (2301,790) complementaries
+(6000,1000) processed in (261ms 556µs,51ms 996µs) (43µs 593ns, 51µs 996ns) (3312,1011) complementaries
+(7000,1000) processed in (313ms 604µs,52ms 48µs) (44µs 801ns, 52µs 48ns) (4491,1179) complementaries
+(8000,1000) processed in (371ms 173µs,57ms 569µs) (46µs 397ns, 57µs 569ns) (5815,1324) complementaries
+(9000,1000) processed in (423ms 521µs,52ms 348µs) (47µs 58ns, 52µs 348ns) (7482,1667) complementaries
+(10000,1000) processed in (477ms 707µs,54ms 186µs) (47µs 771ns, 54µs 186ns) (9232,1750) complementaries
+(11000,1000) processed in (532ms 553µs,54ms 846µs) (48µs 414ns, 54µs 846ns) (11116,1884) complementaries
+(12000,1000) processed in (590ms 492µs,57ms 939µs) (49µs 208ns, 57µs 939ns) (13203,2087) complementaries
+(13000,1000) processed in (649ms 539µs,59ms 47µs) (49µs 965ns, 59µs 47ns) (15555,2352) complementaries
+(14000,1000) processed in (705ms 160µs,55ms 621µs) (50µs 369ns, 55µs 621ns) (17799,2244) complementaries
+(15000,1000) processed in (772ms 506µs,67ms 346µs) (51µs 500ns, 67µs 346ns) (20281,2482) complementaries
+(16000,1000) processed in (835ms 340µs,62ms 834µs) (52µs 209ns, 62µs 834ns) (23052,2771) complementaries
+(17000,1000) processed in (905ms 274µs,69ms 934µs) (53µs 251ns, 69µs 934ns) (26418,3366) complementaries
+(18000,1000) processed in (975ms 519µs,70ms 245µs) (54µs 196ns, 70µs 245ns) (29698,3280) complementaries
+(19000,1000) processed in (1s 47ms,71ms 39µs) (55µs 82ns, 71µs 39ns) (32840,3142) complementaries
+(20000,1000) processed in (1s 117ms,70ms 435µs) (55µs 850ns, 70µs 435ns) (36078,3238) complementaries
+(21000,1000) processed in (1s 190ms,72ms 938µs) (56µs 663ns, 72µs 938ns) (39704,3626) complementaries
+(22000,1000) processed in (1s 266ms,76ms 262µs) (57µs 554ns, 76µs 262ns) (43425,3721) complementaries
+(23000,1000) processed in (1s 343ms,76ms 953µs) (58µs 398ns, 76µs 953ns) (47361,3936) complementaries
+(24000,1000) processed in (1s 416ms,72ms 635µs) (58µs 991ns, 72µs 635ns) (51097,3736) complementaries
+(25000,1000) processed in (1s 496ms,80ms 394µs) (59µs 847ns, 80µs 394ns) (55419,4322) complementaries
+(26000,1000) processed in (1s 576ms,79ms 937µs) (60µs 620ns, 79µs 937ns) (60002,4583) complementaries
+(27000,1000) processed in (1s 661ms,85ms 39µs) (61µs 524ns, 85µs 39ns) (64732,4730) complementaries
+(28000,1000) processed in (1s 739ms,78ms 261µs) (62µs 122ns, 78µs 261ns) (69043,4311) complementaries
+(29000,1000) processed in (1s 823ms,83ms 898µs) (62µs 873ns, 83µs 898ns) (73913,4870) complementaries
+(30000,1000) processed in (1s 906ms,83ms 123µs) (63µs 548ns, 83µs 123ns) (78978,5065) complementaries
+(31000,1000) processed in (1s 996ms,89ms 948µs) (64µs 399ns, 89µs 948ns) (83830,4852) complementaries
+(32000,1000) processed in (2s 89ms,92ms 671µs) (65µs 283ns, 92µs 671ns) (89384,5554) complementaries
+(33000,1000) processed in (2s 177ms,88ms 213µs) (65µs 978ns, 88µs 213ns) (94907,5523) complementaries
+(34000,1000) processed in (2s 280ms,103ms 0µs) (67µs 67ns, 103µs 0ns) (101719,6812) complementaries
+(35000,1000) processed in (2s 375ms,95ms 133µs) (67µs 869ns, 95µs 133ns) (108197,6478) complementaries
+109117 search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+runtime: 2s 473ms
+
+
+HWV074-1 /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+2581 formulae parsed in 208ms 678µs
+6017 literals) extracted in 1ms 712µs
+
+Processing 6017 literals ...:
+search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+(1000,1000) processed in (504ms 760µs,504ms 760µs) (504µs 760ns, 504µs 760ns) (2438,2438) complementaries
+(2000,1000) processed in (1s 228ms,723ms 688µs) (614µs 224ns, 723µs 688ns) (9287,6849) complementaries
+(3000,1000) processed in (2s 237ms,1s 9ms) (745µs 766ns, 1ms 9µs) (18934,9647) complementaries
+(4000,1000) processed in (3s 319ms,1s 81ms) (829µs 648ns, 1ms 81µs) (35275,16341) complementaries
+(5000,1000) processed in (4s 456ms,1s 138ms) (891µs 289ns, 1ms 138µs) (54534,19259) complementaries
+(6000,1000) processed in (5s 707ms,1s 251ms) (951µs 204ns, 1ms 251µs) (77546,23012) complementaries
+78115 search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+runtime: 5s 921ms
+
+
+HWV105-1 /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+20900 formulae parsed in 318ms 595µs
+52662 literals) extracted in 12ms 648µs
+
+Processing 52662 literals ...:
+search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+(1000,1000) processed in (44ms 225µs,44ms 225µs) (44µs 225ns, 44µs 225ns) (1535,1535) complementaries
+(2000,1000) processed in (89ms 128µs,44ms 903µs) (44µs 564ns, 44µs 903ns) (2558,1023) complementaries
+(3000,1000) processed in (145ms 992µs,56ms 864µs) (48µs 664ns, 56µs 864ns) (3662,1104) complementaries
+(4000,1000) processed in (219ms 268µs,73ms 276µs) (54µs 817ns, 73µs 276ns) (6016,2354) complementaries
+(5000,1000) processed in (267ms 58µs,47ms 790µs) (53µs 412ns, 47µs 790ns) (9469,3453) complementaries
+(6000,1000) processed in (333ms 7µs,65ms 949µs) (55µs 501ns, 65µs 949ns) (13373,3904) complementaries
+(7000,1000) processed in (396ms 639µs,63ms 632µs) (56µs 663ns, 63µs 632ns) (16361,2988) complementaries
+(8000,1000) processed in (478ms 80µs,81ms 441µs) (59µs 760ns, 81µs 441ns) (19297,2936) complementaries
+(9000,1000) processed in (581ms 180µs,103ms 100µs) (64µs 576ns, 103µs 100ns) (25127,5830) complementaries
+(10000,1000) processed in (652ms 57µs,70ms 877µs) (65µs 206ns, 70µs 877ns) (30169,5042) complementaries
+(11000,1000) processed in (706ms 124µs,54ms 67µs) (64µs 193ns, 54µs 67ns) (33004,2835) complementaries
+(12000,1000) processed in (817ms 417µs,111ms 293µs) (68µs 118ns, 111µs 293ns) (42120,9116) complementaries
+(13000,1000) processed in (909ms 564µs,92ms 147µs) (69µs 966ns, 92µs 147ns) (49152,7032) complementaries
+(14000,1000) processed in (974ms 166µs,64ms 602µs) (69µs 583ns, 64µs 602ns) (52594,3442) complementaries
+(15000,1000) processed in (1s 39ms,64ms 443µs) (69µs 241ns, 64µs 443ns) (54172,1578) complementaries
+(16000,1000) processed in (1s 107ms,68ms 229µs) (69µs 177ns, 68µs 229ns) (55925,1753) complementaries
+(17000,1000) processed in (1s 185ms,77ms 795µs) (69µs 684ns, 77µs 795ns) (57316,1391) complementaries
+(18000,1000) processed in (1s 261ms,76ms 672µs) (70µs 72ns, 76µs 672ns) (59251,1935) complementaries
+(19000,1000) processed in (1s 324ms,62ms 762µs) (69µs 688ns, 62µs 762ns) (60196,945) complementaries
+(20000,1000) processed in (1s 410ms,85ms 826µs) (70µs 495ns, 85µs 826ns) (62033,1837) complementaries
+(21000,1000) processed in (1s 508ms,97ms 943µs) (71µs 802ns, 97µs 943ns) (63882,1849) complementaries
+(22000,1000) processed in (1s 608ms,100ms 188µs) (73µs 92ns, 100µs 188ns) (65803,1921) complementaries
+(23000,1000) processed in (1s 708ms,99ms 962µs) (74µs 260ns, 99µs 962ns) (69344,3541) complementaries
+(24000,1000) processed in (1s 771ms,63ms 43µs) (73µs 793ns, 63µs 43ns) (74866,5522) complementaries
+(25000,1000) processed in (1s 834ms,63ms 127µs) (73µs 366ns, 63µs 127ns) (80902,6036) complementaries
+(26000,1000) processed in (1s 900ms,65ms 468µs) (73µs 62ns, 65µs 468ns) (85131,4229) complementaries
+(27000,1000) processed in (2s 12ms,112ms 322µs) (74µs 517ns, 112µs 322ns) (92624,7493) complementaries
+(28000,1000) processed in (2s 91ms,79ms 478µs) (74µs 694ns, 79µs 478ns) (96554,3930) complementaries
+(29000,1000) processed in (2s 176ms,84ms 208µs) (75µs 22ns, 84µs 208ns) (101150,4596) complementaries
+(30000,1000) processed in (2s 251ms,75ms 336µs) (75µs 32ns, 75µs 336ns) (107804,6654) complementaries
+(31000,1000) processed in (2s 330ms,78ms 668µs) (75µs 150ns, 78µs 668ns) (115270,7466) complementaries
+(32000,1000) processed in (2s 410ms,79ms 913µs) (75µs 298ns, 79µs 913ns) (120479,5209) complementaries
+(33000,1000) processed in (2s 520ms,110ms 540µs) (76µs 366ns, 110µs 540ns) (124335,3856) complementaries
+(34000,1000) processed in (2s 583ms,62ms 978µs) (75µs 973ns, 62µs 978ns) (125814,1479) complementaries
+(35000,1000) processed in (2s 666ms,82ms 897µs) (76µs 170ns, 82µs 897ns) (127786,1972) complementaries
+(36000,1000) processed in (2s 763ms,96ms 751µs) (76µs 742ns, 96µs 751ns) (130076,2290) complementaries
+(37000,1000) processed in (2s 867ms,104ms 210µs) (77µs 484ns, 104µs 210ns) (132077,2001) complementaries
+(38000,1000) processed in (2s 979ms,111ms 921µs) (78µs 391ns, 111µs 921ns) (135557,3480) complementaries
+(39000,1000) processed in (3s 142ms,162ms 777µs) (80µs 554ns, 162µs 777ns) (137274,1717) complementaries
+(40000,1000) processed in (3s 256ms,114ms 67µs) (81µs 392ns, 114µs 67ns) (143092,5818) complementaries
+(41000,1000) processed in (3s 401ms,144ms 954µs) (82µs 943ns, 144µs 954ns) (147393,4301) complementaries
+(42000,1000) processed in (3s 531ms,130ms 746µs) (84µs 81ns, 130µs 746ns) (150560,3167) complementaries
+(43000,1000) processed in (3s 668ms,136ms 713µs) (85µs 305ns, 136µs 713ns) (153290,2730) complementaries
+(44000,1000) processed in (3s 825ms,157ms 106µs) (86µs 937ns, 157µs 106ns) (155379,2089) complementaries
+(45000,1000) processed in (3s 971ms,145ms 346µs) (88µs 235ns, 145µs 346ns) (157679,2300) complementaries
+(46000,1000) processed in (4s 260ms,289ms 718µs) (92µs 615ns, 289µs 718ns) (186642,28963) complementaries
+(47000,1000) processed in (4s 385ms,124ms 625µs) (93µs 296ns, 124µs 625ns) (190317,3675) complementaries
+(48000,1000) processed in (4s 493ms,107ms 902µs) (93µs 600ns, 107µs 902ns) (199274,8957) complementaries
+(49000,1000) processed in (4s 629ms,135ms 750µs) (94µs 460ns, 135µs 750ns) (201998,2724) complementaries
+(50000,1000) processed in (4s 825ms,196ms 623µs) (96µs 503ns, 196µs 623ns) (206218,4220) complementaries
+(51000,1000) processed in (4s 993ms,168ms 75µs) (97µs 907ns, 168µs 75ns) (222360,16142) complementaries
+(52000,1000) processed in (5s 133ms,139ms 588µs) (98µs 708ns, 139µs 588ns) (227350,4990) complementaries
+234826 search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+runtime: 5s 293ms
+
+
+HWV119-1 /Users/Shared/TPTP/Problems/HWV/HWV119-1.p
+17783 formulae parsed in 327ms 301µs
+53121 literals) extracted in 12ms 776µs
+
+Processing 53121 literals ...:
+search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+(1000,1000) processed in (40ms 576µs,40ms 576µs) (40µs 576ns, 40µs 576ns) (1251,1251) complementaries
+(2000,1000) processed in (89ms 778µs,49ms 202µs) (44µs 889ns, 49µs 202ns) (2871,1620) complementaries
+(3000,1000) processed in (150ms 506µs,60ms 728µs) (50µs 169ns, 60µs 728ns) (4683,1812) complementaries
+(4000,1000) processed in (228ms 442µs,77ms 936µs) (57µs 111ns, 77µs 936ns) (5233,550) complementaries
+(5000,1000) processed in (315ms 893µs,87ms 451µs) (63µs 179ns, 87µs 451ns) (6775,1542) complementaries
+(6000,1000) processed in (424ms 47µs,108ms 154µs) (70µs 675ns, 108µs 154ns) (7812,1037) complementaries
+(7000,1000) processed in (544ms 696µs,120ms 649µs) (77µs 814ns, 120µs 649ns) (9369,1557) complementaries
+(8000,1000) processed in (684ms 648µs,139ms 952µs) (85µs 581ns, 139µs 952ns) (10809,1440) complementaries
+(9000,1000) processed in (840ms 764µs,156ms 116µs) (93µs 418ns, 156µs 116ns) (12422,1613) complementaries
+(10000,1000) processed in (1s 11ms,170ms 570µs) (101µs 133ns, 170µs 570ns) (14693,2271) complementaries
+(11000,1000) processed in (1s 231ms,220ms 47µs) (111µs 944ns, 220µs 47ns) (16742,2049) complementaries
+(12000,1000) processed in (1s 351ms,119ms 980µs) (112µs 613ns, 119µs 980ns) (19256,2514) complementaries
+(13000,1000) processed in (1s 498ms,146ms 471µs) (115µs 218ns, 146µs 471ns) (22424,3168) complementaries
+(14000,1000) processed in (1s 709ms,210ms 923µs) (122µs 54ns, 210µs 923ns) (24479,2055) complementaries
+(15000,1000) processed in (1s 905ms,195ms 801µs) (126µs 970ns, 195µs 801ns) (27142,2663) complementaries
+(16000,1000) processed in (2s 211ms,306ms 5µs) (138µs 160ns, 306µs 5ns) (29938,2796) complementaries
+(17000,1000) processed in (2s 539ms,328ms 860µs) (149µs 378ns, 328µs 860ns) (33378,3440) complementaries
+(18000,1000) processed in (2s 895ms,355ms 353µs) (160µs 821ns, 355µs 353ns) (36729,3351) complementaries
+(19000,1000) processed in (3s 313ms,418ms 481µs) (174µs 382ns, 418µs 481ns) (40251,3522) complementaries
+(20000,1000) processed in (3s 760ms,446ms 869µs) (188µs 6ns, 446µs 869ns) (44383,4132) complementaries
+(21000,1000) processed in (4s 171ms,410ms 859µs) (198µs 618ns, 410µs 859ns) (48381,3998) complementaries
+(22000,1000) processed in (4s 616ms,444ms 849µs) (209µs 811ns, 444µs 849ns) (52581,4200) complementaries
+(23000,1000) processed in (4s 880ms,263ms 887µs) (212µs 162ns, 263µs 887ns) (57297,4716) complementaries
+(24000,1000) processed in (5s 350ms,469ms 870µs) (222µs 900ns, 469µs 870ns) (61831,4534) complementaries
+(25000,1000) processed in (5s 847ms,497ms 462µs) (233µs 882ns, 497µs 462ns) (73679,11848) complementaries
+(26000,1000) processed in (6s 336ms,488ms 563µs) (243µs 677ns, 488µs 563ns) (83281,9602) complementaries
+(27000,1000) processed in (6s 910ms,574ms 756µs) (255µs 940ns, 574µs 756ns) (90201,6920) complementaries
+(28000,1000) processed in (7s 424ms,513ms 275µs) (265µs 130ns, 513µs 275ns) (112293,22092) complementaries
+(29000,1000) processed in (8s 11ms,587ms 293µs) (276µs 239ns, 587µs 293ns) (118008,5715) complementaries
+(30000,1000) processed in (8s 606ms,595ms 122µs) (286µs 869ns, 595µs 122ns) (124084,6076) complementaries
+(31000,1000) processed in (9s 227ms,621ms 315µs) (297µs 657ns, 621µs 315ns) (130904,6820) complementaries
+(32000,1000) processed in (9s 896ms,668ms 241µs) (309µs 238ns, 668µs 241ns) (137338,6434) complementaries
+(33000,1000) processed in (10s 243ms,347ms 675µs) (310µs 403ns, 347µs 675ns) (142468,5130) complementaries
+(34000,1000) processed in (10s 321ms,77ms 953µs) (303µs 566ns, 77µs 953ns) (147753,5285) complementaries
+(35000,1000) processed in (10s 414ms,93ms 70µs) (297µs 552ns, 93µs 70ns) (155630,7877) complementaries
+(36000,1000) processed in (10s 516ms,101ms 899µs) (292µs 117ns, 101µs 899ns) (164714,9084) complementaries
+(37000,1000) processed in (10s 659ms,143ms 71µs) (288µs 89ns, 143µs 71ns) (179574,14860) complementaries
+(38000,1000) processed in (10s 804ms,144ms 637µs) (284µs 314ns, 144µs 637ns) (196935,17361) complementaries
+(39000,1000) processed in (10s 959ms,155ms 238µs) (281µs 4ns, 155µs 238ns) (214303,17368) complementaries
+(40000,1000) processed in (11s 180ms,220ms 481µs) (279µs 491ns, 220µs 481ns) (237720,23417) complementaries
+(41000,1000) processed in (11s 389ms,209ms 855µs) (277µs 793ns, 209µs 855ns) (257385,19665) complementaries
+(42000,1000) processed in (11s 595ms,205ms 830µs) (276µs 79ns, 205µs 830ns) (282230,24845) complementaries
+(43000,1000) processed in (11s 825ms,229ms 581µs) (274µs 998ns, 229µs 581ns) (310569,28339) complementaries
+(44000,1000) processed in (12s 86ms,261ms 273µs) (274µs 686ns, 261µs 273ns) (342870,32301) complementaries
+(45000,1000) processed in (12s 309ms,222ms 755µs) (273µs 532ns, 222µs 755ns) (369881,27011) complementaries
+(46000,1000) processed in (12s 479ms,169ms 634µs) (271µs 273ns, 169µs 634ns) (390580,20699) complementaries
+(47000,1000) processed in (13s 8ms,529ms 436µs) (276µs 766ns, 529µs 436ns) (397996,7416) complementaries
+(48000,1000) processed in (13s 644ms,636ms 386µs) (284µs 258ns, 636µs 386ns) (403969,5973) complementaries
+(49000,1000) processed in (13s 907ms,263ms 70µs) (283µs 826ns, 263µs 70ns) (417745,13776) complementaries
+(50000,1000) processed in (14s 148ms,240ms 51µs) (282µs 950ns, 240µs 51ns) (447219,29474) complementaries
+(51000,1000) processed in (14s 792ms,644ms 28µs) (290µs 30ns, 644µs 28ns) (532428,85209) complementaries
+(52000,1000) processed in (15s 138ms,346ms 933µs) (291µs 124ns, 346µs 933ns) (542668,10240) complementaries
+(53000,1000) processed in (16s 195ms,1s 56ms) (305µs 560ns, 1ms 56µs) (557791,15123) complementaries
+563536 search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+runtime: 16s 273ms
+
+
+HWV134-1 /Users/Shared/TPTP/Problems/HWV/HWV134-1.p
+2332428 formulae parsed in 41s 986ms
+6570884 literals) extracted in 954ms 178µs
+
+Processing 6570884 literals ...:
+search trie type: TrieClass<SymHop, Int> trieSearch(_:literals:)
+(1000,1000) processed in (54ms 291µs,54ms 291µs) (54µs 291ns, 54µs 291ns) (1960,1960) complementaries
+(2000,1000) processed in (111ms 313µs,57ms 22µs) (55µs 656ns, 57µs 22ns) (5711,3751) complementaries
+(3000,1000) processed in (228ms 290µs,116ms 977µs) (76µs 97ns, 116µs 977ns) (21151,15440) complementaries
+(4000,1000) processed in (312ms 422µs,84ms 132µs) (78µs 105ns, 84µs 132ns) (30101,8950) complementaries
+(5000,1000) processed in (356ms 703µs,44ms 281µs) (71µs 341ns, 44µs 281ns) (33294,3193) complementaries
+(6000,1000) processed in (400ms 3µs,43ms 300µs) (66µs 667ns, 43µs 300ns) (36389,3095) complementaries
+(7000,1000) processed in (448ms 117µs,48ms 114µs) (64µs 17ns, 48µs 114ns) (38858,2469) complementaries
+(8000,1000) processed in (496ms 369µs,48ms 252µs) (62µs 46ns, 48µs 252ns) (40866,2008) complementaries
+(9000,1000) processed in (582ms 420µs,86ms 51µs) (64µs 713ns, 86µs 51ns) (47163,6297) complementaries
+(10000,1000) processed in (642ms 730µs,60ms 310µs) (64µs 273ns, 60µs 310ns) (50984,3821) complementaries
+(11000,1000) processed in (753ms 786µs,111ms 56µs) (68µs 526ns, 111µs 56ns) (64520,13536) complementaries
+(12000,1000) processed in (863ms 150µs,109ms 364µs) (71µs 929ns, 109µs 364ns) (77707,13187) complementaries
+(13000,1000) processed in (928ms 689µs,65ms 539µs) (71µs 438ns, 65µs 539ns) (81492,3785) complementaries
+(14000,1000) processed in (996ms 150µs,67ms 461µs) (71µs 154ns, 67µs 461ns) (85482,3990) complementaries
+(15000,1000) processed in (1s 45ms,48ms 362µs) (69µs 634ns, 48µs 362ns) (86810,1328) complementaries
+(16000,1000) processed in (1s 101ms,56ms 135µs) (68µs 790ns, 56µs 135ns) (89689,2879) complementaries
+(17000,1000) processed in (1s 181ms,80ms 237µs) (69µs 464ns, 80µs 237ns) (96294,6605) complementaries
+(18000,1000) processed in (1s 286ms,105ms 305µs) (71µs 455ns, 105µs 305ns) (107457,11163) complementaries
+(19000,1000) processed in (1s 448ms,162ms 0µs) (76µs 220ns, 162µs 0ns) (126135,18678) complementaries
+(20000,1000) processed in (1s 567ms,118ms 351µs) (78µs 327ns, 118µs 351ns) (137044,10909) complementaries
+(21000,1000) processed in (1s 623ms,56ms 555µs) (77µs 290ns, 56µs 555ns) (140600,3556) complementaries
+(22000,1000) processed in (1s 681ms,58ms 240µs) (76µs 424ns, 58µs 240ns) (144223,3623) complementaries
+(23000,1000) processed in (1s 757ms,75ms 590µs) (76µs 388ns, 75µs 590ns) (149952,5729) complementaries
+(24000,1000) processed in (1s 901ms,143ms 806µs) (79µs 197ns, 143µs 806ns) (165636,15684) complementaries
+(25000,1000) processed in (1s 997ms,96ms 442µs) (79µs 887ns, 96µs 442ns) (175916,10280) complementaries
+(26000,1000) processed in (2s 107ms,109ms 467µs) (81µs 25ns, 109µs 467ns) (188426,12510) complementaries
+(27000,1000) processed in (2s 183ms,76ms 647µs) (80µs 862ns, 76µs 647ns) (194376,5950) complementaries
+(28000,1000) processed in (2s 318ms,135ms 49µs) (82µs 798ns, 135µs 49ns) (209345,14969) complementaries
+(29000,1000) processed in (2s 463ms,144ms 747µs) (84µs 934ns, 144µs 747ns) (225437,16092) complementaries
+(30000,1000) processed in (2s 582ms,118ms 609µs) (86µs 56ns, 118µs 609ns) (236942,11505) complementaries
+(31000,1000) processed in (2s 691ms,108ms 901µs) (86µs 793ns, 108µs 901ns) (249667,12725) complementaries
+(32000,1000) processed in (2s 752ms,61ms 719µs) (86µs 10ns, 61µs 719ns) (254393,4726) complementaries
+(33000,1000) processed in (2s 841ms,88ms 342µs) (86µs 80ns, 88µs 342ns) (262796,8403) complementaries
+(34000,1000) processed in (2s 903ms,62ms 296µs) (85µs 381ns, 62µs 296ns) (265985,3189) complementaries
+(35000,1000) processed in (2s 965ms,61ms 709µs) (84µs 705ns, 61µs 709ns) (269502,3517) complementaries
+(36000,1000) processed in (3s 14ms,49ms 72µs) (83µs 715ns, 49µs 72ns) (271729,2227) complementaries
+(37000,1000) processed in (3s 64ms,50ms 599µs) (82µs 820ns, 50µs 599ns) (274432,2703) complementaries
+(38000,1000) processed in (3s 115ms,50ms 717µs) (81µs 975ns, 50µs 717ns) (278532,4100) complementaries
+(39000,1000) processed in (3s 174ms,59ms 97µs) (81µs 388ns, 59µs 97ns) (283771,5239) complementaries
+(40000,1000) processed in (3s 258ms,83ms 656µs) (81µs 445ns, 83µs 656ns) (293569,9798) complementaries
+(41000,1000) processed in (3s 334ms,75ms 834µs) (81µs 308ns, 75µs 834ns) (303726,10157) complementaries
+(42000,1000) processed in (3s 413ms,79ms 792µs) (81µs 272ns, 79µs 792ns) (312640,8914) complementaries
+(43000,1000) processed in (3s 508ms,94ms 306µs) (81µs 575ns, 94µs 306ns) (325711,13071) complementaries
+(44000,1000) processed in (3s 613ms,105ms 510µs) (82µs 119ns, 105µs 510ns) (336423,10712) complementaries
+(45000,1000) processed in (3s 777ms,164ms 63µs) (83µs 940ns, 164µs 63ns) (351759,15336) complementaries
+(46000,1000) processed in (4s 17ms,239ms 409µs) (87µs 320ns, 239µs 409ns) (376188,24429) complementaries
+(47000,1000) processed in (4s 343ms,326ms 130µs) (92µs 401ns, 326µs 130ns) (411843,35655) complementaries
+(48000,1000) processed in (4s 784ms,440ms 896µs) (99µs 661ns, 440µs 896ns) (464177,52334) complementaries
+(49000,1000) processed in (5s 351ms,566ms 822µs) (109µs 195ns, 566µs 822ns) (537699,73522) complementaries
+(50000,1000) processed in (5s 892ms,541ms 506µs) (117µs 841ns, 541µs 506ns) (606282,68583) complementaries
+(51000,1000) processed in (6s 457ms,565ms 188µs) (126µs 613ns, 565µs 188ns) (672559,66277) complementaries
+(52000,1000) processed in (6s 979ms,521ms 756µs) (134µs 212ns, 521µs 756ns) (725556,52997) complementaries
+(53000,1000) processed in (7s 733ms,753ms 974µs) (145µs 905ns, 753µs 974ns) (810276,84720) complementaries
+(54000,1000) processed in (8s 622ms,889ms 380µs) (159µs 673ns, 889µs 380ns) (918622,108346) complementaries
+(55000,1000) processed in (9s 663ms,1s 41ms) (175µs 697ns, 1ms 41µs) (1050184,131562) complementaries
+(56000,1000) processed in (10s 843ms,1s 180ms) (193µs 628ns, 1ms 180µs) (1206843,156659) complementaries
+(57000,1000) processed in (11s 894ms,1s 51ms) (208µs 670ns, 1ms 51µs) (1337627,130784) complementaries
+(58000,1000) processed in (12s 950ms,1s 56ms) (223µs 283ns, 1ms 56µs) (1459614,121987) complementaries
+(59000,1000) processed in (13s 910ms,959ms 446µs) (235µs 761ns, 959µs 446ns) (1559846,100232) complementaries
+(60000,1000) processed in (15s 223ms,1s 313ms) (253µs 713ns, 1ms 313µs) (1709930,150084) complementaries
+(61000,1000) processed in (16s 686ms,1s 463ms) (273µs 539ns, 1ms 463µs) (1882836,172906) complementaries
+(62000,1000) processed in (18s 365ms,1s 679ms) (296µs 204ns, 1ms 679µs) (2103653,220817) complementaries
+(63000,1000) processed in (20s 135ms,1s 770ms) (319µs 595ns, 1ms 770µs) (2338829,235176) complementaries
+(64000,1000) processed in (21s 647ms,1s 513ms) (338µs 242ns, 1ms 513µs) (2531464,192635) complementaries
+(65000,1000) processed in (23s 55ms,1s 408ms) (354µs 698ns, 1ms 408µs) (2689365,157901) complementaries
+(66000,1000) processed in (24s 354ms,1s 299ms) (369µs 2ns, 1ms 299µs) (2835738,146373) complementaries
+(67000,1000) processed in (26s 179ms,1s 824ms) (390µs 726ns, 1ms 824µs) (3050026,214288) complementaries
+(68000,1000) processed in (28s 236ms,2s 58ms) (415µs 239ns, 2ms 58µs) (3303497,253471) complementaries
+(69000,1000) processed in (30s 634ms,2s 398ms) (443µs 970ns, 2ms 398µs) (3604371,300874) complementaries
+(70000,1000) processed in (32s 983ms,2s 349ms) (471µs 185ns, 2ms 349µs) (3911501,307130) complementaries
+(71000,1000) processed in (35s 24ms,2s 41ms) (493µs 296ns, 2ms 41µs) (4161502,250001) complementaries
+(72000,1000) processed in (36s 906ms,1s 882ms) (512µs 589ns, 1ms 882µs) (4363185,201683) complementaries
+(73000,1000) processed in (38s 684ms,1s 778ms) (529µs 924ns, 1ms 778µs) (4550610,187425) complementaries
+(74000,1000) processed in (41s 168ms,2s 483ms) (556µs 322ns, 2ms 483µs) (4836086,285476) complementaries
+(75000,1000) processed in (43s 891ms,2s 723ms) (585µs 216ns, 2ms 723µs) (5159337,323251) complementaries
+(76000,1000) processed in (46s 969ms,3s 78ms) (618µs 12ns, 3ms 78µs) (5546937,387600) complementaries
+(77000,1000) processed in (49s 852ms,2s 883ms) (647µs 424ns, 2ms 883µs) (5918490,371553) complementaries
+(78000,1000) processed in (52s 438ms,2s 587ms) (672µs 286ns, 2ms 587µs) (6228294,309804) complementaries
+(79000,1000) processed in (54s 845ms,2s 407ms) (694µs 245ns, 2ms 407µs) (6495250,266956) complementaries
+(80000,1000) processed in (56s 782ms,1s 937ms) (709µs 774ns, 1ms 937µs) (6700958,205708) complementaries
+(81000,1000) processed in (59s 802ms,3s 20ms) (738µs 294ns, 3ms 20µs) (7051040,350082) complementaries
+(82000,1000) processed in (1m 3s,3s 261ms) (769µs 55ns, 3ms 261µs) (7443946,392906) complementaries
+(83000,1000) processed in (1m 7s,3s 700ms) (804µs 369ns, 3ms 700µs) (7913349,469403) complementaries
+(84000,1000) processed in (1m 10s,3s 716ms) (839µs 31ns, 3ms 716µs) (8361980,448631) complementaries
+(85000,1000) processed in (1m 14s,3s 107ms) (865µs 708ns, 3ms 107µs) (8731242,369262) complementaries
+(86000,1000) processed in (1m 17s,2s 957ms) (890µs 20ns, 2ms 957µs) (9046020,314778) complementaries
+(87000,1000) processed in (1m 19s,2s 210ms) (905µs 196ns, 2ms 210µs) (9286964,240944) complementaries
+(88000,1000) processed in (1m 22s,3s 454ms) (934µs 163ns, 3ms 454µs) (9688292,401328) complementaries
+(89000,1000) processed in (1m 26s,3s 985ms) (968µs 443ns, 3ms 985µs) (10149718,461426) complementaries
+(90000,1000) processed in (1m 31s,4s 413ms) (1ms 7µs, 4ms 413µs) (10685320,535602) complementaries
+(91000,1000) processed in (1m 35s,4s 257ms) (1ms 42µs, 4ms 257µs) (11233247,547927) complementaries
+(92000,1000) processed in (1m 38s,3s 382ms) (1ms 68µs, 3ms 382µs) (11667320,434073) complementaries
+(93000,1000) processed in (1m 41s,3s 9ms) (1ms 89µs, 3ms 9µs) (12007350,340030) complementaries
+(94000,1000) processed in (1m 44s,2s 499ms) (1ms 104µs, 2ms 499µs) (12290060,282710) complementaries
+(95000,1000) processed in (1m 48s,4s 0ms) (1ms 134µs, 4ms 0µs) (12746502,456442) complementaries
+(96000,1000) processed in (1m 53s,4s 849ms) (1ms 173µs, 4ms 849µs) (13243166,496664) complementaries
+(97000,1000) processed in (1m 58s,5s 223ms) (1ms 215µs, 5ms 223µs) (13872654,629488) complementaries
+(98000,1000) processed in (2m 3s,5s 173ms) (1ms 255µs, 5ms 173µs) (14504496,631842) complementaries
+(99000,1000) processed in (2m 8s,4s 522ms) (1ms 288µs, 4ms 522µs) (15015529,511033) complementaries
+(100000,1000) processed in (2m 11s,3s 884ms) (1ms 314µs, 3ms 884µs) (15432978,417449) complementaries
+(101000,1000) processed in (2m 14s,2s 323ms) (1ms 324µs, 2ms 323µs) (15665290,232312) complementaries
+(102000,1000) processed in (2m 19s,4s 983ms) (1ms 360µs, 4ms 983µs) (16171755,506465) complementaries
+(103000,1000) processed in (2m 24s,5s 702ms) (1ms 402µs, 5ms 702µs) (16779544,607789) complementaries
+(104000,1000) processed in (2m 30s,5s 653ms) (1ms 443µs, 5ms 653µs) (17436653,657109) complementaries
+(105000,1000) processed in (2m 36s,6s 389ms) (1ms 490µs, 6ms 389µs) (18183827,747174) complementaries
+Program ended with exit code: 9

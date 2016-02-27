@@ -88,24 +88,24 @@ struct Complementaries {
     static func demo() {
         
         let searches = [classSearch, structSerach, tailSearch]
-        for file in files[0...2] {
-        guard let problem = file.p else {
-            let d = errorNumberAndDescription()
-            let message = "file \(file) was not accessible. \(d)"
-            print(message)
-            continue
-        }
-        
-        for search in searches {
-            print("")
-            var runtime : CFAbsoluteTime = 0
+        for file in files[5...5] {
+            guard let problem = file.p else {
+                let d = errorNumberAndDescription()
+                let message = "file \(file) was not accessible. \(d)"
+                print(message)
+                continue
+            }
             
-            (_, runtime) = measure { process(problem, search:search) }
-            
-            
-            print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
-            
-        }
+            for search in searches {
+                print("")
+                var runtime : CFAbsoluteTime = 0
+                
+                (_, runtime) = measure { process(problem, search:search) }
+                
+                
+                print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
+                
+            }
         }
         
     }

@@ -257,6 +257,7 @@
 		51E28CDE1C81780100404842 /* TrieProcessFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieProcessFile.swift; sourceTree = "<group>"; };
 		51E28CE01C819F2600404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v0.txt"; sourceTree = "<group>"; };
 		51E28CE11C81A02D00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v1.txt"; sourceTree = "<group>"; };
+		51E28CE21C81AE4E00404842 /* HWV134v2 @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134v2 @ MacMini.txt"; path = "Docs/HWV134v2 @ MacMini.txt"; sourceTree = SOURCE_ROOT; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -532,6 +533,7 @@
 				512123061C5D079500290CB6 /* HWV134 @ Mac mini (no checks).txt */,
 				51E28CE11C81A02D00404842 /* Complementaries v1.txt */,
 				51E28CE01C819F2600404842 /* Complementaries v0.txt */,
+				51E28CE21C81AE4E00404842 /* HWV134v2 @ MacMini.txt */,
 			);
 			name = results;
 			sourceTree = "<group>";

@@ -11,28 +11,28 @@ import Foundation
 struct BuildTries {
     
     static private func execute<T:TrieType where T.Value==Int>(
-        var trie:T, message:String? = nil, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
+        var trie:T, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
             
-            let msg = message ?? "\(trie.dynamicType)"
             let (_,duration) = measure {
                 trie.fill(literals) { f($0) }
             }
             
             
-            print(duration.timeIntervalDescriptionMarkedWithUnits, msg,literals.count,duration)
+            print(duration.timeIntervalDescriptionMarkedWithUnits, T.self, literals.count, duration)
     }
     
     static private func execute<T:TrieType where T.Value==Int>(
         var trie:T, message:String? = nil, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
-            let msg = message ?? "\(trie.dynamicType)"
             let (_,duration) = measure {
                 trie.fill(literals) { f($0) }
             }
             
-            print(duration.timeIntervalDescriptionMarkedWithUnits,msg,literals.count,duration)
+            print(duration.timeIntervalDescriptionMarkedWithUnits, T.self, literals.count, duration)
     }
     
     static func demo134() {
+        print(self.self,"\(__FUNCTION__)\n")
+        
         let name = "HWV134-1"
         let path = name.p! // file must be accessible
         let (literals, duration) = measure {
@@ -41,41 +41,48 @@ struct BuildTries {
         
         print(name, literals.count,"literals read in",duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
         
-        print("Term Paths")
-
-        execute(TrieClass<SymHop,Int>(), message:"TrieClass<SymHop, Int>", literals:literals) { $0.symHopPaths }
+        print("* Term Paths *")
         
-        print("Discrimination Tree")
+        execute(TrieClass<SymHop,Int>(), literals:literals) { $0.symHopPaths }
         
-        execute(TrieClass<Symbol,Int>(), message:"TrieClass<Symbol, Int>", literals:literals) { $0.preorderPath }
+        print("* Discrimination Tree *")
+        
+        execute(TrieClass<Symbol,Int>(), literals:literals) { $0.preorderPath }
+        
+        print("")
     }
     
     static func demo() {
+        print(self.self,"\(__FUNCTION__)\n")
         for name in [ "LCL129-1", "SYN000-2", "PUZ051-1",
-            // "HWV074-1", "HWV105-1" 
+            // "HWV074-1", "HWV105-1"
             ] {
-            let path = name.p! // file must be accessible
-            let (literals, duration) = measure {
-                TptpNode.literals(path)
-            }
-            
-            print("")
-            print(name, literals.count,"literals read in",
-                duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
-            print("Term Paths")
-            
-            execute(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
-            execute(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
-            execute(TrieStruct<SymHop,Int>(), literals:literals) { $0.symHopPaths }
-            execute(TrieStruct<Symbol,Int>(), literals:literals) { $0.symbolPaths }
-            execute(TrieClass<SymHop,Int>(), message:"TrieClass<SymHop,Int>", literals:literals) { $0.symHopPaths }
-            execute(TrieClass<Symbol,Int>(), message:"TrieClass<Symbol,Int>", literals:literals) { $0.symbolPaths }
-            
-            print("Discrimination Tree")
-            execute(TrieStruct<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
-            execute(TrieStruct<Symbol,Int>(), literals:literals) { $0.preorderPath }
-            execute(TrieClass<Symbol,Int>(), message:"TrieClass<Symbol,Int>", literals:literals) { $0.preorderPath }
-            
+                guard let path = name.p else {
+                    print("\(name) skipped ...")
+                    continue
+                }
+                
+                print("Processing \(name) ...")
+                let (literals, duration) = measure {
+                    TptpNode.literals(path)
+                }
+                print(name, literals.count,"literals read in", duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
+                print("* Term Paths *")
+                
+                execute(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TrieStruct<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TrieStruct<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TrieClass<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TrieClass<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+                
+                print("* Discrimination Trees *")
+                execute(TrieStruct<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
+                execute(TrieStruct<Symbol,Int>(), literals:literals) { $0.preorderPath }
+                execute(TrieClass<Symbol,Int>(), literals:literals) { $0.preorderPath }
+                
+                print("")
+                
         }
     }
 }

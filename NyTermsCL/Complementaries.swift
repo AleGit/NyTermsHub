@@ -79,8 +79,8 @@ struct Complementaries {
     static func demo() {
         print("\n\(self.self)\n")
         
-        let searches = [classSearch, structSerach, tailSearch]
-        for file in files[0...0] {
+        let searches = [classSearch, structSerach, tailSearch, linearSearch]
+        for file in files[0...1] {
             guard let problem = file.p else {
                 let d = errorNumberAndDescription()
                 let message = "file \(file) was not accessible. \(d)"

@@ -174,7 +174,7 @@ extension TptpPath {
         
         guard full.isAccessibleFile else {
             let (errorNumber,errorString) = errorNumberAndDescription()
-            print(errorNumber,errorString)
+            print(self, errorNumber,errorString, full)
             return nil
         }
         

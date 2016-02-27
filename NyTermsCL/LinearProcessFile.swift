@@ -8,37 +8,42 @@
 
 import Foundation
 
-func linearSearch(literals:[TptpNode]) -> (Int,String) {
+
+func linearSearch<N:Node>(literals:[N]) -> (Int,String) {
     let step = 1000
-    
     var count = 0
     var stepcount = count
-    
-    var processed = 0
-    
     let start = CFAbsoluteTimeGetCurrent()
     var temp = start
+    var processed = 0
+    let message = "search trie type: \(__FUNCTION__)"
+    
+    print("\t"+message)
     
     for newLiteral in literals {
         for oldLiteral in literals[0..<processed] {
             if ((newLiteral ~?= oldLiteral) != nil) {
-                count++
+                count += 1
             }
         }
-        processed++
+        processed += 1
         
         if processed % step == 0 {
             let now = CFAbsoluteTimeGetCurrent()
             let total = now - start
             let round = now - temp
             
-
+            print("\t(\(processed),\(step)) processed in",
+                "(\(total.timeIntervalDescriptionMarkedWithUnits),\(round.timeIntervalDescriptionMarkedWithUnits))",
+                "(\((total/Double(processed)).timeIntervalDescriptionMarkedWithUnits), \((round/Double(step)).timeIntervalDescriptionMarkedWithUnits))",
+                "(\(count),\(count-stepcount)) complementaries")
+            
             temp = now
             stepcount = count
         }
     }
     
     
-    return (count, "linear search")
+    return (count, message)
     
 }

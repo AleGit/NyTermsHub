@@ -85,19 +85,19 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop, T.Value==Int>(trieRoot:T
     var temp = start
     var processed = 0
     
-    let message = "search trie type: \(T.self)"
+    let message = "search trie type: \(T.self) \(__FUNCTION__)"
     
     print("\t"+message)
     
     for (newIndex, newLiteral) in literals.enumerate() {
         if let candis = candidates(trie, term:newLiteral) {
-            //            for oldIndex in candis {
-            //                let oldLiteral = literals[oldIndex]
-            //                if ((newLiteral ~?= oldLiteral) != nil) {
-            //                    count++  // count wiht check
-            //                }
-            //            }
-            count += candis.count // count without unifiable check
+                        for oldIndex in candis {
+                            let oldLiteral = literals[oldIndex]
+                            if ((newLiteral ~?= oldLiteral) != nil) {
+                                count++  // count wiht check
+                            }
+                        }
+            // count += candis.count // count without unifiable check
         }
         for path in newLiteral.symHopPaths {
             trie.insert(path, value: newIndex)

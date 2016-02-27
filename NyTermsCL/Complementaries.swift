@@ -71,18 +71,15 @@ struct Complementaries {
     
     
     static func process(file:String, search: (literals:[TptpNode]) -> (Int,String)) {
-        print("\tprocess file \(file)")
+        print("process file \(file)")
         
         var start = CFAbsoluteTimeGetCurrent()
         let formulae = parseFile(file)
-        
-        print("\t\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start, 1))")
+        print("\t\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
         start = CFAbsoluteTimeGetCurrent()
-        
-        
         let nodes = literals(formulae)
+        print("\t\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
         
-        start = CFAbsoluteTimeGetCurrent()
         let (count,info) = search(literals:nodes)
         print(count,info)
         
@@ -100,6 +97,7 @@ struct Complementaries {
         }
         
         for search in searches {
+            print("")
             var runtime : CFAbsoluteTime = 0
             
             (_, runtime) = measure { process(problem, search:search) }

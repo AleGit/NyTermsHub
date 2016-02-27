@@ -255,8 +255,8 @@
 		51D8476B1C8084DC003EC848 /* TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpPath.swift; sourceTree = "<group>"; };
 		51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpTermTests.swift; sourceTree = "<group>"; };
 		51E28CDE1C81780100404842 /* TrieProcessFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieProcessFile.swift; sourceTree = "<group>"; };
-		51E28CE01C819F2600404842 /* Complementary x 5.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementary x 5.txt"; sourceTree = "<group>"; };
-		51E28CE11C81A02D00404842 /* Complementary x 3 (Generic).txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementary x 3 (Generic).txt"; sourceTree = "<group>"; };
+		51E28CE01C819F2600404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v0.txt"; sourceTree = "<group>"; };
+		51E28CE11C81A02D00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v1.txt"; sourceTree = "<group>"; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -530,8 +530,8 @@
 				512123021C5A7AAB00290CB6 /* HWV066 @ Mac mini.txt */,
 				512123031C5BDC2E00290CB6 /* HWV134 @ Mac mini.txt */,
 				512123061C5D079500290CB6 /* HWV134 @ Mac mini (no checks).txt */,
-				51E28CE11C81A02D00404842 /* Complementary x 3 (Generic).txt */,
-				51E28CE01C819F2600404842 /* Complementary x 5.txt */,
+				51E28CE11C81A02D00404842 /* Complementaries v1.txt */,
+				51E28CE01C819F2600404842 /* Complementaries v0.txt */,
 			);
 			name = results;
 			sourceTree = "<group>";

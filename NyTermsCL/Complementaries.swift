@@ -69,26 +69,18 @@ struct Complementaries {
         return trieSearch(TailTrie<SymHop,Int>(), literals:literals)
     }
     
-    
-    static func process(file:String, search: (literals:[TptpNode]) -> (Int,String)) {
-        print("process file \(file)")
-        
-        var start = CFAbsoluteTimeGetCurrent()
-        let formulae = parseFile(file)
-        print("\t\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
-        start = CFAbsoluteTimeGetCurrent()
-        let nodes = literals(formulae)
-        print("\t\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
-        
-        let (count,info) = search(literals:nodes)
+    static func process<N:Node>(literals:[N], search: (literals:[N]) -> (Int,String)) {
+        print("\tProcessing \(literals.count) literals ...:")
+        let (count,info) = search(literals:literals)
         print(count,info)
         
     }
-    
+
     static func demo() {
+        print("\n\(self.self)\n")
         
         let searches = [classSearch, structSerach, tailSearch]
-        for file in files[5...5] {
+        for file in files[0...0] {
             guard let problem = file.p else {
                 let d = errorNumberAndDescription()
                 let message = "file \(file) was not accessible. \(d)"
@@ -96,11 +88,19 @@ struct Complementaries {
                 continue
             }
             
+            print(file,problem)
+            var start = CFAbsoluteTimeGetCurrent()
+            let formulae = parseFile(problem)
+            print("\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
+            start = CFAbsoluteTimeGetCurrent()
+            let nodes = literals(formulae)
+            print("\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
+            
             for search in searches {
                 print("")
                 var runtime : CFAbsoluteTime = 0
                 
-                (_, runtime) = measure { process(problem, search:search) }
+                (_, runtime) = measure { process(nodes, search:search) }
                 
                 
                 print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)

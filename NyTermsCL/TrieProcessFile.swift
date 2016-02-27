@@ -84,6 +84,11 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop, T.Value==Int>(trieRoot:T
     let start = CFAbsoluteTimeGetCurrent()
     var temp = start
     var processed = 0
+    
+    let message = "search trie type: \(T.self)"
+    
+    print("\t"+message)
+    
     for (newIndex, newLiteral) in literals.enumerate() {
         if let candis = candidates(trie, term:newLiteral) {
             //            for oldIndex in candis {
@@ -115,7 +120,7 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop, T.Value==Int>(trieRoot:T
         }
     }
     
-    return (count,"trie \(T.self) search")
+    return (count, message)
 }
 
 

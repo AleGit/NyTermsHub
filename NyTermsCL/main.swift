@@ -14,22 +14,11 @@ print("TPTP_ROOT",TptpPath.tptpRootPath)
 // BuildTries.demo134()
 // ParseFiles.demo()
 
-let key = "hwv066"
-let searches = [trieStructSearch, trieClassSearch]
-
-var runtime : CFAbsoluteTime = 0
-
-for search in searches {
-        
-        (_, runtime) = measure { process(tptpFiles[key]!!, search:search) }
-    
-    
-    print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
-        
-    }
+SearchComplementaries.demo()
 
 
 print(line,line,line)
 print(line,NSDate(),line)
+
 
 

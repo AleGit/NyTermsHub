@@ -10,34 +10,24 @@ print(line,line,line)
 print("NyTerms with \(Yices.info)")
 print("TPTP_ROOT",TptpPath.tptpRootPath)
 
-BuildTries.demo()
+// BuildTries.demo()
 // BuildTries.demo134()
 // ParseFiles.demo()
 
-//let key = "hwv066"
-//let searches = [intTrieSearch, linearSearch]
-//
-//var runtime : CFAbsoluteTime = 0
-//
-//if Process.arguments.count < 2 {
-//    for search in searches {
-//        
-//        (_, runtime) = measure { process(tptpFiles[key]!, search:search) }
-//        
-//    }
-//}
-//else if let path = tptpFiles[Process.arguments[1].lowercaseString] {
-//    for search in searches {
-//        (_, runtime) = measure { process(path, search:search) }
-//    }
-//}
-//else {
-//    let path = Process.arguments[1]
-//    print(path)
-//    (_, runtime) = measure { process(path, search:trieSearch) }
-//}
-//
-//print ("total runtime:",runtime)
+let key = "hwv066"
+let searches = [trieStructSearch, trieClassSearch]
+
+var runtime : CFAbsoluteTime = 0
+
+for search in searches {
+        
+        (_, runtime) = measure { process(tptpFiles[key]!!, search:search) }
+    
+    
+    print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
+        
+    }
+
 
 print(line,line,line)
 print(line,NSDate(),line)

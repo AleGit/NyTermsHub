@@ -4,28 +4,41 @@ protocol TrieType : Equatable {
     typealias Key
     typealias Value
     
+    /// creates empty trie type
+    init()
+    
+    /// creates a trie type with one value at key path
     init<C:CollectionType where C.Generator.Element == Key,
         C.SubSequence.Generator.Element == Key>(path:C, value:Value)
     
-    /// inserts value at key path
+    /// inserts one value at key path
     mutating func insert<C:CollectionType where C.Generator.Element == Key,
         C.SubSequence.Generator.Element == Key>(path:C, value:Value)
-    /// deletes and returns value at key path,
+    
+    /// deletes and returns one value at key path,
     /// if path or value do not exist trie stays unchanged and nil is returned
     mutating func delete<C:CollectionType where C.Generator.Element == Key,
         C.SubSequence.Generator.Element == Key>(path:C, value:Value) -> Value?
-    /// return the values stored at path
+    
+    /// returns all values at path
     func retrieve<C:CollectionType where C.Generator.Element == Key,
         C.SubSequence.Generator.Element == Key>(path:C) -> [Value]?
     
+    /// checks if trie type has no values
     var isEmpty : Bool { get }
     
-    init()
-    
+    /// stores one value at trie node
     mutating func insert(value:Value)
+    
+    /// deletes and returns one value from trie node
     mutating func delete(value:Value) -> Value?
-    subscript(key:Key) -> Self? { get set }
+    
+    /// get values at trie node
     var values : [Value]? { get }
+    
+    /// get subnode with key
+    subscript(key:Key) -> Self? { get set }
+    
 }
 
 // MARK: default implementations for init, insert, delete, retrieve

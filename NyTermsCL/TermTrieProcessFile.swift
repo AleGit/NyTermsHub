@@ -8,7 +8,7 @@
 
 import Foundation
 
-func extract<T>(trie:TrieStruct<SymHop, T>, path:SymHopPath) -> Set<T>? {
+func extract<T>(trie:TrieClass<SymHop, T>, path:SymHopPath) -> Set<T>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
@@ -39,16 +39,10 @@ func extract<T>(trie:TrieStruct<SymHop, T>, path:SymHopPath) -> Set<T>? {
             payload.unionInPlace(variables!)
         }
         return payload
-        
-        
-        
-        
     }
-    
-    
 }
 
-func candidates<T:Hashable>(indexed:TrieStruct<SymHop, T>, term:TptpNode) -> Set<T>? {
+func candidates<T:Hashable>(indexed:TrieClass<SymHop, T>, term:TptpNode) -> Set<T>? {
     var queryTerm : TptpNode
     switch term.symbol {
     case "~":
@@ -63,7 +57,6 @@ func candidates<T:Hashable>(indexed:TrieStruct<SymHop, T>, term:TptpNode) -> Set
         queryTerm = TptpNode(symbol: "~", nodes: [term])
     }
     
-    
     guard let (first,tail) = queryTerm.symHopPaths.decompose else { return nil }
     
     guard var result = extract(indexed, path: first) else { return nil }
@@ -72,33 +65,29 @@ func candidates<T:Hashable>(indexed:TrieStruct<SymHop, T>, term:TptpNode) -> Set
         guard let next = extract(indexed, path:path) else { return nil }
         result.intersectInPlace(next)
     }
-    
-    
     return result
 }
 
-func trieSearch(literals:[TptpNode]) -> (Int,String) {
+func trieClassSearch(literals:[TptpNode]) -> (Int,String) {
     let step = 1000
-    
     var count = 0
     var stepcount = count
-    
-    var trie = TrieStruct<SymHop,TptpNode>()
-    
+    var trie = TrieClass<SymHop,Int>()
     let start = CFAbsoluteTimeGetCurrent()
     var temp = start
     var processed = 0
-    for newLiteral in literals {
+    for (newIndex, newLiteral) in literals.enumerate() {
         if let candis = candidates(trie, term:newLiteral) {
-            for oldLiteral in candis  {
-                if ((newLiteral ~?= oldLiteral) != nil) {
-                    count++
-                }
-            }
+            //            for oldIndex in candis {
+            //                let oldLiteral = literals[oldIndex]
+            //                if ((newLiteral ~?= oldLiteral) != nil) {
+            //                    count++  // count wiht check
+            //                }
+            //            }
+            count += candis.count // count without unifiable check
         }
-        
         for path in newLiteral.symHopPaths {
-            trie.insert(path, value: newLiteral)
+            trie.insert(path, value: newIndex)
             
         }
         processed += 1
@@ -108,11 +97,15 @@ func trieSearch(literals:[TptpNode]) -> (Int,String) {
             let total = now - start
             let round = now - temp
             
+            print("\t(\(processed),\(step)) processed in",
+                "(\(total.timeIntervalDescriptionMarkedWithUnits),\(round.timeIntervalDescriptionMarkedWithUnits))",
+                "(\((total/Double(processed)).timeIntervalDescriptionMarkedWithUnits), \((round/Double(step)).timeIntervalDescriptionMarkedWithUnits))",
+                "(\(count),\(count-stepcount)) complementaries")
+            
             temp = now
             stepcount = count
         }
     }
     
-    
-    return (count,"index search")
+    return (count,"trie class search")
 }

@@ -11,8 +11,8 @@ import Foundation
 final class TrieClass<K: Hashable, V: Hashable> {
     typealias Key = K
     typealias Value = V
-    private var tries = [Key: TrieClass<Key, Value>]()
-    private var valueSet = Set<Value>()
+    private (set) var tries = [Key: TrieClass<Key, Value>]()
+    private (set) var valueSet = Set<Value>()
     
     init() {    }
 }

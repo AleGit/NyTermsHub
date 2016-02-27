@@ -62,5 +62,6 @@ func process(file:String, search: (literals:[TptpNode]) -> (Int,String)) {
     
     start = CFAbsoluteTimeGetCurrent()
     let (count,info) = search(literals:nodes)
+    print(count,info)
     
 }

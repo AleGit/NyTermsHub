@@ -56,29 +56,29 @@ struct Complementaries {
     
     private static let searches = [classSearch, structSerach, tailSearch, linearSearch]
     
-    static let fastest = 0
-    static let faster = 1
-    static let fast = 2
-    static let linear = 3
+    private static let fastest = 0
+    private static let faster = 1
+    private static let fast = 2
+    private static let linear = 3
     
-    static func demoFastest() {
+    private static let hwv134 = 5
+    
+    static func demoAllFastest() {
         print("\(self.self) \(__FUNCTION__)")
         demo(0..<files.count, fastest...fastest)
     }
     
-    static func demo134Fastest() {
+    static func demoHWV134Fastest() {
         print("\(self.self) \(__FUNCTION__)")
-        demo(5...5, fastest...fastest)
+        demo(hwv134...hwv134, fastest...fastest)
     }
     
-    static func demo105Linear() {
+    static func demoHWV105Linear() {
         print("\(self.self) \(__FUNCTION__)")
         demo(3...3,linear..<searches.count)
     }
     
-    
-    
-    static func demo105Fastest() {
+    static func demoHWV105Fastest() {
         print("\(self.self) \(__FUNCTION__)")
         demo(3...3,fastest...fastest)
     }

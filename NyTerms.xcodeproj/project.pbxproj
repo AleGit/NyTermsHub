@@ -249,7 +249,7 @@
 		51B883F31B8E3DAC008D7F22 /* test_pp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test_pp.c; sourceTree = "<group>"; };
 		51B883F61B8E3F3E008D7F22 /* YicesExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesExamples.swift; sourceTree = "<group>"; };
 		51C0ACB31C4A385800447594 /* Complementaries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Complementaries.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProcessFiles.txt; sourceTree = "<group>"; };
+		51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ProcessFiles.txt; path = ../Docs/ProcessFiles.txt; sourceTree = "<group>"; };
 		51C94CB81B987E70004C3082 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		51CC80F81C553B25008D4D43 /* HWV134lin.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = HWV134lin.txt; path = Docs/HWV134lin.txt; sourceTree = SOURCE_ROOT; };
 		51CD82A51C32D090009166BB /* NodeTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeTrieTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -259,17 +259,17 @@
 		51D8476B1C8084DC003EC848 /* TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpPath.swift; sourceTree = "<group>"; };
 		51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpTermTests.swift; sourceTree = "<group>"; };
 		51E28CDE1C81780100404842 /* IndexSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexSearch.swift; sourceTree = "<group>"; };
-		51E28CE01C819F2600404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v0.txt"; sourceTree = "<group>"; };
-		51E28CE11C81A02D00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v1.txt"; sourceTree = "<group>"; };
+		51E28CE01C819F2600404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "../Docs/Complementaries v0.txt"; sourceTree = "<group>"; };
+		51E28CE11C81A02D00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v1.txt"; path = "../Docs/Complementaries v1.txt"; sourceTree = "<group>"; };
 		51E28CE21C81AE4E00404842 /* HWV134 G C @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 G C @ MacMini.txt"; path = "Docs/HWV134 G C @ MacMini.txt"; sourceTree = SOURCE_ROOT; };
-		51E28CE31C81B1B900404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
+		51E28CE31C81B1B900404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 G S @ MacMini.txt"; path = "../Docs/HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
 		51E28CE41C81D6E500404842 /* Complementaries.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Complementaries.txt; path = Docs/Complementaries.txt; sourceTree = SOURCE_ROOT; };
-		51E28CE51C81DC0C00404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComplementariesFastest.txt; sourceTree = "<group>"; };
-		51E28CE61C81DC8B00404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v0.txt"; sourceTree = "<group>"; };
-		51E28CE71C81DC8B00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Complementaries v1.txt"; sourceTree = "<group>"; };
-		51E28CE81C81DC8B00404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ComplementariesFastest.txt; sourceTree = "<group>"; };
-		51E28CE91C81DC8B00404842 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProcessFiles.txt; sourceTree = "<group>"; };
-		51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
+		51E28CE51C81DC0C00404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ComplementariesFastest.txt; path = ../Docs/ComplementariesFastest.txt; sourceTree = "<group>"; };
+		51E28CE61C81DC8B00404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "../Docs/Complementaries v0.txt"; sourceTree = "<group>"; };
+		51E28CE71C81DC8B00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v1.txt"; path = "../Docs/Complementaries v1.txt"; sourceTree = "<group>"; };
+		51E28CE81C81DC8B00404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ComplementariesFastest.txt; path = ../Docs/ComplementariesFastest.txt; sourceTree = "<group>"; };
+		51E28CE91C81DC8B00404842 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ProcessFiles.txt; path = ../Docs/ProcessFiles.txt; sourceTree = "<group>"; };
+		51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "HWV134 G S @ MacMini.txt"; path = "../Docs/HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
 		51E28CEC1C81E17400404842 /* demo105linear.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = demo105linear.txt; path = Docs/demo105linear.txt; sourceTree = SOURCE_ROOT; };
 		51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = iMacFastestSearch.txt; path = Docs/iMacFastestSearch.txt; sourceTree = SOURCE_ROOT; };
 		51E28CEF1C81E28100404842 /* demo105linear.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = demo105linear.txt; path = Docs/demo105linear.txt; sourceTree = SOURCE_ROOT; };
@@ -322,14 +322,15 @@
 		511E95731B8AE4070093F4E8 /* _CLI_ */ = {
 			isa = PBXGroup;
 			children = (
-				511E95741B8AE4070093F4E8 /* main.swift */,
 				5150CD3F1C6CC1FD00372F04 /* BuildTries.swift */,
-				51342AB81B92CA3A0052A72F /* ParseFiles.swift */,
 				51C0ACB31C4A385800447594 /* Complementaries.swift */,
-				51540DB11C4CBA7B00A145DC /* results */,
-				516107AD1C5A53E100FD3637 /* LinearSearch.swift */,
 				51E28CDE1C81780100404842 /* IndexSearch.swift */,
 				51844E151C8439C400DCAA32 /* Infos.swift */,
+				516107AD1C5A53E100FD3637 /* LinearSearch.swift */,
+				511E95741B8AE4070093F4E8 /* main.swift */,
+				51844E191C84814100DCAA32 /* old results */,
+				51342AB81B92CA3A0052A72F /* ParseFiles.swift */,
+				51540DB11C4CBA7B00A145DC /* results */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;
@@ -543,6 +544,32 @@
 			isa = PBXGroup;
 			children = (
 				51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */,
+			);
+			name = results;
+			path = ../Docs;
+			sourceTree = "<group>";
+		};
+		515F0EED1B6B71C800B470B4 /* ParseC */ = {
+			isa = PBXGroup;
+			children = (
+				51226E7C1B6D44E20077E34D /* TptpPrintable.swift */,
+				515F0EEE1B6B723E00B470B4 /* Bridging-Header.h */,
+				515F0EF91B6B746800B470B4 /* TptpEnums.h */,
+				51226E761B6D3A0B0077E34D /* TptpFormula.swift */,
+				51226E781B6D3AB70077E34D /* TptpInclude.swift */,
+				515F0EF21B6B740900B470B4 /* TptpLexer.lm */,
+				515F0EF71B6B744700B470B4 /* TptpMacros.h */,
+				515F0EF81B6B744700B470B4 /* TptpParser.h */,
+				515D91B61B6CFEF0000EDB3B /* TptpParser.m */,
+				515F0EF41B6B741500B470B4 /* TptpParser.ym */,
+				515D91BD1B6D2513000EDB3B /* TptpNode.swift */,
+			);
+			path = ParseC;
+			sourceTree = "<group>";
+		};
+		51844E191C84814100DCAA32 /* old results */ = {
+			isa = PBXGroup;
+			children = (
 				51E28CEF1C81E28100404842 /* demo105linear.txt */,
 				51E28CF01C81E28100404842 /* Complementaries.txt */,
 				51E28CF11C81E28100404842 /* HWV134 G C @ MacMini.txt */,
@@ -575,26 +602,7 @@
 				5121F6511C58F0A70053601D /* testIntegerIntersection.txt */,
 				51E28CEC1C81E17400404842 /* demo105linear.txt */,
 			);
-			name = results;
-			path = ../Docs;
-			sourceTree = "<group>";
-		};
-		515F0EED1B6B71C800B470B4 /* ParseC */ = {
-			isa = PBXGroup;
-			children = (
-				51226E7C1B6D44E20077E34D /* TptpPrintable.swift */,
-				515F0EEE1B6B723E00B470B4 /* Bridging-Header.h */,
-				515F0EF91B6B746800B470B4 /* TptpEnums.h */,
-				51226E761B6D3A0B0077E34D /* TptpFormula.swift */,
-				51226E781B6D3AB70077E34D /* TptpInclude.swift */,
-				515F0EF21B6B740900B470B4 /* TptpLexer.lm */,
-				515F0EF71B6B744700B470B4 /* TptpMacros.h */,
-				515F0EF81B6B744700B470B4 /* TptpParser.h */,
-				515D91B61B6CFEF0000EDB3B /* TptpParser.m */,
-				515F0EF41B6B741500B470B4 /* TptpParser.ym */,
-				515D91BD1B6D2513000EDB3B /* TptpNode.swift */,
-			);
-			path = ParseC;
+			name = "old results";
 			sourceTree = "<group>";
 		};
 		51B26B5E1B8D9F9E00CC59AD /* Docs */ = {

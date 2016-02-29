@@ -44,99 +44,62 @@ private func literals(formulae:[TptpFormula]) -> [TptpNode] {
 
 struct Complementaries {
     
-    private static let files = [
-        "PUZ001-1", // 0
-        "HWV066-1", // 1    15233,   35166
-        "HWV074-1", // 2     2581,    6017
-        "HWV105-1", // 3    20900,   52662
-        "HWV119-1", // 4    17783,   53121
-        "HWV134-1", // 5  2332428, 6570884
-        
-    ]
+
     
-    private static let searches = [classSearch, structSerach, tailSearch, linearSearch]
     
-    private static let fastest = 0
-    private static let faster = 1
-    private static let fast = 2
-    private static let linear = 3
     
-    private static let hwv134 = 5
     
-    static func demoAllFastest() {
-        print("\(self.self) \(__FUNCTION__)")
-        demo(0..<files.count, fastest...fastest)
-    }
-    
-    static func demoHWV134Fastest() {
-        print("\(self.self) \(__FUNCTION__)")
-        demo(hwv134...hwv134, fastest...fastest)
-    }
-    
-    static func demoHWV105Linear() {
-        print("\(self.self) \(__FUNCTION__)")
-        demo(3...3,linear..<searches.count)
-    }
-    
-    static func demoHWV105Fastest() {
-        print("\(self.self) \(__FUNCTION__)")
-        demo(3...3,fastest...fastest)
-    }
-    
-    private static var classSearch = {
-        (literals :[TptpNode]) -> (Int,String) in
-        return trieSearch(TrieClass<SymHop,Int>(), literals:literals)
-    }
-    
-    private static var structSerach = {
-        (literals :[TptpNode]) -> (Int,String) in
-        return trieSearch(TrieStruct<SymHop,Int>(), literals:literals)
-    }
-    
-    private static var tailSearch = {
-        (literals :[TptpNode]) -> (Int,String) in
-        return trieSearch(TailTrie<SymHop,Int>(), literals:literals)
-    }
-    
-    private static func process<N:Node>(literals:[N], search: (literals:[N]) -> (Int,String)) {
+    private static func process<N:Node>(literals:[N], search: (literals:[N]) -> (Int,String)) -> Int {
         print("\tProcessing \(literals.count) literals ...:")
         let (count,info) = search(literals:literals)
         print(count,info)
-        
+        return count
     }
-
-    private static func demo(franges:Range<Int>, _ sranges:Range<Int>) {
-        print("\(self.self) \(__FUNCTION__) files[\(franges)],searches[\(sranges)]\n")
-        
-        for file in files[franges] {
-            guard let problem = file.p else {
-                let d = errorNumberAndDescription()
-                let message = "file \(file) was not accessible. \(d)"
-                print(message)
-                continue
+    
+    static func demo<F:SequenceType, S:SequenceType where
+        F.Generator.Element == String, S.Generator.Element == ([TptpNode])->(Int,String)>
+        (files:F, searches:S) {
+            print("\(self.self) \(__FUNCTION__) with \(files.count) files and \(searches.count) search functions.\n")
+            defer {
+                print("\n")
             }
             
-            print(file,problem)
-            var start = CFAbsoluteTimeGetCurrent()
-            let formulae = parseFile(problem)
-            print("\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
-            start = CFAbsoluteTimeGetCurrent()
-            let nodes = literals(formulae)
-            print("\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
-            
-            for search in searches[sranges] {
-                print("")
-                var runtime : CFAbsoluteTime = 0
+            for file in files {
+                guard let problem = file.p else {
+                    let d = errorNumberAndDescription()
+                    let message = "file \(file) was not accessible. \(d)"
+                    print(message)
+                    continue
+                }
                 
-                (_, runtime) = measure { process(nodes, search:search) }
+                print(file,problem)
+                var start = CFAbsoluteTimeGetCurrent()
+                let formulae = parseFile(problem)
+                print("\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
+                start = CFAbsoluteTimeGetCurrent()
+                let nodes = literals(formulae)
                 
+                print("\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
                 
-                print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
+                for search in searches {
+                    print("")
+                    var runtime : CFAbsoluteTime = 0
+                    
+                    (_, runtime) = measure { process(nodes, search:search) }
+                    
+                    
+                    print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
+                    
+                }
                 
+                guard let info = Infos.files[file] else {
+                    print("no info found")
+                    return
+                }
+                
+                assert(info.0 == formulae.count)
+                assert(info.1 == nodes.count)
             }
             
-            print("\n")
-        }
-        
     }
 }

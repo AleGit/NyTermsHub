@@ -8,6 +8,21 @@
 
 import Foundation
 
+let classSearch = {
+    (literals :[TptpNode]) -> (Int,String) in
+    return trieSearch(TrieClass<SymHop,Int>(), literals:literals)
+}
+
+let structSerach = {
+    (literals :[TptpNode]) -> (Int,String) in
+    return trieSearch(TrieStruct<SymHop,Int>(), literals:literals)
+}
+
+let tailSearch = {
+    (literals :[TptpNode]) -> (Int,String) in
+    return trieSearch(TailTrie<SymHop,Int>(), literals:literals)
+}
+
 extension TrieType where Value:Hashable {
     var payload : Set<Value> {
         guard let vals = values else { return Set<Value>() }

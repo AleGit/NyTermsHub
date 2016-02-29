@@ -13,8 +13,12 @@ print(line,line,line)
 // BuildTries.demo()
 // BuildTries.demo134()
 // ParseFiles.demo()
-// Complementaries.demo105Fastest()
-Complementaries.demoHWV134Fastest()
+
+let files = Infos.files.filter { $0.1.0 < 100_000 }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
+
+print(files)
+
+Complementaries.demo(files, searches: [linearSearch, classSearch])
 
 print(line,line,line)
 print(line,NSDate(),line)

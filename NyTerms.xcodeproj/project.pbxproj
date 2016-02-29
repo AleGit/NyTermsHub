@@ -271,7 +271,6 @@
 		51E28CE91C81DC8B00404842 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProcessFiles.txt; sourceTree = "<group>"; };
 		51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "HWV134 G S @ MacMini.txt"; sourceTree = "<group>"; };
 		51E28CEC1C81E17400404842 /* demo105linear.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = demo105linear.txt; path = Docs/demo105linear.txt; sourceTree = SOURCE_ROOT; };
-		51E28CED1C81E23200404842 /* demo105fastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = demo105fastest.txt; sourceTree = "<group>"; };
 		51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = iMacFastestSearch.txt; path = Docs/iMacFastestSearch.txt; sourceTree = SOURCE_ROOT; };
 		51E28CEF1C81E28100404842 /* demo105linear.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = demo105linear.txt; path = Docs/demo105linear.txt; sourceTree = SOURCE_ROOT; };
 		51E28CF01C81E28100404842 /* Complementaries.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Complementaries.txt; path = Docs/Complementaries.txt; sourceTree = SOURCE_ROOT; };
@@ -551,7 +550,6 @@
 				51E28CF31C81E28100404842 /* Complementaries v1.txt */,
 				51E28CF41C81E28100404842 /* ComplementariesFastest.txt */,
 				51E28CF51C81E28100404842 /* Complementaries v0.txt */,
-				51E28CED1C81E23200404842 /* demo105fastest.txt */,
 				51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */,
 				51E28CE61C81DC8B00404842 /* Complementaries v0.txt */,
 				51E28CE71C81DC8B00404842 /* Complementaries v1.txt */,

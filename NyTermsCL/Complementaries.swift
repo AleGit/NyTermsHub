@@ -25,14 +25,15 @@ struct Complementaries {
     private static func process<N:Node>(literals:[N], search: (literals:[N]) -> (Int,String)) -> Int {
         print("\tProcessing \(literals.count) literals ...:")
         let (count,info) = search(literals:literals)
-        print(count,info)
+        print(info)
         return count
     }
     
     static func demo<F:SequenceType, S:SequenceType where
         F.Generator.Element == String, S.Generator.Element == ([TptpNode])->(Int,String)>
         (files:F, searches:S) {
-            print("\(self.self) \(__FUNCTION__).\n")
+            print("\(self.self) \(__FUNCTION__)")
+            print("\(files)\n")
             defer {
                 print("\n")
             }
@@ -52,26 +53,38 @@ struct Complementaries {
                 start = CFAbsoluteTimeGetCurrent()
                 let nodes = literals(formulae)
                 
+                var expected = 0
+                var actual = 0
+                
+                if let info = Infos.files[file] {
+                    assert(info.0 == formulae.count)
+                    assert(info.1 == nodes.count)
+                    expected = info.2
+                }
+                else {
+                    print("\(file): info n/a")
+                }
+                
                 print("\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
                 
                 for search in searches {
                     print("")
                     var runtime : CFAbsoluteTime = 0
                     
-                    (_, runtime) = measure { process(nodes, search:search) }
+                    (actual, runtime) = measure { process(nodes, search:search) }
                     
+                    if expected == 0 {
+                        expected = actual
+                    }
+                    else if actual != expected {
+                        print("\(file): \(actual) coplemenatary literals found. \(expected) expected.")
+                    }
+                    else {
+                        print("\(file): \(actual) coplemenatary literals found in \(runtime.timeIntervalDescriptionMarkedWithUnits).")
+                    }
                     
-                    print ("runtime:",runtime.timeIntervalDescriptionMarkedWithUnits)
-                    
+                    print("\n")
                 }
-                
-                guard let info = Infos.files[file] else {
-                    print("no info found")
-                    return
-                }
-                
-                assert(info.0 == formulae.count)
-                assert(info.1 == nodes.count)
             }
             
     }

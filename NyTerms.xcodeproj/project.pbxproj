@@ -79,6 +79,7 @@
 		517D86381C44F94100930B61 /* DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517D86371C44F94100930B61 /* DescriptionTests.swift */; };
 		517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */; };
 		51844E161C8439C400DCAA32 /* Infos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E151C8439C400DCAA32 /* Infos.swift */; };
+		51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E171C8448A200DCAA32 /* UnificationTests.swift */; };
 		519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A21B84E11F0030A61A /* NodeStructTests.swift */; };
 		519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A41B84E1780030A61A /* NodeClassTests.swift */; };
 		519801A71B84E18C0030A61A /* NodeEnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A61B84E18C0030A61A /* NodeEnumTests.swift */; };
@@ -221,6 +222,7 @@
 		517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTests.swift; sourceTree = "<group>"; };
 		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
 		51844E151C8439C400DCAA32 /* Infos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Infos.swift; sourceTree = "<group>"; };
+		51844E171C8448A200DCAA32 /* UnificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnificationTests.swift; sourceTree = "<group>"; };
 		518D60A81C0C58B900831FE8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		519801A21B84E11F0030A61A /* NodeStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeStructTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A41B84E1780030A61A /* NodeClassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeClassTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -475,6 +477,7 @@
 				515F0F0D1B6BB80000B470B4 /* TestGlobals.swift */,
 				5129773A1B678B9C003D3E80 /* TestTermTests.swift */,
 				517D86371C44F94100930B61 /* DescriptionTests.swift */,
+				51844E171C8448A200DCAA32 /* UnificationTests.swift */,
 			);
 			name = MiscTests;
 			sourceTree = "<group>";
@@ -886,6 +889,7 @@
 				51B883F11B8E3D5B008D7F22 /* names.c in Sources */,
 				51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */,
 				51B26B701B8DA75D00CC59AD /* YicesBasicTests.swift in Sources */,
+				51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */,
 				51B26B781B8DB46500CC59AD /* example1.c in Sources */,
 				512517BD1BE127D6005C3E2D /* YiProverBasicTests.swift in Sources */,
 				5146F42F1C7B1B3B00A19EC1 /* BuildTrieStructPerformanceTests.swift in Sources */,

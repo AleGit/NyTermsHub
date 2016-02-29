@@ -8,17 +8,17 @@
 
 import Foundation
 
-let classSearch = {
+let fastestSearch = {
     (literals :[TptpNode]) -> (Int,String) in
     return trieSearch(TrieClass<SymHop,Int>(), literals:literals)
 }
 
-let structSerach = {
+let fasterSearch = {
     (literals :[TptpNode]) -> (Int,String) in
     return trieSearch(TrieStruct<SymHop,Int>(), literals:literals)
 }
 
-let tailSearch = {
+let fastSearch = {
     (literals :[TptpNode]) -> (Int,String) in
     return trieSearch(TailTrie<SymHop,Int>(), literals:literals)
 }

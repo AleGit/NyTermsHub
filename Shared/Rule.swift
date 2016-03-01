@@ -77,7 +77,7 @@ extension Node {
         
         if !(rhs.allVariables.isSubsetOf(lhs.allVariables)) { return nil }  // allVariables(rhs) is not a subset of allVariables(lhs), hence the equation is not a rule
         
-        return Self(symbol: Symbols.EQUALS, nodes: [lhs,rhs]) // the equation is a rule
+        return Self(symbol: Symbol.equalsSign, nodes: [lhs,rhs]) // the equation is a rule
     }
     
     

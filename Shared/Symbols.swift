@@ -17,6 +17,7 @@ func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
 // MARK: symbol table
 
 /// Predefined symbols like auxilary, connective and equality symbols.
+@available(*, deprecated=1.0)
 struct Symbols {
     
     static let EQUALS = "=" // →≈
@@ -26,6 +27,7 @@ struct Symbols {
     static let CombiningEnclosingSquare:Character = " ⃞"
     static let xsquare = "x" + String(CombiningEnclosingSquare)
     
+    @available(*, deprecated=1.0)
     /// a collection of universal auxilary and function symbols
     static let universalSymbols : [Symbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
@@ -48,8 +50,9 @@ struct Symbols {
         "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2),          // -X, X-Y
         
         "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
-        ]
+    ]
     
+    @available(*, deprecated=1.0)
     /// a collection of [TPTP Syntax](http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html) specific symbols
     static let tptpSymbols : [Symbol:SymbolQuadruple] = [
         
@@ -73,7 +76,7 @@ struct Symbols {
         // ⟨defined_infix_formula⟩  ::= ⟨term⟩ ⟨defined_infix_pred⟩ ⟨term⟩
         // ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩
         // ⟨infix_equality⟩     ::= =
-//         "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s = t
+        //         "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s = t
         // ⟨fol_infix_unary⟩    ::= ⟨term⟩ ⟨infix_inequality⟩ ⟨term⟩
         // ⟨infix_inequality⟩   ::= !=
         "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s != t
@@ -81,6 +84,7 @@ struct Symbols {
         "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
     
+    @available(*, deprecated=1.0)
     static let defaultSymbols = universalSymbols + tptpSymbols
 }
 
@@ -237,10 +241,14 @@ enum SymbolNotation {
 //]
 
 extension Symbol {
+    static let equalsSign = "="
+    static let separator = ","
     
     var quadruple : SymbolQuadruple? {
         switch self {
- 
+            
+            // MARK: - universal symbols
+            
         case "" : return  (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0))
         case "(" : return  (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
         case ")" : return  (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
@@ -250,45 +258,45 @@ extension Symbol {
         case "}" : return  (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
         case "[" : return  (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
         case "]" : return  (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-        
-        // + − × ÷ (mathematical symbols)
+            
+            // + − × ÷ (mathematical symbols)
         case "+" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max)      //  X, X+Y, X+...+Z
         case "−" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2)            // -X, X-Y
         case "×" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max)      // X, X*Y, X*...*X
         case "÷" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 2...2)
-        
-        // - (keyboard symbol)
-        case "-" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2)          // -X, X-Y
-        
-        case "=" : return  (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
-        
-        // TPTP
             
-        // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
+            // - (keyboard symbol)
+        case "-" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2)          // -X, X-Y
+            
+        case "=" : return  (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
+            
+            // MARK: - tptp symbols
+            
+            // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
         case "&" : return  (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max))  // true; A; A & B; A & ... & Z
         case "|" : return  (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:0..<Int.max)  // false; A; A | B; A | ... & Z
-        // ⟨unary_connective⟩ ::= ~
+            // ⟨unary_connective⟩ ::= ~
         case "~" : return  (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1)          // ~A
-        // ⟨binary_connective⟩  ::= <=> | => | <= | <~> | ~<vline> | ~&
+            // ⟨binary_connective⟩  ::= <=> | => | <= | <~> | ~<vline> | ~&
         case "=>" : return  (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)       // A => B
         case "<=" : return  (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)          // A <= B
         case "<=>" : return  (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)              // A <=> B
         case "~&" : return  (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)              // A ~& B
         case "~|" : return  (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)               // A ~| B
         case "<~>" : return  (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)             // A <~> B
-        // ⟨fol_quantifier⟩ ::= ! | ?
+            // ⟨fol_quantifier⟩ ::= ! | ?
         case "!" : return  (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arities:2...2)     // ! [X] : return A
         case "?" : return  (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arities:2...2)       // ? [X] : return A
-        // ⟨gentzen_arrow⟩      ::= -->
+            // ⟨gentzen_arrow⟩      ::= -->
         case "-->" : return  (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)          // A --> B
-        // ⟨defined_infix_formula⟩  ::= ⟨term⟩ ⟨defined_infix_pred⟩ ⟨term⟩
-        // ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩
-        // ⟨infix_equality⟩     ::= =
-        //         case "=" : return  (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s = t
-        // ⟨fol_infix_unary⟩    ::= ⟨term⟩ ⟨infix_inequality⟩ ⟨term⟩
-        // ⟨infix_inequality⟩   ::= !=
+            // ⟨defined_infix_formula⟩  ::= ⟨term⟩ ⟨defined_infix_pred⟩ ⟨term⟩
+            // ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩
+            // ⟨infix_equality⟩     ::= =
+            //         case "=" : return  (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s = t
+            // ⟨fol_infix_unary⟩    ::= ⟨term⟩ ⟨infix_inequality⟩ ⟨term⟩
+            // ⟨infix_inequality⟩   ::= !=
         case "!=" : return  (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2)        // s != t
-        
+            
         case "," : return  (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
         default: return nil
         }

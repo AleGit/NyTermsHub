@@ -125,7 +125,7 @@ extension Node {
                 return "\(decor)" // constant (or proposition)
             default:
                 
-                return "\(decor)(\(decors.joinWithSeparator(Symbols.SEPARATOR)))" // prefix function (or predicate)
+                return "\(decor)(\(decors.joinWithSeparator(Symbol.separator)))" // prefix function (or predicate)
             }
         }
         
@@ -140,7 +140,7 @@ extension Node {
             
         case (_,_,.TptpSpecific,_):
             assertionFailure("'\(symbol)' has ambiguous notation \(quadruple).")
-            return "\(decor)☇(\(decors.joinWithSeparator(Symbols.SEPARATOR)))"
+            return "\(decor)☇(\(decors.joinWithSeparator(Symbol.separator)))"
             
         case (.Universal,_,_,_), (.Existential,_,_,_):
             return "(\(decor)\(decors.first!) (\(decors.last!)))" // e.g.: ∀ x,y,z : ( P(f(x,y),z) ∧ f(x,x)=g(x) )
@@ -149,7 +149,7 @@ extension Node {
             return "\(decor)"
             
         case (_,_,.Prefix,_):
-            return "\(decor)(\(decors.joinWithSeparator(Symbols.SEPARATOR)))"
+            return "\(decor)(\(decors.joinWithSeparator(Symbol.separator)))"
             
         case (_,_,.Minus,_) where nodes.count == 1:
             return "\(decor)(\(decors.first!)"
@@ -159,15 +159,15 @@ extension Node {
             
         case (_,_,.Postfix,_):
             assertionFailure("'\(symbol),\(decor)' uses unsupported postfix notation \(quadruple).")
-            return "(\(decors.joinWithSeparator(Symbols.SEPARATOR)))\(decor)"
+            return "(\(decors.joinWithSeparator(Symbol.separator)))\(decor)"
             
         case (_,_,.Invalid,_):
             assertionFailure("'\(symbol),\(decor)' has invalid notation: \(quadruple)")
-            return "☇\(decor)☇(\(decors.joinWithSeparator(Symbols.SEPARATOR)))"
+            return "☇\(decor)☇(\(decors.joinWithSeparator(Symbol.separator)))"
             
         default:
             assertionFailure("'\(symbol)' has impossible notation: \(quadruple)")
-            return "☇☇\(decor)☇☇(\(decors.joinWithSeparator(Symbols.SEPARATOR)))"
+            return "☇☇\(decor)☇☇(\(decors.joinWithSeparator(Symbol.separator)))"
         }
     }
     

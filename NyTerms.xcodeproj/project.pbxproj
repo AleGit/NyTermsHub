@@ -184,6 +184,7 @@
 		513F24061C04C13F0026A081 /* TargetApp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetApp.jpg; sourceTree = "<group>"; };
 		513F24071C04C13F0026A081 /* Project.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Project.jpg; sourceTree = "<group>"; };
 		513F24081C04C13F0026A081 /* TargetCL.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetCL.jpg; sourceTree = "<group>"; };
+		51431DF61C85780C0053BB18 /* statistics.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = statistics.txt; sourceTree = "<group>"; };
 		5146F42B1C7B061F00A19EC1 /* TrieClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieClass.swift; sourceTree = "<group>"; };
 		5146F42E1C7B1B3B00A19EC1 /* BuildTrieStructPerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildTrieStructPerformanceTests.swift; sourceTree = "<group>"; };
 		5146F4301C7B1B5200A19EC1 /* BuildTrieClassPerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildTrieClassPerformanceTests.swift; sourceTree = "<group>"; };
@@ -541,6 +542,7 @@
 		51540DB11C4CBA7B00A145DC /* results */ = {
 			isa = PBXGroup;
 			children = (
+				51431DF61C85780C0053BB18 /* statistics.txt */,
 				51E28CEF1C81E28100404842 /* mmFastestSearch.txt */,
 				51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */,
 			);
@@ -574,7 +576,6 @@
 				51E28CF31C81E28100404842 /* Complementaries v1.txt */,
 				51E28CF41C81E28100404842 /* ComplementariesFastest.txt */,
 				51E28CF51C81E28100404842 /* Complementaries v0.txt */,
-				51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */,
 				51E28CEA1C81DCAC00404842 /* HWV134 G S @ MacMini.txt */,
 				51E28CE61C81DC8B00404842 /* Complementaries v0.txt */,
 				51E28CE71C81DC8B00404842 /* Complementaries v1.txt */,

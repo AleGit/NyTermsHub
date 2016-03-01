@@ -1,0 +1,14 @@
+HWV134-1 /Users/Shared/TPTP/Problems/HWV/HWV134-1.p
+2332428 formulae parsed in 1m 47s
+6570884 literals) extracted in 4s 134ms
+
+5.21 GB ~ 2399 B / clause ~  852 B / literal
+
+processed   memory   trie   trie entry
+     0      5.21 GB
+ 90000      5.29 GB  0,08
+211000      5.39 GB  0,18
+215000      5.40 GB  0,19   ~  948 B
+297000      5,50 GB  0,29   ~ 1048 B
+338000      5,54 GB  0,33   ~ 1048 B
+459000      5,68 GB  0,47   ~ 1099 B

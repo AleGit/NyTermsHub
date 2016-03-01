@@ -223,3 +223,46 @@ enum SymbolNotation {
     
     case Invalid
 }
+
+// unused (introduce for workaround attempt *1* below)
+//private var symbols : [Symbol:SymbolQuadruple] = [
+//    "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1),
+//    "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2)
+//]
+
+// unused (introduced for workaround attempt *2* below)
+//private var symbolTypes : [Symbol:SymbolType] = [
+//    "~" : SymbolType.Negation,
+//    "!=" : SymbolType.Inequation
+//]
+
+extension Symbol {
+    
+    var quadruple : SymbolQuadruple? {
+        switch self {
+        case "~" : return (SymbolType.Negation, SymbolCategory.Connective, SymbolNotation.Prefix, 1...1)
+        case "!=" : return (SymbolType.Inequation, SymbolCategory.Equational, SymbolNotation.Infix, 2...2)
+        default: return nil
+        }
+    }
+    
+    var type : SymbolType? {
+        // return symbols[self]?.type       // *1* accumulates memory !!! ???
+        
+        // workaround?
+        // return symbolTypes[self]         // *2* accumulates memory too !!!
+        
+        return self.quadruple?.type         // *3* workaround
+    }
+    
+    var category : SymbolCategory? {
+        return self.quadruple?.category
+    }
+    var notation : SymbolNotation? {
+        return self.quadruple?.notation
+    }
+    var arities : Range<Int>? {
+        return self.quadruple?.arities
+    }
+}
+

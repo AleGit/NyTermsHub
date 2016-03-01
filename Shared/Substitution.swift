@@ -89,33 +89,17 @@ extension Node {
     /// if `self` is A != B then A = B will be returned.
     /// Otherwise nil will be returned.
     /// To do: find better name for this property
-    var unnegatedNodeX : Self? {
+    var unnegatedNode : Self? {
         guard let nodes = self.nodes else { return nil }    // a variable is not negated
-        guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return nil } // the type of the node must be known !!! accumulates memory ???
+        /// guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return nil } // the type of the node must be known !!! accumulates memory ???
+        
+        guard let type = self.symbol.type else { return nil } // workaround
         
         switch type {
         case SymbolType.Negation:
             assert (nodes.count == 1, "a negation with \(nodes.count) subnodes!")
             return nodes.first
         case SymbolType.Inequation:
-            assert (nodes.count == 2, "an inequation with \(nodes.count) subnodes!")
-            return Self(equational: "=", nodes: nodes)
-        default:
-            return nil
-        }
-    }
-    
-    /// If `self` is not P then P will be returned,
-    /// if `self` is A != B then A = B will be returned.
-    /// Otherwise nil will be returned.
-    var unnegatedNode : Self? {
-        guard let nodes = self.nodes else { return nil }    // a variable is not negated
-        
-        switch self.symbol {
-        case "~":
-            assert (nodes.count == 1, "a negation with \(nodes.count) subnodes!")
-            return nodes.first
-        case "!=":
             assert (nodes.count == 2, "an inequation with \(nodes.count) subnodes!")
             return Self(equational: "=", nodes: nodes)
         default:

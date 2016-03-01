@@ -107,14 +107,14 @@ extension Node {
         guard let nodes = self.nodes else {
             // since self has not list of subnodes at all,
             // self must be a variable term
-            assert((Symbols.defaultSymbols[self.symbol]?.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(Symbols.defaultSymbols[self.symbol]!)")
+            assert((self.symbol.type ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbol) is variable term with wrong type \(self.symbol.quadruple!)")
             
             return decorate(symbol:self.symbol, type:SymbolType.Variable)
         }
         
         let decors = nodes.map { $0.buildDescription(decorate) }
         
-        guard let quadruple = Symbols.defaultSymbols[self.symbol] else {
+        guard let quadruple = self.symbol.quadruple else {
             // If the symbol is not defined in the global symbol table,
             // i.e. a function or predicate symbol
             let decor = decorate(symbol:self.symbol,type:SymbolType.Function)
@@ -193,7 +193,7 @@ extension Node {
             
             
             
-            let quadruple = Symbols.defaultSymbols[self.symbol] ??
+            let quadruple = self.symbol.quadruple ??
                 (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 0..<Int.max)
             
             let decor = decorate(symbol:self.symbol,type:quadruple.type)

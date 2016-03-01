@@ -91,7 +91,7 @@ extension Node {
     /// To do: find better name for this property
     var unnegatedNode : Self? {
         guard let nodes = self.nodes else { return nil }    // a variable is not negated
-        /// guard let type = Symbols.defaultSymbols[self.symbol]?.type else { return nil } // the type of the node must be known !!! accumulates memory ???
+        /// guard let type = self.symbol.type else { return nil } // the type of the node must be known !!! accumulates memory ???
         
         guard let type = self.symbol.type else { return nil } // workaround
         

@@ -247,7 +247,7 @@ extension Symbol {
     var quadruple : SymbolQuadruple? {
         switch self {
             
-            // MARK: - universal symbols
+            // universal symbols
             
         case "" : return  (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0))
         case "(" : return  (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
@@ -270,7 +270,7 @@ extension Symbol {
             
         case "=" : return  (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
             
-            // MARK: - tptp symbols
+            // tptp symbols
             
             // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
         case "&" : return  (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max))  // true; A; A & B; A & ... & Z

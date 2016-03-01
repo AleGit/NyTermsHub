@@ -26,14 +26,16 @@ class TptpPathTests: XCTestCase {
         let string = "include('Axioms/SYN000-0.ax',[ia1,ia3])."
         let result = parse(string:string)
         XCTAssertEqual(2, result.formulae.count)
-        print(result)
+        XCTAssertEqual(0, result.status.first!)
+        XCTAssertEqual(0, result.status.last!)
     }
 
     func testParseIncludeNoFile() {
         let string = "include('Axioms/SYN999-9.ax',[ia1,ia3])."
         let result = parse(string:string)
         XCTAssertEqual(0, result.formulae.count)
-        print(result)
+        XCTAssertEqual(0, result.status.first!)
+        XCTAssertEqual(2, result.status.last!)
     }
     
     /// To succeed copy problem `SYN002-2.p` to `/Users/Shared/SampleA.p`
@@ -43,7 +45,8 @@ class TptpPathTests: XCTestCase {
         let path = "/Users/Shared/SampleA.p"
         let result = parse(path:path)
         XCTAssertEqual(19, result.formulae.count)
-        print(result)
+        XCTAssertEqual(0, result.status.first!)
+        XCTAssertEqual(0, result.status.last!)
         
     }
     

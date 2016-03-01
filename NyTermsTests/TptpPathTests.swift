@@ -36,6 +36,9 @@ class TptpPathTests: XCTestCase {
         print(result)
     }
     
+    /// To succeed copy problem `SYN002-2.p` to `/Users/Shared/SampleA.p`
+    ///
+    ///    cp /Users/Shared/TPTP/Problems/SYN/SYN000-2.p /Users/Shared/SampleA.p
     func testPathSampleA() {
         let path = "/Users/Shared/SampleA.p"
         let result = parse(path:path)
@@ -44,6 +47,9 @@ class TptpPathTests: XCTestCase {
         
     }
     
+    /// To succeed copy axiom `SYN000-0.ax` to `/Users/Shared/AxiomB.ax`
+    ///
+    ///    cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/AxiomB.ax
     func testPathToAxiomB() {
         let path = "/Users/Shared/SampleA.p"
         let file = "AxiomB.ax"
@@ -55,10 +61,25 @@ class TptpPathTests: XCTestCase {
         XCTAssertEqual(3, result.formulae.count)
     }
     
+    /// To succeed copy axiom `SYN000-0.ax` to `/Users/Shared/Axioms/AxiomC.ax`
+    ///
+    ///    mkdir /Users/Shared/Axioms
+    ///    cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomC.ax
     func testPathToAxiomC() {
         let path = "/Users/Shared/SampleA.p"
         let file = "Axioms/AxiomC.ax"
         let expected = "/Users/Shared/Axioms/AxiomC.ax"
+        let actual = path.tptpPathTo(file)
+        XCTAssertEqual(expected,actual)
+        
+        let result = parse(path:expected)
+        XCTAssertEqual(3, result.formulae.count)
+    }
+    
+    func testPathToSYN000() {
+        let path = "/Users/Shared/SampleA.p"
+        let file = "Axioms/SYN000-0.ax"
+        let expected = TptpPath.tptpRootPath + "/" + "Axioms/SYN000-0.ax"
         let actual = path.tptpPathTo(file)
         XCTAssertEqual(expected,actual)
         

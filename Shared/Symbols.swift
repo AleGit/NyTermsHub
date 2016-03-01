@@ -247,9 +247,9 @@ extension Symbol {
     }
     
     var type : SymbolType? {
-        // return symbols[self]?.type       // *1* accumulates memory !!! ???
+        // Symbols.defaultSymbols[self]?.type accumulates memory with each call ...
         
-        // workaround?
+        // return symbols[self]?.type       // *1* accumulates memory too !!!
         // return symbolTypes[self]         // *2* accumulates memory too !!!
         
         return self.quadruple?.type         // *3* workaround

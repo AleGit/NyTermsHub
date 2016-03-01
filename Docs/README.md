@@ -26,12 +26,13 @@ to the path where directories 'Axioms' and 'Problems' are residing)
 
 The tptp root path default is `/Users/Shared/TPTP`.
 
-For `TptpPathTests` to succeed copy three files:
+For `TptpPathTests` to succeed copy these files:
 
 
     cp /Users/Shared/TPTP/Problems/SYN/SYN000-2.p /Users/Shared/SampleA.p
     cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/AxiomB.ax
-    cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomC.ax
+    mkdir /Users/Shared/Axioms
+    cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomsC.ax
 
 Yices
 =====

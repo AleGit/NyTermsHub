@@ -131,7 +131,7 @@ extension TptpNode {
     }
     
     convenience init(connective symbol:Symbol, nodes:[TptpNode]) {
-        assert(nodes.count > 0)
+        // assert(nodes.count > 0)
         assert(symbol.category == SymbolCategory.Connective, "connective symbols must be predefined")
         self.init(symbol:symbol,nodes: nodes)
     }

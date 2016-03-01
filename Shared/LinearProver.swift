@@ -1,18 +1,16 @@
-//  Created by Alexander Maringele.
-//  Copyright © 2015 Alexander Maringele. All rights reserved.
+//
+//  LinearProver.swift
+//  NyTerms
+//
+//  Created by Alexander Maringele on 01.03.16.
+//  Copyright © 2016 Alexander Maringele. All rights reserved.
 //
 
 import Foundation
 
-protocol Prover {
-    typealias N : Node
-    
-    var symbols : [Symbol:SymbolQuadruple] { get set }
-    
-    init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
-}
 
-class YicesProver<N:Node> : Prover {
+
+final class LinearProver<N:Node> : Prover {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     ///
@@ -52,7 +50,7 @@ class YicesProver<N:Node> : Prover {
     
     /// We assign a list of clauses and a list of predefined symbols to our prover
     /// Goal: prove that the clauses are unsatisfiable.
-    required init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple]) {
+    init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple]) {
         
         // create a yices context with default configuration
         self.ctx = yices_new_context(nil)
@@ -76,7 +74,7 @@ class YicesProver<N:Node> : Prover {
     }
 }
 
-extension YicesProver {
+extension LinearProver {
     convenience init(clauses:[N]) {
         self.init(clauses:clauses, predefined: Symbols.defaultSymbols)
     }
@@ -93,53 +91,49 @@ extension YicesProver {
             let mdl = yices_get_model(ctx, 1);
             defer { yices_free_model(mdl) }
             
-            var trie = TrieClass<SymHop,Int>()
-            
-            let selectedLiterals = clauses.enumerate().map {
+            let selectedLiterals = clauses.map {
                 
-                (index,clause) -> N in
+                (tptpClause,yicesClauseAndLiterals) -> N in
                 
-                let tptpClause = clause.0
-                let yicesLiterals = clause.1.yicesLiterals
-                
-                var tptpLiteral : N = bottom
+                let (_,yicesLiterals) = yicesClauseAndLiterals
                 
                 switch yicesLiterals.count {
                 case 0:
-                    tptpLiteral = tptpClause
+                    return tptpClause
                 case 1:
-                    tptpLiteral = tptpClause.nodes!.first!
+                    return tptpClause.nodes!.first!
                 default:
                     for (index,yicesLiteral) in yicesLiterals.enumerate() {
                         if yices_formula_true_in_model(mdl, yicesLiteral) == 1 {
-                            tptpLiteral = tptpClause.nodes![index]
+                            return tptpClause.nodes![index]
                         }
                     }
                     
                 }
                 
-                for path in tptpLiteral.symHopPaths {
-                    trie.insert(path, value: index)
-                }
+                return bottom
                 
                 
-                return tptpLiteral
             }
+            
+            print("\(selectedLiterals.count) literals selected")
             
             var newClauses = [N]()
             
-            for (index,literal) in selectedLiterals.enumerate() {
-                if let candis = candidates(trie, term:literal) {
-                    for candindex in candis {
-                        guard index != candindex,
-                            let mgu = literal ~?= selectedLiterals[candindex]
-                        else { continue }
+            for i in 0..<(selectedLiterals.count-1) {
+                for j in 0..<i {
+                    
+                    let a = selectedLiterals[i]
+                    let b = selectedLiterals[j]
+                    
+                    
+                    if let unifier = a ~?= b {
+                        // print("a=",a,"# b=",b,"# u =", a ~?= b)
+                        let na = clauses[i].0 * unifier
+                        let nb = clauses[j].0 * unifier
                         
-                        let na = clauses[index].0 * mgu
-                        let nb = clauses[candindex].0 * mgu
                         newClauses.append(na)
                         newClauses.append(nb)
-                        
                     }
                 }
             }
@@ -170,7 +164,7 @@ extension YicesProver {
     }
 }
 
-private extension YicesProver {
+private extension LinearProver {
     private func assertClauses() {
         let unasserted = clauses[indexOfFirstUnassertedClause..<clauses.count].map { $0.1.0 }
         indexOfFirstUnassertedClause = clauses.count
@@ -178,7 +172,7 @@ private extension YicesProver {
     }
 }
 
-extension YicesProver {
+extension LinearProver {
     
     private func createQuadruple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
         guard var quadruple = symbols[symbol] else {
@@ -217,7 +211,7 @@ extension YicesProver {
     
 }
 
-private extension YicesProver {
+private extension LinearProver {
     
     
     func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {
@@ -324,7 +318,4 @@ private extension YicesProver {
         
     }
 }
-
-
-
 

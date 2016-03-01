@@ -1,17 +1,17 @@
 //
-//  ProverBasicTests.swift
+//  YicesProverBasicTests.swift
 //  NyTerms
 //
-//  Created by Alexander Maringele on 28.10.15.
-//  Copyright © 2015 Alexander Maringele. All rights reserved.
+//  Created by Alexander Maringele on 01.03.16.
+//  Copyright © 2016 Alexander Maringele. All rights reserved.
 //
 
 import XCTest
-@testable
-import NyTerms
+@testable import NyTerms
 
-class YiProverBasicTests: XCTestCase {
-
+class YicesProverBasicTests: XCTestCase {
+    typealias TheProver = YicesProver<TestNode>
+    
     override func setUp() {
         super.setUp()
         yices_init()
@@ -27,7 +27,7 @@ class YiProverBasicTests: XCTestCase {
     func testPropositionalTrue() {
         
         let wahr = "p|~p" as TestNode
-        let prover = YiProver(clauses: [wahr])
+        let prover = TheProver(clauses: [wahr])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         XCTAssertEqual(prover.run(Int.max),1)
@@ -41,7 +41,7 @@ class YiProverBasicTests: XCTestCase {
     func testEmptyClause() {
         let empty = TestNode(connective:"|",nodes: [TestNode]())
         
-        let prover = YiProver(clauses: [empty])
+        let prover = TheProver(clauses: [empty])
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         XCTAssertEqual(prover.run(Int.max),0)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
@@ -54,7 +54,7 @@ class YiProverBasicTests: XCTestCase {
     func testPropositionalFalse() {
         let p = "p" as TestNode
         let np = "~p" as TestNode
-        let prover = YiProver(clauses: [p,np])
+        let prover = TheProver(clauses: [p,np])
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         XCTAssertEqual(prover.run(Int.max),0)
@@ -63,13 +63,13 @@ class YiProverBasicTests: XCTestCase {
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
         let expected = ["p"]
         XCTAssertEqual(predicateSymbols,expected)
-
+        
     }
     
     func testPropositionalSatisfiable() {
         
         let satisfiable = "p" as TestNode
-        let prover = YiProver(clauses: [satisfiable])
+        let prover = TheProver(clauses: [satisfiable])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         XCTAssertEqual(prover.run(Int.max),1)
@@ -88,9 +88,9 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(12, tptpFormulae.count)
         
-        let tptpClauses = tptpFormulae.map { $0.root }
+        let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = YiProver(clauses: tptpClauses)
+        let prover = TheProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         XCTAssertEqual(prover.run(Int.max),4)
@@ -110,7 +110,7 @@ class YiProverBasicTests: XCTestCase {
         let (result,tptpFormulae,_) = parse(path:path)
         var times = [("parsed",CFAbsoluteTimeGetCurrent()-start)]
         print(times.last!)
-
+        
         
         XCTAssertEqual(1, result.count)
         XCTAssertEqual(0, result[0])
@@ -118,12 +118,12 @@ class YiProverBasicTests: XCTestCase {
         times.append(("check 0",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
         
-        let tptpClauses = tptpFormulae.map { $0.root }
+        let clauses = tptpFormulae.map { TestNode($0.root) }
         times.append(("mapped",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
         
         
-        let prover = YiProver(clauses: tptpClauses)
+        let prover = TheProver(clauses: clauses)
         times.append(("prover",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
         
@@ -143,8 +143,8 @@ class YiProverBasicTests: XCTestCase {
     }
     
     
-   
-
+    
+    
     func testPUZ056m2_030() {
         let path = "PUZ056-2.030".p!
         
@@ -153,9 +153,9 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(41, tptpFormulae.count)
         
-        let tptpClauses = tptpFormulae.map { $0.root }
+        let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = YiProver(clauses: tptpClauses)
+        let prover = TheProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -174,9 +174,9 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertEqual(0, result[0])
         XCTAssertEqual(504, tptpFormulae.count)
         
-        let tptpClauses = tptpFormulae.map { $0.root }
+        let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = YiProver(clauses: tptpClauses)
+        let prover = TheProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -201,12 +201,12 @@ class YiProverBasicTests: XCTestCase {
         XCTAssertTrue(clauses[2].isClause)
         XCTAssertTrue(clauses[2].nodes?.count == 3)
         
-        let prover = YiProver(clauses: clauses)
+        let prover = TheProver(clauses: clauses)
         
         prover.run(2)
         
-         XCTAssertEqual(STATUS_SAT, prover.status)
+        XCTAssertEqual(STATUS_SAT, prover.status)
         
     }
-
+    
 }

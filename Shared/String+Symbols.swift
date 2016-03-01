@@ -84,7 +84,7 @@ struct Symbols {
         "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
     ]
     
-    @available(*, deprecated=1.0)
+    @available(*, deprecated=1.0, message="multiple calls to `Symbols.defaultSymbols[key]?.type` causes memory accumulation.")
     static let defaultSymbols = universalSymbols + tptpSymbols
 }
 

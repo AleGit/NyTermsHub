@@ -1,0 +1,7 @@
+Mac mini Server (Late 2012), 2,3 GHz Intel Core i7, 16 GB 1333 MHz DDR3
+
+HWV134 with memory accumulation > 30 GB
+
+Bug: ~?= accumulated lots of memory because
+`guard let type = Symbols.defaultSymbols[symbol]?.type`
+locked memeroy at each call.

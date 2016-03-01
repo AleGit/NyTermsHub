@@ -168,6 +168,7 @@
 		51226E761B6D3A0B0077E34D /* TptpFormula.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TptpFormula.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51226E781B6D3AB70077E34D /* TptpInclude.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpInclude.swift; sourceTree = "<group>"; };
 		51226E7C1B6D44E20077E34D /* TptpPrintable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpPrintable.swift; sourceTree = "<group>"; };
+		51249BEA1C85FB7100223CE2 /* mmFastestSearchBug.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mmFastestSearchBug.txt; sourceTree = "<group>"; };
 		512517BC1BE127D6005C3E2D /* LinearProverBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearProverBasicTests.swift; sourceTree = "<group>"; };
 		51256A661C4B657F006A07C4 /* HWV134.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = HWV134.txt; path = Docs/HWV134.txt; sourceTree = SOURCE_ROOT; };
 		512977151B677CAA003D3E80 /* NyTerms.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NyTerms.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -552,6 +553,7 @@
 		51540DB11C4CBA7B00A145DC /* results */ = {
 			isa = PBXGroup;
 			children = (
+				51249BEA1C85FB7100223CE2 /* mmFastestSearchBug.txt */,
 				51431DF61C85780C0053BB18 /* statistics.txt */,
 				51E28CEF1C81E28100404842 /* mmFastestSearch.txt */,
 				51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */,

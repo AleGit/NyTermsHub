@@ -23,7 +23,8 @@ class TrieProver<N:Node> : Prover {
     ///     ∀x1,∀x2,∀y2 (a(x1) ∨ c(x1)) ∧ (a(x2) ∨ b(x2,x2))
     private var clauses = [(N,(yicesClause:term_t,yicesLiterals: [term_t]))]() // tptp clause, yices clause, yices literals
     private var selects = [Int]()
-    private var trie = TrieClass<SymHop,Int>()
+    private var literalsTrie = TrieClass<SymHop,Int>()
+    private var clausesTrie = TrieClass<SymHop,Int>()
     
     /// false or bottom in tptp cnf syntax (empty disjunction)
     private let bottom = N(connective:"|",nodes:[N]())
@@ -92,7 +93,20 @@ extension TrieProver {
     func run(maxRounds:Int) -> Int {
         var round = 0
         
-        while yices_check_context(ctx, nil) == STATUS_SAT && round++ < maxRounds {
+        while round < maxRounds {
+            let roundStart = CFAbsoluteTimeGetCurrent()
+            round += 1
+            
+            let (context_status, check_time) = measure {
+                yices_check_context(self.ctx, nil)
+            }
+            
+            print("round #",round,":","status","=",context_status, check_time.timeIntervalDescriptionMarkedWithUnits)
+            
+            guard context_status == STATUS_SAT else {
+                return round
+            }
+            
             let start = CFAbsoluteTimeGetCurrent()
             let processed = selects.count
             
@@ -112,7 +126,7 @@ extension TrieProver {
                     // selected yicesliteral does not hold in yices model
                     // remove literal from trie
                     for path in clause.0.nodes![selectedLiteralIndex].symHopPaths {
-                        trie.delete(path, value: clauseIndex)
+                        literalsTrie.delete(path, value: clauseIndex)
                     }
                     
                     selects[clauseIndex] = -selectedLiteralIndex // mark as changed
@@ -148,9 +162,10 @@ extension TrieProver {
                                 
                                 // search for complementary literals
                                 
-                                if let candidateLiteralIndices = candidates(trie, term:selectedLiteral) {
+                                if let candidateLiteralIndices = candidateComplementaries(literalsTrie, term:selectedLiteral) {
                                     for candidateLiteralIndex in candidateLiteralIndices {
-                                        let candidateLiteral = clauses[candidateLiteralIndex].0.nodes![selects[candidateLiteralIndex]]
+                                        let candidateClause = clauses[candidateLiteralIndex].0
+                                        let candidateLiteral = candidateClause.nodes![selects[candidateLiteralIndex]]
                                         guard let mgu = selectedLiteral ~?= candidateLiteral
                                             else { continue }
                                         
@@ -159,13 +174,19 @@ extension TrieProver {
                                         newClauses.append(na)
                                         newClauses.append(nb)
                                         
+                                        // TODO: configurable
+                                        if (newClauses.count % 1000) <= 1
+                                            && (CFAbsoluteTimeGetCurrent()-roundStart) > 10.0 {
+                                            break newclauses
+                                        }
                                     }
                                 }
                                 
                                 
+                                
                                 // insert literal into trie (term index)
                                 for path in selectedLiteral.symHopPaths {
-                                    trie.insert(path, value: clauseIndex)
+                                    literalsTrie.insert(path, value: clauseIndex)
                                 }
                                 
                         }

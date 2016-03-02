@@ -115,7 +115,7 @@
 		51D8476D1C8084DC003EC848 /* TptpPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8476B1C8084DC003EC848 /* TptpPath.swift */; };
 		51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */; };
 		51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E28CDE1C81780100404842 /* IndexSearch.swift */; };
-		51E5F9AF1C87179900040B19 /* Problems1k.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5F9AE1C87179900040B19 /* Problems1k.swift */; };
+		51E5F9AF1C87179900040B19 /* Puzzles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5F9AE1C87179900040B19 /* Puzzles.swift */; };
 		51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */; };
 		51EFBA291B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */; };
 		51FAF9321BB70330004E6BD5 /* LPO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EDD91C1BB47BBB001FE0EC /* LPO.swift */; };
@@ -288,7 +288,7 @@
 		51E28CF41C81E28100404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ComplementariesFastest.txt; path = Docs/ComplementariesFastest.txt; sourceTree = SOURCE_ROOT; };
 		51E28CF51C81E28100404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "Docs/Complementaries v0.txt"; sourceTree = SOURCE_ROOT; };
 		51E5F9AD1C8700A300040B19 /* testTriePUZ001.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = testTriePUZ001.txt; sourceTree = "<group>"; };
-		51E5F9AE1C87179900040B19 /* Problems1k.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Problems1k.swift; sourceTree = "<group>"; };
+		51E5F9AE1C87179900040B19 /* Puzzles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Puzzles.swift; sourceTree = "<group>"; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -341,7 +341,7 @@
 				51844E191C84814100DCAA32 /* old results */,
 				51342AB81B92CA3A0052A72F /* ParseFiles.swift */,
 				51540DB11C4CBA7B00A145DC /* results */,
-				51E5F9AE1C87179900040B19 /* Problems1k.swift */,
+				51E5F9AE1C87179900040B19 /* Puzzles.swift */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;
@@ -816,7 +816,7 @@
 				51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */,
 				516D25201C3EB26C0075D362 /* Nodal.swift in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
-				51E5F9AF1C87179900040B19 /* Problems1k.swift in Sources */,
+				51E5F9AF1C87179900040B19 /* Puzzles.swift in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
 				51C0ACB41C4A385800447594 /* Complementaries.swift in Sources */,

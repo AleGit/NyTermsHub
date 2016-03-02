@@ -9,7 +9,10 @@
 import Foundation
 
 let errors = [
-"PUZ010-1", // .p:% Status   : Unsatisfiable
+    "PUZ010-1", // .p:% Status   : Unsatisfiable
+    "PUZ017-1", // .p:% Status   : Unsatisfiable
+    "PUZ019-1", // .p:% Status   : Unsatisfiable
+    "PUZ027-1", // .p:% Status   : Unsatisfiable
 ]
 
 let puzzles = [
@@ -33,8 +36,8 @@ let puzzles = [
     "PUZ015-2.006", // .p:% Status   : Unsatisfiable
     "PUZ016-1", // .p:% Status   : Unsatisfiable
     "PUZ016-2.005", // .p:% Status   : Unsatisfiable
-    "PUZ017-1", // .p:% Status   : Unsatisfiable
-    "PUZ018-1", // .p:% Status   : Unsatisfiable
+    // "PUZ017-1", // .p:% Status   : Unsatisfiable
+    // "PUZ018-1", // .p:% Status   : Unsatisfiable
     "PUZ019-1", // .p:% Status   : Unsatisfiable
     "PUZ020-1", // .p:% Status   : Unsatisfiable
     "PUZ021-1", // .p:% Status   : Unsatisfiable
@@ -43,7 +46,7 @@ let puzzles = [
     "PUZ024-1", // .p:% Status   : Unsatisfiable
     "PUZ025-1", // .p:% Status   : Unsatisfiable
     "PUZ026-1", // .p:% Status   : Unsatisfiable
-    "PUZ027-1", // .p:% Status   : Unsatisfiable
+    // "PUZ027-1", // .p:% Status   : Unsatisfiable
     "PUZ028-5", // .p:% Status   : Unsatisfiable
     "PUZ028-6", // .p:% Status   : Unsatisfiable
     "PUZ029-1", // .p:% Status   : Unsatisfiable

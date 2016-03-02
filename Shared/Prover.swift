@@ -66,10 +66,6 @@ class TrieProver<N:Node> : Prover {
         
         self.symbols = symbols
         
-//        var idx = 0 // append an index to all variables to make them distinct between clauses
-//        // a(x)|c(x), a(x)|b(x,y) -> a(x1)|c(x1), a(x2)|b(x2,y2)
-//        self.clauses = clauses.map { ($0 ** idx++, buildYicesClause($0)) }
-        
         for (clauseIndex, clause) in clauses.enumerate() {
             self.clauses.append((clause ** clauseIndex, buildYicesClause(clause)))
             
@@ -178,45 +174,40 @@ extension TrieProver {
                                             else { continue }
                                         
                                         instances:
-                                        for clause in [clauses[clauseIndex].0, clauses[candidateLiteralIndex].0] {
-                                            let newClause = clause * mgu
-                                            let newClauseIndex = self.clauses.count + newClauses.count
-                                            
-                                            if let variants = candidateVariants(self.clausesTrie, term: newClause)
-                                                where variants.count > 0 {
-                                                    for variant in variants {
-                                                        let variantClause : N
-                                                        if variant < clauses.count {
-                                                            variantClause = clauses[variant].0
+                                            for clause in [clauses[clauseIndex].0, clauses[candidateLiteralIndex].0] {
+                                                let newClause = clause * mgu
+                                                let newClauseIndex = self.clauses.count + newClauses.count
+                                                
+                                                if let variants = candidateVariants(self.clausesTrie, term: newClause)
+                                                    where variants.count > 0 {
+                                                        for variant in variants {
+                                                            let variantClause : N
+                                                            if variant < clauses.count {
+                                                                variantClause = clauses[variant].0
+                                                            }
+                                                            else {
+                                                                let idx = variant - clauses.count
+                                                                variantClause = newClauses[idx]
+                                                                
+                                                            }
+                                                            
+                                                            if variantClause.isVariant(newClause) {
+                                                                continue instances
+                                                            }
                                                         }
-                                                        else {
-                                                            let idx = variant - clauses.count
-                                                            variantClause = newClauses[idx]
-
-                                                        }
-                                                        
-                                                        if variantClause.isVariant(newClause) {
-                                                            continue instances
-                                                        }
-                                                        else {
-                                                            print("\n",variantClause, "\n",newClause, "are not variants")
-                                                        }
-                                                    }
-                                                    
-                                                    
-                                            }
-                                            
-                                            newClauses.append(newClause)
-                                            
-                                            for path in clause.symHopPaths {
-                                                self.clausesTrie.insert(path, value:newClauseIndex)
-                                            }
+                                                }
+                                                
+                                                newClauses.append(newClause)
+                                                
+                                                for path in clause.symHopPaths {
+                                                    self.clausesTrie.insert(path, value:newClauseIndex)
+                                                }
                                         }
                                         
                                         // TODO: configurable
                                         if (newClauses.count % 1000) <= 1
                                             && (CFAbsoluteTimeGetCurrent()-roundStart) > 10.0 {
-                                            break newclauses
+                                                break newclauses
                                         }
                                     }
                                 }

@@ -170,8 +170,8 @@ class TrieProverBasicTests: XCTestCase {
     }
     
     
-    /// satisfiable, hence the saturation process must be optimized
-    func _testPUZ028m3() {
+    /// satisfiable (no new clauses can be derived)
+    func testPUZ028m3() {
         let path = "PUZ028-3".p!
         
         let (result,tptpFormulae,_) = parse(path:path)
@@ -185,7 +185,7 @@ class TrieProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run(1)
+        prover.run(10)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -208,7 +208,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let prover = TheProver(clauses: clauses)
         
-        prover.run(10)
+        prover.run(8)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         

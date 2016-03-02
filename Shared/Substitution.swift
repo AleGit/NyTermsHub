@@ -77,7 +77,7 @@ func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
         }
         return result
     case (_,_) where lhs.symbol == rhs.symbol:
-        assert(false, "\(lhs.symbol) must not be variadic (\(lhs.nodes!.count),\(rhs.nodes!.count)")
+        assert(lhs.symbol == "|", "\(lhs.symbol) must not be variadic (\(lhs.nodes!.count),\(rhs.nodes!.count)")
         return nil
     default:
         return nil

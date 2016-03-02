@@ -165,6 +165,18 @@ func extractUnifiables<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T,
     }
 }
 
+
+/// extract exact path matches
+func extractVariants<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, path:SymHopPath) -> Set<T.Value>? {
+    guard let (head,tail) = path.decompose else {
+        return trie.payload
+    }
+    
+    guard let subtrie = trie[head] else { return nil }
+    
+    return extractVariants(subtrie, path:tail)
+}
+
 private func candidates<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(
     indexed:T,
     queryTerm:N,
@@ -196,6 +208,10 @@ func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop, T.Value:Ha
         queryTerm = N(symbol:"~", nodes: [term])
     }
     return candidates(indexed, queryTerm:queryTerm) { a,b in extractUnifiables(a,path:b) }
+}
+
+func candidateVariants<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(indexed:T, term:N) -> Set<T.Value>? {
+    return candidates(indexed, queryTerm:term) { a,b in extractVariants(a,path:b) }
 }
 
 

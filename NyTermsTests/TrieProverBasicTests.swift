@@ -1,5 +1,5 @@
 //
-//  YicesProverBasicTests.swift
+//  TrieProverBasicTests.swift
 //  NyTerms
 //
 //  Created by Alexander Maringele on 01.03.16.
@@ -9,8 +9,8 @@
 import XCTest
 @testable import NyTerms
 
-class YicesProverBasicTests: XCTestCase {
-    typealias TheProver = YicesProver<TestNode>
+class TrieProverBasicTests: XCTestCase {
+    typealias TheProver = TrieProver<TestNode>
     
     override func setUp() {
         super.setUp()
@@ -93,8 +93,13 @@ class YicesProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),4)
+        let (rounds,runtime) = measure {
+            prover.run(10)
+        }
+        print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
+        XCTAssertEqual(rounds,4)
+
         
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -102,7 +107,7 @@ class YicesProverBasicTests: XCTestCase {
         XCTAssertEqual(Set(predicateSymbols),expected)
     }
     
-    func testSYO587m1() {
+    func _testSYO587m1() {
         let path = "SYO587-1".p!
         
         let start = CFAbsoluteTimeGetCurrent()

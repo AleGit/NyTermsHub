@@ -94,8 +94,12 @@ class LinearProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),4)
+        let (rounds,runtime) = measure {
+            prover.run(10)
+        }
+        print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
+        XCTAssertEqual(rounds,4)
         
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -103,7 +107,7 @@ class LinearProverBasicTests: XCTestCase {
         XCTAssertEqual(Set(predicateSymbols),expected)
     }
     
-    func testSYO587m1() {
+    func _testSYO587m1() {
         let path = "SYO587-1".p!
         
         let start = CFAbsoluteTimeGetCurrent()

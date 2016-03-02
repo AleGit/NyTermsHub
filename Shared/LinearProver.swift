@@ -116,8 +116,6 @@ extension LinearProver {
                 
             }
             
-            print("\(selectedLiterals.count) literals selected")
-            
             var newClauses = [N]()
             
             for i in 0..<(selectedLiterals.count-1) {
@@ -138,7 +136,7 @@ extension LinearProver {
                 }
             }
             
-            print("round",round, "# new clauses",newClauses.count, "in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits)
+            print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits)
             
             guard newClauses.count > 0 else { return round }
             

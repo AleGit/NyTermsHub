@@ -45,7 +45,7 @@ class ProverBasicPerformanceTests: XCTestCase {
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = YicesProver(clauses: clauses)
+        let prover = TrieProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         XCTAssertEqual(prover.run(Int.max),4)

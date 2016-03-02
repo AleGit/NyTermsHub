@@ -47,7 +47,7 @@
 		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		51431DF81C85BC4F0053BB18 /* LinearProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51431DF71C85BC4F0053BB18 /* LinearProver.swift */; };
 		51431DF91C85BC4F0053BB18 /* LinearProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51431DF71C85BC4F0053BB18 /* LinearProver.swift */; };
-		51431DFB1C85C6EB0053BB18 /* YicesProverBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51431DFA1C85C6EB0053BB18 /* YicesProverBasicTests.swift */; };
+		51431DFB1C85C6EB0053BB18 /* TrieProverBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51431DFA1C85C6EB0053BB18 /* TrieProverBasicTests.swift */; };
 		51431DFD1C85CF9D0053BB18 /* ProverBasicPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51431DFC1C85CF9D0053BB18 /* ProverBasicPerformanceTests.swift */; };
 		5146F42C1C7B061F00A19EC1 /* TrieClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5146F42B1C7B061F00A19EC1 /* TrieClass.swift */; };
 		5146F42D1C7B061F00A19EC1 /* TrieClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5146F42B1C7B061F00A19EC1 /* TrieClass.swift */; };
@@ -191,7 +191,7 @@
 		513F24081C04C13F0026A081 /* TargetCL.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetCL.jpg; sourceTree = "<group>"; };
 		51431DF61C85780C0053BB18 /* statistics.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = statistics.txt; sourceTree = "<group>"; };
 		51431DF71C85BC4F0053BB18 /* LinearProver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearProver.swift; sourceTree = "<group>"; };
-		51431DFA1C85C6EB0053BB18 /* YicesProverBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesProverBasicTests.swift; sourceTree = "<group>"; };
+		51431DFA1C85C6EB0053BB18 /* TrieProverBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieProverBasicTests.swift; sourceTree = "<group>"; };
 		51431DFC1C85CF9D0053BB18 /* ProverBasicPerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProverBasicPerformanceTests.swift; sourceTree = "<group>"; };
 		5146F42B1C7B061F00A19EC1 /* TrieClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrieClass.swift; sourceTree = "<group>"; };
 		5146F42E1C7B1B3B00A19EC1 /* BuildTrieStructPerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuildTrieStructPerformanceTests.swift; sourceTree = "<group>"; };
@@ -348,7 +348,7 @@
 			children = (
 				512517BC1BE127D6005C3E2D /* LinearProverBasicTests.swift */,
 				51CD82A51C32D090009166BB /* NodeTrieTests.swift */,
-				51431DFA1C85C6EB0053BB18 /* YicesProverBasicTests.swift */,
+				51431DFA1C85C6EB0053BB18 /* TrieProverBasicTests.swift */,
 				51431DFC1C85CF9D0053BB18 /* ProverBasicPerformanceTests.swift */,
 			);
 			name = Prover;
@@ -913,7 +913,7 @@
 				512517BD1BE127D6005C3E2D /* LinearProverBasicTests.swift in Sources */,
 				5146F42F1C7B1B3B00A19EC1 /* BuildTrieStructPerformanceTests.swift in Sources */,
 				51B883F71B8E3F3E008D7F22 /* YicesExamples.swift in Sources */,
-				51431DFB1C85C6EB0053BB18 /* YicesProverBasicTests.swift in Sources */,
+				51431DFB1C85C6EB0053BB18 /* TrieProverBasicTests.swift in Sources */,
 				5129773B1B678B9C003D3E80 /* TestTermTests.swift in Sources */,
 				51B26B791B8DB46500CC59AD /* example2.c in Sources */,
 				51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */,

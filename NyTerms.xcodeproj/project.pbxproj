@@ -286,6 +286,7 @@
 		51E28CF31C81E28100404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v1.txt"; path = "Docs/Complementaries v1.txt"; sourceTree = SOURCE_ROOT; };
 		51E28CF41C81E28100404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ComplementariesFastest.txt; path = Docs/ComplementariesFastest.txt; sourceTree = SOURCE_ROOT; };
 		51E28CF51C81E28100404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "Docs/Complementaries v0.txt"; sourceTree = SOURCE_ROOT; };
+		51E5F9AD1C8700A300040B19 /* testTriePUZ001.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = testTriePUZ001.txt; sourceTree = "<group>"; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -557,6 +558,7 @@
 				51431DF61C85780C0053BB18 /* statistics.txt */,
 				51E28CEF1C81E28100404842 /* mmFastestSearch.txt */,
 				51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */,
+				51E5F9AD1C8700A300040B19 /* testTriePUZ001.txt */,
 			);
 			name = results;
 			path = ../Docs;

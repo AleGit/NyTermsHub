@@ -94,10 +94,14 @@ extension TrieProver {
         return yices_check_context(ctx, nil)
     }
     
-    func run(maxRounds:Int) -> Int {
+    // default time limit is 90 s
+    func run(maxRounds:Int, timeLimit:CFAbsoluteTime = 20) -> Int {
         var round = 0
         
-        while round < maxRounds {
+        let absoluteTimeLimit = CFAbsoluteTimeGetCurrent() + timeLimit
+        
+        rounds:
+        while round < maxRounds && CFAbsoluteTimeGetCurrent() < absoluteTimeLimit {
             let roundStart = CFAbsoluteTimeGetCurrent()
             round += 1
             
@@ -139,6 +143,11 @@ extension TrieProver {
             var newClauses = [N]()
             newclauses:
                 for (clauseIndex, clause) in clauses.enumerate() {
+                    guard CFAbsoluteTimeGetCurrent() < absoluteTimeLimit else {
+                        print(">>> time limit",timeLimit,absoluteTimeLimit,"<<<")
+                        break rounds
+                        
+                    }
                     var selectedLiteralIndex = clauseIndex < selects.count ? selects[clauseIndex] : Int.min
                     if selectedLiteralIndex < 0 {
                         // a unprocessed clause or a clause with changed the selected literal
@@ -163,6 +172,12 @@ extension TrieProver {
                                 }
                                 
                                 let selectedLiteral = clause.0.nodes![selectedLiteralIndex]
+                                
+                                guard selectedLiteral.symbol.category != SymbolCategory.Equational else {
+                                    print("*** can't handle (in)equations ***", selectedLiteral)
+                                    return round
+                                }
+                        
                                 
                                 // search for complementary literals
                                 

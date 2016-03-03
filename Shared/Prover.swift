@@ -12,7 +12,7 @@ protocol Prover {
     init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
 }
 
-class TrieProver<N:Node> : Prover {
+final class TrieProver<N:Node> : Prover {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     ///
@@ -150,7 +150,7 @@ extension TrieProver {
                     }
                     var selectedLiteralIndex = clauseIndex < selects.count ? selects[clauseIndex] : Int.min
                     if selectedLiteralIndex < 0 {
-                        // a unprocessed clause or a clause with changed the selected literal
+                        // an unprocessed clause or a clause where the selected literal has changed
                         let yicesLiterals = clause.1.yicesLiterals
                         
                         literals: // search for holding literals
@@ -218,12 +218,6 @@ extension TrieProver {
                                                     self.clausesTrie.insert(path, value:newClauseIndex)
                                                 }
                                         }
-                                        
-                                        // TODO: configurable
-                                        if (newClauses.count % 1000) <= 1
-                                            && (CFAbsoluteTimeGetCurrent()-roundStart) > 10.0 {
-                                                break newclauses
-                                        }
                                     }
                                 }
                                 
@@ -237,6 +231,13 @@ extension TrieProver {
                         }
                         
                         
+                    }
+                    
+                    // when a clause is completly processed we could leave the loop
+                    // TODO: configurable
+                    if (newClauses.count % 1000) <= 1
+                        && (CFAbsoluteTimeGetCurrent()-roundStart) > 10.0 {
+                            break newclauses
                     }
             }
             

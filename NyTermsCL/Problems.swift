@@ -127,7 +127,8 @@ let problems = [
 
 struct Proofing {
     static func demo() {
-        let list = puzzles.filter { $0.1 == STATUS_UNSAT && $0.0 == "PUZ010-1"}
+        let list = puzzles.filter { $0.1 == STATUS_UNSAT // && $0.0 == "PUZ010-1"
+        }
         for (name,status) in list {
             
             guard let path = name.p else {
@@ -148,7 +149,7 @@ struct Proofing {
             }
             print("result",result)
             print(prover.status, "runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
-                assert(status == prover.status)
+                print(status == prover.status)
             
         }
     }

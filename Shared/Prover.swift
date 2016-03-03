@@ -94,8 +94,12 @@ extension TrieProver {
         return yices_check_context(ctx, nil)
     }
     
+    
+    
     // default time limit is 90 s
-    func run(maxRounds:Int, timeLimit:CFAbsoluteTime = 20) -> Int {
+    func run(maxRounds:Int = Int.max, timeLimit:CFAbsoluteTime = 90) -> (Int,CFTimeInterval) {
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let runtime = { () -> CFTimeInterval in CFAbsoluteTimeGetCurrent() - startTime }
         var round = 0
         
         let absoluteTimeLimit = CFAbsoluteTimeGetCurrent() + timeLimit
@@ -112,7 +116,7 @@ extension TrieProver {
             print("round #",round,":","status","=",context_status, check_time.timeIntervalDescriptionMarkedWithUnits)
             
             guard context_status == STATUS_SAT else {
-                return round
+                return (round,runtime())
             }
             
             let start = CFAbsoluteTimeGetCurrent()
@@ -175,7 +179,7 @@ extension TrieProver {
                                 
                                 guard selectedLiteral.symbol.category != SymbolCategory.Equational else {
                                     print("*** can't handle (in)equations ***", selectedLiteral)
-                                    return round
+                                    return (round,runtime())
                                 }
                         
                                 
@@ -235,15 +239,15 @@ extension TrieProver {
                     
                     // when a clause is completly processed we could leave the loop
                     // TODO: configurable
-                    if (newClauses.count % 1000) <= 1
-                        && (CFAbsoluteTimeGetCurrent()-roundStart) > 10.0 {
-                            break newclauses
-                    }
+//                    if (newClauses.count % 1000) <= 1
+//                        && (CFAbsoluteTimeGetCurrent()-roundStart) > 10.0 {
+//                            break newclauses
+//                    }
             }
             
-            print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits)
+            print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits, "(", runtime().timeIntervalDescriptionMarkedWithUnits,")")
             
-            guard newClauses.count > 0 else { return round }
+            guard newClauses.count > 0 else { return (round,runtime()) }
             
             var idx = indexOfFirstUnassertedClause
             
@@ -261,7 +265,7 @@ extension TrieProver {
             
         }
         
-        return round
+        return (round,runtime())
         
         
     }

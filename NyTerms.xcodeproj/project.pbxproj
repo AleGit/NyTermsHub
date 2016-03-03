@@ -63,6 +63,7 @@
 		5150F39E1BD6769C003D69A3 /* YicesSatTrials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */; };
 		5151BDC01C3161AF006EFCE0 /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5151BDBF1C3161AF006EFCE0 /* Pair.swift */; };
 		5151BDC11C3161AF006EFCE0 /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5151BDBF1C3161AF006EFCE0 /* Pair.swift */; };
+		5154FF1B1C8847B000689C25 /* ProofPUZ010-1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */; };
 		515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 515D91B61B6CFEF0000EDB3B /* TptpParser.m */; };
 		515D91BB1B6D0642000EDB3B /* ParseStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */; };
 		515D91BE1B6D2513000EDB3B /* TptpNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D91BD1B6D2513000EDB3B /* TptpNode.swift */; };
@@ -112,7 +113,7 @@
 		51D8476D1C8084DC003EC848 /* TptpPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D8476B1C8084DC003EC848 /* TptpPath.swift */; };
 		51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */; };
 		51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E28CDE1C81780100404842 /* IndexSearch.swift */; };
-		51E5F9AF1C87179900040B19 /* Puzzles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5F9AE1C87179900040B19 /* Puzzles.swift */; };
+		51E5F9AF1C87179900040B19 /* Problems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5F9AE1C87179900040B19 /* Problems.swift */; };
 		51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */; };
 		51EFBA291B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */; };
 		51FAF9321BB70330004E6BD5 /* LPO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EDD91C1BB47BBB001FE0EC /* LPO.swift */; };
@@ -203,6 +204,8 @@
 		5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesSatTrials.swift; sourceTree = "<group>"; };
 		5151BDBF1C3161AF006EFCE0 /* Pair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
 		51540DB01C4CB7D100A145DC /* HWV074.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV074.md; path = Docs/HWV074.md; sourceTree = SOURCE_ROOT; };
+		5154FF191C88273F00689C25 /* puzzles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = puzzles.txt; sourceTree = "<group>"; };
+		5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ProofPUZ010-1.txt"; sourceTree = "<group>"; };
 		51581E0C1C74684D00075A74 /* Arguments.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Arguments.md; sourceTree = "<group>"; };
 		515D91B61B6CFEF0000EDB3B /* TptpParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TptpParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseStringTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -283,7 +286,7 @@
 		51E28CF41C81E28100404842 /* ComplementariesFastest.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ComplementariesFastest.txt; path = Docs/ComplementariesFastest.txt; sourceTree = SOURCE_ROOT; };
 		51E28CF51C81E28100404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "Docs/Complementaries v0.txt"; sourceTree = SOURCE_ROOT; };
 		51E5F9AD1C8700A300040B19 /* testTriePUZ001.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = testTriePUZ001.txt; sourceTree = "<group>"; };
-		51E5F9AE1C87179900040B19 /* Puzzles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Puzzles.swift; sourceTree = "<group>"; };
+		51E5F9AE1C87179900040B19 /* Problems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Problems.swift; sourceTree = "<group>"; };
 		51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePuzzleFileTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51EFBA281B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseAdvancedSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auxiliary.swift; sourceTree = "<group>"; };
@@ -336,7 +339,7 @@
 				51844E191C84814100DCAA32 /* old results */,
 				51342AB81B92CA3A0052A72F /* ParseFiles.swift */,
 				51540DB11C4CBA7B00A145DC /* results */,
-				51E5F9AE1C87179900040B19 /* Puzzles.swift */,
+				51E5F9AE1C87179900040B19 /* Problems.swift */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;
@@ -555,6 +558,8 @@
 				51E28CEF1C81E28100404842 /* mmFastestSearch.txt */,
 				51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */,
 				51E5F9AD1C8700A300040B19 /* testTriePUZ001.txt */,
+				5154FF191C88273F00689C25 /* puzzles.txt */,
+				5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */,
 			);
 			name = results;
 			path = ../Docs;
@@ -779,6 +784,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5129771D1B677CAB003D3E80 /* Assets.xcassets in Resources */,
+				5154FF1B1C8847B000689C25 /* ProofPUZ010-1.txt in Resources */,
 				512977201B677CAB003D3E80 /* Main.storyboard in Resources */,
 				51B26B691B8DA23F00CC59AD /* Yices Compiler Flags.jpg in Resources */,
 				51B26B681B8DA23F00CC59AD /* Yices Bridging.png in Resources */,
@@ -809,7 +815,7 @@
 				51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */,
 				516D25201C3EB26C0075D362 /* Nodal.swift in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
-				51E5F9AF1C87179900040B19 /* Puzzles.swift in Sources */,
+				51E5F9AF1C87179900040B19 /* Problems.swift in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
 				51C0ACB41C4A385800447594 /* Complementaries.swift in Sources */,
@@ -957,7 +963,7 @@
 			buildSettings = {
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_STRICT_ALIASING = NO;
 				LLVM_LTO = YES;
 				OTHER_LDFLAGS = (
@@ -969,7 +975,7 @@
 				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "NyTerms-Swift.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				YACC_GENERATED_FILE_STEM = InputFileStem;
 			};
 			name = Debug;
@@ -979,7 +985,7 @@
 			buildSettings = {
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				GCC_FAST_MATH = YES;
-				GCC_OPTIMIZATION_LEVEL = fast;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_STRICT_ALIASING = NO;
 				LLVM_LTO = YES;
 				OTHER_LDFLAGS = (
@@ -991,7 +997,7 @@
 				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "NyTerms-Swift.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				YACC_GENERATED_FILE_STEM = InputFileStem;
 			};
 			name = Release;

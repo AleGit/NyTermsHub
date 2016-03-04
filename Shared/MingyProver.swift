@@ -153,9 +153,9 @@ extension MingyProver {
 
 extension MingyProver {
     func initialYicesAssert() {
-        let unasserted = self.clauses.map {
+        let yicesClauses = self.repository.map {
             $0.yices.clause
         }
-        yices_assert_formulas(self.ctx, UInt32(unasserted.count), unasserted)
+        yices_assert_formulas(self.ctx, UInt32(yicesClauses.count), yicesClauses)
     }
 }

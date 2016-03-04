@@ -48,7 +48,8 @@ class ProverBasicPerformanceTests: XCTestCase {
         let prover = TrieProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),4)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 4)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         

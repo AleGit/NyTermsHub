@@ -30,7 +30,8 @@ class TrieProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: [wahr])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),1)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -43,7 +44,8 @@ class TrieProverBasicTests: XCTestCase {
         
         let prover = TheProver(clauses: [empty])
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),1)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -57,7 +59,8 @@ class TrieProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: [p,np])
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),1)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -72,7 +75,8 @@ class TrieProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: [satisfiable])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),1)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -93,13 +97,12 @@ class TrieProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        let (rounds,runtime) = measure {
-            prover.run(Int.max)
-        }
-        print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
+        
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
+        print("runtime",runResult.1.timeIntervalDescriptionMarkedWithUnits)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        XCTAssertEqual(rounds,5)
-
+        XCTAssertEqual(runResult.0, 5)
         
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -135,7 +138,8 @@ class TrieProverBasicTests: XCTestCase {
         XCTAssertEqual(STATUS_SAT, prover.status)
         times.append(("check 1",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
-        XCTAssertEqual(prover.run(1),2)
+        let runResult = prover.run(1)
+        XCTAssertEqual(runResult.0, 2)
         times.append(("run(1)",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
         // XCTAssertEqual(STATUS_UNSAT, prover.status)

@@ -112,7 +112,7 @@ class MingyProver<T:Node> : YicesProver {
     private let literalsTrie = TrieClass<SymHop,Int>()
     private let clausesTrie = TrieClass<SymHop,Int>()
     
-    private var clauses = [(T, literalIndex:Int?, yices:(clause:term_t,literals:[term_t]))]()
+    private var repository = [(T, literalIndex:Int?, yices:(clause:term_t,literals:[term_t]))]()
     
     private lazy var startTime : CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
     var runtime : CFTimeInterval {
@@ -126,7 +126,7 @@ class MingyProver<T:Node> : YicesProver {
         self.🚧 = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(self.🚧, "⊥")
         
-        self.clauses = clauses.map {
+        self.repository += clauses.map {
             ($0, nil, $0.yicesClause(self))
         }
     }
@@ -140,7 +140,7 @@ class MingyProver<T:Node> : YicesProver {
 extension MingyProver {
     
     func run(maxRuntime:CFTimeInterval = 1) -> smt_status {
-        setup()
+        initialYicesAssert()
         
         while runtime < maxRuntime && yices_check_context(ctx,nil) == STATUS_SAT {
                 // derive()
@@ -152,7 +152,7 @@ extension MingyProver {
 }
 
 extension MingyProver {
-    func setup() {
+    func initialYicesAssert() {
         let unasserted = self.clauses.map {
             $0.yices.clause
         }

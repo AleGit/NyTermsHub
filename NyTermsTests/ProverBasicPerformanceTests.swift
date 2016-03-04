@@ -45,10 +45,11 @@ class ProverBasicPerformanceTests: XCTestCase {
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = YicesProver(clauses: clauses)
+        let prover = TrieProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),4)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 4)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         
@@ -59,26 +60,6 @@ class ProverBasicPerformanceTests: XCTestCase {
     
     
     
-    func _testPUZ001Linear() {
-        let path = "PUZ001-1".p!
-        
-        let (result,tptpFormulae,_) = parse(path:path)
-        XCTAssertEqual(1, result.count)
-        XCTAssertEqual(0, result[0])
-        XCTAssertEqual(12, tptpFormulae.count)
-        
-        let clauses = tptpFormulae.map { TestNode($0.root) }
-        
-        let prover = LinearProver(clauses: clauses)
-        
-        XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),4)
-        XCTAssertEqual(STATUS_UNSAT, prover.status)
-        
-        
-        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
-        let expected = Set(["lives","killed","richer","hates"])
-        XCTAssertEqual(Set(predicateSymbols),expected)
-    }
+    
 
 }

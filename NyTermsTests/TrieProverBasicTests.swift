@@ -1,5 +1,5 @@
 //
-//  YicesProverBasicTests.swift
+//  TrieProverBasicTests.swift
 //  NyTerms
 //
 //  Created by Alexander Maringele on 01.03.16.
@@ -9,8 +9,8 @@
 import XCTest
 @testable import NyTerms
 
-class YicesProverBasicTests: XCTestCase {
-    typealias TheProver = YicesProver<TestNode>
+class TrieProverBasicTests: XCTestCase {
+    typealias TheProver = TrieProver<TestNode>
     
     override func setUp() {
         super.setUp()
@@ -30,7 +30,8 @@ class YicesProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: [wahr])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),1)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -43,7 +44,8 @@ class YicesProverBasicTests: XCTestCase {
         
         let prover = TheProver(clauses: [empty])
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),0)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -57,7 +59,8 @@ class YicesProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: [p,np])
         
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),0)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -72,7 +75,8 @@ class YicesProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: [satisfiable])
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),1)
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
@@ -93,16 +97,42 @@ class YicesProverBasicTests: XCTestCase {
         let prover = TheProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
-        XCTAssertEqual(prover.run(Int.max),4)
-        XCTAssertEqual(STATUS_UNSAT, prover.status)
         
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 4)
+        print("runtime",runResult.1.timeIntervalDescriptionMarkedWithUnits)
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
         let expected = Set(["lives","killed","richer","hates"])
         XCTAssertEqual(Set(predicateSymbols),expected)
     }
     
-    func testSYO587m1() {
+    func testPUZ003() {
+        let path = "PUZ001-3".p!
+        
+        let (result,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, result.count)
+        XCTAssertEqual(0, result[0])
+        XCTAssertEqual(12, tptpFormulae.count)
+        
+        let clauses = tptpFormulae.map { TestNode($0.root) }
+        
+        let prover = TheProver(clauses: clauses)
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 4)
+        print("runtime",runResult.1.timeIntervalDescriptionMarkedWithUnits)
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
+        
+        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
+        let expected = Set(["lives","killed","richer","hates"])
+        XCTAssertEqual(Set(predicateSymbols),expected)
+    }
+    
+    func _testSYO587m1() {
         let path = "SYO587-1".p!
         
         let start = CFAbsoluteTimeGetCurrent()
@@ -130,7 +160,8 @@ class YicesProverBasicTests: XCTestCase {
         XCTAssertEqual(STATUS_SAT, prover.status)
         times.append(("check 1",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
-        XCTAssertEqual(prover.run(1),2)
+        let runResult = prover.run(1)
+        XCTAssertEqual(runResult.0, 2)
         times.append(("run(1)",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
         // XCTAssertEqual(STATUS_UNSAT, prover.status)
@@ -165,8 +196,8 @@ class YicesProverBasicTests: XCTestCase {
     }
     
     
-    /// satisfiable, hence the saturation process must be optimized
-    func _testPUZ028m3() {
+    /// satisfiable (no new clauses can be derived)
+    func testPUZ028m3() {
         let path = "PUZ028-3".p!
         
         let (result,tptpFormulae,_) = parse(path:path)
@@ -180,7 +211,7 @@ class YicesProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        prover.run(1)
+        prover.run(10)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -203,7 +234,7 @@ class YicesProverBasicTests: XCTestCase {
         
         let prover = TheProver(clauses: clauses)
         
-        prover.run(2)
+        prover.run(5)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         

@@ -130,7 +130,7 @@ extension TrieType where Value:Hashable {
     
 }
 
-func extract<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, path:SymHopPath) -> Set<T.Value>? {
+func extractUnifiables<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, path:SymHopPath) -> Set<T.Value>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
@@ -138,7 +138,7 @@ func extract<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, path:SymH
     switch head {
     case .Hop(_):
         guard let subtrie = trie[head] else { return nil }
-        return extract(subtrie, path:tail)
+        return extractUnifiables(subtrie, path:tail)
     case .Symbol("*"):
         // collect everything
         return Set(trie.tries.flatMap { $0.payload })
@@ -152,7 +152,7 @@ func extract<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, path:SymH
             return variables
         }
         
-        guard var payload = extract(exactly, path:tail) else {
+        guard var payload = extractUnifiables(exactly, path:tail) else {
             return variables
         }
         
@@ -165,7 +165,37 @@ func extract<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, path:SymH
     }
 }
 
-func candidates<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(indexed:T, term:N) -> Set<T.Value>? {
+
+/// extract exact path matches
+func extractVariants<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, path:SymHopPath) -> Set<T.Value>? {
+    guard let (head,tail) = path.decompose else {
+        return trie.payload
+    }
+    
+    guard let subtrie = trie[head] else { return nil }
+    
+    return extractVariants(subtrie, path:tail)
+}
+
+private func candidates<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(
+    indexed:T,
+    queryTerm:N,
+    extract:(T, path:SymHopPath) -> Set<T.Value>?
+    
+    ) -> Set<T.Value>? {
+    
+    guard let (first,tail) = queryTerm.symHopPaths.decompose else { return nil }
+    
+    guard var result = extract(indexed, path: first) else { return nil }
+    
+    for path in tail {
+        guard let next = extract(indexed, path:path) else { return nil }
+        result.intersectInPlace(next)
+    }
+    return result
+}
+
+func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(indexed:T, term:N) -> Set<T.Value>? {
     var queryTerm: N
     switch term.symbol {
     case "~":
@@ -177,17 +207,11 @@ func candidates<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(indexe
     default:
         queryTerm = N(symbol:"~", nodes: [term])
     }
-    
-    guard let (first,tail) = queryTerm.symHopPaths.decompose else { return nil }
-    
-    guard var result = extract(indexed, path: first) else { return nil }
-    
-    for path in tail {
-        guard let next = extract(indexed, path:path) else { return nil }
-        result.intersectInPlace(next)
-    }
-    return result
-    
+    return candidates(indexed, queryTerm:queryTerm) { a,b in extractUnifiables(a,path:b) }
+}
+
+func candidateVariants<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(indexed:T, term:N) -> Set<T.Value>? {
+    return candidates(indexed, queryTerm:term) { a,b in extractVariants(a,path:b) }
 }
 
 

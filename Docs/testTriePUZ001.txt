@@ -1,0 +1,44 @@
+Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ001]' started.
+round # 1 : status = smt_status(rawValue: 3) 1µs 13ns
+round # 1 : 5 new clauses in 22ms 433µs
+round # 2 : status = smt_status(rawValue: 3) 42µs 21ns
+
+~(killed(charles,agatha))|~(richer(charles,agatha))
+~(killed(X_10,agatha))|~(richer(X_10,agatha)) are not variants
+round # 2 : 7 new clauses in 22ms 31µs
+round # 3 : status = smt_status(rawValue: 3) 38µs 981ns
+
+~(killed(charles,agatha))|~(richer(charles,agatha))
+~(killed(X_10,agatha))|~(richer(X_10,agatha)) are not variants
+
+~(lives(charles))|richer(charles,agatha)|hates(butler,charles)
+~(lives(X_10))|richer(X_10,agatha)|hates(butler,X_10) are not variants
+round # 3 : 6 new clauses in 36ms 527µs
+round # 4 : status = smt_status(rawValue: 3) 69µs 22ns
+round # 4 : 4 new clauses in 50ms 923µs
+round # 5 : status = smt_status(rawValue: 4) 953.67431640625ns
+runtime 152ms 479µs
+Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ001]' passed (0.176 seconds).
+
+==========
+without ignoring variants
+
+2016-03-02 12:09:06.653 NyTerms[13330:844385] ApplePersistenceIgnoreState: Existing state will not be touched. New state will be written to /var/folders/8n/zgdn4kvn1rd5gmwvydx3j7jh0000gp/T/at.formgeberei.NyTerms.savedState
+Test Suite 'Selected tests' started at 2016-03-02 12:09:06.969
+Test Suite 'TrieProverBasicTests' started at 2016-03-02 12:09:06.970
+Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ001]' started.
+round # 1 : status = smt_status(rawValue: 3) 0.0ns
+round # 1 : 10 new clauses in 13ms 2µs
+round # 2 : status = smt_status(rawValue: 3) 37µs 968ns
+round # 2 : 30 new clauses in 18ms 863µs
+round # 3 : status = smt_status(rawValue: 3) 38µs 28ns
+round # 3 : 234 new clauses in 98ms 168µs
+round # 4 : status = smt_status(rawValue: 3) 42µs 975ns
+round # 4 : 14688 new clauses in 3s 687ms
+round # 5 : status = smt_status(rawValue: 4) 1µs 967ns
+runtime 5s 467ms
+Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ001]' passed (5.551 seconds).
+Test Suite 'TrieProverBasicTests' passed at 2016-03-02 12:09:12.522.
+Executed 1 test, with 0 failures (0 unexpected) in 5.551 (5.552) seconds
+Test Suite 'Selected tests' passed at 2016-03-02 12:09:12.523.
+Executed 1 test, with 0 failures (0 unexpected) in 5.551 (5.554) seconds

@@ -40,7 +40,7 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop, T.Value==Int>(trieRoot:T
     print("\t"+message)
     
     for (newIndex, newLiteral) in literals.enumerate() {
-        if let candis = candidates(trie, term:newLiteral) {
+        if let candis = candidateComplementaries(trie, term:newLiteral) {
             for oldIndex in candis {
                 let oldLiteral = literals[oldIndex]
                 if ((newLiteral ~?= oldLiteral) != nil) {

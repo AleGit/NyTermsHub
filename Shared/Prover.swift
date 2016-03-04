@@ -12,7 +12,7 @@ protocol Prover {
     init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
 }
 
-class YicesProver<N:Node> : Prover {
+final class TrieProver<N:Node> : Prover {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     ///
@@ -21,9 +21,12 @@ class YicesProver<N:Node> : Prover {
     ///     (∀x a(x) ∨ c(x)) ∧ (∀x,∀y a(x) ∨ b(x,y))
     ///         ≣
     ///     ∀x1,∀x2,∀y2 (a(x1) ∨ c(x1)) ∧ (a(x2) ∨ b(x2,x2))
-    private lazy var clauses = [(N,(yicesClause:term_t,yicesLiterals: [term_t]))]() // tptp clause, yices clause, yices literals
+    private var clauses = [(N,(yicesClause:term_t,yicesLiterals: [term_t]))]() // tptp clause, yices clause, yices literals
+    private var selects = [Int]()
+    private var literalsTrie = TrieClass<SymHop,Int>()
+    private var clausesTrie = TrieClass<SymHop,Int>()
     
-    /// false or bottom in tptp syntax
+    /// false or bottom in tptp cnf syntax (empty disjunction)
     private let bottom = N(connective:"|",nodes:[N]())
     
     private var indexOfFirstUnassertedClause = 0
@@ -63,12 +66,18 @@ class YicesProver<N:Node> : Prover {
         
         self.symbols = symbols
         
-        var idx = 0 // append an index to all variables to make them distinct between clauses
-        // a(x)|c(x), a(x)|b(x,y) -> a(x1)|c(x1), a(x2)|b(x2,y2)
-        self.clauses = clauses.map { ($0 ** idx++, buildYicesClause($0)) }
+        for (clauseIndex, clause) in clauses.enumerate() {
+            self.clauses.append((clause ** clauseIndex, buildYicesClause(clause)))
+            
+            for path in clause.symHopPaths {
+                self.clausesTrie.insert(path, value:clauseIndex)
+            }
+        }
         
         assertClauses()
     }
+    
+    
     
     /// we must not forget to free the yices context
     deinit {
@@ -76,7 +85,7 @@ class YicesProver<N:Node> : Prover {
     }
 }
 
-extension YicesProver {
+extension TrieProver {
     convenience init(clauses:[N]) {
         self.init(clauses:clauses, predefined: Symbols.defaultSymbols)
     }
@@ -85,92 +94,187 @@ extension YicesProver {
         return yices_check_context(ctx, nil)
     }
     
-    func run(maxRounds:Int) -> Int {
+    
+    
+    // default time limit is 90 s
+    func run(maxRounds:Int = Int.max, timeLimit:CFAbsoluteTime = 90) -> (Int,CFTimeInterval) {
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let runtime = { () -> CFTimeInterval in CFAbsoluteTimeGetCurrent() - startTime }
         var round = 0
-        while yices_check_context(ctx, nil) == STATUS_SAT && round++ < maxRounds {
-            let start = CFAbsoluteTimeGetCurrent()
-            
-            let mdl = yices_get_model(ctx, 1);
-            defer { yices_free_model(mdl) }
-            
-            var trie = TrieClass<SymHop,Int>()
-            
-            let selectedLiterals = clauses.enumerate().map {
+        
+        let absoluteTimeLimit = CFAbsoluteTimeGetCurrent() + timeLimit
+        
+        rounds:
+            while round < maxRounds && CFAbsoluteTimeGetCurrent() < absoluteTimeLimit {
+                let roundStart = CFAbsoluteTimeGetCurrent()
+                round += 1
                 
-                (index,clause) -> N in
+                let (context_status, check_time) = measure {
+                    yices_check_context(self.ctx, nil)
+                }
                 
-                let tptpClause = clause.0
-                let yicesLiterals = clause.1.yicesLiterals
+                print("round #",round,":","status","=",context_status, check_time.timeIntervalDescriptionMarkedWithUnits)
                 
-                var tptpLiteral : N = bottom
+                guard context_status == STATUS_SAT else {
+                    return (round,runtime())
+                }
                 
-                switch yicesLiterals.count {
-                case 0:
-                    tptpLiteral = tptpClause
-                case 1:
-                    tptpLiteral = tptpClause.nodes!.first!
-                default:
-                    for (index,yicesLiteral) in yicesLiterals.enumerate() {
-                        if yices_formula_true_in_model(mdl, yicesLiteral) == 1 {
-                            tptpLiteral = tptpClause.nodes![index]
+                let start = CFAbsoluteTimeGetCurrent()
+                let processed = selects.count
+                
+                let mdl = yices_get_model(ctx, 1);
+                defer { yices_free_model(mdl) }
+                
+                oldclauses: // check if previously selected literals still hold
+                    for (clauseIndex, clause) in clauses[0..<selects.count].enumerate() {
+                        let selectedLiteralIndex = selects[clauseIndex]
+                        let selectedYicesLiteral = clause.1.yicesLiterals[selectedLiteralIndex]
+                        
+                        guard yices_formula_true_in_model(mdl, selectedYicesLiteral) != 1 else {
+                            // selected yicesliteral still holds in yices model
+                            continue oldclauses
                         }
-                    }
-                    
-                }
-                
-                for path in tptpLiteral.symHopPaths {
-                    trie.insert(path, value: index)
-                }
-                
-                
-                return tptpLiteral
-            }
-            
-            var newClauses = [N]()
-            
-            for (index,literal) in selectedLiterals.enumerate() {
-                if let candis = candidates(trie, term:literal) {
-                    for candindex in candis {
-                        guard index != candindex,
-                            let mgu = literal ~?= selectedLiterals[candindex]
-                        else { continue }
                         
-                        let na = clauses[index].0 * mgu
-                        let nb = clauses[candindex].0 * mgu
-                        newClauses.append(na)
-                        newClauses.append(nb)
+                        // selected yicesliteral does not hold in yices model
+                        // remove literal from trie
                         
-                    }
+                        for path in clause.0.nodes![selectedLiteralIndex].symHopPaths {
+                            literalsTrie.delete(path, value: clauseIndex)
+                        }
+                        
+                        selects[clauseIndex] = -selectedLiteralIndex // mark as changed
                 }
-            }
-            
-            print("round",round, "# new clauses",newClauses.count, "in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits)
-            
-            guard newClauses.count > 0 else { return round }
-            
-            var idx = indexOfFirstUnassertedClause
-            
-            for tClause in newClauses {
-                let pair = buildYicesClause(tClause)
-                let newClause = (tClause ** idx++, pair)
                 
-                clauses.append(newClause)
+                var newClauses = [N]()
+                newclauses:
+                    for (clauseIndex, clause) in clauses.enumerate() {
+                        guard CFAbsoluteTimeGetCurrent() < absoluteTimeLimit else {
+                            print(">>> time limit",timeLimit,absoluteTimeLimit,"<<<")
+                            break rounds
+                            
+                        }
+                        var selectedLiteralIndex = clauseIndex < selects.count ? selects[clauseIndex] : Int.min
+                        if selectedLiteralIndex < 0 {
+                            // an unprocessed clause or a clause where the selected literal has changed
+                            let yicesLiterals = clause.1.yicesLiterals
+                            
+                            literals: // search for holding literals
+                                for (index,yicesLiteral) in yicesLiterals.enumerate() {
+                                    guard yices_formula_true_in_model(mdl, yicesLiteral) == 1 else {
+                                        // the literal does not hold
+                                        continue literals
+                                    }
+                                    
+                                    // select literal
+                                    selectedLiteralIndex = index
+                                    
+                                    if clauseIndex < selects.count {
+                                        selects[clauseIndex] = selectedLiteralIndex
+                                    }
+                                    else {
+                                        assert(clauseIndex == selects.count)
+                                        selects.append(selectedLiteralIndex)
+                                    }
+                                    
+                                    let selectedLiteral = clause.0.nodes![selectedLiteralIndex]
+                                    
+                                    guard selectedLiteral.symbol.category != SymbolCategory.Equational else {
+                                        print("*** can't handle (in)equations ***", selectedLiteral)
+                                        return (round,runtime())
+                                    }
+                                    
+                                    
+                                    // search for complementary literals
+                                    
+                                    if let candidateLiteralIndices = candidateComplementaries(literalsTrie, term:selectedLiteral) {
+                                        for candidateLiteralIndex in candidateLiteralIndices {
+                                            let candidateClause = clauses[candidateLiteralIndex].0
+                                            let candidateSelectedLiteralIndex = selects[candidateLiteralIndex]
+                                            
+                                            guard candidateSelectedLiteralIndex >= 0 else {
+                                                print(candidateLiteralIndex,candidateClause,candidateSelectedLiteralIndex)
+                                                continue
+                                            }
+                                            let candidateLiteral = candidateClause.nodes![selects[candidateLiteralIndex]]
+                                            guard let mgu = selectedLiteral ~?= candidateLiteral
+                                                else { continue }
+                                            
+                                            instances:
+                                                for clause in [clauses[clauseIndex].0, clauses[candidateLiteralIndex].0] {
+                                                    let newClause = clause * mgu
+                                                    let newClauseIndex = self.clauses.count + newClauses.count
+                                                    
+                                                    if let variants = candidateVariants(self.clausesTrie, term: newClause)
+                                                        where variants.count > 0 {
+                                                            for variant in variants {
+                                                                let variantClause : N
+                                                                if variant < clauses.count {
+                                                                    variantClause = clauses[variant].0
+                                                                }
+                                                                else {
+                                                                    let idx = variant - clauses.count
+                                                                    variantClause = newClauses[idx]
+                                                                    
+                                                                }
+                                                                
+                                                                if variantClause.isVariant(newClause) {
+                                                                    continue instances
+                                                                }
+                                                            }
+                                                    }
+                                                    
+                                                    newClauses.append(newClause)
+                                                    
+                                                    for path in clause.symHopPaths {
+                                                        self.clausesTrie.insert(path, value:newClauseIndex)
+                                                    }
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                    
+                                    // insert literal into trie (term index)
+                                    for path in selectedLiteral.symHopPaths {
+                                        literalsTrie.insert(path, value: clauseIndex)
+                                    }
+                                    
+                                    break 
+                            }
+                            
+                            
+                        }
+                        
+                        // when a clause is completly processed we could leave the loop
+                        // TODO: configurable
+                        //                    if (newClauses.count % 1000) <= 1
+                        //                        && (CFAbsoluteTimeGetCurrent()-roundStart) > 10.0 {
+                        //                            break newclauses
+                        //                    }
+                }
                 
-            }
-            
-            assertClauses()
-            
-            
-            
+                print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits, "(", runtime().timeIntervalDescriptionMarkedWithUnits,")")
+                
+                guard newClauses.count > 0 else { return (round,runtime()) }
+                
+                indexOfFirstUnassertedClause = clauses.count
+                
+                for tClause in newClauses {
+                    let pair = buildYicesClause(tClause)
+                    let newClause = (tClause ** clauses.count, pair)
+                    clauses.append(newClause)
+                }
+                
+                assertClauses()
         }
         
-        return round
+        return (round,runtime())
         
         
     }
 }
 
-private extension YicesProver {
+private extension TrieProver {
     private func assertClauses() {
         let unasserted = clauses[indexOfFirstUnassertedClause..<clauses.count].map { $0.1.0 }
         indexOfFirstUnassertedClause = clauses.count
@@ -178,7 +282,7 @@ private extension YicesProver {
     }
 }
 
-extension YicesProver {
+extension TrieProver {
     
     private func createQuadruple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
         guard var quadruple = symbols[symbol] else {
@@ -217,7 +321,7 @@ extension YicesProver {
     
 }
 
-private extension YicesProver {
+private extension TrieProver {
     
     
     func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {

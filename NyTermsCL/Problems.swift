@@ -145,7 +145,7 @@ struct Proofing {
             let clauses = TptpNode.roots(path)
             let prover = TrieProver(clauses: clauses)
             let (result,runtime) = measure {
-                prover.run(timeLimit:600)
+                prover.run(timeLimit:20)
             }
             print("result",result)
             print(prover.status, "runtime",runtime.timeIntervalDescriptionMarkedWithUnits)

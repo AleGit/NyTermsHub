@@ -92,7 +92,7 @@ class TermTests: XCTestCase {
         XCTAssertEqual(faa, fxy ** a)
         XCTAssertEqual(faa, fxa ** a)
         XCTAssertEqual(faa, fax ** a)
-        XCTAssertEqual(fxy * [x:cbot,y:cbot], fxy** )
+        XCTAssertEqual(fxy * [x:cbot,y:cbot], fxy⊥ )
         
         XCTAssertEqual(a, a * [x:fxy] * [x:a] * [y:x])
         XCTAssertEqual(a, a * ([x:fxy] * [x:a]) * [y:x])

@@ -146,14 +146,14 @@ func **<T:Node>(t:T, s:T) -> T {
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** s })
 }
 
-/// 't ** idx' appends index to variable names
+/// 't ** i' appends `@i` to any variable name.
 func **<T:Node>(t:T, idx:Int) -> T {
-    guard let nodes = t.nodes else { return T(variable:"\(t.symbol)_\(idx)") }
+    guard let nodes = t.nodes else { return T(variable:"\(t.symbol)@\(idx)") }
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** idx })
 }
 
-/// 't**' replaces all variables in t with constant '⊥'.
-postfix func **<T:Node>(t:T) -> T {
+/// 't⊥' replaces all variables in t with constant '⊥'.
+postfix func ⊥<T:Node>(t:T) -> T {
     return t ** T(constant:"⊥")
 }
 
@@ -170,6 +170,8 @@ func *<T:Node> (lhs:[T:T], rhs:[T:T]) -> [T:T] {
     }
     return concat
 }
+
+
 
 
 

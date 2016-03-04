@@ -130,7 +130,7 @@ extension TrieProver {
                         let selectedLiteralIndex = selects[clauseIndex]
                         let selectedYicesLiteral = clause.1.yicesLiterals[selectedLiteralIndex]
                         
-                        guard yices_formula_true_in_model(mdl, selectedYicesLiteral) != 0 else {
+                        guard yices_formula_true_in_model(mdl, selectedYicesLiteral) != 1 else {
                             // selected yicesliteral still holds in yices model
                             continue oldclauses
                         }

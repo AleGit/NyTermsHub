@@ -99,11 +99,9 @@ class TrieProverBasicTests: XCTestCase {
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         let runResult = prover.run()
-        XCTAssertEqual(runResult.0, 1)
+        XCTAssertEqual(runResult.0, 4)
         print("runtime",runResult.1.timeIntervalDescriptionMarkedWithUnits)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        XCTAssertEqual(runResult.0, 5)
-        
         
         let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
         let expected = Set(["lives","killed","richer","hates"])
@@ -212,7 +210,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let prover = TheProver(clauses: clauses)
         
-        prover.run(8)
+        prover.run(5)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         

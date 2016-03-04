@@ -108,6 +108,30 @@ class TrieProverBasicTests: XCTestCase {
         XCTAssertEqual(Set(predicateSymbols),expected)
     }
     
+    func testPUZ003() {
+        let path = "PUZ001-3".p!
+        
+        let (result,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, result.count)
+        XCTAssertEqual(0, result[0])
+        XCTAssertEqual(12, tptpFormulae.count)
+        
+        let clauses = tptpFormulae.map { TestNode($0.root) }
+        
+        let prover = TheProver(clauses: clauses)
+        
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        
+        let runResult = prover.run()
+        XCTAssertEqual(runResult.0, 4)
+        print("runtime",runResult.1.timeIntervalDescriptionMarkedWithUnits)
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
+        
+        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
+        let expected = Set(["lives","killed","richer","hates"])
+        XCTAssertEqual(Set(predicateSymbols),expected)
+    }
+    
     func _testSYO587m1() {
         let path = "SYO587-1".p!
         

@@ -257,20 +257,15 @@ extension TrieProver {
                 
                 guard newClauses.count > 0 else { return (round,runtime()) }
                 
-                var idx = indexOfFirstUnassertedClause
+                indexOfFirstUnassertedClause = clauses.count
                 
                 for tClause in newClauses {
                     let pair = buildYicesClause(tClause)
-                    let newClause = (tClause ** idx++, pair)
-                    
+                    let newClause = (tClause ** clauses.count, pair)
                     clauses.append(newClause)
-                    
                 }
                 
                 assertClauses()
-                
-                
-                
         }
         
         return (round,runtime())

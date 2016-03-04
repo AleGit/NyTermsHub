@@ -25,7 +25,7 @@ defer {
 // BuildTries.demo134()
 // ParseFiles.demo()
 
-let files = Infos.files.filter { $0.1.0 == 17783 }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
+let files = Infos.files.filter { $0.1.0 > 0 }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
 
 print(files)
 

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265666B41B98432C001BF9BD /* ExampleTests.swift */; };
+		5100656E1C897A6800F2A67B /* MingyProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5100656D1C897A6800F2A67B /* MingyProver.swift */; };
+		5100656F1C897A6800F2A67B /* MingyProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5100656D1C897A6800F2A67B /* MingyProver.swift */; };
+		510065711C897F0500F2A67B /* MingyProverBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510065701C897F0500F2A67B /* MingyProverBasicTests.swift */; };
 		5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
 		5101485D1B90382B00D95B00 /* Node+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5101485B1B90382B00D95B00 /* Node+Properties.swift */; };
 		5103EB091C6A27D60079E0A0 /* ParsePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5103EB081C6A27D60079E0A0 /* ParsePerformanceTests.swift */; };
@@ -153,6 +156,8 @@
 /* Begin PBXFileReference section */
 		265666B41B98432C001BF9BD /* ExampleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTests.swift; sourceTree = "<group>"; };
 		26EDD91C1BB47BBB001FE0EC /* LPO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LPO.swift; sourceTree = "<group>"; };
+		5100656D1C897A6800F2A67B /* MingyProver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MingyProver.swift; sourceTree = "<group>"; };
+		510065701C897F0500F2A67B /* MingyProverBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MingyProverBasicTests.swift; sourceTree = "<group>"; };
 		5101485B1B90382B00D95B00 /* Node+Properties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Properties.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5103EB081C6A27D60079E0A0 /* ParsePerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePerformanceTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5116094A1C3993F10090D447 /* Node+Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Position.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -351,6 +356,7 @@
 				51CD82A51C32D090009166BB /* NodeTrieTests.swift */,
 				51431DFA1C85C6EB0053BB18 /* TrieProverBasicTests.swift */,
 				51431DFC1C85CF9D0053BB18 /* ProverBasicPerformanceTests.swift */,
+				510065701C897F0500F2A67B /* MingyProverBasicTests.swift */,
 			);
 			name = Prover;
 			sourceTree = "<group>";
@@ -428,6 +434,7 @@
 				515F0F031B6BAB0500B470B4 /* Rule.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
+				5100656D1C897A6800F2A67B /* MingyProver.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -829,6 +836,7 @@
 				51342AB91B92CA3A0052A72F /* ParseFiles.swift in Sources */,
 				511E958B1B8AEB4D0093F4E8 /* TptpInclude.swift in Sources */,
 				511E958C1B8AEB4D0093F4E8 /* TptpNode.swift in Sources */,
+				5100656F1C897A6800F2A67B /* MingyProver.swift in Sources */,
 				51B26B6E1B8DA41200CC59AD /* Yices.swift in Sources */,
 				511E95811B8AE7B80093F4E8 /* Node.swift in Sources */,
 				5150CD401C6CC1FD00372F04 /* BuildTries.swift in Sources */,
@@ -868,6 +876,7 @@
 				51D276601BC57879005A0213 /* Order.swift in Sources */,
 				5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */,
 				512977191B677CAA003D3E80 /* AppDelegate.swift in Sources */,
+				5100656E1C897A6800F2A67B /* MingyProver.swift in Sources */,
 				51D8476C1C8084DC003EC848 /* TptpPath.swift in Sources */,
 				515F0F041B6BAB0500B470B4 /* Rule.swift in Sources */,
 				51FD00C21C3133E1008C5AD1 /* Operators.swift in Sources */,
@@ -919,6 +928,7 @@
 				5129773B1B678B9C003D3E80 /* TestTermTests.swift in Sources */,
 				51B26B791B8DB46500CC59AD /* example2.c in Sources */,
 				51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */,
+				510065711C897F0500F2A67B /* MingyProverBasicTests.swift in Sources */,
 				512117641B81D26E00E1803C /* TptpFormulaLiteralsTests.swift in Sources */,
 				519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */,
 				51CD82A61C32D090009166BB /* NodeTrieTests.swift in Sources */,

@@ -17,20 +17,74 @@ protocol YicesProver {
 }
 
 extension YicesProver {
-    private func term(symbol:Symbol, term_tau:type_t) -> term_t {
-        var t = yices_get_term_by_name(symbol)
-        if t == NULL_TERM {
-            t = yices_new_uninterpreted_term(term_tau)
-            yices_set_term_name(t, symbol)
-        }
-        return t
+    
+    /// Build yices disjunction from clause.
+    func clause<N:Node>(clause:N) -> (clause:term_t,literals:[term_t]) {
+        assert(clause.isClause,"\(clause) is not a clause.")
         
+        guard let literals = clause.nodes where literals.count > 0 else {
+            // an empty clause represents a contradiction
+            return (clause:yices_false(), literals:[term_t]())
+        }
+        
+        var yicesLiterals = literals.map { self.literal($0) }
+        let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
+        
+        return (yicesClause, yicesLiterals)
     }
     
-    private func term<N:Node>(symbol:Symbol, nodes:[N], term_tau:type_t) -> term_t {
+    /// Build boolean term from literal.
+    private func literal<N:Node>(literal:N) -> term_t {
+        assert(literal.isLiteral,"\(literal) is not a literal")
+        
+        guard let nodes = literal.nodes
+            else {
+                return yices_false()
+        }
+        
+        let type = literal.symbol.type ?? SymbolType.Predicate
+        
+        switch type {
+        case .Negation:
+            assert(nodes.count == 1)
+            return yices_not( self.literal(nodes.first! ))
+            
+        case .Inequation:
+            assert(nodes.count == 2)
+            let args = nodes.map { self.term($0) }
+            return yices_neq(args.first!, args.last!)
+            
+        case .Equation:
+            assert(nodes.count == 2)
+            let args = nodes.map { self.term($0) }
+            return yices_eq(args.first!, args.last!)
+            
+        case .Predicate:
+            // proposition or predicate term
+            return self.application(literal.symbol, nodes:nodes, term_tau: self.bool_tau)
+            
+        default:
+            assert(false, "This must not happen.")
+            return yices_false()
+        }
+    }
+    
+    /// Build uninterpreted function term from term.
+    private func term<N:Node>(term:N) -> term_t {
+        assert(term.isTerm,"\(term) is not a term.")
+        guard let nodes = term.nodes else {
+            return self.🚧 // substitute all variables with global constant '⊥'
+        }
+        
+        // function or constant term
+        return self.application(term.symbol, nodes:nodes, term_tau:self.free_tau)
+    }
+    
+    /// Build predicate or function.
+    private func application<N:Node>(symbol:Symbol, nodes:[N], term_tau:type_t) -> term_t {
         
         guard nodes.count > 0 else {
-            return term(symbol,term_tau: term_tau)
+            return constant(symbol,term_tau: term_tau)
         }
         
         var t = yices_get_term_by_name(symbol)
@@ -42,72 +96,20 @@ extension YicesProver {
         }
         
         
-        let args = nodes.map { $0.yicesTerm(self) }
+        let args = nodes.map { self.term($0) }
         let appl = yices_application(t, UInt32(args.count), args)
         return appl
         
     }
-}
-
-extension Node {
-    /// Build yices clause from clause `self`
-    func yicesClause<Y:YicesProver>(y:Y) -> (clause:term_t,literals:[term_t]) {
-        assert(self.isClause,"\(self) is not a clause.")
-        
-        guard let literals = self.nodes where literals.count > 0 else {
-            // an empty clause represents a contradiction
-            return (clause:yices_false(), literals:[term_t]())
-        }
-        
-        var yicesLiterals = literals.map { $0.yicesLiteral(y) }
-        let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
-        
-        return (yicesClause, yicesLiterals)
-    }
     
-    func yicesLiteral<Y:YicesProver>(y:Y) -> term_t {
-        assert(self.isLiteral,"\(self) is not a literal")
-        
-        guard let nodes = self.nodes
-            else {
-                return yices_false()
+    /// Build proposition or constant.
+    private func constant(symbol:Symbol, term_tau:type_t) -> term_t {
+        var t = yices_get_term_by_name(symbol)
+        if t == NULL_TERM {
+            t = yices_new_uninterpreted_term(term_tau)
+            yices_set_term_name(t, symbol)
         }
+        return t
         
-        let type = self.symbol.type ?? SymbolType.Predicate
-        
-        switch type {
-        case .Negation:
-            assert(nodes.count == 1)
-            return yices_not( nodes.first!.yicesLiteral(y))
-            
-        case .Inequation:
-            assert(nodes.count == 2)
-            let args = nodes.map { $0.yicesTerm(y) }
-            return yices_neq(args.first!, args.last!)
-            
-        case .Equation:
-            assert(nodes.count == 2)
-            let args = nodes.map { $0.yicesTerm(y) }
-            return yices_eq(args.first!, args.last!)
-           
-        case .Predicate:
-            // proposition or predicate term
-            return y.term(self.symbol, nodes:nodes, term_tau: y.bool_tau)
-            
-        default:
-            assert(false, "This must not happen.")
-            return yices_false()
-        }
-    }
-    
-    /// Build a yices term from term `self`.
-    func yicesTerm<Y:YicesProver>(y:Y) -> term_t {
-        assert(self.isTerm,"\(self) is not a term.")
-        guard let nodes = self.nodes else {
-            return y.🚧 // substitute all variables with global constant '⊥'
-        }
-        
-        // function or constant term
-        return y.term(self.symbol, nodes:nodes, term_tau:y.free_tau)
     }
 }

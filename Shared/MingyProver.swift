@@ -35,7 +35,7 @@ class MingyProver<T:Node> : YicesProver {
         yices_set_term_name(self.🚧, "⊥")
         
         self.repository += clauses.map {
-            ($0, nil, $0.yicesClause(self))
+            ($0, nil, self.clause($0))
         }
     }
     

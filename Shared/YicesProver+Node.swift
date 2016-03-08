@@ -89,7 +89,7 @@ extension YicesProver {
         
         var t = yices_get_term_by_name(symbol)
         if t == NULL_TERM {
-            let domain_taus = [type_t](count:nodes.count, repeatedValue:term_tau)
+            let domain_taus = [type_t](count:nodes.count, repeatedValue:self.free_tau)
             let func_tau = yices_function_type(UInt32(nodes.count), domain_taus, term_tau)
             t = yices_new_uninterpreted_term(func_tau)
             yices_set_term_name(t,symbol)

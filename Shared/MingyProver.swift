@@ -76,32 +76,38 @@ extension MingyProver {
         let mdl = yices_get_model(ctx, 1); // create model
         defer { yices_free_model(mdl) } // destroy model at end of function
         
-        let holds = { (c,t) in c == Int(1) || yices_formula_true_in_model(mdl, t) == 1 }
+        let holds = {
+            (c,t) in c == Int(1) || // a literal must hold if the clause is a unit clause
+                yices_formula_true_in_model(mdl, t) == 1 // the literal holds in the model
+        }
         
         for (clauseIndex,var clauseTriple) in self.repository.enumerate() {
             
+            let literalsCount = clauseTriple.yices.literals.count
+            
             if let literalIndex = clauseTriple.literalIndex {
-                guard
-                    !holds(clauseTriple.yices.literals.count, clauseTriple.yices.literals[literalIndex])
-                    else {
-                        // selected yices literal still holds in model
-                        continue
-                }
+                let yicesLiteral =  clauseTriple.yices.literals[literalIndex]
+                guard !holds(literalsCount, yicesLiteral) else { continue } // selected literal still holds
             }
             
             for (literalIndex,yicesLiteral) in clauseTriple.yices.literals.enumerate() {
                 guard literalIndex != clauseTriple.literalIndex else { continue }
-                if holds(clauseTriple.yices.literals.count, yicesLiteral) {
+                if holds(literalsCount, yicesLiteral) {
+                    // unit clause or literals holds in model
                     clauseTriple.literalIndex = literalIndex
                     self.repository[clauseIndex] = clauseTriple
                     
                     print("\(clauseIndex).\(literalIndex) ",
                         "\tl:'\(clauseTriple.0.nodes![literalIndex])'",
-                        "\tc:'\(clauseTriple.0)'")
+                        "\tc:'\(clauseTriple.0)'"
+                    )
+                    print("\t\t\(String(term:yicesLiteral)!)",
+                        "\t\(clauseTriple.yices.literals.map { String(term:$0)! })"
+                    )
                     
                     self.unprocessedClauseLiteralSet.insert(clauseIndex)
                     
-                    continue
+                    break
                 }
             }
             

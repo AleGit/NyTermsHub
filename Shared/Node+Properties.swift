@@ -133,7 +133,7 @@ extension Node {
     }
     
     /// Recursive check if `self` represents a literal.
-    private var isLiteral : Bool {
+    var isLiteral : Bool {
         return self.isAtom || self.isNegatedAtom
     }
     

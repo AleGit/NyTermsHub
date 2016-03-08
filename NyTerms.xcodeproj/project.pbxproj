@@ -45,6 +45,8 @@
 		512F75E41BE20FDD007EBA4A /* Prover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F75E31BE20FDD007EBA4A /* Prover.swift */; };
 		512F75E51BE20FDD007EBA4A /* Prover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F75E31BE20FDD007EBA4A /* Prover.swift */; };
 		51342AB91B92CA3A0052A72F /* ParseFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51342AB81B92CA3A0052A72F /* ParseFiles.swift */; };
+		51378A511C8F15190000757E /* YicesProver+Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51378A501C8F15190000757E /* YicesProver+Node.swift */; };
+		51378A521C8F15190000757E /* YicesProver+Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51378A501C8F15190000757E /* YicesProver+Node.swift */; };
 		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		51431DFB1C85C6EB0053BB18 /* TrieProverBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51431DFA1C85C6EB0053BB18 /* TrieProverBasicTests.swift */; };
@@ -187,6 +189,7 @@
 		5129773E1B679177003D3E80 /* Substitution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Substitution.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		512F75E31BE20FDD007EBA4A /* Prover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Prover.swift; sourceTree = "<group>"; };
 		51342AB81B92CA3A0052A72F /* ParseFiles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseFiles.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		51378A501C8F15190000757E /* YicesProver+Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "YicesProver+Node.swift"; sourceTree = "<group>"; };
 		513CF7E01B8EF6D20063BA57 /* String+Yices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Yices.swift"; sourceTree = "<group>"; };
 		513F24051C04C13F0026A081 /* TargetTests.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetTests.jpg; sourceTree = "<group>"; };
 		513F24061C04C13F0026A081 /* TargetApp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetApp.jpg; sourceTree = "<group>"; };
@@ -435,6 +438,7 @@
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
 				5100656D1C897A6800F2A67B /* MingyProver.swift */,
+				51378A501C8F15190000757E /* YicesProver+Node.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -823,6 +827,7 @@
 				516D25201C3EB26C0075D362 /* Nodal.swift in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				51E5F9AF1C87179900040B19 /* Problems.swift in Sources */,
+				51378A521C8F15190000757E /* YicesProver+Node.swift in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
 				51C0ACB41C4A385800447594 /* Complementaries.swift in Sources */,
@@ -889,6 +894,7 @@
 				516D1A431C32C3A0000E152A /* Node+Trie.swift in Sources */,
 				515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */,
 				51FD00BC1C3132F8008C5AD1 /* TrieStruct.swift in Sources */,
+				51378A511C8F15190000757E /* YicesProver+Node.swift in Sources */,
 				513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */,
 				515D91BE1B6D2513000EDB3B /* TptpNode.swift in Sources */,
 				515F0F061B6BB0A100B470B4 /* String+Symbols.swift in Sources */,

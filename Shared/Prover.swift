@@ -12,7 +12,7 @@ protocol Prover {
     init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
 }
 
-final class TrieProver<N:Node> : Prover {
+final class TrieProver<N:Node> : Prover, YicesProver {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     ///
@@ -41,17 +41,22 @@ final class TrieProver<N:Node> : Prover {
     /// - the input types of functions are determined by the carrier
     /// - the input types of predicates are determined by the carrier
     /// - the output type of (constant) functions is determined by the carrier
-    private let free_tau = yices_int_type()
+    let free_tau = yices_int_type()
     
     /// We handle predicates as characteristic functions
     /// - the input types of connectives are Boolean
     /// - the output type of propositions is Boolean
     /// - the output type of predicates is Boolean
     /// - the output type of connectives is Boolean
-    private let bool_tau = yices_bool_type()
+    let bool_tau = yices_bool_type()
     
     /// We substitute all variables with the same fresh constant.
-    private let 🚧 : term_t
+    let 🚧 : term_t
+    
+    private lazy var startTime : CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
+    var runtime : CFTimeInterval {
+        return CFAbsoluteTimeGetCurrent() - startTime
+    }
     
     /// We assign a list of clauses and a list of predefined symbols to our prover
     /// Goal: prove that the clauses are unsatisfiable.
@@ -67,7 +72,8 @@ final class TrieProver<N:Node> : Prover {
         self.symbols = symbols
         
         for (clauseIndex, clause) in clauses.enumerate() {
-            self.clauses.append((clause ** clauseIndex, buildYicesClause(clause)))
+            let (a,b) = self.clause(clause)
+            self.clauses.append((clause ** clauseIndex, (a,b)))
             
             for path in clause.symHopPaths {
                 self.clausesTrie.insert(path, value:clauseIndex)
@@ -75,6 +81,8 @@ final class TrieProver<N:Node> : Prover {
         }
         
         assertClauses()
+        
+        
     }
     
     
@@ -98,14 +106,12 @@ extension TrieProver {
     
     // default time limit is 90 s
     func run(maxRounds:Int = Int.max, timeLimit:CFAbsoluteTime = 90) -> (Int,CFTimeInterval) {
-        let startTime = CFAbsoluteTimeGetCurrent()
-        let runtime = { () -> CFTimeInterval in CFAbsoluteTimeGetCurrent() - startTime }
+        // guard self.runtime < timeLimit else { return (0,self.runtime) }
+        
         var round = 0
         
-        let absoluteTimeLimit = CFAbsoluteTimeGetCurrent() + timeLimit
-        
         rounds:
-            while round < maxRounds && CFAbsoluteTimeGetCurrent() < absoluteTimeLimit {
+            while round < maxRounds && self.runtime < timeLimit {
                 let roundStart = CFAbsoluteTimeGetCurrent()
                 round += 1
                 
@@ -116,7 +122,7 @@ extension TrieProver {
                 print("round #",round,":","status","=",context_status, check_time.timeIntervalDescriptionMarkedWithUnits)
                 
                 guard context_status == STATUS_SAT else {
-                    return (round,runtime())
+                    return (round,self.runtime)
                 }
                 
                 let start = CFAbsoluteTimeGetCurrent()
@@ -148,8 +154,8 @@ extension TrieProver {
                 var newClauses = [N]()
                 newclauses:
                     for (clauseIndex, clause) in clauses.enumerate() {
-                        guard CFAbsoluteTimeGetCurrent() < absoluteTimeLimit else {
-                            print(">>> time limit",timeLimit,absoluteTimeLimit,"<<<")
+                        guard self.runtime < timeLimit else {
+                            print("*** runtime:",runtime,">",timeLimit,": time limit ***")
                             break rounds
                             
                         }
@@ -179,8 +185,8 @@ extension TrieProver {
                                     let selectedLiteral = clause.0.nodes![selectedLiteralIndex]
                                     
                                     guard selectedLiteral.symbol.category != SymbolCategory.Equational else {
-                                        print("*** can't handle (in)equations ***", selectedLiteral)
-                                        return (round,runtime())
+                                        print("!!! can't handle (in)equations !!!", selectedLiteral)
+                                        return (round,runtime)
                                     }
                                     
                                     
@@ -253,22 +259,21 @@ extension TrieProver {
                         //                    }
                 }
                 
-                print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits, "(", runtime().timeIntervalDescriptionMarkedWithUnits,")")
+                print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits, "(", runtime.timeIntervalDescriptionMarkedWithUnits,")")
                 
-                guard newClauses.count > 0 else { return (round,runtime()) }
+                guard newClauses.count > 0 else { return (round,runtime) }
                 
                 indexOfFirstUnassertedClause = clauses.count
                 
                 for tClause in newClauses {
-                    let pair = buildYicesClause(tClause)
-                    let newClause = (tClause ** clauses.count, pair)
-                    clauses.append(newClause)
+                    let (a,b) = self.clause(tClause)
+                    clauses.append((tClause ** clauses.count, (a,b)))
                 }
                 
                 assertClauses()
         }
         
-        return (round,runtime())
+        return (round,runtime)
         
         
     }
@@ -321,113 +326,113 @@ extension TrieProver {
     
 }
 
-private extension TrieProver {
-    
-    
-    func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {
-        guard let literals = clause.nodes else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
-        
-        let quadruple = self.symbols[clause.symbol] ?? register(predicate: clause.symbol, arity: literals.count)
-        
-        switch quadruple.type {
-            //        case SymbolType.Disjunction where literals.count == 0:
-            //            // clause with literals
-            //            guard literals.count > 0 else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
-            //
-        case SymbolType.Disjunction:
-            
-            var yicesLiterals = literals.map { buildYicesTerm($0, range_tau:bool_tau) }
-            let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
-            
-            return (yicesClause, yicesLiterals)
-            
-        case SymbolType.Predicate, SymbolType.Equation, SymbolType.Inequation, SymbolType.Negation:
-            // unit clause
-            let yicesUnitClause = buildYicesTerm(clause, range_tau:bool_tau)
-            
-            return (yicesUnitClause, [term_t]())
-            
-            
-        default:
-            assertionFailure("\(clause.symbol):\(quadruple) is not the root of a clause.")
-            return (yicesClause: yices_false(), yicesLiterals: [term_t]())
-        }
-    }
-    
-    
-    func buildYicesTerm<N:Node>(term:N, range_tau:type_t) -> term_t {
-        
-        // map all variables to global distinct constant '⊥'
-        guard let nodes = term.nodes else { return 🚧 }
-        
-        
-        let quadruple = self.symbols[term.symbol] ?? (
-            range_tau == bool_tau ?
-                register(predicate: term.symbol, arity: nodes.count)
-                :
-                (type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: nodes.count...nodes.count)
-        )
-        
-        switch quadruple.type {
-        case .Negation:
-            assert(nodes.count == 1)
-            return yices_not( buildYicesTerm(nodes.first!, range_tau:bool_tau))
-            
-        case .Disjunction:
-            var args = nodes.map { buildYicesTerm($0, range_tau: bool_tau) }
-            return yices_or( UInt32(nodes.count), &args)
-            
-        case .Conjunction:
-            var args = nodes.map { buildYicesTerm($0, range_tau: bool_tau) }
-            return yices_and( UInt32(nodes.count), &args)
-            
-        case .Inequation:
-            assert(nodes.count == 2)
-            let args = nodes.map { buildYicesTerm($0, range_tau: free_tau) }
-            return yices_neq(args.first!,args.last!)
-            
-        case .Equation:
-            assert(nodes.count == 2)
-            let args = nodes.map { buildYicesTerm($0, range_tau: free_tau) }
-            return yices_eq(args.first!,args.last!)
-            
-        default:
-            // proposition : bool, predicate : (free^n) -> bool,
-            // constant : free, or function : (free^n) -> free.
-            
-            var t = yices_get_term_by_name(term.symbol)
-            
-            if t == NULL_TERM {
-                if nodes.count == 0 {
-                    // proposition : bool (range)
-                    // or constant : free (range)
-                    t = yices_new_uninterpreted_term(range_tau)
-                    yices_set_term_name(t, term.symbol)
-                }
-                else {
-                    // predicate    : (free^n) -> bool (range)
-                    // or function  : (free^n) -> free (range)
-                    let domain_taus = [type_t](count:nodes.count, repeatedValue:free_tau)
-                    let func_tau = yices_function_type(UInt32(nodes.count), domain_taus, range_tau)
-                    t = yices_new_uninterpreted_term(func_tau)
-                    yices_set_term_name(t, term.symbol)
-                }
-            }
-            
-            if nodes.count > 0 {
-                // application: ((free^n) -> range) . (free^n)
-                
-                let args = nodes.map { buildYicesTerm($0, range_tau:free_tau) }
-                let appl = yices_application(t, UInt32(args.count), args)
-                return appl // : range
-            }
-            else {
-                return t // : range
-            }
-        }
-        
-    }
-}
+//private extension TrieProver {
+//    
+//    
+//    func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {
+//        guard let literals = clause.nodes else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
+//        
+//        let quadruple = self.symbols[clause.symbol] ?? register(predicate: clause.symbol, arity: literals.count)
+//        
+//        switch quadruple.type {
+//            //        case SymbolType.Disjunction where literals.count == 0:
+//            //            // clause with literals
+//            //            guard literals.count > 0 else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
+//            //
+//        case SymbolType.Disjunction:
+//            
+//            var yicesLiterals = literals.map { buildYicesTerm($0, range_tau:bool_tau) }
+//            let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
+//            
+//            return (yicesClause, yicesLiterals)
+//            
+//        case SymbolType.Predicate, SymbolType.Equation, SymbolType.Inequation, SymbolType.Negation:
+//            // unit clause
+//            let yicesUnitClause = buildYicesTerm(clause, range_tau:bool_tau)
+//            
+//            return (yicesUnitClause, [term_t]())
+//            
+//            
+//        default:
+//            assertionFailure("\(clause.symbol):\(quadruple) is not the root of a clause.")
+//            return (yicesClause: yices_false(), yicesLiterals: [term_t]())
+//        }
+//    }
+//    
+//    
+//    func buildYicesTerm<N:Node>(term:N, range_tau:type_t) -> term_t {
+//        
+//        // map all variables to global distinct constant '⊥'
+//        guard let nodes = term.nodes else { return 🚧 }
+//        
+//        
+//        let quadruple = self.symbols[term.symbol] ?? (
+//            range_tau == bool_tau ?
+//                register(predicate: term.symbol, arity: nodes.count)
+//                :
+//                (type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: nodes.count...nodes.count)
+//        )
+//        
+//        switch quadruple.type {
+//        case .Negation:
+//            assert(nodes.count == 1)
+//            return yices_not( buildYicesTerm(nodes.first!, range_tau:bool_tau))
+//            
+//        case .Disjunction:
+//            var args = nodes.map { buildYicesTerm($0, range_tau: bool_tau) }
+//            return yices_or( UInt32(nodes.count), &args)
+//            
+//        case .Conjunction:
+//            var args = nodes.map { buildYicesTerm($0, range_tau: bool_tau) }
+//            return yices_and( UInt32(nodes.count), &args)
+//            
+//        case .Inequation:
+//            assert(nodes.count == 2)
+//            let args = nodes.map { buildYicesTerm($0, range_tau: free_tau) }
+//            return yices_neq(args.first!,args.last!)
+//            
+//        case .Equation:
+//            assert(nodes.count == 2)
+//            let args = nodes.map { buildYicesTerm($0, range_tau: free_tau) }
+//            return yices_eq(args.first!,args.last!)
+//            
+//        default:
+//            // proposition : bool, predicate : (free^n) -> bool,
+//            // constant : free, or function : (free^n) -> free.
+//            
+//            var t = yices_get_term_by_name(term.symbol)
+//            
+//            if t == NULL_TERM {
+//                if nodes.count == 0 {
+//                    // proposition : bool (range)
+//                    // or constant : free (range)
+//                    t = yices_new_uninterpreted_term(range_tau)
+//                    yices_set_term_name(t, term.symbol)
+//                }
+//                else {
+//                    // predicate    : (free^n) -> bool (range)
+//                    // or function  : (free^n) -> free (range)
+//                    let domain_taus = [type_t](count:nodes.count, repeatedValue:free_tau)
+//                    let func_tau = yices_function_type(UInt32(nodes.count), domain_taus, range_tau)
+//                    t = yices_new_uninterpreted_term(func_tau)
+//                    yices_set_term_name(t, term.symbol)
+//                }
+//            }
+//            
+//            if nodes.count > 0 {
+//                // application: ((free^n) -> range) . (free^n)
+//                
+//                let args = nodes.map { buildYicesTerm($0, range_tau:free_tau) }
+//                let appl = yices_application(t, UInt32(args.count), args)
+//                return appl // : range
+//            }
+//            else {
+//                return t // : range
+//            }
+//        }
+//        
+//    }
+//}
 
 
 

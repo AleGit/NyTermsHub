@@ -27,13 +27,18 @@ extension YicesProver {
             return (clause:yices_false(), literals:[term_t]())
         }
         
-        var yicesLiterals = literals.map { self.literal($0) }
-        let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
+        let yicesLiterals = literals.map { self.literal($0) }
+        var copy = yicesLiterals // yices_or might change order of array
+        let yicesClause = yices_or( UInt32(yicesLiterals.count), &copy)
         
         return (yicesClause, yicesLiterals)
     }
     
-    /// Build boolean term from literal.
+    /// Build boolean term from literal, i.e. 
+    /// - a negation
+    /// - an equation
+    /// - an inequation
+    /// - a predicatate term or a proposition constant
     private func literal<N:Node>(literal:N) -> term_t {
         assert(literal.isLiteral,"\(literal) is not a literal")
         

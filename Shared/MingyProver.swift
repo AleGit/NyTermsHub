@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 final class MingyProver<N:Node> : YicesProver {
     
     private let ctx : COpaquePointer

@@ -25,6 +25,7 @@ class MingyProverBasicTests: XCTestCase {
     
     func testPropositionalTrue() {
         let wahr = "p|~p" as TestNode
+        
         let prover = MingyProver(clauses: [wahr])
         let (status,runtime) = measure { prover.run() }
         print("runtime",runtime)
@@ -51,8 +52,7 @@ class MingyProverBasicTests: XCTestCase {
     }
     
     func testPropositionalSatisfiable() {
-        
-        let satisfiable = TestNode(connective:"|", nodes:[ "p" as TestNode])
+        let satisfiable = TestNode(connective:"|",nodes:["p"])
         
         let prover = MingyProver(clauses: [satisfiable])
         let (status,runtime) = measure { prover.run() }

@@ -25,18 +25,15 @@ class TrieProverBasicTests: XCTestCase {
     }
     
     func testPropositionalTrue() {
-        
         let wahr = "p|~p" as TestNode
+        
         let prover = TheProver(clauses: [wahr])
-        
-        XCTAssertEqual(STATUS_SAT, prover.status)
-        let runResult = prover.run()
-        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
-        let expected = ["p"]
-        XCTAssertEqual(predicateSymbols,expected)
+        let (rounds,runtime) = prover.run()
+        XCTAssertEqual(rounds, 1)
+        print("runtime",runtime)
+        XCTAssertEqual(STATUS_SAT, prover.status)
     }
     
     func testEmptyClause() {
@@ -44,44 +41,36 @@ class TrieProverBasicTests: XCTestCase {
         
         let prover = TheProver(clauses: [empty])
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        let runResult = prover.run()
-        XCTAssertEqual(runResult.0, 1)
-        XCTAssertEqual(STATUS_UNSAT, prover.status)
         
-        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
-        let expected = [String]()
-        XCTAssertEqual(predicateSymbols,expected)
+        let (rounds,runtime) = prover.run()
+        XCTAssertEqual(rounds, 1)
+        print("runtime",runtime)
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
     }
     
     func testPropositionalFalse() {
-        let p = "p" as TestNode
-        let np = "~p" as TestNode
+        let p = TestNode(connective:"|",nodes:["p"])
+        let np = TestNode(connective:"|",nodes:["~p"])
+        
         let prover = TheProver(clauses: [p,np])
-        
-        XCTAssertEqual(STATUS_UNSAT, prover.status)
-        let runResult = prover.run()
-        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
-        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
-        let expected = ["p"]
-        XCTAssertEqual(predicateSymbols,expected)
-        
+        let (rounds,runtime) = prover.run()
+        XCTAssertEqual(rounds, 1)
+        print("runtime",runtime)
+        XCTAssertEqual(STATUS_UNSAT, prover.status)
     }
     
     func testPropositionalSatisfiable() {
+        let satisfiable = TestNode(connective:"|",nodes:["p"])
         
-        let satisfiable = "p" as TestNode
         let prover = TheProver(clauses: [satisfiable])
-        
-        XCTAssertEqual(STATUS_SAT, prover.status)
-        let runResult = prover.run()
-        XCTAssertEqual(runResult.0, 1)
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
-        let expected = ["p"]
-        XCTAssertEqual(predicateSymbols,expected)
+        let (rounds,runtime) = prover.run()
+        XCTAssertEqual(rounds, 1)
+        print("runtime",runtime)
+        XCTAssertEqual(STATUS_SAT, prover.status)
     }
     
     func testPUZ001() {
@@ -98,14 +87,10 @@ class TrieProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        let runResult = prover.run()
-        XCTAssertEqual(runResult.0, 4)
-        print("runtime",runResult.1.timeIntervalDescriptionMarkedWithUnits)
+        let (rounds,runtime) = prover.run()
+        XCTAssertEqual(rounds, 3)
+        print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        
-        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
-        let expected = Set(["lives","killed","richer","hates"])
-        XCTAssertEqual(Set(predicateSymbols),expected)
     }
     
     func testPUZ003() {
@@ -122,14 +107,10 @@ class TrieProverBasicTests: XCTestCase {
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
-        let runResult = prover.run()
-        XCTAssertEqual(runResult.0, 4)
-        print("runtime",runResult.1.timeIntervalDescriptionMarkedWithUnits)
+        let (rounds,runtime) = prover.run()
+        XCTAssertEqual(rounds, 6)
+        print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
-        
-        let predicateSymbols = prover.symbols.keys { $0.1.type == SymbolType.Predicate }
-        let expected = Set(["lives","killed","richer","hates"])
-        XCTAssertEqual(Set(predicateSymbols),expected)
     }
     
     func _testSYO587m1() {

@@ -78,6 +78,7 @@ class MingyProverBasicTests: XCTestCase {
     
     func testPUZ003() {
         let path = "PUZ001-3".p!
+        print(path)
         
         let (result,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, result.count)

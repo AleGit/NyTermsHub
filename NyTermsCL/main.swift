@@ -31,7 +31,7 @@ let files = Infos.files.filter { $0.1.0 < 1000 }.sort { $0.1.0 < $1.1.1 }.map { 
 //
 //print(files)
 //
-Complementaries.demo(files, searches: [fastestSearch])
+// Complementaries.demo(files, searches: [fastestSearch])
 
 Proofing.demo()
 

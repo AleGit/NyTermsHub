@@ -110,7 +110,8 @@ class TrieProverBasicTests: XCTestCase {
         let (rounds,runtime) = prover.run()
         XCTAssertEqual(rounds, 6)
         print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
-        XCTAssertEqual(STATUS_UNSAT, prover.status)
+        XCTAssertEqual(STATUS_SAT, prover.status)
+        print(prover)
     }
     
     func _testSYO587m1() {

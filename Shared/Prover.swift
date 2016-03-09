@@ -93,6 +93,27 @@ final class TrieProver<N:Node> : Prover, YicesProver {
     }
 }
 
+extension TrieProver : CustomStringConvertible{
+    var description : String {
+        if self.status == STATUS_SAT {
+            let cs = self.clauses.enumerate().map {
+                (clauseIndex,b) -> String in
+                let (clause,_) = b
+                let literalIndex = self.selects[clauseIndex]
+                let literal = clause.nodes![literalIndex]
+                
+                return "\(clauseIndex).\(literalIndex)\t\(literal)\t\t\(clause)"
+            }
+            
+            return cs.joinWithSeparator("\n")
+            
+        }
+        else {
+            return "unsatisfiable"
+        }
+    }
+}
+
 extension TrieProver {
     convenience init(clauses:[N]) {
         self.init(clauses:clauses, predefined: Symbols.defaultSymbols)
@@ -186,7 +207,7 @@ extension TrieProver {
                                     
                                     guard selectedLiteral.symbol.category != SymbolCategory.Equational else {
                                         print("!!! can't handle (in)equations !!!", selectedLiteral)
-                                        return (round,runtime)
+                                        return (round, self.runtime + timeLimit) // 
                                     }
                                     
                                     

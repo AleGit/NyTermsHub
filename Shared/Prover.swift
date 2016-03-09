@@ -228,8 +228,9 @@ extension TrieProver {
                                             
                                             instances:
                                                 for clause in [clauses[clauseIndex].0, clauses[candidateLiteralIndex].0] {
-                                                    let newClause = clause * mgu
+                                                    
                                                     let newClauseIndex = self.clauses.count + newClauses.count
+                                                    let newClause = (clause * mgu) ** newClauseIndex
                                                     
                                                     if let variants = candidateVariants(self.clausesTrie, term: newClause)
                                                         where variants.count > 0 {
@@ -288,7 +289,7 @@ extension TrieProver {
                 
                 for tClause in newClauses {
                     let (a,b) = self.clause(tClause)
-                    clauses.append((tClause ** clauses.count, (a,b)))
+                    clauses.append((tClause, (a,b)))
                 }
                 
                 assertClauses()

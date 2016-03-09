@@ -64,8 +64,8 @@ let puzzles = [
     ("PUZ035-3", STATUS_UNSAT, 222.2, 0.00),            // saturates#5 < 1 s
     ("PUZ035-4", STATUS_UNSAT, 222.2, 0.00),            // saturates#5 < 1 s
     ("PUZ035-5", STATUS_UNSAT, 301.1, 0.12),      // > 300
-    ("PUZ035-6", STATUS_UNSAT, 600.0, 0.12),      // execption
-    ("PUZ035-7"    , STATUS_UNSAT, 600.0, 0.00),      // exception
+    ("PUZ035-6", STATUS_UNSAT, 666.6, 0.12),
+    ("PUZ035-7", STATUS_UNSAT, 666.6, 0.00),
     ("PUZ036-1.005", STATUS_UNSAT, 301.1, 0.17),
     ("PUZ037-1"    , STATUS_UNSAT, 1.7, 0.17),
     ("PUZ037-2", STATUS_UNSAT, 300.0, 0.17),
@@ -123,7 +123,7 @@ struct Proofing {
         let list = puzzles.filter {
             // range.contains(Int($0.2))
             (_,_,timeout,rating) in
-            ( (0.0 <= timeout) && (timeout < 99.0) )     // expected runtime
+            ( (0.0 <= timeout) && (timeout == 666.6) )     // expected runtime
                 &&
                 ( 0.0 <= rating && rating <= 0.5 )   // rating
         }

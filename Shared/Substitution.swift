@@ -56,12 +56,13 @@ func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     
     switch(lhs.isVariable,rhs.isVariable) {
     case (true, true):
+        assert(lhs != rhs, "\(lhs) \(rhs)")
         return [lhs:rhs]
     case (true,_):
-        assert(!rhs.allVariables.contains(lhs)) // occur check
+        assert(!rhs.allVariables.contains(lhs),"\(lhs) \(rhs)") // occur check
         return [lhs:rhs]
     case (_,true):
-        assert(!lhs.allVariables.contains(rhs)) // occur check
+        assert(!lhs.allVariables.contains(rhs),"\(lhs) \(rhs)") // occur check
         return [rhs:lhs]
     case (_, _) where lhs.symbol == rhs.symbol && lhs.nodes!.count == rhs.nodes!.count:
         

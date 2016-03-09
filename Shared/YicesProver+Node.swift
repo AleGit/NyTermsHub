@@ -20,7 +20,7 @@ extension YicesProver {
     
     /// Build yices disjunction from clause.
     func clause<N:Node>(clause:N) -> (clause:term_t,literals:[term_t]) {
-        assert(clause.isClause,"\(clause) is not a clause.")
+        assert(clause.isClause,"'\(clause)' is not a clause.")
         
         guard let literals = clause.nodes where literals.count > 0 else {
             // an empty clause represents a contradiction
@@ -40,7 +40,7 @@ extension YicesProver {
     /// - an inequation
     /// - a predicatate term or a proposition constant
     private func literal<N:Node>(literal:N) -> term_t {
-        assert(literal.isLiteral,"\(literal) is not a literal")
+        assert(literal.isLiteral,"'\(literal)' is not a literal.")
         
         guard let nodes = literal.nodes
             else {
@@ -76,7 +76,7 @@ extension YicesProver {
     
     /// Build uninterpreted function term from term.
     private func term<N:Node>(term:N) -> term_t {
-        assert(term.isTerm,"\(term) is not a term.")
+        assert(term.isTerm,"'\(term)' is not a term.")
         guard let nodes = term.nodes else {
             return self.🚧 // substitute all variables with global constant '⊥'
         }

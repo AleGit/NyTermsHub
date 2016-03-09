@@ -27,7 +27,7 @@ class UnificationTests: XCTestCase {
         
         for (indexA,literalA) in literals.enumerate() {
             for (indexB,literalB) in literals[0..<indexA].enumerate() {
-                let mgu = (literalA ~?= literalB)
+                let mgu = (literalA ~?= (literalB ** 1)) // make them variable distinct
                 if mgu != nil {
                     count++
                     

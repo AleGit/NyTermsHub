@@ -40,7 +40,8 @@ class TermTests: XCTestCase {
         
         
         // unifyable
-        XCTAssertEqual([x:x], (x =?= x)!)   // questionable
+        XCTAssertEqual([x:y], (x =?= y)!)
+        XCTAssertEqual([y:x], (y =?= x)!)
         
         XCTAssertEqual([x:a], (x =?= a)!)
         XCTAssertEqual([x:a], (a =?= x)!)

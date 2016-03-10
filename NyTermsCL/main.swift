@@ -8,7 +8,7 @@ let line = "========================="
 let info = NSProcessInfo.processInfo()
 let host = NSHost.currentHost()
 
-print(host)
+// print(host)
 
 let names = host.names.filter {
     !(

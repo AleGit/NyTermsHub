@@ -127,7 +127,7 @@ struct Proofing {
             (name,status,timeout,rating,types) in
 
             status != STATUS_UNKNOWN &&
-                timeout < 10.0 &&
+                timeout < 100.0 &&
                 rating < 0.1 &&
                 !types.contains(SymbolType.Equation)
         }

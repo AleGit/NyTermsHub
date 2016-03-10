@@ -18,7 +18,7 @@ struct BuildTries {
             }
             
             
-            print(duration.timeIntervalDescriptionMarkedWithUnits, T.self, literals.count, duration)
+            print(duration.prettyTimeIntervalDescription, T.self, literals.count, duration)
     }
     
     static private func execute<T:TrieType where T.Value==Int>(
@@ -27,7 +27,7 @@ struct BuildTries {
                 trie.fill(literals) { f($0) }
             }
             
-            print(duration.timeIntervalDescriptionMarkedWithUnits, T.self, literals.count, duration)
+            print(duration.prettyTimeIntervalDescription, T.self, literals.count, duration)
     }
     
     static func demo134() {
@@ -39,7 +39,7 @@ struct BuildTries {
             TptpNode.literals(path)
         }
         
-        print(name, literals.count,"literals read in",duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
+        print(name, literals.count,"literals read in",duration.prettyTimeIntervalDescription, "from",path)
         
         print("* Term Paths *")
         
@@ -66,7 +66,7 @@ struct BuildTries {
                 let (literals, duration) = measure {
                     TptpNode.literals(path)
                 }
-                print(name, literals.count,"literals read in", duration.timeIntervalDescriptionMarkedWithUnits, "from",path)
+                print(name, literals.count,"literals read in", duration.prettyTimeIntervalDescription, "from",path)
                 print("* Term Paths *")
                 
                 execute(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }

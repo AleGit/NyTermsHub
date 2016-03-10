@@ -5,9 +5,16 @@ import Foundation
 
 let line = "========================="
 
+let info = NSProcessInfo.processInfo()
+let host = NSHost.currentHost()
+
+let names = host.names.filter { !$0.hasSuffix("uibk.ac.at") && $0 != "localhost" }
+
 // print header
 print(line,NSDate(),line)
+print("\(names.first!), \(info.processorCount) cores, \(info.physicalMemory.prettyByteDescription)")
 print(line,line,line)
+
 
 // print info
 print("NyTerms with \(Yices.info)")

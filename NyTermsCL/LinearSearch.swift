@@ -37,8 +37,8 @@ func linearSearch<N:Node>(literals:[N]) -> (Int,String) {
             let round = now - temp
             
             print("\t(\(processed),\(processed-last)) processed in",
-                "(\(total.timeIntervalDescriptionMarkedWithUnits),\(round.timeIntervalDescriptionMarkedWithUnits))",
-                "(\((total/Double(processed)).timeIntervalDescriptionMarkedWithUnits), \((round/Double(processed-last)).timeIntervalDescriptionMarkedWithUnits))",
+                "(\(total.prettyTimeIntervalDescription),\(round.prettyTimeIntervalDescription))",
+                "(\((total/Double(processed)).prettyTimeIntervalDescription), \((round/Double(processed-last)).prettyTimeIntervalDescription))",
                 "(\(count),\(count-stepcount)) complementaries")
             
             temp = now

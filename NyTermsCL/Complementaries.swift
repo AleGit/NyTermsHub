@@ -49,7 +49,7 @@ struct Complementaries {
                 print(file,path)
                 var start = CFAbsoluteTimeGetCurrent()
                 let (_,formulae,_) = parse(path:path)
-                print("\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
+                print("\(formulae.count) formulae parsed in \((CFAbsoluteTimeGetCurrent() - start).prettyTimeIntervalDescription)")
                 start = CFAbsoluteTimeGetCurrent()
                 let nodes = literals(formulae)
                 
@@ -65,7 +65,7 @@ struct Complementaries {
                     print("\(file): info n/a")
                 }
                 
-                print("\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).timeIntervalDescriptionMarkedWithUnits)")
+                print("\(nodes.count) literals) extracted in \((CFAbsoluteTimeGetCurrent() - start).prettyTimeIntervalDescription)")
                 
                 for search in searches {
                     print("")
@@ -80,7 +80,7 @@ struct Complementaries {
                         print("\(file): \(actual) coplemenatary literals found. \(expected) expected.")
                     }
                     else {
-                        print("\(file): \(actual) coplemenatary literals found in \(runtime.timeIntervalDescriptionMarkedWithUnits).")
+                        print("\(file): \(actual) coplemenatary literals found in \(runtime.prettyTimeIntervalDescription).")
                     }
                     
                     print("\n")

@@ -18,7 +18,7 @@ struct ParseFiles {
             print(name,
                 formulae.count,
                 "formulae read in",
-                duration.timeIntervalDescriptionMarkedWithUnits,
+                duration.prettyTimeIntervalDescription,
                 "from",
                 path)
         }
@@ -44,16 +44,16 @@ struct ParseFiles {
                 let (_,tptpFormulae,_) = parseResult
                 let count = tptpFormulae.count
                 
-                print("\(count) formulae parsed in \(parseTime.timeIntervalDescriptionMarkedWithUnits)")
+                print("\(count) formulae parsed in \(parseTime.prettyTimeIntervalDescription)")
                 
                 let (size,countTime) = measure {
                     tptpFormulae.reduce((0,0,0)) {
-                        $0 + $1.root.hsw
+                        $0 + $1.root.dimensions
                     }
                 }
                 print("  total size:", size)
                 print("average size:", size/count)
-                print("  counted in:", countTime.timeIntervalDescriptionMarkedWithUnits, "\n")
+                print("  counted in:", countTime.prettyTimeIntervalDescription, "\n")
                 
                 
                 

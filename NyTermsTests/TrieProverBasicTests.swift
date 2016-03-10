@@ -89,7 +89,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let (rounds,runtime) = prover.run()
         XCTAssertEqual(rounds, 3)
-        print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
+        print("runtime",runtime.prettyTimeIntervalDescription)
         XCTAssertEqual(STATUS_UNSAT, prover.status)
     }
     
@@ -109,7 +109,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let (rounds,runtime) = prover.run()
         XCTAssertEqual(rounds, 6)
-        print("runtime",runtime.timeIntervalDescriptionMarkedWithUnits)
+        print("runtime",runtime.prettyTimeIntervalDescription)
         XCTAssertEqual(STATUS_SAT, prover.status)
         print(prover)
     }

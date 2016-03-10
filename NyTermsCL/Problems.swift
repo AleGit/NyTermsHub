@@ -151,8 +151,8 @@ struct Proofing {
                 prover.run(timeLimit:fto(timeout))
             }
             let actual = prover.status
-            print("  actual:", actual, "runtime:", runtime.timeIntervalDescriptionMarkedWithUnits)
-            print("expected:", status, "timeout:", timeout.timeIntervalDescriptionMarkedWithUnits)
+            print("  actual:", actual, "runtime:", runtime.prettyTimeIntervalDescription)
+            print("expected:", status, "timeout:", timeout.prettyTimeIntervalDescription)
             print("  rating:", rating, (actual == status && result.1 <= timeout) ? "SUCCESS" : "FAILED", "\n")
             
         }

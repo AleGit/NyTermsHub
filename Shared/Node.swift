@@ -334,7 +334,7 @@ extension Node {
         return nodes.reduce(0) { $0 + $1.width }
     }
     
-    var hsw : (height:Int,size:Int,width:Int) {
+    var dimensions : (height:Int,size:Int,width:Int) {
         guard let nodes = self.nodes
             where nodes.count > 0 // superfluous but correct
             else  {
@@ -347,7 +347,7 @@ extension Node {
         return (1,1,0) + nodes.reduce((0,0,0)) {
             (a,b) -> (Int,Int,Int) in
             let (h0,s0,w0) = a
-            let (h1,s1,w1) = b.hsw
+            let (h1,s1,w1) = b.dimensions
             
             return ( max(h0,h1), s0+s1, w0+w1 )
             

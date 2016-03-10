@@ -140,7 +140,7 @@ extension TrieProver {
                     yices_check_context(self.ctx, nil)
                 }
                 
-                print("round #",round,":","status","=",context_status, check_time.timeIntervalDescriptionMarkedWithUnits)
+                print("round #",round,":","status","=",context_status, check_time.prettyTimeIntervalDescription)
                 
                 guard context_status == STATUS_SAT else {
                     return (round,self.runtime)
@@ -281,7 +281,7 @@ extension TrieProver {
                         //                    }
                 }
                 
-                print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).timeIntervalDescriptionMarkedWithUnits, "(", runtime.timeIntervalDescriptionMarkedWithUnits,")")
+                print("round #", round, ":",newClauses.count, "new clauses in", (CFAbsoluteTimeGetCurrent()-start).prettyTimeIntervalDescription, "(", runtime.prettyTimeIntervalDescription,")")
                 
                 guard newClauses.count > 0 else { return (round,runtime) }
                 

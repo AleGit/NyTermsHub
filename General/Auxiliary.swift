@@ -134,7 +134,7 @@ extension CFTimeInterval {
         ns : "ns"
     ]
     
-    var timeIntervalDescriptionMarkedWithUnits : String {
+    var prettyTimeIntervalDescription : String {
         var t = self
         switch self {
         case _ where floor(t/CFAbsoluteTime.hour) > 0:
@@ -177,6 +177,37 @@ extension CFTimeInterval {
             return "\(ns)\(CFAbsoluteTime.units[CFAbsoluteTime.ns]!)"
             
         }
+    }
+}
+
+extension UInt64 {
+    private static let prefixedByteUnits = ["B", "KiB", "MiB" // , "GiB", "TiB"
+    ]
+    
+    var prettyByteDescription : String {
+        var dividend = self
+        let divisor = 1024 as UInt64
+        
+        guard dividend != 0 else {
+            return "0 B"
+        }
+        
+//        guard dividend > 0 else {
+//            return "-" + (-self).prettyByteDescription
+//        }
+        
+        var index = 0
+        
+        while dividend/divisor > 0 && index < (UInt64.prefixedByteUnits.count-1) {
+            let remainder = dividend % divisor
+            let quotient = dividend % divisor
+            
+            
+            index += 1
+            dividend = quotient + remainder > (divisor/2) ? 1 : 0
+        }
+        
+        return "\(dividend) \(UInt64.prefixedByteUnits[index])"
     }
 }
 

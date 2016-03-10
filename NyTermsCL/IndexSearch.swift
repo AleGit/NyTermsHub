@@ -60,8 +60,8 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop, T.Value==Int>(trieRoot:T
             let round = now - temp
             
             print("\t(\(processed),\(processed-last))) processed in",
-                "(\(total.timeIntervalDescriptionMarkedWithUnits),\(round.timeIntervalDescriptionMarkedWithUnits))",
-                "(\((total/Double(processed)).timeIntervalDescriptionMarkedWithUnits), \((round/Double(processed-last)).timeIntervalDescriptionMarkedWithUnits))",
+                "(\(total.prettyTimeIntervalDescription),\(round.prettyTimeIntervalDescription))",
+                "(\((total/Double(processed)).prettyTimeIntervalDescription), \((round/Double(processed-last)).prettyTimeIntervalDescription))",
                 "(\(count),\(count-stepcount)) complementaries")
             
             temp = now

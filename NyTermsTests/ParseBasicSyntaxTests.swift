@@ -21,6 +21,11 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual("~(is_a_theorem(equivalent(X,Y)))|~(is_a_theorem(X))|is_a_theorem(Y)", tptpFormulae[0].root.description)
         XCTAssertEqual("is_a_theorem(equivalent(equivalent(X,equivalent(Y,Z)),equivalent(equivalent(X,equivalent(U,Z)),equivalent(Y,U))))", tptpFormulae[1].root.description)
         XCTAssertEqual("~(is_a_theorem(equivalent(a,equivalent(a,equivalent(equivalent(b,c),equivalent(equivalent(b,e),equivalent(c,e)))))))", tptpFormulae[2].root.description)
+        
+        let size = tptpFormulae.reduce(0) {
+            $0 + $1.root.size
+        }
+        XCTAssertEqual(46, size)
     }
     
     /// Parse HWV105-1.p and construct tree representation. ~90 MB, 4s
@@ -38,6 +43,11 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let myterm = MyTestTerm(myformula.root)
         XCTAssertEqual("~(v2339(VarCurr,bitIndex5))|v2338(VarCurr,bitIndex129)", myterm.description)
+        
+        let size = tptpFormulae.reduce(0) {
+            $0 + $1.root.size
+        }
+        XCTAssertEqual(194_250, size)
         
     }
     
@@ -154,7 +164,12 @@ class ParseBasicSyntaxTests: XCTestCase {
         let cbvars = Set(bvars.map { TptpNode($0) })
         XCTAssertEqual(cvars, cbvars)
         
-        XCTAssertEqual(15312, b.allVariables.count)
+        XCTAssertEqual(15_312, b.allVariables.count)
+        
+        let size = tptpFormulae.reduce(0) {
+            $0 + $1.root.size
+        }
+        XCTAssertEqual(293_916, size)
     }
     
     /// Parse HWV134+1.p and construct tree representation. ~3 GB, 120s
@@ -168,6 +183,11 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let myformula = MyTestTerm(tptpFormulae[128_974].root)
         XCTAssertEqual("(![VarCurr]:(v34(VarCurr)<=>v36(VarCurr)))", myformula.description)
+        
+        let size = tptpFormulae.reduce(0) {
+            $0 + $1.root.size
+        }
+        XCTAssertEqual(7_131_470, size)
     }
 
 
@@ -182,6 +202,12 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let myformula = MyTestTerm(tptpFormulae[2_332_427].root)
         XCTAssertEqual("~(v437(VarCurr,bitIndex128))|v4403(VarCurr,bitIndex0)", myformula.description)
+        
+        let size = tptpFormulae.reduce(0) {
+            $0 + $1.root.size
+        }
+        
+        XCTAssertEqual(25_288_469, size)
     }
 
 }

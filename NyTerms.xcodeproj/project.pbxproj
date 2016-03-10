@@ -78,6 +78,7 @@
 		515F0F061B6BB0A100B470B4 /* String+Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515F0F051B6BB0A100B470B4 /* String+Symbols.swift */; };
 		515F0F0C1B6BB50200B470B4 /* PositonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515F0F0B1B6BB50200B470B4 /* PositonTests.swift */; };
 		515F0F0E1B6BB80000B470B4 /* TestGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515F0F0D1B6BB80000B470B4 /* TestGlobals.swift */; };
+		515F2B461C918016004F93E9 /* sizeDemo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 515F2B451C918016004F93E9 /* sizeDemo.txt */; };
 		516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516107AD1C5A53E100FD3637 /* LinearSearch.swift */; };
 		516D1A431C32C3A0000E152A /* Node+Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D1A421C32C3A0000E152A /* Node+Trie.swift */; };
 		516D1A441C32C3A0000E152A /* Node+Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D1A421C32C3A0000E152A /* Node+Trie.swift */; };
@@ -228,7 +229,7 @@
 		515F0F051B6BB0A100B470B4 /* String+Symbols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "String+Symbols.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515F0F0B1B6BB50200B470B4 /* PositonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PositonTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515F0F0D1B6BB80000B470B4 /* TestGlobals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TestGlobals.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		515F2B441C914E99004F93E9 /* mmPuzzleResults.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mmPuzzleResults.txt; sourceTree = "<group>"; };
+		515F2B451C918016004F93E9 /* sizeDemo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sizeDemo.txt; sourceTree = "<group>"; };
 		516107A81C5A18E000FD3637 /* ParsingConversion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; lineEnding = 0; name = ParsingConversion.txt; path = Docs/ParsingConversion.txt; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = "<none>"; };
 		516107AD1C5A53E100FD3637 /* LinearSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearSearch.swift; sourceTree = "<group>"; };
 		516107B11C5A605800FD3637 /* HWV119-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV119-iMac.txt"; path = "Docs/HWV119-iMac.txt"; sourceTree = SOURCE_ROOT; };
@@ -566,7 +567,6 @@
 		51540DB11C4CBA7B00A145DC /* results */ = {
 			isa = PBXGroup;
 			children = (
-				515F2B441C914E99004F93E9 /* mmPuzzleResults.txt */,
 				51249BEA1C85FB7100223CE2 /* mmFastestSearchBug.txt */,
 				51431DF61C85780C0053BB18 /* statistics.txt */,
 				51E28CEF1C81E28100404842 /* mmFastestSearch.txt */,
@@ -575,6 +575,7 @@
 				5154FF191C88273F00689C25 /* puzzles.txt */,
 				5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */,
 				516A73D81C902CF1007E5DEC /* iPuzzlesResults.txt */,
+				515F2B451C918016004F93E9 /* sizeDemo.txt */,
 			);
 			name = results;
 			path = ../Docs;
@@ -802,6 +803,7 @@
 				5154FF1B1C8847B000689C25 /* ProofPUZ010-1.txt in Resources */,
 				512977201B677CAB003D3E80 /* Main.storyboard in Resources */,
 				51B26B691B8DA23F00CC59AD /* Yices Compiler Flags.jpg in Resources */,
+				515F2B461C918016004F93E9 /* sizeDemo.txt in Resources */,
 				51B26B681B8DA23F00CC59AD /* Yices Bridging.png in Resources */,
 				51B26B6A1B8DA23F00CC59AD /* Yices Linker Flags.jpg in Resources */,
 				51B26B641B8DA14F00CC59AD /* NyTerms-Yacc.jpg in Resources */,

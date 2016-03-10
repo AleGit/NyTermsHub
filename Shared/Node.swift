@@ -278,5 +278,82 @@ extension Node {
     }
 }
 
+func +(lhs:(Int,Int,Int),rhs:(Int,Int,Int)) -> (Int,Int,Int) {
+    return (lhs.0+rhs.0, lhs.1+rhs.1, lhs.2+rhs.2)
+}
+
+func /(lhs:(Int,Int,Int),rhs:Int) -> (Double,Double,Double) {
+    
+    let f = { (a:Int,b:Int) -> Double in
+        let c = 10.0 * Double(a)/Double(b) + 0.5
+        
+        return floor(c)/10.0
+    }
+    
+    return (f(lhs.0,rhs), f(lhs.1,rhs), f(lhs.2,rhs))
+}
+
+extension Node {
+    var height : Int {
+        guard let nodes = self.nodes
+            where nodes.count > 0 // superfluous but correct
+            else  {
+                // constants and variables have height = 0
+            return 0
+        }
+        
+        // the height of a (constant) function
+        // is one plus the maximum height of its arguments
+        return 1 + nodes.reduce(0) { max($0,$1.height) }
+    }
+    
+    var size : Int {
+        guard let nodes = self.nodes
+            where nodes.count > 0 // superfluous but correct
+            else  {
+                // constants and variables have size = 1
+            return 1
+        }
+        
+        // the size of a (constant) function
+        // is one plus the sum of sizes of its arguments.
+        return nodes.reduce(1) { $0+$1.size }
+        // 1 + nodes.reduce(0) { $0+$1.size }
+    }
+    
+    var width : Int {
+        guard let nodes = self.nodes
+            where nodes.count > 0 // necessary
+            else {
+                // constants and variables have width = 1
+            return 1
+        }
+        
+        // the width of a function 
+        // is the sum of the widths of its arguments
+        return nodes.reduce(0) { $0 + $1.width }
+    }
+    
+    var hsw : (height:Int,size:Int,width:Int) {
+        guard let nodes = self.nodes
+            where nodes.count > 0 // superfluous but correct
+            else  {
+                // constants and variables have height = 0
+                return (0,1,1)
+        }
+        
+        // the height of a (constant) function
+        // is one plus the maximum height of its arguments
+        return (1,1,0) + nodes.reduce((0,0,0)) {
+            (a,b) -> (Int,Int,Int) in
+            let (h0,s0,w0) = a
+            let (h1,s1,w1) = b.hsw
+            
+            return ( max(h0,h1), s0+s1, w0+w1 )
+            
+        }
+    }
+}
+
 
 

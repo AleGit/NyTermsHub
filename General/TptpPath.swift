@@ -99,7 +99,7 @@ extension TptpPath {
     
     private static func accessibleDirectory(path:TptpPath?, label : String = "no label") -> TptpPath? {
         guard let path = path else {
-            let message = "\(label) was set, but root path is missing or empty."
+            let message = "\(label) was set, but root path is missing."
             print(message)
             return nil
         }
@@ -146,7 +146,7 @@ extension TptpPath {
         guard let result = TptpPath.tptpRootPathArgument ?? TptpPath.tptpRootPathEnvironement else {
             let message = "Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly."
             print(message)
-            assert(tptpRootPathDefault.isAccessibleDirectory,"neither configured nor or default tptp root path are accessible.")
+            assert(tptpRootPathDefault.isAccessibleDirectory,"neither the configured nor the default tptp root path are accessible.")
             return tptpRootPathDefault
         }
         
@@ -159,8 +159,6 @@ extension TptpPath {
         assert(self.rangeOfString("/") == nil,"\(self)")    // assert file name only
         assert(!self.hasSuffix(".p"),"\(self)")    // assert without extension p
         assert(!self.hasSuffix(".ax"),"\(self)")    // assert without extension ax
-        //        let components = (self as NSString).pathComponents
-        //        assert(components.size < 3)
         
         let ABC = self[self.startIndex..<self.startIndex.advancedBy(3)]
         assert(ABC.uppercaseString == ABC,"\(ABC)")

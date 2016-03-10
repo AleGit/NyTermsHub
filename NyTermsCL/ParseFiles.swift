@@ -23,6 +23,42 @@ struct ParseFiles {
                 path)
         }
     }
+    
+    static func sizeDemo() {
+        print(self.self,"\(__FUNCTION__)\n")
+        
+        for name in [ "LCL129-1", // "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1",
+            "HWV134-1" ] {
+                
+                guard let path = name.p else {
+                    print("\(name) is not accessible in \(TptpPath.tptpRootPath).")
+                    continue
+                }
+                
+                print(path)
+                
+                let (parseResult, parseTime) = measure {
+                    parse(path:path)
+                }
+                
+                let (_,tptpFormulae,_) = parseResult
+                let count = tptpFormulae.count
+                
+                print("\(count) formulae parsed in \(parseTime.timeIntervalDescriptionMarkedWithUnits)")
+                
+                let (size,countTime) = measure {
+                    tptpFormulae.reduce((0,0,0)) {
+                        $0 + $1.root.hsw
+                    }
+                }
+                print("  total size:", size)
+                print("average size:", size/count)
+                print("  counted in:", countTime.timeIntervalDescriptionMarkedWithUnits, "\n")
+                
+                
+                
+        }
+    }
 }
 /*
 ========================= 2016-02-17 08:25:56 +0000 =========================
@@ -40,3 +76,5 @@ HWV134-1 2332428 formulae read in 2m 26s from /Users/Shared/TPTP/Problems/HWV/HW
 ========================= ========================= =========================
 ========================= 2016-02-17 08:28:45 +0000 =========================
 */
+
+

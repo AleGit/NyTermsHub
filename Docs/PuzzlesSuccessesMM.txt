@@ -1,0 +1,432 @@
+========================= 2016-03-09 14:18:53 +0000 =========================
+========================= ========================= =========================
+NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+TPTP_ROOT /Users/Shared/TPTP
+========================= ========================= =========================
+/Users/Shared/TPTP/Problems/PUZ/PUZ001-1.p
+round # 1 : status = smt_status(rawValue: 3) 110µs 984ns
+round # 1 : 10 new clauses in 27ms 542µs ( 29ms 201µs )
+round # 2 : status = smt_status(rawValue: 3) 79µs 989ns
+round # 2 : 6 new clauses in 21ms 809µs ( 68ms 80µs )
+round # 3 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 73ms 717µs
+expected: smt_status(rawValue: 4) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ001-3.p
+round # 1 : status = smt_status(rawValue: 3) 65µs 982ns
+round # 1 : 10 new clauses in 82ms 914µs ( 83ms 275µs )
+round # 2 : status = smt_status(rawValue: 3) 39µs 995ns
+round # 2 : 6 new clauses in 19ms 228µs ( 115ms 154µs )
+round # 3 : status = smt_status(rawValue: 3) 45µs 2ns
+round # 3 : 4 new clauses in 72ms 592µs ( 194ms 228µs )
+round # 4 : status = smt_status(rawValue: 3) 38µs 981ns
+round # 4 : 3 new clauses in 11ms 698µs ( 211ms 665µs )
+round # 5 : status = smt_status(rawValue: 3) 41µs 8ns
+round # 5 : 2 new clauses in 10ms 552µs ( 225ms 428µs )
+round # 6 : status = smt_status(rawValue: 3) 42µs 975ns
+round # 6 : 0 new clauses in 1ms 519µs ( 229ms 565µs )
+actual: smt_status(rawValue: 3) runtime: 229ms 767µs
+expected: smt_status(rawValue: 3) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ002-1.p
+round # 1 : status = smt_status(rawValue: 3) 33µs 21ns
+round # 1 : 2 new clauses in 6ms 15µs ( 6ms 318µs )
+round # 2 : status = smt_status(rawValue: 3) 29µs 981ns
+round # 2 : 2 new clauses in 2ms 256µs ( 10ms 169µs )
+round # 3 : status = smt_status(rawValue: 3) 38µs 981ns
+round # 3 : 3 new clauses in 4ms 63µs ( 15ms 401µs )
+round # 4 : status = smt_status(rawValue: 3) 48µs 995ns
+round # 4 : 4 new clauses in 8ms 448µs ( 25ms 498µs )
+round # 5 : status = smt_status(rawValue: 3) 32µs 961ns
+round # 5 : 5 new clauses in 7ms 703µs ( 38ms 784µs )
+round # 6 : status = smt_status(rawValue: 3) 28µs 14ns
+round # 6 : 6 new clauses in 9ms 188µs ( 50ms 942µs )
+round # 7 : status = smt_status(rawValue: 3) 26µs 47ns
+round # 7 : 7 new clauses in 11ms 38µs ( 65ms 131µs )
+round # 8 : status = smt_status(rawValue: 3) 30µs 994ns
+round # 8 : 8 new clauses in 46ms 826µs ( 115ms 614µs )
+round # 9 : status = smt_status(rawValue: 3) 36µs 1ns
+round # 9 : 9 new clauses in 22ms 570µs ( 165ms 143µs )
+round # 10 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 187ms 93µs
+expected: smt_status(rawValue: 4) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ003-1.p
+round # 1 : status = smt_status(rawValue: 3) 45µs 2ns
+round # 1 : 4 new clauses in 17ms 241µs ( 18ms 940µs )
+round # 2 : status = smt_status(rawValue: 3) 48µs 41ns
+round # 2 : 16 new clauses in 45ms 612µs ( 69ms 338µs )
+round # 3 : status = smt_status(rawValue: 3) 47µs 28ns
+round # 3 : 2 new clauses in 12ms 618µs ( 101ms 164µs )
+round # 4 : status = smt_status(rawValue: 3) 151µs 992ns
+round # 4 : 5 new clauses in 19ms 786µs ( 137ms 166µs )
+round # 5 : status = smt_status(rawValue: 3) 48µs 995ns
+round # 5 : 12 new clauses in 65ms 907µs ( 236ms 43µs )
+round # 6 : status = smt_status(rawValue: 3) 50µs 8ns
+round # 6 : 20 new clauses in 121ms 410µs ( 395ms 989µs )
+round # 7 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 413ms 626µs
+expected: smt_status(rawValue: 4) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ004-1.p
+round # 1 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 254µs 989ns
+expected: smt_status(rawValue: 4) timeout: 99ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ008-2.p
+round # 1 : status = smt_status(rawValue: 4) 953.67431640625ns
+actual: smt_status(rawValue: 4) runtime: 328µs 4ns
+expected: smt_status(rawValue: 4) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ009-1.p
+round # 1 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 289µs 977ns
+expected: smt_status(rawValue: 4) timeout: 99ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ010-1.p
+round # 1 : status = smt_status(rawValue: 3) 258µs 982ns
+round # 1 : 333 new clauses in 2s 144ms ( 2s 145ms )
+round # 2 : status = smt_status(rawValue: 3) 330µs 31ns
+round # 2 : 46 new clauses in 609ms 625µs ( 3s 819ms )
+round # 3 : status = smt_status(rawValue: 3) 308µs 990ns
+round # 3 : 32 new clauses in 308ms 497µs ( 4s 284ms )
+round # 4 : status = smt_status(rawValue: 3) 292µs 957ns
+round # 4 : 20 new clauses in 551ms 574µs ( 5s 12ms )
+round # 5 : status = smt_status(rawValue: 3) 301µs 3ns
+round # 5 : 30 new clauses in 322ms 76µs ( 5s 569ms )
+round # 6 : status = smt_status(rawValue: 3) 462µs 949ns
+round # 6 : 23 new clauses in 473ms 597µs ( 6s 147ms )
+round # 7 : status = smt_status(rawValue: 3) 311µs 971ns
+round # 7 : 11 new clauses in 296ms 900µs ( 6s 639ms )
+round # 8 : status = smt_status(rawValue: 3) 307µs 977ns
+round # 8 : 7 new clauses in 194ms 925µs ( 6s 887ms )
+round # 9 : status = smt_status(rawValue: 3) 315µs 11ns
+round # 9 : 11 new clauses in 161ms 513µs ( 7s 69ms )
+round # 10 : status = smt_status(rawValue: 3) 366µs 32ns
+round # 10 : 16 new clauses in 239ms 270µs ( 7s 407ms )
+round # 11 : status = smt_status(rawValue: 3) 402µs 33ns
+round # 11 : 10 new clauses in 193ms 794µs ( 7s 647ms )
+round # 12 : status = smt_status(rawValue: 3) 470µs 996ns
+round # 12 : 11 new clauses in 284ms 748µs ( 7s 962ms )
+round # 13 : status = smt_status(rawValue: 3) 325µs 978ns
+round # 13 : 6 new clauses in 124ms 817µs ( 8s 126ms )
+round # 14 : status = smt_status(rawValue: 3) 321µs 984ns
+round # 14 : 3 new clauses in 69ms 946µs ( 8s 213ms )
+round # 15 : status = smt_status(rawValue: 4) 118µs 17ns
+actual: smt_status(rawValue: 4) runtime: 8s 222ms
+expected: smt_status(rawValue: 4) timeout: 9s 999ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ011-1.p
+round # 1 : status = smt_status(rawValue: 3) 97µs 990ns
+round # 1 : 2 new clauses in 14ms 115µs ( 15ms 325µs )
+round # 2 : status = smt_status(rawValue: 3) 84µs 996ns
+round # 2 : 12 new clauses in 57ms 733µs ( 77ms 249µs )
+round # 3 : status = smt_status(rawValue: 3) 108µs 4ns
+round # 3 : 36 new clauses in 208ms 29µs ( 306ms 349µs )
+round # 4 : status = smt_status(rawValue: 4) 1µs 967ns
+actual: smt_status(rawValue: 4) runtime: 383ms 714µs
+expected: smt_status(rawValue: 4) timeout: 11s 100ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ012-1.p
+round # 1 : status = smt_status(rawValue: 3) 53µs 48ns
+round # 1 : 9 new clauses in 47ms 386µs ( 47ms 753µs )
+round # 2 : status = smt_status(rawValue: 3) 52µs 989ns
+round # 2 : 22 new clauses in 98ms 317µs ( 161ms 40µs )
+round # 3 : status = smt_status(rawValue: 3) 51µs 975ns
+round # 3 : 47 new clauses in 235ms 972µs ( 419ms 652µs )
+round # 4 : status = smt_status(rawValue: 4) 953.67431640625ns
+actual: smt_status(rawValue: 4) runtime: 461ms 513µs
+expected: smt_status(rawValue: 4) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ013-1.p
+round # 1 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 482µs 23ns
+expected: smt_status(rawValue: 4) timeout: 99ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ014-1.p
+round # 1 : status = smt_status(rawValue: 4) 30µs 994ns
+actual: smt_status(rawValue: 4) runtime: 325µs 24ns
+expected: smt_status(rawValue: 4) timeout: 99ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ015-2.006.p
+round # 1 : status = smt_status(rawValue: 4) 167µs 12ns
+actual: smt_status(rawValue: 4) runtime: 506µs 997ns
+expected: smt_status(rawValue: 4) timeout: 99ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ015-3.p
+round # 1 : status = smt_status(rawValue: 3) 301µs 3ns
+round # 1 : 0 new clauses in 177ms 688µs ( 180ms 796µs )
+actual: smt_status(rawValue: 3) runtime: 181ms 101µs
+expected: smt_status(rawValue: 3) timeout: 1s 0ms
+rating: 0.33 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ016-2.004.p
+round # 1 : status = smt_status(rawValue: 3) 39µs 995ns
+round # 1 : 0 new clauses in 24ms 261µs ( 24ms 667µs )
+actual: smt_status(rawValue: 3) runtime: 24ms 910µs
+expected: smt_status(rawValue: 3) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ016-2.005.p
+round # 1 : status = smt_status(rawValue: 4) 59µs 962ns
+actual: smt_status(rawValue: 4) runtime: 460µs 29ns
+expected: smt_status(rawValue: 4) timeout: 99ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ018-1.p
+round # 1 : status = smt_status(rawValue: 3) 81µs 3ns
+round # 1 : 14 new clauses in 127ms 58µs ( 130ms 242µs )
+round # 2 : status = smt_status(rawValue: 3) 71µs 49ns
+round # 2 : 74 new clauses in 376ms 294µs ( 538ms 696µs )
+round # 3 : status = smt_status(rawValue: 3) 82µs 970ns
+round # 3 : 35 new clauses in 213ms 525µs ( 889ms 297µs )
+round # 4 : status = smt_status(rawValue: 3) 86µs 963ns
+round # 4 : 146 new clauses in 1s 150ms ( 2s 133ms )
+round # 5 : status = smt_status(rawValue: 3) 86µs 10ns
+round # 5 : 88 new clauses in 1s 201ms ( 3s 649ms )
+round # 6 : status = smt_status(rawValue: 3) 81µs 3ns
+round # 6 : 76 new clauses in 450ms 178µs ( 4s 317ms )
+round # 7 : status = smt_status(rawValue: 3) 78µs 22ns
+round # 7 : 5 new clauses in 57ms 269µs ( 4s 422ms )
+round # 8 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 4s 426ms
+expected: smt_status(rawValue: 4) timeout: 13s 600ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ018-2.p
+round # 1 : status = smt_status(rawValue: 3) 406µs 27ns
+round # 1 : 14 new clauses in 88ms 606µs ( 89ms 583µs )
+round # 2 : status = smt_status(rawValue: 3) 114µs 24ns
+round # 2 : 74 new clauses in 302ms 769µs ( 417ms 488µs )
+round # 3 : status = smt_status(rawValue: 3) 78µs 22ns
+round # 3 : 54 new clauses in 256ms 626µs ( 783ms 531µs )
+round # 4 : status = smt_status(rawValue: 3) 88µs 990ns
+round # 4 : 172 new clauses in 1s 375ms ( 2s 233ms )
+round # 5 : status = smt_status(rawValue: 3) 79µs 989ns
+round # 5 : 281 new clauses in 2s 54ms ( 4s 564ms )
+round # 6 : status = smt_status(rawValue: 3) 96µs 977ns
+round # 6 : 32 new clauses in 490ms 593µs ( 5s 491ms )
+round # 7 : status = smt_status(rawValue: 3) 117µs 4ns
+round # 7 : 0 new clauses in 26ms 513µs ( 5s 543ms )
+actual: smt_status(rawValue: 3) runtime: 5s 544ms
+expected: smt_status(rawValue: 3) timeout: 15s 200ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ022-1.p
+round # 1 : status = smt_status(rawValue: 3) 132µs 978ns
+round # 1 : 27 new clauses in 121ms 269µs ( 121ms 752µs )
+round # 2 : status = smt_status(rawValue: 3) 72µs 2ns
+round # 2 : 89 new clauses in 270ms 308µs ( 414ms 444µs )
+round # 3 : status = smt_status(rawValue: 3) 82µs 16ns
+round # 3 : 210 new clauses in 1s 90ms ( 1s 614ms )
+actual: smt_status(rawValue: 4) runtime: 1s 943ms
+expected: smt_status(rawValue: 4) timeout: 1s 900ms
+rating: 0.0 FAILED
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ024-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ024-1.p tptpPathTo(file: Axioms/PUZ002-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ002-0.ax
+round # 1 : status = smt_status(rawValue: 3) 74µs 983ns
+round # 1 : 17 new clauses in 87ms 744µs ( 88ms 41µs )
+round # 2 : status = smt_status(rawValue: 3) 163µs 972ns
+round # 2 : 30 new clauses in 110ms 850µs ( 227ms 829µs )
+round # 3 : status = smt_status(rawValue: 3) 158µs 966ns
+round # 3 : 31 new clauses in 126ms 103µs ( 386ms 142µs )
+round # 4 : status = smt_status(rawValue: 4) 953.67431640625ns
+actual: smt_status(rawValue: 4) runtime: 412ms 604µs
+expected: smt_status(rawValue: 4) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ025-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ025-1.p tptpPathTo(file: Axioms/PUZ002-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ002-0.ax
+round # 1 : status = smt_status(rawValue: 3) 101µs 984ns
+round # 1 : 12 new clauses in 57ms 581µs ( 58ms 540µs )
+round # 2 : status = smt_status(rawValue: 3) 176µs 966ns
+round # 2 : 18 new clauses in 64ms 537µs ( 143ms 764µs )
+round # 3 : status = smt_status(rawValue: 3) 178µs 39ns
+round # 3 : 55 new clauses in 205ms 320µs ( 368ms 838µs )
+round # 4 : status = smt_status(rawValue: 3) 238µs 955ns
+round # 4 : 212 new clauses in 921ms 284µs ( 1s 338ms )
+round # 5 : status = smt_status(rawValue: 4) 1µs 967ns
+actual: smt_status(rawValue: 4) runtime: 1s 539ms
+expected: smt_status(rawValue: 4) timeout: 3s 999ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ028-1.p
+round # 1 : status = smt_status(rawValue: 3) 47µs 982ns
+round # 1 : 11 new clauses in 34ms 678µs ( 35ms 58µs )
+round # 2 : status = smt_status(rawValue: 3) 92µs 30ns
+round # 2 : 40 new clauses in 146ms 99µs ( 193ms 587µs )
+round # 3 : status = smt_status(rawValue: 3) 92µs 30ns
+round # 3 : 29 new clauses in 113ms 660µs ( 359ms 625µs )
+round # 4 : status = smt_status(rawValue: 3) 89µs 49ns
+round # 4 : 65 new clauses in 292ms 614µs ( 684ms 494µs )
+round # 5 : status = smt_status(rawValue: 3) 196µs 993ns
+round # 5 : 98 new clauses in 496ms 361µs ( 1s 251ms )
+round # 6 : status = smt_status(rawValue: 3) 111µs 43ns
+round # 6 : 67 new clauses in 473ms 67µs ( 1s 827ms )
+round # 7 : status = smt_status(rawValue: 3) 211µs 0ns
+round # 7 : 28 new clauses in 312ms 183µs ( 2s 214ms )
+round # 8 : status = smt_status(rawValue: 3) 110µs 984ns
+round # 8 : 4 new clauses in 74ms 910µs ( 2s 314ms )
+round # 9 : status = smt_status(rawValue: 3) 114µs 977ns
+round # 9 : 0 new clauses in 4ms 848µs ( 2s 323ms )
+actual: smt_status(rawValue: 3) runtime: 2s 323ms
+expected: smt_status(rawValue: 3) timeout: 12s 200ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ028-2.p
+round # 1 : status = smt_status(rawValue: 3) 46µs 15ns
+round # 1 : 6 new clauses in 32ms 985µs ( 33ms 440µs )
+round # 2 : status = smt_status(rawValue: 3) 62µs 48ns
+round # 2 : 36 new clauses in 130ms 81µs ( 171ms 656µs )
+round # 3 : status = smt_status(rawValue: 3) 74µs 983ns
+round # 3 : 60 new clauses in 196ms 632µs ( 415ms 191µs )
+round # 4 : status = smt_status(rawValue: 3) 96µs 23ns
+round # 4 : 330 new clauses in 1s 768ms ( 2s 247ms )
+round # 5 : status = smt_status(rawValue: 3) 105µs 23ns
+round # 5 : 100 new clauses in 763ms 865µs ( 3s 333ms )
+round # 6 : status = smt_status(rawValue: 3) 104µs 10ns
+round # 6 : 32 new clauses in 225ms 594µs ( 3s 668ms )
+round # 7 : status = smt_status(rawValue: 3) 104µs 10ns
+round # 7 : 0 new clauses in 18ms 431µs ( 3s 721ms )
+actual: smt_status(rawValue: 3) runtime: 3s 722ms
+expected: smt_status(rawValue: 3) timeout: 13s 700ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ028-3.p
+round # 1 : status = smt_status(rawValue: 3) 90µs 957ns
+round # 1 : 0 new clauses in 258ms 836µs ( 259ms 149µs )
+actual: smt_status(rawValue: 3) runtime: 259ms 390µs
+expected: smt_status(rawValue: 3) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ028-4.p
+round # 1 : status = smt_status(rawValue: 3) 65µs 29ns
+round # 1 : 0 new clauses in 141ms 187µs ( 141ms 473µs )
+actual: smt_status(rawValue: 3) runtime: 141ms 662µs
+expected: smt_status(rawValue: 3) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ028-6.p
+round # 1 : status = smt_status(rawValue: 3) 47µs 28ns
+round # 1 : 6 new clauses in 30ms 644µs ( 30ms 944µs )
+round # 2 : status = smt_status(rawValue: 3) 61µs 35ns
+round # 2 : 36 new clauses in 151ms 226µs ( 189ms 635µs )
+round # 3 : status = smt_status(rawValue: 3) 84µs 43ns
+round # 3 : 90 new clauses in 483ms 798µs ( 801ms 908µs )
+round # 4 : status = smt_status(rawValue: 3) 94µs 950ns
+round # 4 : 585 new clauses in 3s 465ms ( 4s 416ms )
+round # 5 : status = smt_status(rawValue: 3) 111µs 43ns
+round # 5 : 580 new clauses in 6s 559ms ( 11s 782ms )
+round # 6 : status = smt_status(rawValue: 3) 104µs 964ns
+round # 6 : 1085 new clauses in 10s 396ms ( 22s 728ms )
+round # 7 : status = smt_status(rawValue: 3) 153µs 5ns
+round # 7 : 451 new clauses in 5s 781ms ( 29s 629ms )
+round # 8 : status = smt_status(rawValue: 4) 358µs 999ns
+actual: smt_status(rawValue: 4) runtime: 30s 120ms
+expected: smt_status(rawValue: 4) timeout: 39s 990ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ029-1.p
+round # 1 : status = smt_status(rawValue: 3) 39µs 41ns
+round # 1 : 5 new clauses in 11ms 613µs ( 11ms 906µs )
+round # 2 : status = smt_status(rawValue: 3) 39µs 995ns
+round # 2 : 9 new clauses in 14ms 376µs ( 32ms 101µs )
+round # 3 : status = smt_status(rawValue: 3) 65µs 982ns
+round # 3 : 8 new clauses in 20ms 409µs ( 58ms 957µs )
+round # 4 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 64ms 719µs
+expected: smt_status(rawValue: 4) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ030-2.p
+round # 1 : status = smt_status(rawValue: 4) 43µs 988ns
+actual: smt_status(rawValue: 4) runtime: 358µs 999ns
+expected: smt_status(rawValue: 4) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ033-1.p
+round # 1 : status = smt_status(rawValue: 4) 1µs 967ns
+actual: smt_status(rawValue: 4) runtime: 748µs 38ns
+expected: smt_status(rawValue: 4) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ037-1.p
+round # 1 : status = smt_status(rawValue: 3) 42µs 21ns
+round # 1 : 18 new clauses in 1s 508ms ( 1s 509ms )
+round # 2 : status = smt_status(rawValue: 4) 1µs 13ns
+actual: smt_status(rawValue: 4) runtime: 1s 655ms
+expected: smt_status(rawValue: 4) timeout: 1s 700ms
+rating: 0.17 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ043-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ043-1.p tptpPathTo(file: Axioms/PUZ001-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ001-0.ax
+round # 1 : status = smt_status(rawValue: 3) 37µs 14ns
+round # 1 : 0 new clauses in 4ms 549µs ( 4ms 832µs )
+actual: smt_status(rawValue: 3) runtime: 5ms 33µs
+expected: smt_status(rawValue: 3) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ044-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ044-1.p tptpPathTo(file: Axioms/PUZ002-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ002-0.ax
+round # 1 : status = smt_status(rawValue: 3) 34µs 34ns
+round # 1 : 0 new clauses in 2ms 623µs ( 2ms 912µs )
+actual: smt_status(rawValue: 3) runtime: 3ms 104µs
+expected: smt_status(rawValue: 3) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ045-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ045-1.p tptpPathTo(file: Axioms/PUZ003-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ003-0.ax
+round # 1 : status = smt_status(rawValue: 3) 66µs 996ns
+round # 1 : 0 new clauses in 3ms 325µs ( 3ms 663µs )
+actual: smt_status(rawValue: 3) runtime: 3ms 859µs
+expected: smt_status(rawValue: 3) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ046-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ046-1.p tptpPathTo(file: Axioms/PUZ004-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ004-0.ax
+round # 1 : status = smt_status(rawValue: 3) 386µs 953ns
+round # 1 : 0 new clauses in 131ms 598µs ( 133ms 9µs )
+actual: smt_status(rawValue: 3) runtime: 133ms 258µs
+expected: smt_status(rawValue: 3) timeout: 1s 0ms
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ048-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ048-1.p tptpPathTo(file: Axioms/PUZ004-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ004-0.ax
+round # 1 : status = smt_status(rawValue: 3) 892µs 43ns
+round # 1 : 0 new clauses in 192ms 60µs ( 193ms 286µs )
+actual: smt_status(rawValue: 3) runtime: 193ms 605µs
+expected: smt_status(rawValue: 3) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ054-1.p
+round # 1 : status = smt_status(rawValue: 3) 79µs 36ns
+round # 1 : 0 new clauses in 5ms 299µs ( 5ms 671µs )
+actual: smt_status(rawValue: 3) runtime: 5ms 890µs
+expected: smt_status(rawValue: 3) timeout: 99ms 0µs
+rating: 0.0 SUCCESS
+
+/Users/Shared/TPTP/Problems/PUZ/PUZ059-1.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ059-1.p tptpPathTo(file: Axioms/PUZ004-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ004-0.ax
+round # 1 : status = smt_status(rawValue: 3) 927µs 985ns
+round # 1 : 0 new clauses in 194ms 89µs ( 195ms 254µs )
+actual: smt_status(rawValue: 3) runtime: 195ms 531µs
+expected: smt_status(rawValue: 3) timeout: 999ms 0µs
+rating: 0.0 SUCCESS
+
+========================= ========================= =========================
+========================= 2016-03-09 14:20:02 +0000 =========================
+Program ended with exit code: 0

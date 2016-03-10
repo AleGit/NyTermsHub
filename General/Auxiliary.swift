@@ -181,33 +181,38 @@ extension CFTimeInterval {
 }
 
 extension UInt64 {
-    private static let prefixedByteUnits = ["B", "KiB", "MiB" // , "GiB", "TiB"
+    private static let prefixedByteUnits : [(String,String,UInt64)] = [
+        ("B","Byte",1),
+        ("KiB","Kibibyte",1024),
+        ("MiB","Mebibyte",1024*1024),
+        ("GiB","Gibibyte",1024*1024*1024),
+        ("TiB","Tebibyte",1024*1024*1024*1024),
+        ("PiB","Pebibyte",1024*1024*1024*1024*1024),
+        ("EiB","Exbibyte",1024*1024*1024*1024*1024*1024),
+//        ("ZiB","Zebibyte",1024*1024*1024*1024*1024*1024*1024),
+//        ("YiB","Yobibyte",1024*1024*1024*1024*1024*1024*1024*1024)
     ]
     
     var prettyByteDescription : String {
         var dividend = self
-        let divisor = 1024 as UInt64
         
-        guard dividend != 0 else {
+        guard dividend > 0 else {
             return "0 B"
         }
         
-//        guard dividend > 0 else {
-//            return "-" + (-self).prettyByteDescription
-//        }
-        
+        let divisor = 1024 as UInt64
+        var remainder = 0 as UInt64
         var index = 0
         
-        while dividend/divisor > 0 && index < (UInt64.prefixedByteUnits.count-1) {
-            let remainder = dividend % divisor
-            let quotient = dividend % divisor
-            
-            
+        while dividend >= divisor && index < (UInt64.prefixedByteUnits.count-1) {
             index += 1
-            dividend = quotient + remainder > (divisor/2) ? 1 : 0
+            remainder = dividend % divisor
+            dividend /= divisor
         }
         
-        return "\(dividend) \(UInt64.prefixedByteUnits[index])"
+        if remainder >= (divisor/2) { dividend += 1 }
+        
+        return "\(dividend) \(UInt64.prefixedByteUnits[index].0)"
     }
 }
 

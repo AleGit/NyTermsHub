@@ -8,7 +8,16 @@ let line = "========================="
 let info = NSProcessInfo.processInfo()
 let host = NSHost.currentHost()
 
-let names = host.names.filter { !$0.hasSuffix("uibk.ac.at") && $0 != "localhost" }
+print(host)
+
+let names = host.names.filter {
+    !(
+        $0.hasSuffix("uibk.ac.at")
+            || $0 == "localhost"
+            || $0.hasSuffix ("local")
+            || $0.hasSuffix("Home")
+    )
+}
 
 // print header
 print(line,NSDate(),line)
@@ -32,7 +41,7 @@ defer {
 // BuildTries.demo134()
 // ParseFiles.demo()
 
-let files = Infos.files.filter { $0.1.0 < 1000 }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
+// let files = Infos.files.filter { $0.1.0 < 1000 }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
 
 //let files = Infos.files.filter { $0.1.0 == 17783 }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
 //
@@ -40,8 +49,7 @@ let files = Infos.files.filter { $0.1.0 < 1000 }.sort { $0.1.0 < $1.1.1 }.map { 
 //
 // Complementaries.demo(files, searches: [fastestSearch])
 
-Proofing.demo()
-
+// Proofing.demo()
 
 
 

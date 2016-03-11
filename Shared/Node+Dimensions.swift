@@ -68,7 +68,7 @@ extension Node {
         return nodes.reduce(0) { $0 + $1.width }
     }
     
-    var dimensions : (height:Int,size:Int,width:Int) {
+    var dimensions : NodeDimensions {
         guard let nodes = self.nodes
             where nodes.count > 0 // superfluous but correct
             else  {
@@ -91,10 +91,13 @@ extension Node {
 
 // MARK: -
 
+typealias NodeDimensions = (height:Int, size:Int, width:Int)
+typealias NodeIndications = (type:SymbolType,arities:Set<Int>,occurences:Int)
+
 extension Node {
     func dimensions(
         belowPredicate:Bool,
-        inout symbols:[Symbol:(type:SymbolType,arities:Set<Int>,occurences:Int)]
+        inout symbols:[Symbol:NodeIndications]
         
         ) -> (height:Int, size:Int, width:Int) {
             let key = self.symbol
@@ -103,7 +106,7 @@ extension Node {
                 assert(key.quadruple == nil) // variables must not be predefined
                 assert(belowPredicate)    // variables must be below predicates
                 
-                var value = symbols[key] ?? (SymbolType.Variable,Set<Int>(),-1)
+                var value = symbols[key] ?? (SymbolType.Variable,Set<Int>(),0)
                 
                 assert(value.type == .Variable)
                 assert(value.arities.isEmpty)
@@ -118,7 +121,7 @@ extension Node {
             // symbols above predicate must be predefined
             let type = key.type ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
 
-            var value = symbols[key] ?? (type,Set(arrayLiteral: nodes.count),-1)
+            var value = symbols[key] ?? (type,Set(arrayLiteral: nodes.count),0)
             
             assert(value.type == type)
             // predefined arities (range) or derived arity (set of one) must match
@@ -129,17 +132,23 @@ extension Node {
             
             symbols[key] = value
             
-            return (height:1,size:1,widht:0) + nodes.reduce((height:0,size:0,width:0)) {
+            let height = nodes.count == 0 ? 0 : 1       // the height of a leaf is 0
+            let size = 1                                // the size of a leaf is 1
+            let width = 1 - height                      // the width of a leaf is 1
+            
+            // the height of an inner node is 1 + the maximum of heights of its children.
+            // the size of an inner node is 1 + the sum of sizes of its children.
+            // the width of an inner node is 0 + the sum of widths of its children.
+            
+            return (height,size,width) + nodes.reduce((height:0,size:0,width:0)) {
                 (a,b) -> (height:Int,size:Int,width:Int) in
                 let (h0,s0,w0) = a
-                let (h1,s1,w1) = b.dimensions(type == SymbolType.Predicate, symbols: &symbols)
+                let (h1,s1,w1) = b.dimensions(
+                    belowPredicate || (type == SymbolType.Predicate),
+                    symbols: &symbols)
                 
                 return ( max(h0,h1), s0+s1, w0+w1 )
             }
-            
-            
-            assert(false,"function is not completed yet.")
-            return (-1,-1,-1)
     }
     
 }

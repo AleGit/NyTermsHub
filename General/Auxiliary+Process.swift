@@ -9,6 +9,7 @@
 import Foundation
 
 extension Process {
+    
     private static func argumentValueOf(key:String) -> String? {
         guard let valueIndex = Process.arguments.indexOf(key)?.successor()
             where valueIndex < Process.arguments.count
@@ -18,7 +19,12 @@ extension Process {
     }
     
     private static func environmentValueOf(key:String) -> String? {
-        return NSProcessInfo.processInfo().environment[key]
+        #if os(OSX)
+            return NSProcessInfo.processInfo().environment[key]
+        #else
+            assert(false)
+            return nil
+        #endif
     }
     
     static func valueOf(key:String) -> String? {
@@ -32,5 +38,36 @@ extension Process {
             assert(false,"invalid key format `\(key) for arguments or environment.")
             return nil
         }
-    }    
+    }
+    
+    #if os(OSX)
+    private static var infoOSX : String {
+        
+        let info = NSProcessInfo.processInfo()
+        let host = NSHost.currentHost()
+        
+        let names = host.names.filter {
+            !( $0.hasSuffix("uibk.ac.at") || $0 == "localhost" )
+        }
+        
+        return "\(info.processName) @ " +
+            "\(names.first! ?? info.hostName): " +
+            "\(info.processorCount) cores, " +
+        "\(info.physicalMemory.prettyByteDescription)."
+    }
+    #endif
+    
+    static var info : String {
+        #if os(OSX)
+            return Process.infoOSX
+        #else
+            return "process info n/a"
+        #endif
+    }
+    
+    
+    
+    
+    
+    
 }

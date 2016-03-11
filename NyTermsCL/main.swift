@@ -5,30 +5,14 @@ import Foundation
 
 let line = "========================="
 
-let info = NSProcessInfo.processInfo()
-// let host = NSHost.currentHost()
-
-// print(host)
-
-//let names = host.names.filter {
-//    !(
-//        $0.hasSuffix("uibk.ac.at")
-//            || $0 == "localhost"
-//    )
-//}
-
 // print header
 print(line,NSDate(),line)
-print("\(info.hostName), \(info.processName) \(info.processorCount) cores, \(info.physicalMemory.prettyByteDescription)")
+print(Process.info)
+print(Yices.info)
+print("tptp root path:",TptpPath.tptpRootPath)
 print(line,line,line)
 
-
-// print info
-print("NyTerms with \(Yices.info)")
-print("TPTP_ROOT",TptpPath.tptpRootPath)
-print(line,line,line)
-
-// print footer after demos
+// print footer (at end of program)
 defer {
     print(line,line,line)
     print(line,NSDate(),line)

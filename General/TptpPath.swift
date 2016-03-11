@@ -99,13 +99,13 @@ extension TptpPath {
     
     private static func accessibleDirectory(path:TptpPath?, label : String = "no label") -> TptpPath? {
         guard let path = path else {
-            let message = "\(label) was set, but root path is missing."
+            let message = "Key '\(label)' is not set or its value was missing."
             print(message)
             return nil
         }
         
         guard path.isAccessibleDirectory else {
-            let message = "Directory '\(path)' is not an accessible. (\(label))"
+            let message = "Key '\(label)' was set but directory '\(path)' is not an accessible."
             print(message)
             return nil
         }
@@ -134,7 +134,7 @@ extension TptpPath {
         guard let result = TptpPath.tptpRootPathArgument ?? TptpPath.tptpRootPathEnvironement else {
             let message = "Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly."
             print(message)
-            assert(tptpRootPathDefault.isAccessibleDirectory,"neither the configured nor the default tptp root path are accessible.")
+            assert(tptpRootPathDefault.isAccessibleDirectory,"neither a configured nor the default tptp root path are accessible.")
             return tptpRootPathDefault
         }
         

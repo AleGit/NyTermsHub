@@ -9,45 +9,20 @@
 import XCTest
 @testable import NyTerms
 
-typealias NodeDimensions = (height:Int, size:Int, width:Int)
-typealias NodeIndications = (type:SymbolType,arities:Set<Int>,occurences:Int)
-
 class DimensionTests: XCTestCase {
     
-    func testX() {
-        var symbols = [Symbol:NodeIndications]()
-        let dims = x.dimensions(true, symbols: &symbols)
-        
-        XCTAssertEqual(dims.height,0)
-        XCTAssertEqual(dims.size,1)
-        XCTAssertEqual(dims.width,1)
-        
-        XCTAssertEqual(symbols.count,1)
-        
-        if let inds = symbols[x.symbol] {
-            XCTAssertEqual(inds.type, SymbolType.Variable)
-            XCTAssertTrue(inds.arities.isEmpty)
-            XCTAssertEqual(inds.occurences, 1)
-            
-        }
-        else {
-            XCTFail()
-        }
-        
-    }
     
     func testA() {
-        var symbols = [Symbol:NodeIndications]()
-        let dims = a.dimensions(true, symbols: &symbols)
+        let (height,size,width,symbols) = a.dimensions()
         
-        XCTAssertEqual(dims.height,0)
-        XCTAssertEqual(dims.size,1)
-        XCTAssertEqual(dims.width,1)
+        XCTAssertEqual(height,0)
+        XCTAssertEqual(size,1)
+        XCTAssertEqual(width,1)
         
         XCTAssertEqual(symbols.count,1)
         
         if let inds = symbols[a.symbol] {
-            XCTAssertEqual(inds.type, SymbolType.Function)
+            XCTAssertEqual(inds.type, SymbolType.Predicate)
             XCTAssertEqual(inds.arities, Set(arrayLiteral: 0))
             XCTAssertEqual(inds.occurences, 1)
             
@@ -57,20 +32,17 @@ class DimensionTests: XCTestCase {
         }
     }
     
-    
-    
     func testFax() {
-        var symbols = [Symbol:NodeIndications]()
-        let dims = fax.dimensions(true, symbols: &symbols)
+        let (height,size,width,symbols) = fax.dimensions()
         
-        XCTAssertEqual(dims.height,1)
-        XCTAssertEqual(dims.size,3)
-        XCTAssertEqual(dims.width,2)
+        XCTAssertEqual(height,1)
+        XCTAssertEqual(size,3)
+        XCTAssertEqual(width,2)
         
         XCTAssertEqual(symbols.count,3)
         
         if let inds = symbols["f"] {
-            XCTAssertEqual(inds.type, SymbolType.Function)
+            XCTAssertEqual(inds.type, SymbolType.Predicate)
             XCTAssertEqual(inds.arities, Set(arrayLiteral: 2))
             XCTAssertEqual(inds.occurences, 1)
             
@@ -100,5 +72,67 @@ class DimensionTests: XCTestCase {
         }
     }
     
+    func testGfaa() {
+        let (height,size,width,symbols) = gfaa.dimensions()
+        
+        XCTAssertEqual(height,2)
+        XCTAssertEqual(size,4)
+        XCTAssertEqual(width,2)
+        
+        XCTAssertEqual(symbols.count,3)
+        
+        if let inds = symbols["g"] {
+            XCTAssertEqual(inds.type, SymbolType.Predicate)
+            XCTAssertEqual(inds.arities, Set(arrayLiteral: 1))
+            XCTAssertEqual(inds.occurences, 1)
+            
+        }
+        else {
+            XCTFail(fax.description)
+        }
+        
+        if let inds = symbols["f"] {
+            XCTAssertEqual(inds.type, SymbolType.Function)
+            XCTAssertEqual(inds.arities, Set(arrayLiteral: 2))
+            XCTAssertEqual(inds.occurences, 1)
+            
+        }
+        else {
+            XCTFail(fax.description)
+        }
+        
+        if let inds = symbols["a"] {
+            XCTAssertEqual(inds.type, SymbolType.Function)
+            XCTAssertEqual(inds.arities, Set(arrayLiteral: 0))
+            XCTAssertEqual(inds.occurences, 2)
+            
+        }
+        else {
+            XCTFail(fax.description)
+        }
+    }
     
+    func testAorB() {
+        let clause = "a|b" as TestNode
+        let (height,size,width,symbols) = clause.dimensions()
+        
+        XCTAssertEqual(height,1)
+        XCTAssertEqual(size,3)
+        XCTAssertEqual(width,2)
+        XCTAssertEqual(symbols.count,3)
+        
+        XCTAssertEqual(symbols["a"]?.arities, Set(arrayLiteral: 0))
+        XCTAssertEqual(symbols["b"]?.arities, Set(arrayLiteral: 0))
+        XCTAssertEqual(symbols["|"]?.arities, Set(arrayLiteral: 2))
+        
+        XCTAssertEqual(symbols["a"]?.type, SymbolType.Predicate)
+        XCTAssertEqual(symbols["b"]?.type, SymbolType.Predicate)
+        XCTAssertEqual(symbols["|"]?.type, SymbolType.Disjunction)
+        
+        XCTAssertEqual(symbols["a"]?.occurences, 1)
+        XCTAssertEqual(symbols["b"]?.occurences, 1)
+        XCTAssertEqual(symbols["|"]?.occurences, 1)
+        
+        
+    }
 }

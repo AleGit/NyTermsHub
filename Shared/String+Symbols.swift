@@ -136,6 +136,7 @@ struct LaTeX {
 }
 
 enum SymbolType {
+    
     case LeftParenthesis, RightParenthesis
     case LeftCurlyBracket, RightCurlyBracket
     case LeftSquareBracket, RightSquareBracket
@@ -203,6 +204,17 @@ enum SymbolType {
     case Variable
     
     case Invalid
+}
+
+extension SymbolType {
+    var isPredicational : Bool {
+        switch self {
+        case .Predicate,.Equation,.Inequation:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 enum SymbolCategory {

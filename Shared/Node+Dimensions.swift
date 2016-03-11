@@ -14,17 +14,6 @@ func +(lhs:(Int,Int,Int),rhs:(Int,Int,Int)) -> (Int,Int,Int) {
     return (lhs.0+rhs.0, lhs.1+rhs.1, lhs.2+rhs.2)
 }
 
-func /(lhs:(Int,Int,Int),rhs:Int) -> (Double,Double,Double) {
-    
-    let f = { (a:Int,b:Int) -> Double in
-        let c = 10.0 * Double(a)/Double(b) + 0.5
-        
-        return floor(c)/10.0
-    }
-    
-    return (f(lhs.0,rhs), f(lhs.1,rhs), f(lhs.2,rhs))
-}
-
 // MARK: -
 
 extension Node {
@@ -67,44 +56,34 @@ extension Node {
         // is the sum of the widths of its arguments
         return nodes.reduce(0) { $0 + $1.width }
     }
-    
-    var dimensions : NodeDimensions {
-        guard let nodes = self.nodes
-            where nodes.count > 0 // superfluous but correct
-            else  {
-                // constants and variables have height = 0
-                return (0,1,1)
-        }
-        
-        // the height of a (constant) function
-        // is one plus the maximum height of its arguments
-        return (1,1,0) + nodes.reduce((0,0,0)) {
-            (a,b) -> (Int,Int,Int) in
-            let (h0,s0,w0) = a
-            let (h1,s1,w1) = b.dimensions
-            
-            return ( max(h0,h1), s0+s1, w0+w1 )
-            
-        }
-    }
 }
 
 // MARK: -
 
-typealias NodeDimensions = (height:Int, size:Int, width:Int)
-typealias NodeIndications = (type:SymbolType,arities:Set<Int>,occurences:Int)
+
+typealias SymbolIndications = (type:SymbolType,arities:Set<Int>,occurences:Int)
+typealias NodeDimensions = (height:Int, size:Int, width:Int, indications:[Symbol:SymbolIndications])
 
 extension Node {
-    func dimensions(
+    /// Start at predicate node (atom) or above (negative literal, clause, formula)
+    func dimensions() -> NodeDimensions {
+        let belowPredicate = false // we assume that we start above or at predicates
+        var indications = [Symbol:SymbolIndications]()
+        
+        let (height,size,width) = self.dimensions(belowPredicate, symbols: &indications)
+        return (height,size,width,indications)
+    }
+    
+    private func dimensions(
         belowPredicate:Bool,
-        inout symbols:[Symbol:NodeIndications]
+        inout symbols:[Symbol:SymbolIndications]
         
         ) -> (height:Int, size:Int, width:Int) {
             let key = self.symbol
             
             guard let nodes = self.nodes else {
                 assert(key.quadruple == nil) // variables must not be predefined
-                assert(belowPredicate)    // variables must be below predicates
+                assert(belowPredicate)
                 
                 var value = symbols[key] ?? (SymbolType.Variable,Set<Int>(),0)
                 
@@ -144,7 +123,7 @@ extension Node {
                 (a,b) -> (height:Int,size:Int,width:Int) in
                 let (h0,s0,w0) = a
                 let (h1,s1,w1) = b.dimensions(
-                    belowPredicate || (type == SymbolType.Predicate),
+                    belowPredicate || (type.isPredicational),
                     symbols: &symbols)
                 
                 return ( max(h0,h1), s0+s1, w0+w1 )

@@ -115,26 +115,14 @@ extension TptpPath {
     
     /// Tries to get accessible root path to tptp files from process arguments.
     private static var tptpRootPathArgument : TptpPath? {
-        let name = "-tptp_root"
-        
-        var tptp = false
-        for argument in Process.arguments {
-            if tptp {
-                return accessibleDirectory(argument, label:name)    // last argument was -tptp_root
-            }
-            if argument == name {
-                tptp = true                             // return next argument
-            }
-        }
-        
-        return nil
+        let argumentKey = "-tptp_root"
+        return accessibleDirectory(Process.valueOf(argumentKey), label: argumentKey)
     }
     
     /// Tries to get accessible root path to tptp files from environment variable.
     private static var tptpRootPathEnvironement : TptpPath? {
-        let name = "TPTP_ROOT"
-        let result = NSProcessInfo.processInfo().environment[name]
-        return accessibleDirectory(result, label: name)
+        let environmentKey = "TPTP_ROOT"
+        return accessibleDirectory(Process.valueOf(environmentKey), label: environmentKey)
     }
     
     private static let tptpRootPathDefault = "/Users/Shared/TPTP"

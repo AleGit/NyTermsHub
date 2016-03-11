@@ -6,22 +6,20 @@ import Foundation
 let line = "========================="
 
 let info = NSProcessInfo.processInfo()
-let host = NSHost.currentHost()
+// let host = NSHost.currentHost()
 
 // print(host)
 
-let names = host.names.filter {
-    !(
-        $0.hasSuffix("uibk.ac.at")
-            || $0 == "localhost"
-            || $0.hasSuffix ("local")
-            || $0.hasSuffix("Home")
-    )
-}
+//let names = host.names.filter {
+//    !(
+//        $0.hasSuffix("uibk.ac.at")
+//            || $0 == "localhost"
+//    )
+//}
 
 // print header
 print(line,NSDate(),line)
-print("\(names.first!), \(info.processorCount) cores, \(info.physicalMemory.prettyByteDescription)")
+print("\(info.hostName), \(info.processName) \(info.processorCount) cores, \(info.physicalMemory.prettyByteDescription)")
 print(line,line,line)
 
 

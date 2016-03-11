@@ -122,6 +122,8 @@
 		51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */; };
 		51E038131C92A596005BFD42 /* Auxiliary+Process.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E038121C92A596005BFD42 /* Auxiliary+Process.swift */; };
 		51E038141C92A596005BFD42 /* Auxiliary+Process.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E038121C92A596005BFD42 /* Auxiliary+Process.swift */; };
+		51E038161C92B864005BFD42 /* Node+Indication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E038151C92B864005BFD42 /* Node+Indication.swift */; };
+		51E038171C92B864005BFD42 /* Node+Indication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E038151C92B864005BFD42 /* Node+Indication.swift */; };
 		51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E28CDE1C81780100404842 /* IndexSearch.swift */; };
 		51E5F9AF1C87179900040B19 /* Problems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5F9AE1C87179900040B19 /* Problems.swift */; };
 		51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EFBA261B71DB9000A7B16C /* ParsePuzzleFileTests.swift */; };
@@ -283,6 +285,7 @@
 		51D8476B1C8084DC003EC848 /* TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpPath.swift; sourceTree = "<group>"; };
 		51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpTermTests.swift; sourceTree = "<group>"; };
 		51E038121C92A596005BFD42 /* Auxiliary+Process.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Auxiliary+Process.swift"; sourceTree = "<group>"; };
+		51E038151C92B864005BFD42 /* Node+Indication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Indication.swift"; sourceTree = "<group>"; };
 		51E28CDE1C81780100404842 /* IndexSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexSearch.swift; sourceTree = "<group>"; };
 		51E28CE01C819F2600404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "../Docs/Complementaries v0.txt"; sourceTree = "<group>"; };
 		51E28CE11C81A02D00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v1.txt"; path = "../Docs/Complementaries v1.txt"; sourceTree = "<group>"; };
@@ -448,6 +451,7 @@
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
 				5100656D1C897A6800F2A67B /* MingyProver.swift */,
 				51378A501C8F15190000757E /* YicesProver+Node.swift */,
+				51E038151C92B864005BFD42 /* Node+Indication.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -843,6 +847,7 @@
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				51E5F9AF1C87179900040B19 /* Problems.swift in Sources */,
 				51378A521C8F15190000757E /* YicesProver+Node.swift in Sources */,
+				51E038171C92B864005BFD42 /* Node+Indication.swift in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
 				51C0ACB41C4A385800447594 /* Complementaries.swift in Sources */,
@@ -888,6 +893,7 @@
 				51226E771B6D3A0B0077E34D /* TptpFormula.swift in Sources */,
 				5129771B1B677CAA003D3E80 /* ViewController.swift in Sources */,
 				516D251F1C3EB26C0075D362 /* Nodal.swift in Sources */,
+				51E038161C92B864005BFD42 /* Node+Indication.swift in Sources */,
 				514AD8651C6B7D7400652004 /* TailTrie.swift in Sources */,
 				51FD00B81C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				5129773F1B679177003D3E80 /* Substitution.swift in Sources */,

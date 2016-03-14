@@ -24,11 +24,12 @@ struct ParseFiles {
         }
     }
     
-    static func sizeDemo() {
+    static func dimensionsDemo() {
         print(self.self,"\(__FUNCTION__)\n")
         
-        for name in [ "LCL129-1", // "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1",
-            "HWV134-1" ] {
+        for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1",
+            // "HWV134-1"
+            ] {
                 
                 guard let path = name.p else {
                     print("\(name) is not accessible in \(TptpPath.tptpRootPath).")
@@ -48,11 +49,11 @@ struct ParseFiles {
                 
                 let (size,countTime) = measure {
                     tptpFormulae.reduce((0,0,0)) {
-                        $0 + $1.root.dimensions
+                        let (h,s,w,_) = $1.root.dimensions()
+                        return (max($0.0,h), $0.1+s, max($0.2,w))
                     }
                 }
-                print("  total size:", size)
-                print("average size:", size/count)
+                print("  total size:", size.0,size.1,size.2)
                 print("  counted in:", countTime.prettyTimeIntervalDescription, "\n")
                 
                 

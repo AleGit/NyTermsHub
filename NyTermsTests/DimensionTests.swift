@@ -132,6 +132,41 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(symbols["a"]?.occurences, 1)
         XCTAssertEqual(symbols["b"]?.occurences, 1)
         XCTAssertEqual(symbols["|"]?.occurences, 1)
+    }
+    
+    
+    func testPorNP() {
+        let clause = "p(f(g(a),X))|~p(g(f(a,X)))" as TestNode
+        let (height,size,width,symbols) = clause.dimensions()
+        
+        XCTAssertEqual(height,5)
+        XCTAssertEqual(size,12)
+        XCTAssertEqual(width,4)
+        XCTAssertEqual(symbols.count,7)
+        
+        XCTAssertEqual(symbols["|"]?.occurences, 1)
+        XCTAssertEqual(symbols["~"]?.occurences, 1)
+        XCTAssertEqual(symbols["p"]?.occurences, 2)
+        XCTAssertEqual(symbols["f"]?.occurences, 2)
+        XCTAssertEqual(symbols["g"]?.occurences, 2)
+        XCTAssertEqual(symbols["a"]?.occurences, 2)
+        XCTAssertEqual(symbols["X"]?.occurences, 2)
+        
+        XCTAssertEqual(symbols["|"]?.type, SymbolType.Disjunction)
+        XCTAssertEqual(symbols["~"]?.type, SymbolType.Negation)
+        XCTAssertEqual(symbols["p"]?.type, SymbolType.Predicate)
+        XCTAssertEqual(symbols["f"]?.type, SymbolType.Function)
+        XCTAssertEqual(symbols["g"]?.type, SymbolType.Function)
+        XCTAssertEqual(symbols["a"]?.type, SymbolType.Function)
+        XCTAssertEqual(symbols["X"]?.type, SymbolType.Variable)
+        
+        XCTAssertEqual(symbols["|"]?.arities, Set(arrayLiteral: 2))
+        XCTAssertEqual(symbols["~"]?.arities, Set(arrayLiteral: 1))
+        XCTAssertEqual(symbols["p"]?.arities, Set(arrayLiteral: 1))
+        XCTAssertEqual(symbols["f"]?.arities, Set(arrayLiteral: 2))
+        XCTAssertEqual(symbols["g"]?.arities, Set(arrayLiteral: 1))
+        XCTAssertEqual(symbols["a"]?.arities, Set(arrayLiteral: 0)) // a function with arity 0 is constant.
+        XCTAssertEqual(symbols["X"]?.arities, Set<Int>()) // a variable has no arity
         
         
     }

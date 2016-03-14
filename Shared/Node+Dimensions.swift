@@ -97,14 +97,22 @@ extension Node {
                 return (height:0,size:1,width:1)
             }
             
-            // symbols above predicate must be predefined
+            // types of symbols above predicate must be predefined
             let type = key.type ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
 
+            // did the symbol appear befoe?, if not create an entry for function and predicate symbols with derived arity
             var value = symbols[key] ?? (type,Set(arrayLiteral: nodes.count),0)
             
-            assert(value.type == type)
+            assert(value.type == type,"\(key) can't be used as \(value.type) and \(type)")
             // predefined arities (range) or derived arity (set of one) must match
-            assert((key.arities?.contains(nodes.count) ?? false) || value.arities.contains(nodes.count))
+            assert((
+                key.arities?.contains(nodes.count) ?? false) // either the arity of a symbol is predefined and potentially variadic (e.g. disjunction)
+                || value.arities.contains(nodes.count), // or defined at runtime with the first encounter (e.g. predicate and function symbols)
+                (key.arities != nil ?
+                    "Predefined arities \(key.arities!) does not contain" :
+                    "Runtime arities \(value.arities) does not contain variadic" )
+                + " arity \(nodes.count) for symbol \(key)."
+            )
             
             value.arities.insert(nodes.count)
             value.occurences += 1
@@ -129,5 +137,4 @@ extension Node {
                 return ( max(h0,h1), s0+s1, w0+w1 )
             }
     }
-    
 }

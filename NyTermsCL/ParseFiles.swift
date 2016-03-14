@@ -47,35 +47,17 @@ struct ParseFiles {
                 
                 print("\(count) formulae parsed in \(parseTime.prettyTimeIntervalDescription)")
                 
-                let (size,countTime) = measure {
+                let (sizes,countTime) = measure {
                     tptpFormulae.reduce((0,0,0)) {
-                        let (h,s,w,_) = $1.root.dimensions()
-                        return (max($0.0,h), $0.1+s, max($0.2,w))
+                        let (x,y,z,_) = $1.root.dimensions()
+                        return $0 + (x,y,z)
                     }
                 }
-                print("  total size:", size.0,size.1,size.2)
-                print("  counted in:", countTime.prettyTimeIntervalDescription, "\n")
-                
-                
+                let (h,s,w) = sizes
+                print("  total sizes:", sizes)
+                print("average sizes:", h/count,s/count,w/count)
+                print("   counted in:", countTime.prettyTimeIntervalDescription, "\n")
                 
         }
     }
 }
-/*
-========================= 2016-02-17 08:25:56 +0000 =========================
-========================= ========================= =========================
-NyTerms with yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
-TPTP_ROOT /Users/Shared/TPTP
-LCL129-1 3 formulae read in 925µs 4ns from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
-SYN000-2 19 formulae read in 1ms 506µs from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
-PUZ051-1 43 formulae read in 6ms 832µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
-HWV074-1 2581 formulae read in 426ms 474µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
-HWV105-1 20900 formulae read in 594ms 21µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
-HWV062+1 2 formulae read in 777ms 382µs from /Users/Shared/TPTP/Problems/HWV/HWV062+1.p
-HWV134+1 128975 formulae read in 21s 74ms from /Users/Shared/TPTP/Problems/HWV/HWV134+1.p
-HWV134-1 2332428 formulae read in 2m 26s from /Users/Shared/TPTP/Problems/HWV/HWV134-1.p
-========================= ========================= =========================
-========================= 2016-02-17 08:28:45 +0000 =========================
-*/
-
-

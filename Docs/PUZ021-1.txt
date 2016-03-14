@@ -1,0 +1,58 @@
+2016-03-14 15:18:54.883 NyTerms[22317:1076045] ApplePersistenceIgnoreState: Existing state will not be touched. New state will be written to /var/folders/8n/zgdn4kvn1rd5gmwvydx3j7jh0000gp/T/at.formgeberei.NyTerms.savedState
+Test Suite 'Selected tests' started at 2016-03-14 15:18:55.582
+Test Suite 'TrieProverBasicTests' started at 2016-03-14 15:18:55.585
+Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ021m1]' started.
+/Users/Shared/TPTP/Problems/PUZ/PUZ021-1.p
+round # 1 : status = smt_status(rawValue: 3) 1µs 13ns
+[~, 0, a_truth, 0, knight, 0, *] 0
+[~, 0, a_truth, 1, *] 0
+[a_truth, 0, knave, 0, *] 1
+[a_truth, 1, *] 1
+[~, 0, a_truth, 0, rich, 0, *] 2
+[~, 0, a_truth, 1, *] 2
+[a_truth, 0, poor, 0, *] 3
+[a_truth, 1, *] 3
+[~, 0, a_truth, 0, knight, 0, *] 4
+[~, 0, a_truth, 1, *] 4
+[~, 0, a_truth, 0, knight, 0, *] 5
+[~, 0, a_truth, 1, *] 5
+[~, 0, says, 0, *] 6
+[~, 0, says, 1, *] 6
+[a_truth, 0, *] 7
+[a_truth, 1, *] 7
+[a_truth, 0, *] 8
+[a_truth, 1, *] 8
+[a_truth, 0, *] 9
+[a_truth, 1, *] 9
+[a_truth, 0, and, 0, *] 10
+[a_truth, 0, and, 1, *] 10
+[a_truth, 1, *] 10
+[~, 0, says, 0, me] 11
+[~, 0, says, 1, *] 11
+[a_truth, 0, and, 0, knave, 0, me] 12
+[a_truth, 0, and, 1, rich, 0, me] 12
+[a_truth, 1, *] 12
+round # 1 : 0 new clauses in 9ms 813µs ( 10ms 750µs )
+/Users/alm/Documents/NyTermsHub/NyTermsTests/TrieProverBasicTests.swift:245: error: -[NyTermsTests.TrieProverBasicTests testPUZ021m1] : XCTAssertEqual failed: ("Optional(__C.smt_status(rawValue: 4))") is not equal to ("Optional(__C.smt_status(rawValue: 3))") -
+0.0	~(a_truth(knight(X@0),Y@0))		~(a_truth(knight(X@0),Y@0))|~(a_truth(knave(X@0),Y@0))
+1.1	a_truth(knave(X@1),Y@1)		a_truth(knight(X@1),Y@1)|a_truth(knave(X@1),Y@1)
+2.0	~(a_truth(rich(X@2),Y@2))		~(a_truth(rich(X@2),Y@2))|~(a_truth(poor(X@2),Y@2))
+3.1	a_truth(poor(X@3),Y@3)		a_truth(rich(X@3),Y@3)|a_truth(poor(X@3),Y@3)
+4.0	~(a_truth(knight(X@4),Z@4))		~(a_truth(knight(X@4),Z@4))|~(says(X@4,Y@4))|a_truth(Y@4,Z@4)
+5.0	~(a_truth(knight(X@5),Z@5))		~(a_truth(knight(X@5),Z@5))|says(X@5,Y@5)|~(a_truth(Y@5,Z@5))
+6.1	~(says(X@6,Y@6))		~(a_truth(knave(X@6),Z@6))|~(says(X@6,Y@6))|~(a_truth(Y@6,Z@6))
+7.2	a_truth(Y@7,Z@7)		~(a_truth(knave(X@7),Z@7))|says(X@7,Y@7)|a_truth(Y@7,Z@7)
+8.1	a_truth(X@8,Z@8)		~(a_truth(and(X@8,Y@8),Z@8))|a_truth(X@8,Z@8)
+9.1	a_truth(Y@9,Z@9)		~(a_truth(and(X@9,Y@9),Z@9))|a_truth(Y@9,Z@9)
+10.0	a_truth(and(X@10,Y@10),Z@10)		a_truth(and(X@10,Y@10),Z@10)|~(a_truth(X@10,Z@10))|~(a_truth(Y@10,Z@10))
+11.0	~(says(me,X@11))		~(says(me,X@11))|~(a_truth(and(knave(me),rich(me)),X@11))
+12.1	a_truth(and(knave(me),rich(me)),X@12)		says(me,X@12)|a_truth(and(knave(me),rich(me)),X@12)
+Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ021m1]' failed (0.089 seconds).
+Test Suite 'TrieProverBasicTests' failed at 2016-03-14 15:18:55.674.
+Executed 1 test, with 1 failure (0 unexpected) in 0.089 (0.089) seconds
+Test Suite 'Selected tests' failed at 2016-03-14 15:18:55.675.
+Executed 1 test, with 1 failure (0 unexpected) in 0.089 (0.093) seconds
+
+
+Test session log:
+/var/folders/8n/zgdn4kvn1rd5gmwvydx3j7jh0000gp/T/com.apple.dt.XCTest-status/Session-2016-03-14_15:18:45-CkUCNC.log

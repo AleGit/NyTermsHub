@@ -38,7 +38,7 @@ let puzzles = [
     ("PUZ018-2", STATUS_SAT, 15.2, 0.00, [SymbolType.Predicate]),
     ("PUZ019-1", STATUS_UNSAT, 99.99, 0.00, [SymbolType.Predicate]),    // FAILED > 300 s
     ("PUZ020-1", STATUS_UNSAT, 11.11, 0.00, [SymbolType.Predicate,SymbolType.Equation]),    
-    ("PUZ021-1", STATUS_UNSAT, 22.22, 0.00, [SymbolType.Predicate]),            // saturates#1 < 1s
+    ("PUZ021-1", STATUS_UNSAT, 22.22, 0.00, [SymbolType.Predicate]),    // *** saturates#1 < 1s ***
     ("PUZ022-1", STATUS_UNSAT, 1.900, 0.00, [SymbolType.Predicate]),    // SUCCESS
     ("PUZ023-1", STATUS_UNSAT, 22.22, 0.00, [SymbolType.Predicate]),            // saturates#6 < 1 s
     ("PUZ024-1", STATUS_UNSAT, 0.999, 0.00, [SymbolType.Predicate]),    // SUCCESS < 400 ms

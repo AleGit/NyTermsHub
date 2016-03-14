@@ -33,6 +33,8 @@ defer {
 
 // Proofing.demo()
 
+ParseFiles.sizeDemo()
+
 
 
 

@@ -46,14 +46,16 @@ struct ParseFiles {
                 
                 print("\(count) formulae parsed in \(parseTime.prettyTimeIntervalDescription)")
                 
-                let (size,countTime) = measure {
+                let (sizes,countTime) = measure {
                     tptpFormulae.reduce((0,0,0)) {
-                        $0 + $1.root.dimensions
+                        let (x,y,z,_) = $1.root.dimensions()
+                        return $0 + (x,y,z)
                     }
                 }
-                print("  total size:", size)
-                print("average size:", size/count)
-                print("  counted in:", countTime.prettyTimeIntervalDescription, "\n")
+                let (h,s,w) = sizes
+                print("  total sizes:", sizes)
+                print("average sizes:", h/count,s/count,w/count)
+                print("   counted in:", countTime.prettyTimeIntervalDescription, "\n")
                 
                 
                 

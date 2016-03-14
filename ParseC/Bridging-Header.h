@@ -5,3 +5,4 @@
 #import "/usr/local/include/yices.h"
 
 #import "TptpParser.h"
+#import "MereParser.h"

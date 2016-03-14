@@ -260,6 +260,7 @@
 		517994891C96C63B00791916 /* MereParser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MereParser.c; sourceTree = "<group>"; };
 		5179948C1C96C83300791916 /* MereParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MereParser.swift; sourceTree = "<group>"; };
 		517994901C96C94B00791916 /* MereParserBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MereParserBasicTests.swift; sourceTree = "<group>"; };
+		5179949A1C97001D00791916 /* PUZ021-1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "PUZ021-1.txt"; sourceTree = "<group>"; };
 		517D86371C44F94100930B61 /* DescriptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTests.swift; sourceTree = "<group>"; };
 		517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTests.swift; sourceTree = "<group>"; };
 		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
@@ -607,6 +608,7 @@
 				5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */,
 				516A73D81C902CF1007E5DEC /* iPuzzlesResults.txt */,
 				515F2B451C918016004F93E9 /* sizeDemo.txt */,
+				5179949A1C97001D00791916 /* PUZ021-1.txt */,
 			);
 			name = results;
 			path = ../Docs;
@@ -619,6 +621,7 @@
 				517994821C96BEC900791916 /* MereLexer.l */,
 				517994891C96C63B00791916 /* MereParser.c */,
 				517994881C96C31900791916 /* MereParser.h */,
+				5179948C1C96C83300791916 /* MereParser.swift */,
 				517994831C96BEC900791916 /* MereParser.y */,
 				515F0EF91B6B746800B470B4 /* TptpEnums.h */,
 				51226E761B6D3A0B0077E34D /* TptpFormula.swift */,
@@ -630,7 +633,6 @@
 				515D91B61B6CFEF0000EDB3B /* TptpParser.m */,
 				515F0EF41B6B741500B470B4 /* TptpParser.ym */,
 				51226E7C1B6D44E20077E34D /* TptpPrintable.swift */,
-				5179948C1C96C83300791916 /* MereParser.swift */,
 			);
 			path = ParseC;
 			sourceTree = "<group>";

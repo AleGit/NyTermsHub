@@ -11,8 +11,10 @@ import XCTest
 
 class MereParserBasicTests: XCTestCase {
 
-    func testPuz001() {
-        for name in  [ "PUZ001-1", "HWV134-1"] {
+    func testParsing() {
+        for (name,limit) in  [ ("PUZ001-1",0.001),
+            // ("HWV134-1",15.250)
+            ] {
         guard let path = name.p else {
             XCTFail("Did not find path for \(name)")
             continue
@@ -22,8 +24,10 @@ class MereParserBasicTests: XCTestCase {
          
             mereParse(path)
         }
+            
+            XCTAssertTrue(runtime < limit, "\(runtime.prettyTimeIntervalDescription) exceeds limit of \(limit.prettyTimeIntervalDescription)")
         
-        print("name", name, "code", code,"runtime",runtime.prettyTimeIntervalDescription)
+            print("name:", name, "code:", code,"runtime:",runtime.prettyTimeIntervalDescription, "< limit:", limit.prettyTimeIntervalDescription)
         }
     }
 }

@@ -4,15 +4,9 @@
 
 import Foundation
 
-protocol Prover {
-    typealias N : Node
-    
-    var symbols : [Symbol:SymbolQuadruple] { get set }
-    
-    init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple])
-}
 
-final class TrieProver<N:Node> : Prover, YicesProver {
+@available(*, deprecated=1.0)
+final class SimpleProver<N:Node> : YicesProver {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     ///
@@ -93,7 +87,7 @@ final class TrieProver<N:Node> : Prover, YicesProver {
     }
 }
 
-extension TrieProver : CustomStringConvertible{
+extension SimpleProver : CustomStringConvertible{
     var description : String {
         if self.status == STATUS_SAT {
             let cs = self.clauses.enumerate().map {
@@ -114,7 +108,7 @@ extension TrieProver : CustomStringConvertible{
     }
 }
 
-extension TrieProver {
+extension SimpleProver {
     convenience init(clauses:[N]) {
         self.init(clauses:clauses, predefined: Symbols.defaultSymbols)
     }
@@ -301,7 +295,7 @@ extension TrieProver {
     }
 }
 
-private extension TrieProver {
+private extension SimpleProver {
     private func assertClauses() {
         let unasserted = clauses[indexOfFirstUnassertedClause..<clauses.count].map { $0.1.0 }
         indexOfFirstUnassertedClause = clauses.count
@@ -309,7 +303,7 @@ private extension TrieProver {
     }
 }
 
-extension TrieProver {
+extension SimpleProver {
     
     private func createQuadruple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
         guard var quadruple = symbols[symbol] else {
@@ -348,7 +342,7 @@ extension TrieProver {
     
 }
 
-//private extension TrieProver {
+//private extension SimpleProver {
 //    
 //    
 //    func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {

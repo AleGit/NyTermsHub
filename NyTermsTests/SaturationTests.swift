@@ -37,7 +37,7 @@ class SaturationTests: XCTestCase {
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = TrieProver(clauses: clauses)
+        let prover = SimpleProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         

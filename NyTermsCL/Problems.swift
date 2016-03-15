@@ -146,7 +146,7 @@ struct Proofing {
             }
             
             let clauses = TptpNode.roots(path)
-            let prover = TrieProver(clauses: clauses)
+            let prover = SimpleProver(clauses: clauses)
             let (result,runtime) = measure {
                 prover.run(timeLimit:fto(timeout))
             }

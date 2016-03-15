@@ -1,5 +1,5 @@
 //
-//  TrieProverBasicTests.swift
+//  SimpleProverBasicTests.swift
 //  NyTerms
 //
 //  Created by Alexander Maringele on 01.03.16.
@@ -9,25 +9,22 @@
 import XCTest
 @testable import NyTerms
 
-class TrieProverBasicTests: XCTestCase {
-    typealias TheProver = TrieProver<TestNode>
+class SimpleProverBasicTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        yices_init()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        yices_init()    // global yices initialization
     }
     
     override func tearDown() {
         yices_exit()
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
     func testPropositionalTrue() {
         let wahr = "p|~p" as TestNode
         
-        let prover = TheProver(clauses: [wahr])
+        let prover = SimpleProver(clauses: [wahr])
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         let (rounds,runtime) = prover.run()
@@ -39,7 +36,7 @@ class TrieProverBasicTests: XCTestCase {
     func testEmptyClause() {
         let empty = TestNode(connective:"|",nodes: [TestNode]())
         
-        let prover = TheProver(clauses: [empty])
+        let prover = SimpleProver(clauses: [empty])
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         let (rounds,runtime) = prover.run()
@@ -52,7 +49,7 @@ class TrieProverBasicTests: XCTestCase {
         let p = TestNode(connective:"|",nodes:["p"])
         let np = TestNode(connective:"|",nodes:["~p"])
         
-        let prover = TheProver(clauses: [p,np])
+        let prover = SimpleProver(clauses: [p,np])
         XCTAssertEqual(STATUS_UNSAT, prover.status)
         
         let (rounds,runtime) = prover.run()
@@ -64,7 +61,7 @@ class TrieProverBasicTests: XCTestCase {
     func testPropositionalSatisfiable() {
         let satisfiable = TestNode(connective:"|",nodes:["p"])
         
-        let prover = TheProver(clauses: [satisfiable])
+        let prover = SimpleProver(clauses: [satisfiable])
         XCTAssertEqual(STATUS_SAT, prover.status)
         
         let (rounds,runtime) = prover.run()
@@ -83,7 +80,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = TheProver(clauses: clauses)
+        let prover = SimpleProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -103,7 +100,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = TheProver(clauses: clauses)
+        let prover = SimpleProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -135,7 +132,7 @@ class TrieProverBasicTests: XCTestCase {
         print(times.last!)
         
         
-        let prover = TheProver(clauses: clauses)
+        let prover = SimpleProver(clauses: clauses)
         times.append(("prover",CFAbsoluteTimeGetCurrent()-start))
         print(times.last!)
         
@@ -168,7 +165,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = TheProver(clauses: clauses)
+        let prover = SimpleProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -189,7 +186,7 @@ class TrieProverBasicTests: XCTestCase {
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
-        let prover = TheProver(clauses: clauses)
+        let prover = SimpleProver(clauses: clauses)
         
         XCTAssertEqual(STATUS_SAT, prover.status)
         
@@ -214,7 +211,7 @@ class TrieProverBasicTests: XCTestCase {
         XCTAssertTrue(clauses[2].isClause)
         XCTAssertTrue(clauses[2].nodes?.count == 3)
         
-        let prover = TheProver(clauses: clauses)
+        let prover = SimpleProver(clauses: clauses)
         
         prover.run(5)
         

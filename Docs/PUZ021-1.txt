@@ -1,7 +1,7 @@
 2016-03-14 15:18:54.883 NyTerms[22317:1076045] ApplePersistenceIgnoreState: Existing state will not be touched. New state will be written to /var/folders/8n/zgdn4kvn1rd5gmwvydx3j7jh0000gp/T/at.formgeberei.NyTerms.savedState
 Test Suite 'Selected tests' started at 2016-03-14 15:18:55.582
-Test Suite 'TrieProverBasicTests' started at 2016-03-14 15:18:55.585
-Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ021m1]' started.
+Test Suite 'SimpleProverBasicTests' started at 2016-03-14 15:18:55.585
+Test Case '-[NyTermsTests.SimpleProverBasicTests testPUZ021m1]' started.
 /Users/Shared/TPTP/Problems/PUZ/PUZ021-1.p
 round # 1 : status = smt_status(rawValue: 3) 1µs 13ns
 [~, 0, a_truth, 0, knight, 0, *] 0
@@ -33,7 +33,7 @@ round # 1 : status = smt_status(rawValue: 3) 1µs 13ns
 [a_truth, 0, and, 1, rich, 0, me] 12
 [a_truth, 1, *] 12
 round # 1 : 0 new clauses in 9ms 813µs ( 10ms 750µs )
-/Users/alm/Documents/NyTermsHub/NyTermsTests/TrieProverBasicTests.swift:245: error: -[NyTermsTests.TrieProverBasicTests testPUZ021m1] : XCTAssertEqual failed: ("Optional(__C.smt_status(rawValue: 4))") is not equal to ("Optional(__C.smt_status(rawValue: 3))") -
+/Users/alm/Documents/NyTermsHub/NyTermsTests/SimpleProverBasicTests.swift:245: error: -[NyTermsTests.SimpleProverBasicTests testPUZ021m1] : XCTAssertEqual failed: ("Optional(__C.smt_status(rawValue: 4))") is not equal to ("Optional(__C.smt_status(rawValue: 3))") -
 0.0	~(a_truth(knight(X@0),Y@0))		~(a_truth(knight(X@0),Y@0))|~(a_truth(knave(X@0),Y@0))
 1.1	a_truth(knave(X@1),Y@1)		a_truth(knight(X@1),Y@1)|a_truth(knave(X@1),Y@1)
 2.0	~(a_truth(rich(X@2),Y@2))		~(a_truth(rich(X@2),Y@2))|~(a_truth(poor(X@2),Y@2))
@@ -47,8 +47,8 @@ round # 1 : 0 new clauses in 9ms 813µs ( 10ms 750µs )
 10.0	a_truth(and(X@10,Y@10),Z@10)		a_truth(and(X@10,Y@10),Z@10)|~(a_truth(X@10,Z@10))|~(a_truth(Y@10,Z@10))
 11.0	~(says(me,X@11))		~(says(me,X@11))|~(a_truth(and(knave(me),rich(me)),X@11))
 12.1	a_truth(and(knave(me),rich(me)),X@12)		says(me,X@12)|a_truth(and(knave(me),rich(me)),X@12)
-Test Case '-[NyTermsTests.TrieProverBasicTests testPUZ021m1]' failed (0.089 seconds).
-Test Suite 'TrieProverBasicTests' failed at 2016-03-14 15:18:55.674.
+Test Case '-[NyTermsTests.SimpleProverBasicTests testPUZ021m1]' failed (0.089 seconds).
+Test Suite 'SimpleProverBasicTests' failed at 2016-03-14 15:18:55.674.
 Executed 1 test, with 1 failure (0 unexpected) in 0.089 (0.089) seconds
 Test Suite 'Selected tests' failed at 2016-03-14 15:18:55.675.
 Executed 1 test, with 1 failure (0 unexpected) in 0.089 (0.093) seconds

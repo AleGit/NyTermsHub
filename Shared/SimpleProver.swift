@@ -450,6 +450,12 @@ extension SimpleProver {
 //    }
 //}
 
+extension SimpleProver {
+    func selectedClauseLiteralIndex(clauseIndex:Int) -> Int {
+        return selects[clauseIndex]
+    }
+}
+
 
 
 

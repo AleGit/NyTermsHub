@@ -18,13 +18,13 @@ protocol YicesProver {
 
 extension YicesProver {
     
-    /// Build yices disjunction from clause.
-    func clause<N:Node>(clause:N) -> (clause:term_t,literals:[term_t]) {
+    /// Build a yices disjunction from clause.
+    func clause<N:Node>(clause:N) -> (yicesClause:term_t,yicesLiterals:[term_t]) {
         assert(clause.isClause,"'\(clause)' is not a clause.")
         
         guard let literals = clause.nodes where literals.count > 0 else {
             // an empty clause represents a contradiction
-            return (clause:yices_false(), literals:[term_t]())
+            return (yices_false(), [term_t]())
         }
         
         let yicesLiterals = literals.map { self.literal($0) }
@@ -116,5 +116,21 @@ extension YicesProver {
         }
         return t
         
+    }
+}
+
+extension YicesProver {
+    
+    func selectLiteral(literals:[term_t], selectable:(term_t)->Bool, ignorable:(Int)->Bool) -> Int? {
+        
+        // now we run through all literals (except the old one)
+        for (literalIndex, literal) in literals.enumerate() {
+            if !ignorable(literalIndex) && selectable(literal) {
+                return literalIndex
+            }
+        }
+        
+        assert(false,"function must not be called if model is not valid")
+        return nil
     }
 }

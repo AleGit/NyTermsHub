@@ -30,8 +30,7 @@ final class MingyProver<N:Node> : YicesProver {
     }
     
     init<S:SequenceType where S.Generator.Element == N> (clauses:S) {
-        // `yices_init()` must have been called allready.
-        // Create yices context.
+        // Create yices context. `yices_init()` must have been called allready.
         self.ctx = yices_new_context(nil)
         
         self.🚧 = yices_new_uninterpreted_term(free_tau)
@@ -44,8 +43,7 @@ final class MingyProver<N:Node> : YicesProver {
     
     deinit {
         yices_free_context(self.ctx)
-        // Destroy yices context.
-        // `yices_exit()` should be called eventually.
+        // Destroy yices context. `yices_exit()` should be called eventually.
     }
 }
 
@@ -60,10 +58,10 @@ extension MingyProver {
         
         return yices_check_context(ctx,nil)
     }
-    
 }
 
 extension MingyProver {
+    /// assert all formulas (clauses) from repository
     private func assertClauses() -> smt_status {
         let unassertedYicesClauses = self.repository.filter { $0.literalIndex == nil }.map {
             $0.yices.clause
@@ -74,90 +72,66 @@ extension MingyProver {
         let status =  yices_check_context(ctx,nil)
         return status
     }
-    
-    private func makeSelectable(mdl:COpaquePointer) -> ((Int,term_t) -> Bool) {
-        return {
-            (count,term) in count == 1 as Int || // select the only literal of a unit clause
-                yices_formula_true_in_model(mdl, term) == 1 // or a literal that is true in the model
-        }
-    }
-    
 
-    private func removeLiteralClauseIndex(clause:N,clauseIndex:Int,literalIndex:Int) {
-        guard let literal = clause.nodes?[literalIndex] else {
-            assert(false,"impossible")
-            return
+    private func removeLiteralClauseIndex(clause:N,clauseIndex:Int,literalIndex:Int?) {
+        guard let index = literalIndex else { return } // nothing to do
+        
+        guard let literals = clause.nodes
+            where literals.count > literalIndex else {
+                assert(false,"\(clauseIndex).\(literalIndex) clause \(clause) has no or not enough literals.")
+                return
         }
-        for path in literal.symHopPaths {
+        
+        for path in literals[index].symHopPaths {
             let val = self.literalsTrie.delete(path, value:clauseIndex)
             assert(val == clauseIndex,
-                "\(clauseIndex).\(literalIndex) clause was not previously stored under path '\(path)'. \(clause)")
+                "\(clauseIndex).\(literalIndex) clause was not previously stored at path '\(path)'. \(clause)")
         }
     }
     
-    private func insertSelectedLiteralClauseIndex(clause:N, clauseIndex:Int, literalIndex:Int) {
-        guard let literal = clause.nodes?[literalIndex] else {
-            assert(false,"impossible")
+    private func insertLiteralClauseIndex(clause:N, clauseIndex:Int, literalIndex:Int) {
+        guard let literals = clause.nodes
+            where literals.count > literalIndex else {
+            assert(false,"\(clauseIndex).\(literalIndex) clause \(clause) has no or not enough literals.")
             return
         }
-        for path in literal.symHopPaths {
+        for path in literals[literalIndex].symHopPaths {
             self.literalsTrie.insert(path, value:clauseIndex)
             
             assert(self.literalsTrie.retrieve(path)?.contains(clauseIndex) ?? false,
-                "\(clauseIndex).\(literalIndex) clause was not successfully stored under path '\(path)'. \(clause)")
+                "\(clauseIndex).\(literalIndex) clause was not successfully stored at path '\(path)'. \(clause)")
         }
         
     }
-    
-    private func selectLiteral(clauseTriple:ClauseTriple, selectable:(Int,term_t)->Bool) -> (literalIndex:Int, hasChanged:Bool) {
-
-        let (_,_,yices) = clauseTriple
-        
-        let literalsCount = yices.literals.count
-        
-        if let literalIndex = clauseTriple.literalIndex {
-            // a literal was selected previously
-            let yicesLiteral =  clauseTriple.yices.literals[literalIndex]
-            
-            guard !selectable(literalsCount, yicesLiteral) else {
-                return (literalIndex,false)    // previously selected literal still holds in model
-            }
-        }
-        
-        for (literalIndex,yicesLiteral) in clauseTriple.yices.literals.enumerate() {
-            guard literalIndex != clauseTriple.literalIndex else {
-                continue    // previously selected literal does not hold in model
-            }
-            
-            if selectable(literalsCount, yicesLiteral) {
-                
-                return (literalIndex,true)
-            }
-        }
-        
-        assert(false,"impossible: no literal holds in model")
-        
-    }
-    
     
     private func selectLiterals() {
-        let mdl = yices_get_model(ctx, 1); // create model
-        defer { yices_free_model(mdl) } // destroy model at end of function
+        let mdl = yices_get_model(ctx, 1); // build model and keep substitutions
+        assert(mdl != nil, "no model is available.")
+        defer { yices_free_model(mdl) } // release model at end of function
         
-        let selectable = makeSelectable(mdl)
+        let entailed = { yices_formula_true_in_model(mdl, $0) == 1 }
         
         for (clauseIndex, clauseTriple) in self.repository.enumerate() {
-            let (clause,_,_) = clauseTriple
+            let (clause,oldLiteralIndex,yices) = clauseTriple
             
-            let (literalIndex,hasChanged) = selectLiteral(clauseTriple, selectable: selectable)
+            assert(entailed(yices.clause), "\(clauseIndex) \t\(clause) instance \(String(term:yices.clause)) does not hold in model.")
             
-            if hasChanged {
-                if let oldLiteralIndex = clauseTriple.literalIndex {
-                    removeLiteralClauseIndex(clause, clauseIndex: clauseIndex, literalIndex: oldLiteralIndex)
-                }
-                
-                insertSelectedLiteralClauseIndex(clause, clauseIndex: clauseIndex, literalIndex: literalIndex)
+            if let literalIndex = oldLiteralIndex where entailed(yices.literals[literalIndex]) {
+                continue // the previously selected literal still holds in the model
+            }
+            
+            guard let literalIndex = selectLiteral( yices.literals,
+                selectable: entailed, ignorable:  { $0 == oldLiteralIndex } )
+            else {
+                assert(false,"no literal holds in model.")
+            }
+            
+            if oldLiteralIndex != literalIndex {
+                // selected literal index has changed
+                removeLiteralClauseIndex(clause, clauseIndex: clauseIndex, literalIndex: oldLiteralIndex)
+                insertLiteralClauseIndex(clause, clauseIndex: clauseIndex, literalIndex: literalIndex)
                 self.unprocessedClauseLiteralSet.insert(clauseIndex)
+                self.repository[clauseIndex].literalIndex = literalIndex
             }
         }
     }

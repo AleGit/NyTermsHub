@@ -13,8 +13,8 @@ import Foundation
 /// * (tree) equational terms: a = X, b ~= f(X,a)
 /// * (root) clause terms: a=X | b ~= f(X,a)
 /// * (root) formuala terms: ...
-protocol Node : NodeX {
-    var symbol : String { get }
+protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
+    var symbol : Symbol { get }
     var nodes : [Self]? { get }
     
     init (symbol:Symbol, nodes:[Self]?)

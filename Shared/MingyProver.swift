@@ -48,13 +48,22 @@ final class MingyProver<N:Node> : YicesProver {
 }
 
 extension MingyProver {
+    func process() {
+        
+        print(self.unprocessedClauseLiteralSet)
+        print(self.literalsTrie)
+        print("")
+        print(self.clausesTrie)
+        
+    }
     
     func run(maxRuntime:CFTimeInterval = 1) -> smt_status {
         while self.runtime < maxRuntime && assertClauses() != STATUS_UNSAT {
             selectLiterals()
+            process()
+            break
         }
         
-        print(self.unprocessedClauseLiteralSet)
         
         return yices_check_context(ctx,nil)
     }

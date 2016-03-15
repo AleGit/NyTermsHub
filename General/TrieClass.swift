@@ -15,6 +15,33 @@ final class TrieClass<Key: Hashable, Value: Hashable> {
     init() {    }
 }
 
+extension TrieClass : CustomStringConvertible {
+    var description: String {
+        
+        return collectPathValues().map {
+            (a,b) in
+            let ad = a.map { "\($0)" }
+            return "\(ad.joinWithSeparator(".")) \(b)"
+        }.joinWithSeparator("\n")
+        
+        
+        
+    }
+    
+    func collectPathValues() -> [([Key], Set<Value>)] {
+        var array = self.valueStore.isEmpty ? [([Key], Set<Value>)]() : [([Key](), self.valueStore)]
+        
+        for (key,trie) in trieStore {
+            for (path,values) in trie.collectPathValues() {
+                let pair = ([key] + path, values)
+                array.append(pair)
+            }
+        }
+        
+        return array
+    }
+}
+
 extension TrieClass : TrieType {
     
     func insert(value: Value) {

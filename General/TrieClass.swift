@@ -8,9 +8,7 @@
 
 import Foundation
 
-final class TrieClass<K: Hashable, V: Hashable> {
-    typealias Key = K
-    typealias Value = V
+final class TrieClass<Key: Hashable, Value: Hashable> {
     private var trieStore = [Key: TrieClass<Key, Value>]()
     private var valueStore = Set<Value>()
     

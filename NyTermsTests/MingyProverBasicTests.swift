@@ -56,7 +56,7 @@ class MingyProverBasicTests: XCTestCase {
         
         let prover = MingyProver(clauses: [satisfiable])
         let (status,runtime) = measure { prover.run() }
-        print("runtime",runtime)
+        print("runtime",runtime)    
         XCTAssertEqual(STATUS_SAT, status)
     }
     

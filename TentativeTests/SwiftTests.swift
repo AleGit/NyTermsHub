@@ -114,6 +114,30 @@ class SwiftTests: XCTestCase {
         
         
     }
+    
+    func testCollections() {
+        var arrayOfTriples = [
+            (a:0, b:"Hello", c:3.4),
+            (a:2, b:"World", c:8.76),
+            (a:-10, b:"!", c:-17.3)
+        ]
+        
+        XCTAssertEqual("World", arrayOfTriples[1].b)
+        
+        var entry = arrayOfTriples[1] // a value copy
+        entry.b = "America" // copy is changed but not original
+        XCTAssertEqual("World", arrayOfTriples[1].b)
+        
+        arrayOfTriples[1].b = "Earth"   // changing part entry in array
+        XCTAssertEqual("Earth", arrayOfTriples[1].b)
+        
+        arrayOfTriples[1] = (3,"Europe",18.0) // assign different entry
+        XCTAssertEqual("Europe", arrayOfTriples[1].b)
+        
+        arrayOfTriples[1] = entry // assign changed copy
+        XCTAssertEqual("America", arrayOfTriples[1].b)
+        
+    }
 }
 
 

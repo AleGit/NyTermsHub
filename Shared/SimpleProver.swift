@@ -17,8 +17,8 @@ final class SimpleProver<N:Node where N.Symbol == String> : YicesProver {
     ///     ∀x1,∀x2,∀y2 (a(x1) ∨ c(x1)) ∧ (a(x2) ∨ b(x2,x2))
     private var clauses = [(N,(yicesClause:term_t,yicesLiterals: [term_t]))]() // tptp clause, yices clause, yices literals
     private var selects = [Int]()
-    private var literalsTrie = TrieClass<SymHop,Int>()
-    private var clausesTrie = TrieClass<SymHop,Int>()
+    private var literalsTrie = TrieClass<SymHop<String>,Int>()
+    private var clausesTrie = TrieClass<SymHop<String>,Int>()
     
     /// false or bottom in tptp cnf syntax (empty disjunction)
     private let bottom = N(connective:"|",nodes:[N]())

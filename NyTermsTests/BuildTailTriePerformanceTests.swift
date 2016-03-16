@@ -11,7 +11,7 @@ import XCTest
 
 class BuildTailTriePerformanceTests: XCTestCase {
     
-    typealias SymHopTrie = TailTrie<SymHop,Int>
+    typealias SymHopTrie = TailTrie<SymHop<String>,Int>
     typealias SymbolTrie = TailTrie<String,Int>
     
     // MARK: LCL129-1 (5)

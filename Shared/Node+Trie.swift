@@ -2,8 +2,8 @@
 
 import Foundation
 
-enum SymHop {
-    case Symbol(String)
+enum SymHop<S:Hashable> {
+    case Symbol(S)
     case Hop(Int)
 }
 
@@ -22,14 +22,14 @@ extension SymHop : CustomStringConvertible {
     var description : String {
         switch self {
         case let .Symbol(symbol):
-            return symbol
+            return "\(symbol)"
         case let .Hop(hop):
             return "\(hop)"
         }
     }
 }
 
-func ==(lhs:SymHop, rhs:SymHop) -> Bool {
+func ==<S:Hashable>(lhs:SymHop<S>, rhs:SymHop<S>) -> Bool {
     switch(lhs,rhs) {
     case let (.Symbol(lsymbol), .Symbol(rsymbol)):
         return lsymbol == rsymbol
@@ -40,9 +40,8 @@ func ==(lhs:SymHop, rhs:SymHop) -> Bool {
     }
 }
 
-typealias SymHopPath = [SymHop]
+typealias SymHopPath = [SymHop<String>]
 typealias SymbolPath = [StringSymbol]
-
 
 extension Node where Symbol == String {
     
@@ -104,8 +103,8 @@ extension Node where Symbol == String {
     }
 }
 
-func buildNodeTrie<N:Node where N.Symbol == String>(nodes:[N]) -> TrieStruct<SymHop, N> {
-    var trie = TrieStruct<SymHop,N>()
+func buildNodeTrie<N:Node where N.Symbol == String>(nodes:[N]) -> TrieStruct<SymHop<String>, N> {
+    var trie = TrieStruct<SymHop<String>,N>()
     
     for node in nodes {
         let symHopPaths = node.symHopPaths

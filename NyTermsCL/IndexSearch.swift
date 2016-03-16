@@ -10,22 +10,22 @@ import Foundation
 
 let fastestSearch = {
     (literals :[TptpNode]) -> (Int,String) in
-    return trieSearch(TrieClass<SymHop,Int>(), literals:literals)
+    return trieSearch(TrieClass<SymHop<String>,Int>(), literals:literals)
 }
 
 let fasterSearch = {
     (literals :[TptpNode]) -> (Int,String) in
-    return trieSearch(TrieStruct<SymHop,Int>(), literals:literals)
+    return trieSearch(TrieStruct<SymHop<String>,Int>(), literals:literals)
 }
 
 let fastSearch = {
     (literals :[TptpNode]) -> (Int,String) in
-    return trieSearch(TailTrie<SymHop,Int>(), literals:literals)
+    return trieSearch(TailTrie<SymHop<String>,Int>(), literals:literals)
 }
 
 
 
-func trieSearch<T:TrieType, N:Node where T.Key==SymHop, T.Value==Int>(trieRoot:T, literals:[N]) -> (Int, String) {
+func trieSearch<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, T.Value==Int, N.Symbol==String>(trieRoot:T, literals:[N]) -> (Int, String) {
     let step = min(1000,literals.count/5)
     var count = 0
     var stepcount = count

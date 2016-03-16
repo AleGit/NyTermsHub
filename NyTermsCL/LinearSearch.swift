@@ -9,7 +9,7 @@
 import Foundation
 
 
-func linearSearch<N:Node>(literals:[N]) -> (Int,String) {
+func linearSearch<N:Node where N.Symbol==String>(literals:[N]) -> (Int,String) {
     let step = min(1000,literals.count/5)
     var count = 0
     var stepcount = count

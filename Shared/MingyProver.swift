@@ -133,6 +133,7 @@ extension MingyProver {
                 selectable: entailed, ignorable:  { $0 == oldLiteralIndex } )
             else {
                 assert(false,"no literal holds in model.")
+                return
             }
             
             if oldLiteralIndex != literalIndex {

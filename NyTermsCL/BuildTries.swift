@@ -43,11 +43,11 @@ struct BuildTries {
         
         print("* Term Paths *")
         
-        execute(TrieClass<SymHop,Int>(), literals:literals) { $0.symHopPaths }
+        execute(TrieClass<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
         
         print("* Discrimination Tree *")
         
-        execute(TrieClass<Symbol,Int>(), literals:literals) { $0.preorderPath }
+        execute(TrieClass<String,Int>(), literals:literals) { $0.preorderPath }
         
         print("")
     }
@@ -69,17 +69,17 @@ struct BuildTries {
                 print(name, literals.count,"literals read in", duration.prettyTimeIntervalDescription, "from",path)
                 print("* Term Paths *")
                 
-                execute(TailTrie<SymHop,Int>(), literals:literals) { $0.symHopPaths }
-                execute(TailTrie<Symbol,Int>(), literals:literals) { $0.symbolPaths }
-                execute(TrieStruct<SymHop,Int>(), literals:literals) { $0.symHopPaths }
-                execute(TrieStruct<Symbol,Int>(), literals:literals) { $0.symbolPaths }
-                execute(TrieClass<SymHop,Int>(), literals:literals) { $0.symHopPaths }
-                execute(TrieClass<Symbol,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TailTrie<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TailTrie<String,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TrieStruct<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TrieStruct<String,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TrieClass<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TrieClass<String,Int>(), literals:literals) { $0.symbolPaths }
                 
                 print("* Discrimination Trees *")
-                execute(TrieStruct<Symbol,Int>(), literals:literals) { [$0.preorderPath] }
-                execute(TrieStruct<Symbol,Int>(), literals:literals) { $0.preorderPath }
-                execute(TrieClass<Symbol,Int>(), literals:literals) { $0.preorderPath }
+                execute(TrieStruct<String,Int>(), literals:literals) { [$0.preorderPath] }
+                execute(TrieStruct<String,Int>(), literals:literals) { $0.preorderPath }
+                execute(TrieClass<String,Int>(), literals:literals) { $0.preorderPath }
                 
                 print("")
                 

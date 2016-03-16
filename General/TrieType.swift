@@ -195,7 +195,7 @@ private func candidates<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:
     return result
 }
 
-func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:Hashable, N.Symbol==String>(indexed:T, term:N) -> Set<T.Value>? {
+func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, T.Value:Hashable, N.Symbol==String>(indexed:T, term:N) -> Set<T.Value>? {
     var queryTerm: N
     switch term.symbol {
     case "~":

@@ -12,7 +12,7 @@ import XCTest
 class BuildTrieClassPerformanceTests: XCTestCase {
     
     typealias SymHopTrie = TrieClass<SymHop,Int>
-    typealias SymbolTrie = TrieClass<Symbol,Int>
+    typealias SymbolTrie = TrieClass<String,Int>
     
     // MARK: LCL129-1 (5)
     

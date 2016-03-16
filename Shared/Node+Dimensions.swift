@@ -62,9 +62,9 @@ extension Node {
 
 
 typealias SymbolIndications = (type:SymbolType,arities:Set<Int>,occurences:Int)
-typealias NodeDimensions = (height:Int, size:Int, width:Int, indications:[Symbol:SymbolIndications])
+typealias NodeDimensions = (height:Int, size:Int, width:Int, indications:[StringSymbol:SymbolIndications])
 
-extension Node {
+extension Node where Symbol == String {
     /// Start at predicate node (atom) or above (negative literal, clause, formula)
     func dimensions() -> NodeDimensions {
         let belowPredicate = false // we assume that we start above or at predicates

@@ -78,14 +78,14 @@ func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
         }
         return result
     case (_,_) where lhs.symbol == rhs.symbol:
-        assert(lhs.symbol == "|", "\(lhs.symbol) must not be variadic (\(lhs.nodes!.count),\(rhs.nodes!.count)")
+//        assert(lhs.symbol == "|", "\(lhs.symbol) must not be variadic (\(lhs.nodes!.count),\(rhs.nodes!.count)")
         return nil
     default:
         return nil
     }
 }
 
-extension Node {
+extension Node where Symbol == String {
     /// If `self` is not P then P will be returned,
     /// if `self` is A != B then A = B will be returned.
     /// Otherwise nil will be returned.
@@ -113,7 +113,7 @@ extension Node {
 /// 'lhs ~?= rhs' contstructs mgu(~lhs,rhs) or mgu(lhs,~rhs) iff lhs and rhs are clashing,
 /// i.e. the negation of one is unifiable with the other.
 /// Otherwise it returns *nil*.
-func ~?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
+func ~?=<T:Node where T.Symbol == String>(lhs:T, rhs:T) -> [T:T]? {
     
     if let l = lhs.unnegatedNode {
         return l =?= rhs
@@ -148,13 +148,13 @@ func **<T:Node>(t:T, s:T) -> T {
 }
 
 /// 't ** i' appends `@i` to any variable name.
-func **<T:Node>(t:T, idx:Int) -> T {
+func **<T:Node where T.Symbol==String>(t:T, idx:Int) -> T {
     guard let nodes = t.nodes else { return T(variable:"\(t.symbol)@\(idx)") }
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** idx })
 }
 
 /// 't⊥' replaces all variables in t with constant '⊥'.
-postfix func ⊥<T:Node>(t:T) -> T {
+postfix func ⊥<T:Node where T.Symbol == String>(t:T) -> T {
     return t ** T(constant:"⊥")
 }
 

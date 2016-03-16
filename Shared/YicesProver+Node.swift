@@ -19,7 +19,7 @@ protocol YicesProver {
 extension YicesProver {
     
     /// Build a yices disjunction from clause.
-    func clause<N:Node>(clause:N) -> (yicesClause:term_t,yicesLiterals:[term_t]) {
+    func clause<N:Node where N.Symbol==String>(clause:N) -> (yicesClause:term_t,yicesLiterals:[term_t]) {
         assert(clause.isClause,"'\(clause)' is not a clause.")
         
         guard let literals = clause.nodes where literals.count > 0 else {
@@ -39,7 +39,7 @@ extension YicesProver {
     /// - an equation
     /// - an inequation
     /// - a predicatate term or a proposition constant
-    private func literal<N:Node>(literal:N) -> term_t {
+    private func literal<N:Node where N.Symbol == String>(literal:N) -> term_t {
         assert(literal.isLiteral,"'\(literal)' is not a literal.")
         
         guard let nodes = literal.nodes
@@ -47,7 +47,7 @@ extension YicesProver {
                 return yices_false()
         }
         
-        let type = literal.symbol.type ?? SymbolType.Predicate
+        let type = N.quadruple(literal.symbol)?.type ?? SymbolType.Predicate
         
         switch type {
         case .Negation:
@@ -75,7 +75,7 @@ extension YicesProver {
     }
     
     /// Build uninterpreted function term from term.
-    private func term<N:Node>(term:N) -> term_t {
+    private func term<N:Node where N.Symbol==String>(term:N) -> term_t {
         assert(term.isTerm,"'\(term)' is not a term.")
         guard let nodes = term.nodes else {
             return self.🚧 // substitute all variables with global constant '⊥'
@@ -86,7 +86,7 @@ extension YicesProver {
     }
     
     /// Build predicate or function.
-    private func application<N:Node>(symbol:Symbol, nodes:[N], term_tau:type_t) -> term_t {
+    private func application<N:Node where N.Symbol==String>(symbol:N.Symbol, nodes:[N], term_tau:type_t) -> term_t {
         
         guard nodes.count > 0 else {
             return constant(symbol,term_tau: term_tau)
@@ -108,7 +108,7 @@ extension YicesProver {
     }
     
     /// Build proposition or constant.
-    private func constant(symbol:Symbol, term_tau:type_t) -> term_t {
+    private func constant(symbol:String, term_tau:type_t) -> term_t {
         var t = yices_get_term_by_name(symbol)
         if t == NULL_TERM {
             t = yices_new_uninterpreted_term(term_tau)

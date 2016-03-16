@@ -177,7 +177,7 @@ func extractVariants<T:TrieType where T.Key==SymHop, T.Value:Hashable>(trie:T, p
     return extractVariants(subtrie, path:tail)
 }
 
-private func candidates<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(
+private func candidates<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable, N.Symbol==String>(
     indexed:T,
     queryTerm:N,
     extract:(T, path:SymHopPath) -> Set<T.Value>?
@@ -195,7 +195,7 @@ private func candidates<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable
     return result
 }
 
-func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(indexed:T, term:N) -> Set<T.Value>? {
+func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable, N.Symbol==String>(indexed:T, term:N) -> Set<T.Value>? {
     var queryTerm: N
     switch term.symbol {
     case "~":
@@ -210,7 +210,7 @@ func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop, T.Value:Ha
     return candidates(indexed, queryTerm:queryTerm) { a,b in extractUnifiables(a,path:b) }
 }
 
-func candidateVariants<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable>(indexed:T, term:N) -> Set<T.Value>? {
+func candidateVariants<T:TrieType, N:Node where T.Key==SymHop, T.Value:Hashable, N.Symbol==String>(indexed:T, term:N) -> Set<T.Value>? {
     return candidates(indexed, queryTerm:term) { a,b in extractVariants(a,path:b) }
 }
 

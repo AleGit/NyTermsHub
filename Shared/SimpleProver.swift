@@ -6,7 +6,7 @@ import Foundation
 
 
 @available(*, deprecated=1.0)
-final class SimpleProver<N:Node> : YicesProver {
+final class SimpleProver<N:Node where N.Symbol == String> : YicesProver {
     /// A list of first order clauses.
     /// These clauses are implicit universally quantified and variable distinct.
     ///
@@ -26,7 +26,7 @@ final class SimpleProver<N:Node> : YicesProver {
     private var indexOfFirstUnassertedClause = 0
     
     /// a collection of symbols and their semantics
-    var symbols : [Symbol:SymbolQuadruple]
+    var symbols : [StringSymbol:SymbolQuadruple]
     
     /// a pointer to a yices context
     private let ctx : COpaquePointer
@@ -54,7 +54,7 @@ final class SimpleProver<N:Node> : YicesProver {
     
     /// We assign a list of clauses and a list of predefined symbols to our prover
     /// Goal: prove that the clauses are unsatisfiable.
-    required init(clauses:[N], predefined symbols:[Symbol:SymbolQuadruple]) {
+    required init(clauses:[N], predefined symbols:[StringSymbol:SymbolQuadruple]) {
         
         // create a yices context with default configuration
         self.ctx = yices_new_context(nil)

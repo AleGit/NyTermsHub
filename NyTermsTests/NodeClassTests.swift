@@ -110,7 +110,7 @@ class NodeClassTests: XCTestCase {
         XCTAssertEqual(0, vo_faa.count)
         XCTAssertEqual(2, vo_fxy.count)
         
-        let vfaa = VariableCensus()
+        let vfaa = [String:Int]()
         let vfxy = ["X":1,"Y":1]
         
         XCTAssertTrue(vfaa == vo_faa)

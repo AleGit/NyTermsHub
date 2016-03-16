@@ -9,11 +9,11 @@
 import Foundation
 
 /// (D.4.3.1) A *precedence* is a proper order on a signature
-typealias precedence = (Symbol,Symbol) -> Bool
 
 protocol Order {
+    typealias N:Node
     
-    func greaterThan<T:Node>(s:T, t:T) -> Bool
+    func greaterThan(s:N, t:N) -> Bool
 }
 
 
@@ -32,14 +32,16 @@ protocol Order {
 /// 2. t = g(t<sub>1</sub>,...,t<sub>m</sub>,
 /// f>g, and s><sub>LPO</sub>t<sub>i</sub> for all i in 1...m
 /// 3. s<sub>i</sub> = t or s<sub>i</sub> ><sub>LPO</sub> t for some i in 1...n
-struct LexicographicPathOrder : Order {
-    let p:precedence
+struct LexicographicPathOrder<N:Node> : Order {
+    typealias Precedence = (N.Symbol,N.Symbol) -> Bool
     
-    init(p:precedence) {
+    let p:Precedence
+    
+    init(p:Precedence) {
         self.p = p
     }
     
-    func greaterThan<T:Node>(s:T, t:T) -> Bool {
+    func greaterThan(s:N, t:N) -> Bool {
         assert(s.isTerm)
         assert(t.isTerm)
 
@@ -97,14 +99,14 @@ struct LexicographicPathOrder : Order {
 /// (D.4.4.1) A *weight function* for a signature *F* is a pair (*w*,w<sub>0</sub>)
 /// of a mapping *w*: *F* -> **N** and constant w<sub>0</sub> such that
 /// *w*(c) > w<sub>0</sub> for every constant c in *F*.
-typealias weight = (w:Symbol -> Int, w0:Int)
+typealias weight = (w:StringSymbol -> Int, w0:Int)
 
 /// (D.4.4.2) Let *F* be a signature and (*w*,w<sub>0</sub> a weight function for *F*.
 /// The weight of a term t is defined as follows:
 /// 1. w(x) = w<sub>0</sub>
 typealias weighting = Node -> Int
 
-func makeWeighting<T:Node>(w: weight) -> ((T)->Int) {
+func makeWeighting<T:Node where T.Symbol == String>(w: weight) -> ((T)->Int) {
     
     var wt: ((T)->Int)? = nil
     
@@ -136,16 +138,18 @@ func makeWeighting<T:Node>(w: weight) -> ((T)->Int) {
 /// s<sub>j</sub> = t<sub>j</sub>
 /// forall j<i and s<sub>i</sub> ><sub>kbo</sub> t<sub>i</sub>,or
 /// * s = f(s<sub>1</sub>,...,s<sub>n</sub>), t = g(t<sub>1</sub>,...,t<sub>m</sub>), and f > g.
-struct KnuthBendixOrder : Order {
-    let p:precedence
-    let w:weighting
+struct KnuthBendixOrder<N:Node> : Order {
+    typealias Precedence = (N.Symbol,N.Symbol) -> Bool
+    typealias Weighting = (N) -> Int
+    let p:Precedence
+    let w:Weighting
     
-    init(p:precedence, w:weighting) {
+    init(p:Precedence, w:Weighting) {
         self.p = p
         self.w = w
     }
     
-    func greaterThan<T:Node>(s:T, t:T) -> Bool {
+    func greaterThan(s:N, t:N) -> Bool {
         assert(s.isTerm)
         assert(t.isTerm)
         

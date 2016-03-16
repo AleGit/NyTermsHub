@@ -9,7 +9,7 @@
 import Foundation
 
 
-final class MingyProver<N:Node> : YicesProver {
+final class MingyProver<N:Node where N.Symbol == String> : YicesProver {
     
     private let ctx : COpaquePointer
     let free_tau = yices_int_type()

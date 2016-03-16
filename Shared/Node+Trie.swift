@@ -41,10 +41,10 @@ func ==(lhs:SymHop, rhs:SymHop) -> Bool {
 }
 
 typealias SymHopPath = [SymHop]
-typealias SymbolPath = [Symbol]
+typealias SymbolPath = [StringSymbol]
 
 
-extension Node {
+extension Node where Symbol == String {
     
     var symHopPaths : [SymHopPath] {
         guard let nodes = self.nodes else {
@@ -104,7 +104,7 @@ extension Node {
     }
 }
 
-func buildNodeTrie<N:Node>(nodes:[N]) -> TrieStruct<SymHop, N> {
+func buildNodeTrie<N:Node where N.Symbol == String>(nodes:[N]) -> TrieStruct<SymHop, N> {
     var trie = TrieStruct<SymHop,N>()
     
     for node in nodes {

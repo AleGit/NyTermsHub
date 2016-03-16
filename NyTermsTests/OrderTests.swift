@@ -16,7 +16,7 @@ class OrderTests: XCTestCase {
     
     func testSimpleLPO() {
         let signature = Set(["+","×","s"])
-        func myp(l:Symbol, r:Symbol) -> Bool {
+        func myp(l:String, r:String) -> Bool {
             guard l != r else { return false }
             
             XCTAssertTrue(signature.contains(l))
@@ -28,7 +28,7 @@ class OrderTests: XCTestCase {
             default: return false
             }
         }
-        let lpo = LexicographicPathOrder(p: myp)
+        let lpo = LexicographicPathOrder<T>(p: myp)
         
         let O = T(constant:"0")
         let x = T(variable:"x")
@@ -75,7 +75,7 @@ class OrderTests: XCTestCase {
     }
     
     func testWeight() {
-        let w : weight = ( w:{ (s:Symbol) -> Int in return s.hashValue }, w0:1)
+        let w : weight = ( w:{ (s:String) -> Int in return s.hashValue }, w0:1)
         XCTAssertEqual(w.w("f"),"f".hashValue)
         XCTAssertEqual(w.w0,1)
     }

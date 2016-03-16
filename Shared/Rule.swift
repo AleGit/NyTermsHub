@@ -3,10 +3,9 @@
 
 import Foundation
 
-typealias SymbolCensus = [ String : (count:Int,arities:Set<Int>)]
-typealias VariableCensus = [String : Int]
 
-func ==(lhs:SymbolCensus,rhs:SymbolCensus) -> Bool {
+
+func ==<S:Hashable>(lhs:[S:(count:Int,arities:Set<Int>)],rhs:[S:(count:Int,arities:Set<Int>)]) -> Bool {
     if lhs.count != rhs.count { return false }
     
     for (symbol,(count:occurs,arities:arities)) in lhs {
@@ -18,7 +17,10 @@ func ==(lhs:SymbolCensus,rhs:SymbolCensus) -> Bool {
     return true
 }
 
-extension Node {
+extension Node
+{
+    typealias SymbolCensus = [ Symbol : (count:Int,arities:Set<Int>)]
+    typealias VariableCensus = [Symbol : Int]
     /// Get the set of all variable terms.
     var allVariables : Set<Self> {
         guard let ts = self.nodes else { return Set(arrayLiteral: self) }
@@ -77,7 +79,7 @@ extension Node {
         
         if !(rhs.allVariables.isSubsetOf(lhs.allVariables)) { return nil }  // allVariables(rhs) is not a subset of allVariables(lhs), hence the equation is not a rule
         
-        return Self(symbol: Symbol.equalsSign, nodes: [lhs,rhs]) // the equation is a rule
+        return Self(symbol: Self.equalsSign(), nodes: [lhs,rhs]) // the equation is a rule
     }
     
     
@@ -166,7 +168,7 @@ extension Node {
     /// obtained from overlap (l<sub>1</sub>→r<sub>1</sub>,p,l<sub>2</sub>→r<sub>2</sub>).
     func criticalPairs(other:Self) -> [Self] {
         return self.criticalPeaks(other).map {
-            Self(equational:"=", nodes: [$0.l2r1, $0.r2])
+            Self(equational:Self.equalsSign(), nodes: [$0.l2r1, $0.r2])
         }
     }
     

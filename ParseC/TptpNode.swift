@@ -67,11 +67,11 @@ final class TptpNode: NSObject, Node {
 
 extension TptpNode {
     
-    convenience init(symbol:Symbol) {
+    convenience init(symbol:StringSymbol) {
         self.init(symbol:symbol, nodes:[TptpNode]())
     }
     
-    convenience init(variable symbol:Symbol) {
+    convenience init(variable symbol:StringSymbol) {
         assert(symbol.category != SymbolCategory.Auxiliary, "variables must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "variables must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "variables must not overlap equational symbols")
@@ -79,7 +79,7 @@ extension TptpNode {
         self.init(symbol:symbol,nodes: nil)
     }
     
-    convenience init(constant symbol:Symbol) {
+    convenience init(constant symbol:StringSymbol) {
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted constant symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted constant symbols must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "uninterpreted constant symbols must not overlap equational symbols")
@@ -87,7 +87,7 @@ extension TptpNode {
         self.init(symbol:symbol)
     }
     
-    convenience init(functional symbol:Symbol) {
+    convenience init(functional symbol:StringSymbol) {
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "uninterpreted function symbols must not overlap equational symbols")
@@ -95,7 +95,7 @@ extension TptpNode {
         self.init(symbol:symbol)
     }
     
-    convenience init(functional symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(functional symbol:StringSymbol, nodes:[TptpNode]) {
         assert(nodes.count > 0, "uninterpreted functions must have one argumument at least")
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted function symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted function symbols must not overlap connective symbols")
@@ -104,7 +104,7 @@ extension TptpNode {
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    convenience init(predicate symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(predicate symbol:StringSymbol, nodes:[TptpNode]) {
         assert(symbol.category != SymbolCategory.Auxiliary, "uninterpreted predicate symbols must not overlap auxiliary symbols")
         assert(symbol.category != SymbolCategory.Connective, "uninterpreted predicate symbols must not overlap connective symbols")
         assert(symbol.category != SymbolCategory.Equational, "uninterpreted predicate symbols must not overlap equational symbols")
@@ -114,23 +114,23 @@ extension TptpNode {
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    convenience init(equational symbol:Symbol) {
+    convenience init(equational symbol:StringSymbol) {
         assert(symbol.category == SymbolCategory.Equational, "equational symbols must be predefined")
         self.init(symbol:symbol)
     }
     
-    convenience init(equational symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(equational symbol:StringSymbol, nodes:[TptpNode]) {
         assert(nodes.count == 2)
         assert(symbol.category == SymbolCategory.Equational, "equational symbols must be predefined")
         self.init(symbol:symbol,nodes: nodes)
     }
     
-    convenience init(connective symbol:Symbol) {
+    convenience init(connective symbol:StringSymbol) {
         assert(symbol.category == SymbolCategory.Connective, "connective symbols must be predefined")
         self.init(symbol:symbol)
     }
     
-    convenience init(connective symbol:Symbol, nodes:[TptpNode]) {
+    convenience init(connective symbol:StringSymbol, nodes:[TptpNode]) {
         // assert(nodes.count > 0)
         assert(symbol.category == SymbolCategory.Connective, "connective symbols must be predefined")
         self.init(symbol:symbol,nodes: nodes)

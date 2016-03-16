@@ -168,7 +168,7 @@ class YicesSatTrials : XCTestCase {
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
     
-    func build_yices_term<N:Node>(term:N, range_tau:type_t) -> term_t {
+    func build_yices_term<N:Node where N.Symbol==String>(term:N, range_tau:type_t) -> term_t {
         
         guard let nodes = term.nodes else { return general_constant }   // map variables to constant '⊥'
         

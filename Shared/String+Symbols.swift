@@ -3,7 +3,7 @@
 
 import Foundation
 
-typealias Symbol = String
+typealias StringSymbol = String
 typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
@@ -29,7 +29,7 @@ struct Symbols {
     
     @available(*, deprecated=1.0)
     /// a collection of universal auxilary and function symbols
-    static let universalSymbols : [Symbol:SymbolQuadruple] = [
+    static let universalSymbols : [StringSymbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
         ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
@@ -54,7 +54,7 @@ struct Symbols {
     
     @available(*, deprecated=1.0)
     /// a collection of [TPTP Syntax](http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html) specific symbols
-    static let tptpSymbols : [Symbol:SymbolQuadruple] = [
+    static let tptpSymbols : [StringSymbol:SymbolQuadruple] = [
         
         // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
         "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
@@ -252,7 +252,7 @@ enum SymbolNotation {
 //    "!=" : SymbolType.Inequation
 //]
 
-extension Symbol {
+extension StringSymbol {
     static let equalsSign = "="
     static let separator = ","
     

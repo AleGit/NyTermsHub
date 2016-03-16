@@ -59,11 +59,11 @@ func lex<T:Node>(ts:[T], ss:[T], gt:(T, T) -> term_t, ge:(T, T) -> term_t) -> te
 
 struct Precedence {
     
-    var vars = [Symbol: term_t]() // precedence variables
+    var vars = [String: term_t]() // precedence variables
     
     var count :Int? = nil          // counter value for this particular LPO instance
     
-    init(count: Int, fs:[Symbol]){
+    init(count: Int, fs:[String]){
         self.count = count
         for f in fs {
             let name = "prec" + String(count) + f
@@ -71,7 +71,7 @@ struct Precedence {
         }
     }
     
-    func get(f:Symbol) -> term_t {
+    func get(f:String) -> term_t {
         return vars[f]!
     }
     
@@ -88,16 +88,16 @@ struct LPO {
     
     var count: Int          // counter value for this particular LPO instance
     
-    init(count:Int, fs:[Symbol]) {
+    init(count:Int, fs:[String]) {
         self.count = count
         prec = Precedence(count: count, fs: fs)
     }
     
-    func ge<T:Node>(l:T, r:T) -> term_t  {
+    func ge<T:Node where T.Symbol==String>(l:T, r:T) -> term_t  {
         return l.isEqual(r) ? Yices.top() : Yices.bot()
     }
     
-    func gt<T:Node>(l:T, r:T) -> term_t {
+    func gt<T:Node where T.Symbol==String>(l:T, r:T) -> term_t {
         guard l.isTerm else { return Yices.bot() }
         guard r.is_subterm(l) else { return Yices.top() }
         guard r.isTerm else { return Yices.bot() } // subterm case already handled
@@ -124,15 +124,15 @@ struct LPO {
 struct KBO {
     
     var prec: Precedence
-    var weight_vars: [Symbol: term_t]
+    var weight_vars: [String: term_t]
     var w0: term_t
     
     var count: Int
     
-    init(count:Int, fs:[Symbol]) {
+    init(count:Int, fs:[String]) {
         self.count = count
         prec = Precedence(count: count, fs: fs)
-        weight_vars = [Symbol: term_t]()
+        weight_vars = [String: term_t]()
         w0 = Yices.one
         for f in fs {
             let name = "kbo" + String(count) + f
@@ -140,17 +140,17 @@ struct KBO {
         }
     }
     
-    func weight<T:Node>(t:T) -> term_t {
+    func weight<T:Node where T.Symbol==String>(t:T) -> term_t {
         guard t.isTerm else { return w0 }
         let ws = t.nodes!.map(weight)
         return weight_vars[t.symbol]! + ws.reduce(0, combine: +)
     }
     
-    func ge<T:Node>(l:T, r:T) -> term_t  {
+    func ge<T:Node where T.Symbol==String>(l:T, r:T) -> term_t  {
         return l.isEqual(r) ? Yices.top() : Yices.bot()
     }
     
-    func gt<T:Node>(l:T, r:T) -> term_t {
+    func gt<T:Node where T.Symbol==String>(l:T, r:T) -> term_t {
         guard l.isTerm else { return Yices.bot() }
         guard r.is_subterm(l) else { return Yices.top() }
         guard r.isTerm else { return Yices.bot() } // subterm case already handled

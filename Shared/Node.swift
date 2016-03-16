@@ -14,10 +14,25 @@ import Foundation
 /// * (root) clause terms: a=X | b ~= f(X,a)
 /// * (root) formuala terms: ...
 protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
+    typealias Symbol : Hashable
     var symbol : Symbol { get }
     var nodes : [Self]? { get }
     
     init (symbol:Symbol, nodes:[Self]?)
+    
+    static func quadruple(symbol:Symbol) -> SymbolQuadruple?
+    static func equalsSign() -> Symbol
+    
+    
+}
+
+extension Node where Symbol == String {
+    static func quadruple(symbol:Symbol) -> SymbolQuadruple? {
+        return symbol.quadruple
+    }
+    static func equalsSign () -> Symbol { return "=" }
+    
+
 }
 
 // MARK: convenience initializers
@@ -92,7 +107,7 @@ extension Node {
 
 // MARK: CustomStringConvertible
 
-extension Node {
+extension Node where Symbol == String {
     
     
     /// Representation of self:Node in TPTP Syntax.
@@ -176,7 +191,7 @@ extension Node {
     }
 }
 
-extension Node {
+extension Node where Symbol == String {
     
     var laTeXDescription : String {
         return buildDescription ( LaTeX.Symbols.decorate )
@@ -184,7 +199,7 @@ extension Node {
     }
 }
 
-extension Node {
+extension Node where Symbol == String {
     private func buildSyntaxTree(level:Int, decorate:(symbol:String,type:SymbolType)->String) -> String {
         
         var s = "node "
@@ -262,8 +277,8 @@ extension Node {
 
 // MARK: Conversion between `Node` implemenations.
 
-extension Node {
-    init<T:Node>(_ s:T) {    // similar to Int(3.5)
+extension Node where Symbol == String {
+    init<T:Node where T.Symbol == String>(_ s:T) {    // similar to Int(3.5)
         
         // no conversion between same types
         if let t = s as? Self {

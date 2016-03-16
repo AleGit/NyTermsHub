@@ -16,8 +16,6 @@ extension Node where Symbol == String {
         return symbol.quadruple
     }
     
-    static func equalsSign () -> Symbol { return "=" }
-    
     static func string(symbol:Symbol) -> String {
         return symbol
     }

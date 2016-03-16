@@ -29,7 +29,9 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     init (symbol:Symbol, nodes:[Self]?)
     
     static func quadruple(symbol:Symbol) -> SymbolQuadruple?
-    static func equalsSign() -> Symbol
+    
+    static var equalsSign : Symbol { get }
+    static var starSign : Symbol { get }
     
     static func string(symbol:Symbol) -> String
 }

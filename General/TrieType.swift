@@ -130,7 +130,7 @@ extension TrieType where Value:Hashable {
     
 }
 
-func extractUnifiables<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(trie:T, path:SymHopPath) -> Set<T.Value>? {
+func extractUnifiables<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(trie:T, path:[T.Key]) -> Set<T.Value>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
@@ -167,7 +167,7 @@ func extractUnifiables<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>
 
 
 /// extract exact path matches
-func extractVariants<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(trie:T, path:SymHopPath) -> Set<T.Value>? {
+func extractVariants<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(trie:T, path:[T.Key]) -> Set<T.Value>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
@@ -180,7 +180,7 @@ func extractVariants<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(t
 private func candidates<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:Hashable, N.Symbol==String>(
     indexed:T,
     queryTerm:N,
-    extract:(T, path:SymHopPath) -> Set<T.Value>?
+    extract:(T, path:[T.Key]) -> Set<T.Value>?
     
     ) -> Set<T.Value>? {
     

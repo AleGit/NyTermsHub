@@ -12,6 +12,9 @@ import NyTerms
 struct NodeStruct : Node {
     let symbol : String
     let nodes : [NodeStruct]?
+    
+    static let equalsSign = "="
+    static let starSign = "*"
 }
 
 extension NodeStruct : StringLiteralConvertible {

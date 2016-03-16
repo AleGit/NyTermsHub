@@ -19,6 +19,11 @@ final class NodeClass : Node {
     }
 }
 
+extension NodeClass {
+    static let equalsSign = "="
+    static let starSign = "*"
+}
+
 func ==(lhs:NodeClass, rhs:NodeClass) -> Bool {
     
     if lhs === rhs { return true }

@@ -51,6 +51,12 @@ enum NodeEnum : Node {
     }
 }
 
+extension NodeEnum {
+    
+    static let equalsSign = "="
+    static let starSign = "*"
+}
+
 extension NodeEnum : StringLiteralConvertible {
     // TODO: Implementation of `StringLiteralConvertible` should not depend on `TptpNode`.
     init(stringLiteral value: StringLiteralType) {

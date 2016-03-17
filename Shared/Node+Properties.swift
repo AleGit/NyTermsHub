@@ -21,7 +21,7 @@ extension Node {
     
     /// Flat Check if `self` represents a (non-empty) tuple of variables.
     private var isTupleOfVariables : Bool {
-        guard Self.quadruple(self.symbol)?.type == SymbolType.Tuple else { return false }
+        guard Self.quintuple(self.symbol)?.type == SymbolType.Tuple else { return false }
         guard let nodes = self.nodes else { return false }
         guard nodes.count > 0 else { return false } /* a tuple of variables must not be empty */
         return nodes.reduce(true) { $0 && $1.isVariable }
@@ -58,7 +58,7 @@ extension Node {
     /// - an expression `p(t_1, ..., t_n)` is a (predicate) term
     var isTerm : Bool { // Order.swift; assert
         guard let nodes = self.nodes else { return true; } // a variable is a term
-        guard let type = Self.quadruple(self.symbol)?.type else {
+        guard let type = Self.quintuple(self.symbol)?.type else {
             // type is not defined, i.e. symbol is not predefined and not registered
             return nodes.reduce(true) { $0 && $1.isTerm }
         }
@@ -70,7 +70,7 @@ extension Node {
     ///
     /// - an expression `~p` is a negated predicate (term), if `p` is a predicate (term).
     private var isNegatedPredicate : Bool {
-        guard Self.quadruple(self.symbol)?.type == SymbolType.Negation else { return false }
+        guard Self.quintuple(self.symbol)?.type == SymbolType.Negation else { return false }
         guard let nodes = self.nodes where nodes.count == 1 else { return false }
         
         return nodes.first!.isPredicate
@@ -81,7 +81,7 @@ extension Node {
     /// - an expression `p(t_1,...t_n)` is a positive predicate term
     /// if `p` is a predicate symbol and `t_1`,...,`t_n` are (function) nodes.
     private var isPredicate : Bool {
-        if let type = Self.quadruple(self.symbol)?.type {
+        if let type = Self.quintuple(self.symbol)?.type {
             // if the symbol is defined it must be a predicatate symbol
             guard type == SymbolType.Predicate else { return false }
         }
@@ -95,7 +95,7 @@ extension Node {
     /// - an expression `s ≠ t` is an inequation if `s` and `t` are function terms.
     /// - an expression `~E` is an inequation, if `E` is an equation.
     private var isInequation : Bool {
-        guard let type = Self.quadruple(self.symbol)?.type else { return false }    // an undefined node type cannot be an inequation
+        guard let type = Self.quintuple(self.symbol)?.type else { return false }    // an undefined node type cannot be an inequation
         guard let nodes = self.nodes else { return false }  // a variable is not an inequation
         
         switch (type, nodes.count) {
@@ -117,7 +117,7 @@ extension Node {
     ///
     /// `~I` will never be recognized as an equation, even when `I` is an inequation.
     private var isEquation : Bool {
-        guard let type = Self.quadruple(self.symbol)?.type where type == SymbolType.Equation else { return false }
+        guard let type = Self.quintuple(self.symbol)?.type where type == SymbolType.Equation else { return false }
         guard let nodes = self.nodes where nodes.count == 2 else { return false }
         return nodes.first!.isTerm && nodes.last!.isTerm
     }
@@ -143,14 +143,14 @@ extension Node {
     var isFormula : Bool {
         guard !self.isLiteral else { return true }
         
-        guard let quadruple = Self.quadruple(self.symbol)
-            where quadruple.category == SymbolCategory.Connective
+        guard let quintuple = Self.quintuple(self.symbol)
+            where quintuple.category == SymbolCategory.Connective
             else {
                 // undefined or non-connective symbol
                 return false
         }
         guard let nodes = self.nodes
-            where quadruple.arities.contains(nodes.count)
+            where quintuple.arities.contains(nodes.count)
             else {
                 // self has wrong number of subnodes
                 return false
@@ -168,7 +168,7 @@ extension Node {
         }
         
         // when the node is not a literal then it must be a disjunction
-        guard let type = Self.quadruple(self.symbol)?.type where type == SymbolType.Disjunction else { return false }
+        guard let type = Self.quintuple(self.symbol)?.type where type == SymbolType.Disjunction else { return false }
         
         // a disjunction must have a list of subnodes
         guard let nodes = self.nodes else { return false }
@@ -186,7 +186,7 @@ extension Node {
         }
         
         // the root not of a clause must be a disjunction
-        guard let type = Self.quadruple(self.symbol)?.type where type == SymbolType.Disjunction else { return false }
+        guard let type = Self.quintuple(self.symbol)?.type where type == SymbolType.Disjunction else { return false }
         
         // a disjunction must have a list of subnodes (even if it is empty)
         guard let nodes = self.nodes else { return false }
@@ -198,7 +198,7 @@ extension Node {
     /// Recursive check if `self` represents as unit clause, i.e. a clause with exactly one literal
     var isUnitClause : Bool {
         
-        guard let type = Self.quadruple(self.symbol)?.type where type == SymbolType.Disjunction else { return false }
+        guard let type = Self.quintuple(self.symbol)?.type where type == SymbolType.Disjunction else { return false }
         guard let nodes = self.nodes where nodes.count == 1 else { return false }
         
         return nodes.first!.isLiteral
@@ -207,7 +207,7 @@ extension Node {
     /// Recursive check if `self` represents a Horn clause, i.e. a clause with at most one positive literal.
     var isHornClause : Bool {
         
-        guard let type = Self.quadruple(self.symbol)?.type where type == SymbolType.Disjunction else {
+        guard let type = Self.quintuple(self.symbol)?.type where type == SymbolType.Disjunction else {
             /* self is not a disjunction, hence self is not a clause */
             assert(false,"not a disjunction, hence not a (horn) clause: \(self)")
             

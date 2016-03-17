@@ -47,7 +47,7 @@ extension YicesProver {
                 return yices_false()
         }
         
-        let type = N.quadruple(literal.symbol)?.type ?? SymbolType.Predicate
+        let type = N.quintuple(literal.symbol)?.type ?? SymbolType.Predicate
         
         switch type {
         case .Negation:

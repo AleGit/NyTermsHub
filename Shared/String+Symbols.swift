@@ -4,7 +4,7 @@
 import Foundation
 
 typealias StringSymbol = String
-typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+typealias Symbolquintuple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
     for (key,value) in rhs {
@@ -29,7 +29,7 @@ struct Symbols {
     
     @available(*, deprecated=1.0)
     /// a collection of universal auxilary and function symbols
-    static let universalSymbols : [StringSymbol:SymbolQuadruple] = [
+    static let universalSymbols : [StringSymbol:Symbolquintuple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
         ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
@@ -54,7 +54,7 @@ struct Symbols {
     
     @available(*, deprecated=1.0)
     /// a collection of [TPTP Syntax](http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html) specific symbols
-    static let tptpSymbols : [StringSymbol:SymbolQuadruple] = [
+    static let tptpSymbols : [StringSymbol:Symbolquintuple] = [
         
         // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
         "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
@@ -244,7 +244,7 @@ enum SymbolNotation {
 }
 
 // unused (introduce for workaround attempt *1* below)
-//private var symbols : [Symbol:SymbolQuadruple] = [
+//private var symbols : [Symbol:Symbolquintuple] = [
 //    "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1),
 //    "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2)
 //]
@@ -259,81 +259,25 @@ extension StringSymbol {
     static let equalsSign = "="
     static let separator = ","
     
-    var quadruple : SymbolQuadruple? {
-        switch self {
-            
-            // universal symbols
-            
-        case "" : return  (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0))
-        case "(" : return  (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case ")" : return  (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-        case "⟨" : return  (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case "⟩" : return  (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-        case "{" : return  (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case "}" : return  (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-        case "[" : return  (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case "]" : return  (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-            
-            // + − × ÷ (mathematical symbols)
-        case "+" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max)      //  X, X+Y, X+...+Z
-        case "−" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2)            // -X, X-Y
-        case "×" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max)      // X, X*Y, X*...*X
-        case "÷" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 2...2)
-            
-            // - (keyboard symbol)
-        case "-" : return  (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arities: 1...2)          // -X, X-Y
-            
-        case "=" : return  (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities: 2...2)
-            
-            // tptp symbols
-            
-            // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
-        case "&" : return  (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max))  // true; A; A & B; A & ... & Z
-        case "|" : return  (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:0..<Int.max)  // false; A; A | B; A | ... & Z
-            // ⟨unary_connective⟩ ::= ~
-        case "~" : return  (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1)          // ~A
-            // ⟨binary_connective⟩  ::= <=> | => | <= | <~> | ~<vline> | ~&
-        case "=>" : return  (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)       // A => B
-        case "<=" : return  (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)          // A <= B
-        case "<=>" : return  (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)              // A <=> B
-        case "~&" : return  (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)              // A ~& B
-        case "~|" : return  (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)               // A ~| B
-        case "<~>" : return  (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)             // A <~> B
-            // ⟨fol_quantifier⟩ ::= ! | ?
-        case "!" : return  (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arities:2...2)     // ! [X] : return A
-        case "?" : return  (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arities:2...2)       // ? [X] : return A
-            // ⟨gentzen_arrow⟩      ::= -->
-        case "-->" : return  (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:2...2)          // A --> B
-            // ⟨defined_infix_formula⟩  ::= ⟨term⟩ ⟨defined_infix_pred⟩ ⟨term⟩
-            // ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩
-            // ⟨infix_equality⟩     ::= =
-            //         case "=" : return  (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2),        // s = t
-            // ⟨fol_infix_unary⟩    ::= ⟨term⟩ ⟨infix_inequality⟩ ⟨term⟩
-            // ⟨infix_inequality⟩   ::= !=
-        case "!=" : return  (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2)        // s != t
-            
-        case "," : return  (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
-        default: return nil
-        }
-    }
     
-    var type : SymbolType? {
-        // Symbols.defaultSymbols[self]?.type accumulates memory with each call ...
-        
-        // return symbols[self]?.type       // *1* accumulates memory too !!!
-        // return symbolTypes[self]         // *2* accumulates memory too !!!
-        
-        return self.quadruple?.type         // *3* workaround
-    }
     
-    var category : SymbolCategory? {
-        return self.quadruple?.category
-    }
-    var notation : SymbolNotation? {
-        return self.quadruple?.notation
-    }
-    var arities : Range<Int>? {
-        return self.quadruple?.arities
-    }
+//    var type : SymbolType? {
+//        // Symbols.defaultSymbols[self]?.type accumulates memory with each call ...
+//        
+//        // return symbols[self]?.type       // *1* accumulates memory too !!!
+//        // return symbolTypes[self]         // *2* accumulates memory too !!!
+//        
+//        return self.quintuple?.type         // *3* workaround
+//    }
+//    
+//    var category : SymbolCategory? {
+//        return self.quintuple?.category
+//    }
+//    var notation : SymbolNotation? {
+//        return self.quintuple?.notation
+//    }
+//    var arities : Range<Int>? {
+//        return self.quintuple?.arities
+//    }
 }
 

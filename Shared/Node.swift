@@ -21,7 +21,7 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     
     init (symbol:Symbol, nodes:[Self]?)
     
-    static func quadruple(symbol:Symbol) -> SymbolQuadruple?
+    static func quintuple(symbol:Symbol) -> StringQuintuple?
     
     static func string(symbol:Symbol) -> String
     static func symbol(type:SymbolType) -> Symbol
@@ -64,7 +64,7 @@ extension Node {
     func isEqual(rhs:Self) -> Bool {
         if self.symbol != rhs.symbol  { return false }               // the symbols are equal
         
-        if self.nodes == nil && rhs.nodes == nil { return true }     // both are nil (both are variables)
+        if self.nodes == nil && rhs.nodes == nil { return true }     // both are nil. (both are variables)
         if self.nodes == nil || rhs.nodes == nil { return false }    // one is nil, not both. (one is variable, the other is not)
         return self.nodes! == rhs.nodes!                             // none is nil (both are functions)
     }

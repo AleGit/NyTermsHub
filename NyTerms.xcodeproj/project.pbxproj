@@ -186,7 +186,7 @@
 		510065701C897F0500F2A67B /* MingyProverBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MingyProverBasicTests.swift; sourceTree = "<group>"; };
 		5101485B1B90382B00D95B00 /* Node+Properties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Properties.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5103EB081C6A27D60079E0A0 /* ParsePerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePerformanceTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		510811EB1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+CustomStringConvertible.swift"; sourceTree = "<group>"; };
+		510811EB1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+CustomStringConvertible.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node(LaTeX).swift"; sourceTree = "<group>"; };
 		5116094A1C3993F10090D447 /* Node+Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Position.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51192D1A1B67B059008C03B2 /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Position.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -242,7 +242,7 @@
 		5154FF191C88273F00689C25 /* puzzles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = puzzles.txt; sourceTree = "<group>"; };
 		5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ProofPUZ010-1.txt"; sourceTree = "<group>"; };
 		51581E0C1C74684D00075A74 /* Arguments.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Arguments.md; sourceTree = "<group>"; };
-		515D462D1C999A7100A7111E /* Node(String).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node(String).swift"; sourceTree = "<group>"; };
+		515D462D1C999A7100A7111E /* Node(String).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node(String).swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515D91B61B6CFEF0000EDB3B /* TptpParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TptpParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		515D91BA1B6D0642000EDB3B /* ParseStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseStringTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515D91BD1B6D2513000EDB3B /* TptpNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TptpNode.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -313,7 +313,7 @@
 		51D8476B1C8084DC003EC848 /* TptpPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpPath.swift; sourceTree = "<group>"; };
 		51DF43031B73E2ED008C1F13 /* TptpTermTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpTermTests.swift; sourceTree = "<group>"; };
 		51E038121C92A596005BFD42 /* Auxiliary+Process.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Auxiliary+Process.swift"; sourceTree = "<group>"; };
-		51E038151C92B864005BFD42 /* Node+Dimensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Dimensions.swift"; sourceTree = "<group>"; };
+		51E038151C92B864005BFD42 /* Node+Dimensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Dimensions.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51E038181C92DAA3005BFD42 /* DimensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DimensionTests.swift; sourceTree = "<group>"; };
 		51E28CDE1C81780100404842 /* IndexSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexSearch.swift; sourceTree = "<group>"; };
 		51E28CE01C819F2600404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "../Docs/Complementaries v0.txt"; sourceTree = "<group>"; };

@@ -82,7 +82,7 @@ extension Node where Symbol == String {
             let key = self.symbol
             
             guard let nodes = self.nodes else {
-                assert(key.quadruple == nil) // variables must not be predefined
+                assert(Self.quintuple(key) == nil, "variable \(key) is predefined \(Self.quintuple(key)!))") 
                 assert(belowPredicate)
                 
                 var value = symbols[key] ?? (SymbolType.Variable,Set<Int>(),0)
@@ -98,7 +98,7 @@ extension Node where Symbol == String {
             }
             
             // types of symbols above predicate must be predefined
-            let type = key.type ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
+            let type = Self.quintuple(key)?.type ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
 
             // did the symbol appear befoe?, if not create an entry for function and predicate symbols with derived arity
             var value = symbols[key] ?? (type,Set(arrayLiteral: nodes.count),0)
@@ -106,10 +106,10 @@ extension Node where Symbol == String {
             assert(value.type == type,"\(key) can't be used as \(value.type) and \(type)")
             // predefined arities (range) or derived arity (set of one) must match
             assert((
-                key.arities?.contains(nodes.count) ?? false) // either the arity of a symbol is predefined and potentially variadic (e.g. disjunction)
+                Self.quintuple(key)?.arities.contains(nodes.count) ?? false) // either the arity of a symbol is predefined and potentially variadic (e.g. disjunction)
                 || value.arities.contains(nodes.count), // or defined at runtime with the first encounter (e.g. predicate and function symbols)
-                (key.arities != nil ?
-                    "Predefined arities \(key.arities!) does not contain" :
+                (Self.quintuple(key)?.arities != nil ?
+                    "Predefined arities \(Self.quintuple(key)!.arities) does not contain" :
                     "Runtime arities \(value.arities) does not contain variadic" )
                 + " arity \(nodes.count) for symbol \(key)."
             )

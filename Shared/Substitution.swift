@@ -85,7 +85,7 @@ func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     }
 }
 
-extension Node where Symbol == String {
+extension Node {
     /// If `self` is not P then P will be returned,
     /// if `self` is A != B then A = B will be returned.
     /// Otherwise nil will be returned.
@@ -95,7 +95,7 @@ extension Node where Symbol == String {
         
         /// guard let type = Symbols.defaultSymbols[self]?.type else { return nil } // the type of the node must be known !!! accumulates memory ???
         
-        guard let type = self.symbol.type else { return nil } // workaround
+        guard let type = Self.quintuple(self.symbol)?.type else { return nil } // workaround
         
         switch type {
         case SymbolType.Negation:
@@ -103,7 +103,7 @@ extension Node where Symbol == String {
             return nodes.first
         case SymbolType.Inequation:
             assert (nodes.count == 2, "an inequation with \(nodes.count) subnodes!")
-            return Self(equational: "=", nodes: nodes)
+            return Self(equational: Self.symbol(.Equation), nodes: nodes)
         default:
             return nil
         }

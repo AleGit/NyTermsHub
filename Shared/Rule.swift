@@ -104,7 +104,7 @@ extension Node {
     typealias Overlap = (l1r1:Self, position:[Int], l2r2:Self)
     
     
-    /// We call the quadruple (l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub>, p, l<sub>2</sub>σ, r<sub>2</sub>σ) 
+    /// We call the quintuple (l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub>, p, l<sub>2</sub>σ, r<sub>2</sub>σ) 
     /// a *critical peak*
     /// and the equation l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub> = r<sub>2</sub>σ a *critical pair*,
     /// obtained from overlap (l<sub>1</sub>→r<sub>1</sub>,p,l<sub>2</sub>→r<sub>2</sub>).

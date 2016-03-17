@@ -113,7 +113,7 @@ extension Node {
 /// 'lhs ~?= rhs' contstructs mgu(~lhs,rhs) or mgu(lhs,~rhs) iff lhs and rhs are clashing,
 /// i.e. the negation of one is unifiable with the other.
 /// Otherwise it returns *nil*.
-func ~?=<T:Node where T.Symbol == String>(lhs:T, rhs:T) -> [T:T]? {
+func ~?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     
     if let l = lhs.unnegatedNode {
         return l =?= rhs
@@ -137,7 +137,6 @@ func *<T:Node>(t:T, σ:[T:T]) -> T {
     guard let nodes = t.nodes else { return t }
     
     return T(symbol:t.symbol, nodes: nodes.map { $0 * σ })
-    
 }
 
 /// 't ** s' replaces all variables in t with term s.

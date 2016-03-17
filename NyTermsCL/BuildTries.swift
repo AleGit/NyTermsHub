@@ -70,11 +70,11 @@ struct BuildTries {
                 print("* Term Paths *")
                 
                 execute(TailTrie<SymHop<String>,Int>(), literals:literals) { $0.paths }
-                execute(TailTrie<String,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TailTrie<String,Int>(), literals:literals) { $0.stringPaths }
                 execute(TrieStruct<SymHop<String>,Int>(), literals:literals) { $0.paths }
-                execute(TrieStruct<String,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TrieStruct<String,Int>(), literals:literals) { $0.stringPaths }
                 execute(TrieClass<SymHop<String>,Int>(), literals:literals) { $0.paths }
-                execute(TrieClass<String,Int>(), literals:literals) { $0.symbolPaths }
+                execute(TrieClass<String,Int>(), literals:literals) { $0.stringPaths }
                 
                 print("* Discrimination Trees *")
                 execute(TrieStruct<String,Int>(), literals:literals) { [$0.preorderPath] }

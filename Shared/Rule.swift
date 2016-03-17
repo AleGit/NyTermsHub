@@ -79,7 +79,7 @@ extension Node
         
         if !(rhs.allVariables.isSubsetOf(lhs.allVariables)) { return nil }  // allVariables(rhs) is not a subset of allVariables(lhs), hence the equation is not a rule
         
-        return Self(symbol: Self.equalsSign, nodes: [lhs,rhs]) // the equation is a rule
+        return Self(symbol: Self.symbol(.Equation), nodes: [lhs,rhs]) // the equation is a rule
     }
     
     
@@ -168,7 +168,7 @@ extension Node {
     /// obtained from overlap (l<sub>1</sub>→r<sub>1</sub>,p,l<sub>2</sub>→r<sub>2</sub>).
     func criticalPairs(other:Self) -> [Self] {
         return self.criticalPeaks(other).map {
-            Self(equational:Self.equalsSign, nodes: [$0.l2r1, $0.r2])
+            Self(equational:Self.symbol(.Equation), nodes: [$0.l2r1, $0.r2])
         }
     }
     

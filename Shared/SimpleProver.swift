@@ -69,7 +69,7 @@ final class SimpleProver<N:Node where N.Symbol == String> : YicesProver {
             let (a,b) = self.clause(clause)
             self.clauses.append((clause ** clauseIndex, (a,b)))
             
-            for path in clause.symHopPaths {
+            for path in clause.paths {
                 self.clausesTrie.insert(path, value:clauseIndex)
             }
         }
@@ -159,7 +159,7 @@ extension SimpleProver {
                         // selected yicesliteral does not hold in yices model
                         // remove literal from trie
                         
-                        for path in clause.0.nodes![selectedLiteralIndex].symHopPaths {
+                        for path in clause.0.nodes![selectedLiteralIndex].paths {
                             literalsTrie.delete(path, value: clauseIndex)
                         }
                         
@@ -247,7 +247,7 @@ extension SimpleProver {
                                                     
                                                     newClauses.append(newClause)
                                                     
-                                                    for path in clause.symHopPaths {
+                                                    for path in clause.paths {
                                                         self.clausesTrie.insert(path, value:newClauseIndex)
                                                     }
                                             }
@@ -257,7 +257,7 @@ extension SimpleProver {
                                     
                                     
                                     // insert literal into trie (term index)
-                                    for path in selectedLiteral.symHopPaths {
+                                    for path in selectedLiteral.paths {
                                         literalsTrie.insert(path, value: clauseIndex)
                                     }
                                     

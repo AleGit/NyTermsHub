@@ -203,6 +203,9 @@ enum SymbolType {
     /// - ⟨variable⟩ ::= ⟨upper_word⟩
     case Variable
     
+    /// * for term paths
+    case Wildcard
+    
     case Invalid
 }
 

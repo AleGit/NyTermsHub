@@ -22,7 +22,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         var trie = SymHopTrie()
         self.measureBlock {
-            trie.fill(literals) { $0.symHopPaths }
+            trie.fill(literals) { $0.paths }
         }
         XCTAssertEqual(literals.count, trie.payload.count)
     }
@@ -33,7 +33,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         var trie = SymbolTrie()
         self.measureBlock {
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
         XCTAssertEqual(literals.count, trie.payload.count)
     }
@@ -46,7 +46,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -56,7 +56,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     
@@ -68,7 +68,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -78,7 +78,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     
@@ -90,7 +90,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -100,7 +100,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     
@@ -112,7 +112,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -122,7 +122,7 @@ class BuildTrieStructPerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     

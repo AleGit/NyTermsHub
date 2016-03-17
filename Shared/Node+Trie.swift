@@ -43,122 +43,68 @@ func ==<S:Hashable>(lhs:SymHop<S>, rhs:SymHop<S>) -> Bool {
 
 
 extension Node {
-    
-    private func paths<T>(sym2t:Symbol->T,_ hop2t:Int->T) -> [[T]] {
+    private func paths<T>(sym2edge:Symbol->T,_ hop2edge:Int->T) -> [[T]] {
         guard let nodes = self.nodes else {
             // a variable
-            return [ [sym2t(Self.starSign)] ]
+            return [ [sym2edge(Self.symbol(.Wildcard))] ]
         }
         
         guard nodes.count > 0 else {
             // a constant
-            return [[sym2t(self.symbol)]]
+            return [[sym2edge(self.symbol)]]
         }
         
         var paths = [[T]]()
         
-        for (index,subpaths) in (nodes.map { $0.paths(sym2t,hop2t) }).enumerate() {
+        for (index,subpaths) in (nodes.map { $0.paths(sym2edge,hop2edge) }).enumerate() {
             for subpath in subpaths {
-                paths.append([sym2t(self.symbol), hop2t(index)] + subpath)
+                paths.append([sym2edge(self.symbol), hop2edge(index)] + subpath)
             }
         }
         return paths
     }
     
-    var stringPaths : [[String]] {
-        let sym2t : Symbol -> String = { "\($0)" }
-        let hop2t : Int -> String = { "\($0)" }
+    typealias SymbolPath = [Symbol]
+    var preorderPath : SymbolPath {
+        guard let nodes = self.nodes else {
+            return [Self.symbol(.Wildcard)]
+        }
         
-        return self.paths(sym2t,hop2t)
-    }
-    
-    var symHopPaths : [[SymHop<Symbol>]] {
+        let first = [self.symbol]
         
-        let sym2t : Symbol -> SymHop<Symbol> = { SymHop.Symbol($0) }
-        let hop2t : Int -> SymHop<Symbol> = { SymHop.Hop($0) }
+        guard nodes.count > 0 else {
+            return first
+        }
         
-        return self.paths(sym2t,hop2t)
-        
-//        guard let nodes = self.nodes else {
-//            // a variable
-//            return [ [.Symbol(Self.starSign())] ]
-//        }
-//        
-//        guard nodes.count > 0 else {
-//            // a constant
-//            return [[.Symbol(self.symbol)]]
-//        }
-//        
-//        var symHopPaths = [[SymHop<Symbol>]]()
-//        
-//        for (index,subpaths) in (nodes.map { $0.symHopPaths }).enumerate() {
-//            for subpath in subpaths {
-//                symHopPaths.append([.Symbol(self.symbol), .Hop(index)] + subpath)
-//            }
-//        }
-//        return symHopPaths
+        return nodes.reduce(first) { $0 + $1.preorderPath }
     }
 }
 
-extension Node where Symbol == String {
-    typealias SymHopPath = [SymHop<String>]
-    typealias SymbolPath = [StringSymbol]
-    
-//    var symHopPaths : [SymHopPath] {
-//        guard let nodes = self.nodes else {
-//            // a variable
-//            return [[.Symbol("*")]]
-//        }
-//        
-//        guard nodes.count > 0 else {
-//            // a constant
-//            return [[.Symbol(self.symbol)]]
-//        }
-//        
-//        var symHopPaths = [SymHopPath]()
-//        
-//        for (index,subpaths) in (nodes.map { $0.symHopPaths }).enumerate() {
-//            for subpath in subpaths {
-//                symHopPaths.append([.Symbol(self.symbol), .Hop(index)] + subpath)
-//            }
-//        }
-//        return symHopPaths
-//    }
-    
-    var symbolPaths : [SymbolPath] {
-        guard let nodes = self.nodes else {
-            // a variable
-            return [["*"]]
-        }
+typealias StringPath = [String]
+typealias IntegerPath = [Int]
+
+extension Node {
+    var stringPaths : [StringPath] {
+        let sym2edge : Symbol -> String = { "\($0)" }
+        let hop2edge : Int -> String = { "\($0)" }
         
-        guard nodes.count > 0 else {
-            // a constant
-            return [[self.symbol]]
-        }
-        
-        var paths = [[Symbol]]()
-        
-        for (index,subpaths) in (nodes.map { $0.symbolPaths }).enumerate() {
-            for subpath in subpaths {
-                let path = [self.symbol, "\(index)"] + subpath
-                paths.append(path)
-            }
-        }
-        return paths
+        return self.paths(sym2edge,hop2edge)
     }
     
-    var preorderPath : SymbolPath {
-        guard let nodes = self.nodes else {
-            return ["*"]
-        }
+    var intPaths: [IntegerPath] {
+        let sym2edge : Symbol -> Int = { $0.hashValue }
+        let hop2edge : Int -> Int = { $0 }
         
-        guard nodes.count > 0 else {
-            return [self.symbol]
-        }
+        return self.paths(sym2edge,hop2edge)
+    }
+    
+    typealias SymHopPath = [SymHop<Symbol>]
+    var paths : [SymHopPath] {
         
-        return nodes.reduce([self.symbol]) { $0 + $1.preorderPath }
+        let sym2edge : Symbol -> SymHop<Symbol> = { SymHop.Symbol($0) }
+        let hop2edge : Int -> SymHop<Symbol> = { SymHop.Hop($0) }
         
-        
+        return self.paths(sym2edge,hop2edge)
     }
 }
 
@@ -166,8 +112,8 @@ func buildNodeTrie<N:Node>(nodes:[N]) -> TrieStruct<SymHop<N.Symbol>, N> {
     var trie = TrieStruct<SymHop<N.Symbol>,N>()
     
     for node in nodes {
-        let symHopPaths = node.symHopPaths
-        for path in symHopPaths {
+        let paths = node.paths
+        for path in paths {
             trie.insert(path, value: node)
         }
     }

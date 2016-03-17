@@ -49,7 +49,7 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, T.Value==Int, 
             }
             // count += candis.count // count without unifiable check
         }
-        for path in newLiteral.symHopPaths {
+        for path in newLiteral.paths {
             trie.insert(path, value: newIndex)
         }
         processed += 1

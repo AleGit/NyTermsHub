@@ -184,7 +184,7 @@ private func candidates<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:
     
     ) -> Set<T.Value>? {
     
-    guard let (first,tail) = queryTerm.symHopPaths.decompose else { return nil }
+    guard let (first,tail) = queryTerm.paths.decompose else { return nil }
     
     guard var result = extract(indexed, path: first) else { return nil }
     

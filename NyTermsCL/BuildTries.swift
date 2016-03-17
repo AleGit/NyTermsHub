@@ -43,7 +43,7 @@ struct BuildTries {
         
         print("* Term Paths *")
         
-        execute(TrieClass<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
+        execute(TrieClass<SymHop<String>,Int>(), literals:literals) { $0.paths }
         
         print("* Discrimination Tree *")
         
@@ -69,11 +69,11 @@ struct BuildTries {
                 print(name, literals.count,"literals read in", duration.prettyTimeIntervalDescription, "from",path)
                 print("* Term Paths *")
                 
-                execute(TailTrie<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TailTrie<SymHop<String>,Int>(), literals:literals) { $0.paths }
                 execute(TailTrie<String,Int>(), literals:literals) { $0.symbolPaths }
-                execute(TrieStruct<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TrieStruct<SymHop<String>,Int>(), literals:literals) { $0.paths }
                 execute(TrieStruct<String,Int>(), literals:literals) { $0.symbolPaths }
-                execute(TrieClass<SymHop<String>,Int>(), literals:literals) { $0.symHopPaths }
+                execute(TrieClass<SymHop<String>,Int>(), literals:literals) { $0.paths }
                 execute(TrieClass<String,Int>(), literals:literals) { $0.symbolPaths }
                 
                 print("* Discrimination Trees *")

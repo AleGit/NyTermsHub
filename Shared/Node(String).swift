@@ -19,6 +19,21 @@ extension Node where Symbol == String {
     static func string(symbol:Symbol) -> String {
         return symbol
     }
+    
+    static func symbol(type:SymbolType) -> Symbol {
+        switch type {
+            
+        case .Equation:
+            return "="
+            
+        case .Wildcard:
+            return "*"
+            
+        default:
+            assert(false,"Symbol for \(type) undefined.")
+            return "n/a"
+        }
+    }
 }
 
 // MARK: CustomStringConvertible
@@ -171,3 +186,5 @@ extension Node where Symbol == String {
         return "\\\(tree);"
     }
 }
+
+

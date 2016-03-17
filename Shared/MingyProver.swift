@@ -91,7 +91,7 @@ extension MingyProver {
                 return
         }
         
-        for path in literals[index].symHopPaths {
+        for path in literals[index].paths {
             let val = self.literalsTrie.delete(path, value:clauseIndex)
             assert(val == clauseIndex,
                 "\(clauseIndex).\(literalIndex) clause was not previously stored at path '\(path)'. \(clause)")
@@ -104,7 +104,7 @@ extension MingyProver {
             assert(false,"\(clauseIndex).\(literalIndex) clause \(clause) has no or not enough literals.")
             return
         }
-        for path in literals[literalIndex].symHopPaths {
+        for path in literals[literalIndex].paths {
             self.literalsTrie.insert(path, value:clauseIndex)
             
             assert(self.literalsTrie.retrieve(path)?.contains(clauseIndex) ?? false,

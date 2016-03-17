@@ -22,7 +22,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals) { $0.symHopPaths }
+            trie.fill(literals) { $0.paths }
         }
     }
     
@@ -32,7 +32,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     
@@ -44,7 +44,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -54,7 +54,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     
@@ -66,7 +66,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -76,7 +76,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     
@@ -88,7 +88,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -98,7 +98,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
     
@@ -110,7 +110,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymHopTrie()
-            trie.fill(literals)  { $0.symHopPaths }
+            trie.fill(literals)  { $0.paths }
         }
     }
     
@@ -120,7 +120,7 @@ class BuildTailTriePerformanceTests: XCTestCase {
         
         self.measureBlock {
             var trie = SymbolTrie()
-            trie.fill(literals)  { $0.symbolPaths }
+            trie.fill(literals)  { $0.stringPaths }
         }
     }
 

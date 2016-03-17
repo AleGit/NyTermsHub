@@ -25,7 +25,7 @@ class NodeTrieTests: XCTestCase {
     func testSymHopPaths() {
         
         let t = "f(X,g(a,b))" as TestNode
-        let tPaths = t.symHopPaths
+        let tPaths = t.paths
         XCTAssertEqual(3, tPaths.count)
         
         let fxaExpected : [[SymHop<String>]] = [
@@ -54,7 +54,7 @@ class NodeTrieTests: XCTestCase {
         for clause in clauses {
             print("clause=\(clause)")
             
-            for path in clause.symHopPaths {
+            for path in clause.paths {
                 print("path=\(path)")
                 let subtrie = trie[path]!
                 let values = Set(subtrie.values!)

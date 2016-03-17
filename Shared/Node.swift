@@ -30,10 +30,8 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     
     static func quadruple(symbol:Symbol) -> SymbolQuadruple?
     
-    static var equalsSign : Symbol { get }
-    static var starSign : Symbol { get }
-    
     static func string(symbol:Symbol) -> String
+    static func symbol(type:SymbolType) -> Symbol
 }
 
 // MARK: convenience initializers

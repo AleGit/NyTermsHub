@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: Node(String)
 
-typealias StringQuintuple = (String,type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+typealias StringQuintuple = (string:String,type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 extension Node where Symbol == String {
     
@@ -74,10 +74,6 @@ extension Node where Symbol == String {
 
 extension Node where Symbol == String {
     
-    static func string(symbol:Symbol) -> String {
-        return symbol
-    }
-    
     static func symbol(type:SymbolType) -> Symbol {
         switch type {
             
@@ -113,10 +109,10 @@ extension Node where Symbol == String {
 extension Node where Symbol == String {
     init<N:Node>(_ s:N) {
         if let nodes = s.nodes {
-            self = Self(symbol: N.string(s.symbol), nodes: nodes.map { Self($0) })
+            self = Self(symbol: s.symbolString, nodes: nodes.map { Self($0) })
         }
         else {
-            self = Self(variable:N.string(s.symbol))
+            self = Self(variable: s.symbolString)
         }
     }
 }

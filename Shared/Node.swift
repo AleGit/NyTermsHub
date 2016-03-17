@@ -22,9 +22,41 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     init (symbol:Symbol, nodes:[Self]?)
     
     static func quintuple(symbol:Symbol) -> StringQuintuple?
-    
-    static func string(symbol:Symbol) -> String
     static func symbol(type:SymbolType) -> Symbol
+}
+
+extension Node {
+    var symbolQuintuple : StringQuintuple? {
+        return Self.quintuple(self.symbol)
+    }
+    
+    var symbolString: String {
+        return self.symbolQuintuple?.string ?? "\(self.symbol)"
+    }
+    
+    var symbolDebugString : String {
+        guard let quintuple = self.symbolQuintuple else {
+            return "'\(self.symbolString)' (\(self.symbol)) n/a"
+        }
+        
+        return "'\(self.symbolString)' (\(self.symbol)) {\(quintuple)}"
+    }
+    
+    var symbolType : SymbolType? {
+        return self.symbolQuintuple?.type
+    }
+    
+    var symbolCategory : SymbolCategory? {
+        return self.symbolQuintuple?.category
+    }
+    
+    var symbolArities : Range<Int>? {
+        return self.symbolQuintuple?.arities
+    }
+    
+    var symbolNotation : SymbolNotation? {
+        return self.symbolQuintuple?.notation
+    }
 }
 
 // MARK: convenience initializers

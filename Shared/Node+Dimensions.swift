@@ -79,45 +79,44 @@ extension Node where Symbol == String {
         inout symbols:[Symbol:SymbolIndications]
         
         ) -> (height:Int, size:Int, width:Int) {
-            let key = self.symbol
             
             guard let nodes = self.nodes else {
-                assert(Self.quintuple(key) == nil, "variable \(key) is predefined \(Self.quintuple(key)!))") 
+                assert(self.symbolQuintuple == nil, "variable \(self.symbolString) is predefined \(self.symbolQuintuple!))")
                 assert(belowPredicate)
                 
-                var value = symbols[key] ?? (SymbolType.Variable,Set<Int>(),0)
+                var value = symbols[self.symbol] ?? (SymbolType.Variable,Set<Int>(),0)
                 
                 assert(value.type == .Variable)
                 assert(value.arities.isEmpty)
                 
                 value.occurences += 1
                 
-                symbols[key] = value
+                symbols[self.symbol] = value
                 
                 return (height:0,size:1,width:1)
             }
             
             // types of symbols above predicate must be predefined
-            let type = Self.quintuple(key)?.type ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
+            let type = Self.quintuple(self.symbol)?.type ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
 
             // did the symbol appear befoe?, if not create an entry for function and predicate symbols with derived arity
-            var value = symbols[key] ?? (type,Set(arrayLiteral: nodes.count),0)
+            var value = symbols[self.symbol] ?? (type,Set(arrayLiteral: nodes.count),0)
             
-            assert(value.type == type,"\(key) can't be used as \(value.type) and \(type)")
+            assert(value.type == type,"\(self.symbolString) can't be used as \(value.type) and \(type)")
             // predefined arities (range) or derived arity (set of one) must match
             assert((
-                Self.quintuple(key)?.arities.contains(nodes.count) ?? false) // either the arity of a symbol is predefined and potentially variadic (e.g. disjunction)
+                self.symbolArities?.contains(nodes.count) ?? false) // either the arity of a symbol is predefined and potentially variadic (e.g. disjunction)
                 || value.arities.contains(nodes.count), // or defined at runtime with the first encounter (e.g. predicate and function symbols)
-                (Self.quintuple(key)?.arities != nil ?
-                    "Predefined arities \(Self.quintuple(key)!.arities) does not contain" :
+                (self.symbolArities != nil ?
+                    "Predefined arities \(self.symbolArities!) does not contain" :
                     "Runtime arities \(value.arities) does not contain variadic" )
-                + " arity \(nodes.count) for symbol \(key)."
+                + " arity \(nodes.count) for symbol \(self.symbolString)."
             )
             
             value.arities.insert(nodes.count)
             value.occurences += 1
             
-            symbols[key] = value
+            symbols[self.symbol] = value
             
             let height = nodes.count == 0 ? 0 : 1       // the height of a leaf is 0
             let size = 1                                // the size of a leaf is 1

@@ -4,7 +4,7 @@
 import Foundation
 
 typealias StringSymbol = String
-typealias Symbolquintuple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
     for (key,value) in rhs {
@@ -29,7 +29,7 @@ struct Symbols {
     
     @available(*, deprecated=1.0)
     /// a collection of universal auxilary and function symbols
-    static let universalSymbols : [StringSymbol:Symbolquintuple] = [
+    static let universalSymbols : [StringSymbol:SymbolQuadruple] = [
         "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
         "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
         ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
@@ -54,7 +54,7 @@ struct Symbols {
     
     @available(*, deprecated=1.0)
     /// a collection of [TPTP Syntax](http://www.cs.miami.edu/~tptp/TPTP/SyntaxBNF.html) specific symbols
-    static let tptpSymbols : [StringSymbol:Symbolquintuple] = [
+    static let tptpSymbols : [StringSymbol:SymbolQuadruple] = [
         
         // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
         "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
@@ -242,42 +242,3 @@ enum SymbolNotation {
     
     case Invalid
 }
-
-// unused (introduce for workaround attempt *1* below)
-//private var symbols : [Symbol:Symbolquintuple] = [
-//    "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1),
-//    "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2)
-//]
-
-// unused (introduced for workaround attempt *2* below)
-//private var symbolTypes : [Symbol:SymbolType] = [
-//    "~" : SymbolType.Negation,
-//    "!=" : SymbolType.Inequation
-//]
-
-extension StringSymbol {
-    static let equalsSign = "="
-    static let separator = ","
-    
-    
-    
-//    var type : SymbolType? {
-//        // Symbols.defaultSymbols[self]?.type accumulates memory with each call ...
-//        
-//        // return symbols[self]?.type       // *1* accumulates memory too !!!
-//        // return symbolTypes[self]         // *2* accumulates memory too !!!
-//        
-//        return self.quintuple?.type         // *3* workaround
-//    }
-//    
-//    var category : SymbolCategory? {
-//        return self.quintuple?.category
-//    }
-//    var notation : SymbolNotation? {
-//        return self.quintuple?.notation
-//    }
-//    var arities : Range<Int>? {
-//        return self.quintuple?.arities
-//    }
-}
-

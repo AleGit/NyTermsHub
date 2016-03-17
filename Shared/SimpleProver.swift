@@ -26,7 +26,7 @@ final class SimpleProver<N:Node where N.Symbol == String> : YicesProver {
     private var indexOfFirstUnassertedClause = 0
     
     /// a collection of symbols and their semantics
-    var symbols : [StringSymbol:Symbolquintuple]
+    var symbols : [StringSymbol:SymbolQuadruple]
     
     /// a pointer to a yices context
     private let ctx : COpaquePointer
@@ -54,7 +54,7 @@ final class SimpleProver<N:Node where N.Symbol == String> : YicesProver {
     
     /// We assign a list of clauses and a list of predefined symbols to our prover
     /// Goal: prove that the clauses are unsatisfiable.
-    required init(clauses:[N], predefined symbols:[StringSymbol:Symbolquintuple]) {
+    required init(clauses:[N], predefined symbols:[StringSymbol:SymbolQuadruple]) {
         
         // create a yices context with default configuration
         self.ctx = yices_new_context(nil)
@@ -305,7 +305,7 @@ private extension SimpleProver {
 
 extension SimpleProver {
     
-    private func createquintuple(symbol: String, type:SymbolType, arity:Int) -> Symbolquintuple {
+    private func createquintuple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
         guard var quintuple = symbols[symbol] else {
             return (type:type, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arity...arity)
         }
@@ -323,7 +323,7 @@ extension SimpleProver {
     }
     
     /// protocol extension Prover.register cannot be invoked in the class?
-    func register(predicate symbol:String, arity:Int) -> Symbolquintuple {
+    func register(predicate symbol:String, arity:Int) -> SymbolQuadruple {
         let quintuple = createquintuple(symbol, type:SymbolType.Predicate, arity:arity)
         
         self.symbols[symbol] = quintuple
@@ -331,7 +331,7 @@ extension SimpleProver {
         return quintuple
     }
     
-    func register(function symbol:String, arity:Int) -> Symbolquintuple {
+    func register(function symbol:String, arity:Int) -> SymbolQuadruple {
         
         let quintuple = createquintuple(symbol, type:SymbolType.Function, arity:arity)
         

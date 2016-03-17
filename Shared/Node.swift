@@ -3,13 +3,6 @@
 
 import Foundation
 
-typealias SymbolQuintuple = (
-    symbol:String,
-    type:SymbolType,
-    category:SymbolCategory,
-    notation:SymbolNotation,
-    arities:Range<Int>)
-
 /// Abstract data type `Node`.
 /// A tree of nodes can represent a term, e.g
 ///
@@ -123,7 +116,7 @@ extension Node {
     */
 }
 
-// MARK: Conversion between `Node` implemenations.
+// MARK: Conversion between `Node<S:Symbol>` implemenations with matching symbol types.
 
 extension Node {
     init<N:Node where N.Symbol == Symbol>(_ s:N) {    // similar to Int(3.5)

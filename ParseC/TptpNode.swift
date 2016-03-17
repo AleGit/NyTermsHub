@@ -18,9 +18,6 @@ final class TptpNode: NSObject, Node {
         self.nodes = nodes
     }
     
-    static let equalsSign = "="
-    static let starSign = "*"
-    
     private func updateDescription() -> String {
         let string = self.tptpDescription
         cachedDescription = string

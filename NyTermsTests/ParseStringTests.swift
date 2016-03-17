@@ -51,8 +51,6 @@ class ParseStringTests: XCTestCase {
                 XCTAssertEqual(value, formulae[0].root.description)
                 
                 print("% ------------------")
-                print(formulae[0].root.tikzSyntaxTree)
-                print("% ---")
                 print(formulae[0].root.laTeXDescription)
         }
     }

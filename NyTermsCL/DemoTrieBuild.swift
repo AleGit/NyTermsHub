@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct BuildTries {
+struct DemoTrieBuild {
     
     static private func execute<T:TrieType where T.Value==Int>(
         var trie:T, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
@@ -16,7 +16,6 @@ struct BuildTries {
             let (_,duration) = measure {
                 trie.fill(literals) { f($0) }
             }
-            
             
             print(duration.prettyTimeIntervalDescription, T.self, literals.count, duration)
     }

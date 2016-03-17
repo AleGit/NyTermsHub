@@ -18,7 +18,7 @@ defer {
     print(line,NSDate(),line)
 }
 
-ParseFiles.dimensionsDemo()
+DemoFileParsing.dimensionsDemo()
 
 // demos
 // BuildTries.demo()

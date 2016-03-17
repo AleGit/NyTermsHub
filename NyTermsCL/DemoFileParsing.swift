@@ -3,7 +3,7 @@
 
 import Foundation
 
-struct ParseFiles {
+struct DemoFileParsing {
     
     static func demo() {
         print(self.self,"\(__FUNCTION__)\n")

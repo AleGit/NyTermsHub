@@ -21,7 +21,7 @@ private func literals(formulae:[TptpFormula]) -> [TptpNode] {
 }
 
 
-struct Complementaries {
+struct DemoComplementaries {
     private static func process<N:Node>(literals:[N], search: (literals:[N]) -> (Int,String)) -> Int {
         print("\tProcessing \(literals.count) literals ...:")
         let (count,info) = search(literals:literals)

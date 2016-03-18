@@ -95,7 +95,7 @@ extension Node {
         
         /// guard let type = Symbols.defaultSymbols[self]?.type else { return nil } // the type of the node must be known !!! accumulates memory ???
         
-        guard let type = Self.quintuple(self.symbol)?.type else { return nil } // workaround
+        guard let type = self.symbolType else { return nil } // workaround
         
         switch type {
         case SymbolType.Negation:

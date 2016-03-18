@@ -10,6 +10,7 @@ import Foundation
 
 extension Node {
     
+    /// Clumsy attempt to make descriptions flexible.
     func buildDescription(decorate:(symbol:Symbol,type:SymbolType)->String) -> String {
         let separator = ","
         

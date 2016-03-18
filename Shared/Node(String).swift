@@ -10,11 +10,11 @@ import Foundation
 
 // MARK: Node(String)
 
-typealias StringQuintuple = (string:String,type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+typealias SymbolQuintuple = (string:String,type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 extension Node where Symbol == String {
     
-    static func quintuple(symbol:Symbol) -> StringQuintuple? {
+    static func quintuple(symbol:Symbol) -> SymbolQuintuple? {
         
         switch symbol {
             

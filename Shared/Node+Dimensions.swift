@@ -97,7 +97,7 @@ extension Node where Symbol == String {
             }
             
             // types of symbols above predicate must be predefined
-            let type = Self.quintuple(self.symbol)?.type ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
+            let type = self.symbolType ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
 
             // did the symbol appear befoe?, if not create an entry for function and predicate symbols with derived arity
             var value = symbols[self.symbol] ?? (type,Set(arrayLiteral: nodes.count),0)

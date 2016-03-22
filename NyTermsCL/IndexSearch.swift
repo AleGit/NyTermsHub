@@ -35,7 +35,7 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, T.Value==Int, 
     var processed = 0
     var last = processed
     
-    let message = "search trie type: \(T.self) \(__FUNCTION__)"
+    let message = "search trie type: \(T.self) \(#function)"
     
     print("\t"+message)
     

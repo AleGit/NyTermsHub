@@ -18,15 +18,15 @@ extension Node where Symbol == String {
         
         switch symbol {
             
-        case "" : return  (symbol,type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0))
-        case "(" : return  (symbol,type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case ")" : return  (symbol,type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-        case "⟨" : return  (symbol,type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case "⟩" : return  (symbol,type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-        case "{" : return  (symbol,type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case "}" : return  (symbol,type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
-        case "[" : return  (symbol,type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0))
-        case "]" : return  (symbol,type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0))
+        case "" : return  (symbol,type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: 0..<0)
+        case "(" : return  (symbol,type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: 0..<0)
+        case ")" : return  (symbol,type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: 0..<0)
+        case "⟨" : return  (symbol,type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: 0..<0)
+        case "⟩" : return  (symbol,type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: 0..<0)
+        case "{" : return  (symbol,type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: 0..<0)
+        case "}" : return  (symbol,type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: 0..<0)
+        case "[" : return  (symbol,type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: 0..<0)
+        case "]" : return  (symbol,type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: 0..<0)
             
             // + − × ÷ (mathematical symbols)
         case "+" : return  (symbol,type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max)      //  X, X+Y, X+...+Z
@@ -42,7 +42,7 @@ extension Node where Symbol == String {
             // tptp symbols
             
             // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
-        case "&" : return  (symbol,type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max))  // true; A; A & B; A & ... & Z
+        case "&" : return  (symbol,type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:0..<Int.max)  // true; A; A & B; A & ... & Z
         case "|" : return  (symbol,type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:0..<Int.max)  // false; A; A | B; A | ... & Z
             // ⟨unary_connective⟩ ::= ~
         case "~" : return  (symbol,type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1)          // ~A
@@ -66,7 +66,7 @@ extension Node where Symbol == String {
             // ⟨infix_inequality⟩   ::= !=
         case "!=" : return  (symbol,type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arities:2...2)        // s != t
             
-        case "," : return  (symbol,type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range<Int>(start:1, end:Int.max)) // s; s,t; ...
+        case "," : return  (symbol,type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:(1..<Int.max)) // s; s,t; ...
         default: return nil
         }
     }

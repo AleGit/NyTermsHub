@@ -32,7 +32,7 @@ struct DemoComplementaries {
     static func demo<F:SequenceType, S:SequenceType where
         F.Generator.Element == String, S.Generator.Element == ([TptpNode])->(Int,String)>
         (files:F, searches:S) {
-            print("\(self.self) \(__FUNCTION__)")
+            print("\(self.self) \(#function)")
             print("\(files)\n")
             defer {
                 print("\n")

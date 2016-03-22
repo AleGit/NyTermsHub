@@ -23,11 +23,11 @@ final class FancyNode : Node {
 
 extension FancyNode {
     static func quintuple(symbol:Int) -> SymbolQuintuple? {
-        assert(false, "Mandatory \(__FUNCTION__) not implemented yet.")
+        assert(false, "Mandatory \(#function) not implemented yet.")
         return nil
     }
     static func symbol(type:SymbolType) -> Int {
-        assert(false, "Mandatory \(__FUNCTION__) not implemented yet.")
+        assert(false, "Mandatory \(#function) not implemented yet.")
         return 0
     }
 }
@@ -42,7 +42,7 @@ extension FancyNode {
 
 extension FancyNode {
     convenience init(stringLiteral value: StringLiteralType) {
-        assert(false, "Mandatory \(__FUNCTION__) not implemented yet.")
+        assert(false, "Mandatory \(#function) not implemented yet.")
         // let term = TptpNode.node(stringLiteral: value)
         self.init(symbol: 0, nodes: nil)
     }
@@ -53,7 +53,7 @@ extension FancyNode {
 
 extension FancyNode {
     //    convenience init<N:Node where N.Symbol == String>(_ s:N) {
-    //        assert(false, "Convenient \(__FUNCTION__) not implemented yet.")
+    //        assert(false, "Convenient \(#function) not implemented yet.")
     //        self.init(symbol:0, nodes:nil)
     //        if let nodes = s.nodes {
     //            self = Self(symbol: s.symbolString, nodes: nodes.map { Self($0) })

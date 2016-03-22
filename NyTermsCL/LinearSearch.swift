@@ -17,7 +17,7 @@ func linearSearch<N:Node where N.Symbol==String>(literals:[N]) -> (Int,String) {
     var temp = start
     var processed = 0
     var last = processed
-    let message = "search trie type: \(__FUNCTION__)"
+    let message = "search trie type: \(#function)"
     
     print("\t"+message)
     

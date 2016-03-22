@@ -6,12 +6,13 @@ import Foundation
 typealias StringSymbol = String
 typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
-func +<Key,Value>(var lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
+func +<Key,Value>(lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
+    var left = lhs
     for (key,value) in rhs {
-        assert(lhs[key] == nil, "a key must not be redefined")
-        lhs[key] = value
+        assert(left[key] == nil, "a key must not be redefined")
+        left[key] = value
     }
-    return lhs
+    return left
 }
 
 // MARK: symbol table
@@ -27,18 +28,20 @@ struct Symbols {
     static let CombiningEnclosingSquare:Character = " ⃞"
     static let xsquare = "x" + String(CombiningEnclosingSquare)
     
+    static let range00 = 0..<0
+    
     @available(*, deprecated=1.0)
     /// a collection of universal auxilary and function symbols
     static let universalSymbols : [StringSymbol:SymbolQuadruple] = [
-        "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: Range(start:0,end:0)),
-        "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
-        ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
-        "⟨" : (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
-        "⟩" : (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
-        "{" : (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
-        "}" : (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
-        "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: Range(start:0,end:0)),
-        "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: Range(start:0,end:0)),
+        "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arities: range00),
+        "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: range00),
+        ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: range00),
+        "⟨" : (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: range00),
+        "⟩" : (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: range00),
+        "{" : (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: range00),
+        "}" : (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: range00),
+        "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arities: range00),
+        "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arities: range00),
         
         // + − × ÷ (mathematical symbols)
         "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arities: 1..<Int.max),      //  X, X+Y, X+...+Z
@@ -57,7 +60,7 @@ struct Symbols {
     static let tptpSymbols : [StringSymbol:SymbolQuadruple] = [
         
         // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
-        "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:Range(start:0, end:Int.max)),  // true; A; A & B; A & ... & Z
+        "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:0..<Int.max),  // true; A; A & B; A & ... & Z
         "|" : (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arities:0..<Int.max),  // false; A; A | B; A | ... & Z
         // ⟨unary_connective⟩ ::= ~
         "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arities:1...1),          // ~A

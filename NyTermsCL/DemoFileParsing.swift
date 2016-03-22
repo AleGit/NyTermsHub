@@ -6,7 +6,7 @@ import Foundation
 struct DemoFileParsing {
     
     static func demo() {
-        print(self.self,"\(__FUNCTION__)\n")
+        print(self.self,"\(#function)\n")
         
         for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1", "HWV134-1" ] {
             let path = name.p!  // file must be accessible
@@ -25,7 +25,7 @@ struct DemoFileParsing {
     }
     
     static func dimensionsDemo() {
-        print(self.self,"\(__FUNCTION__)\n")
+        print(self.self,"\(#function)\n")
         
         for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1",
             // "HWV134-1"

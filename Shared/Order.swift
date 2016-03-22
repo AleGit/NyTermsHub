@@ -11,7 +11,7 @@ import Foundation
 /// (D.4.3.1) A *precedence* is a proper order on a signature
 
 protocol Order {
-    typealias N:Node
+    associatedtype N:Node
     
     func greaterThan(s:N, t:N) -> Bool
 }

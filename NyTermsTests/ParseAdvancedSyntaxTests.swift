@@ -53,16 +53,18 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         XCTAssertEqual("\"A \\\"Microsoft \\\\ escape\\\"\"", r.symbol)
         
         // 3 numbers
-        
-        XCTAssertEqual("integers",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("integers",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(12)|p(-12)",formulae[index].description)
         
-        XCTAssertEqual("rationals",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("rationals",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(123/456)|p(-123/456)|p(+123/456)",formulae[index].description)
         
-        XCTAssertEqual("reals",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("reals",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         
         let expected = "p(123.456)|p(-123.456)|p(123.456E78)|p(123.456e78)|p(-123.456E78)|p(123.456E-78)|p(-123.456E-78)"
@@ -73,23 +75,28 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         
         // 5 roles
         
-        XCTAssertEqual("role_definition",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("role_definition",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Definition,tptpFormulae[index].role)
         XCTAssertEqual("f(d)=f(X)",formulae[index].description)
         
-        XCTAssertEqual("role_assumption",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("role_assumption",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Assumption,tptpFormulae[index].role)
         XCTAssertEqual("p(a)",formulae[index].description)
         
-        XCTAssertEqual("role_lemma",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("role_lemma",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Lemma,tptpFormulae[index].role)
         XCTAssertEqual("p(l)",formulae[index].description)
         
-        XCTAssertEqual("role_theorem",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("role_theorem",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Theorem,tptpFormulae[index].role)
         XCTAssertEqual("p(t)",formulae[index].description)
         
-        XCTAssertEqual("role_unknown",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("role_unknown",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Unknown,tptpFormulae[index].role)
         XCTAssertEqual("p(u)",formulae[index].description)
         
@@ -97,48 +104,58 @@ class ParseAdvancedSyntaxTests: XCTestCase {
         
         // 7 source
         
-        XCTAssertEqual("source_unknown",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("source_unknown",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(X)",formulae[index].description)
         
-        XCTAssertEqual("source",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("source",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(X)",formulae[index].description)
         
-        XCTAssertEqual("source_name",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("source_name",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(X)",formulae[index].description)
         
-        XCTAssertEqual("source_copy",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("source_copy",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(X)",formulae[index].description)
         
-        XCTAssertEqual("source_introduced_assumption",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("source_introduced_assumption",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(X)",formulae[index].description)
         
-        XCTAssertEqual("source_inference",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("source_inference",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(a)",formulae[index].description)
         
-        XCTAssertEqual("source_inference_with_bind",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("source_inference_with_bind",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(a)",formulae[index].description)
         
         // 1 useful info
         
-        XCTAssertEqual("useful_info",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("useful_info",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("p(X)",formulae[index].description)
         
         
         // 2 include('Axioms/SYN000-0.ax',[ia1,ia3]).
         
-        XCTAssertEqual("ia1",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("ia1",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("ia1",formulae[index].description)
         
-        XCTAssertEqual("ia3",tptpFormulae[++index].name)
+        index += 1
+        XCTAssertEqual("ia3",tptpFormulae[index].name)
         XCTAssertEqual(TptpRole.Axiom,tptpFormulae[index].role)
         XCTAssertEqual("ia3",formulae[index].description)
         

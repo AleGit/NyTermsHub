@@ -47,7 +47,8 @@ class ParsePerformanceTests: XCTestCase {
         let path = "LCL129-1".p!         // 2.1K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(3, tptpFormulae.count)
@@ -61,7 +62,8 @@ class ParsePerformanceTests: XCTestCase {
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(2, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(0, result[1])
@@ -75,7 +77,8 @@ class ParsePerformanceTests: XCTestCase {
         let path = "PUZ051-1".p!         // 1.9K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(2, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(0, result[1])
@@ -89,7 +92,8 @@ class ParsePerformanceTests: XCTestCase {
         let path = "HWV074-1".p!         // 996K
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(2581, tptpFormulae.count)
@@ -103,7 +107,8 @@ class ParsePerformanceTests: XCTestCase {
         let path = "HWV105-1".p!         // 2.0M
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(20_900, tptpFormulae.count)
@@ -118,7 +123,8 @@ class ParsePerformanceTests: XCTestCase {
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(2, tptpFormulae.count)
@@ -133,7 +139,8 @@ class ParsePerformanceTests: XCTestCase {
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(128_975, tptpFormulae.count)
@@ -149,7 +156,8 @@ class ParsePerformanceTests: XCTestCase {
         
         self.measureBlock {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
-            print(self.runtime, self.i++, path)
+            self.i += 1
+            print(self.runtime, self.i, path)
             XCTAssertEqual(1, result.count)
             XCTAssertEqual(0, result[0])
             XCTAssertEqual(2_332_428, tptpFormulae.count)

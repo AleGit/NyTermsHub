@@ -1,8 +1,8 @@
 import Foundation
 
 protocol TrieType : Equatable {
-    typealias Key
-    typealias Value
+    associatedtype Key
+    associatedtype Value
     
     /// creates empty trie type
     init()

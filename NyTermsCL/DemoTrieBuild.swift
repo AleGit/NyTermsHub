@@ -11,7 +11,8 @@ import Foundation
 struct DemoTrieBuild {
     
     static private func execute<T:TrieType where T.Value==Int>(
-        var trie:T, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
+        template:T, literals:[TptpNode], f:(TptpNode)->Array<[T.Key]>) {
+        var trie = template
             
             let (_,duration) = measure {
                 trie.fill(literals) { f($0) }
@@ -21,7 +22,8 @@ struct DemoTrieBuild {
     }
     
     static private func execute<T:TrieType where T.Value==Int>(
-        var trie:T, message:String? = nil, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
+        template:T, message:String? = nil, literals:[TptpNode], f:(TptpNode)->[T.Key]) {
+        var trie = template
             let (_,duration) = measure {
                 trie.fill(literals) { f($0) }
             }
@@ -30,7 +32,7 @@ struct DemoTrieBuild {
     }
     
     static func demo134() {
-        print(self.self,"\(__FUNCTION__)\n")
+        print(self.self,"\(#function)\n")
         
         let name = "HWV134-1"
         let path = name.p! // file must be accessible
@@ -52,7 +54,7 @@ struct DemoTrieBuild {
     }
     
     static func demo() {
-        print(self.self,"\(__FUNCTION__)\n")
+        print(self.self,"\(#function)\n")
         for name in [ "LCL129-1", "SYN000-2", "PUZ051-1",
             // "HWV074-1", "HWV105-1"
             ] {

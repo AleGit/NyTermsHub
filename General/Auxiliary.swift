@@ -56,7 +56,7 @@ extension Range where Element: Comparable {
         guard let (minimum,maximum) = sequence.minMaxElementPair()
             else { return nil } // empty sequence has neihter minimum nor maximum.
         assert (minimum <= maximum)
-        self.init(start:minimum, end:maximum.successor())
+        self = minimum...maximum
     }
 }
 

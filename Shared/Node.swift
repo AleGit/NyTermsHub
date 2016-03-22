@@ -14,7 +14,7 @@ import Foundation
 /// * (root) clause terms: a=X | b ~= f(X,a)
 /// * (root) formuala terms: ...
 protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
-    typealias Symbol : Hashable
+    associatedtype Symbol : Hashable
     
     var symbol : Symbol { get }
     var nodes : [Self]? { get }

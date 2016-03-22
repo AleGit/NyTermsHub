@@ -10,8 +10,8 @@ import Foundation
 
 protocol Nodal {
     
-    typealias Key : Hashable
-    typealias Cargo
+    associatedtype Key : Hashable
+    associatedtype Cargo
     
     var cargo : Cargo { get }
     var count : Int { get }

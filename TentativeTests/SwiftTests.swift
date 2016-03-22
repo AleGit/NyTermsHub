@@ -27,7 +27,7 @@ extension Float : ArithmeticType { }
 extension Double : ArithmeticType { }
 
 protocol Cubicle {
-    typealias S:ArithmeticType
+    associatedtype S:ArithmeticType
     
     var cubature:S { get }
 }

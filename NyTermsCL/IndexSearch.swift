@@ -44,7 +44,7 @@ func trieSearch<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, T.Value==Int, 
             for oldIndex in candis {
                 let oldLiteral = literals[oldIndex]
                 if ((newLiteral ~?= oldLiteral) != nil) {
-                    count++  // count wiht check
+                    count += 1  // count with unifiable check
                 }
             }
             // count += candis.count // count without unifiable check

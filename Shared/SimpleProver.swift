@@ -199,7 +199,7 @@ extension SimpleProver {
                                     
                                     let selectedLiteral = clause.0.nodes![selectedLiteralIndex]
                                     
-                                    guard N.quintuple(selectedLiteral.symbol)?.category != SymbolCategory.Equational else {
+                                    guard selectedLiteral.symbolCategory != SymbolCategory.Equational else {
                                         print("!!! can't handle (in)equations !!!", selectedLiteral)
                                         return (round, self.runtime + timeLimit) // 
                                     }

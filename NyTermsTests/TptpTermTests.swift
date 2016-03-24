@@ -211,14 +211,4 @@ class TptpTermTests: XCTestCase {
         XCTAssertTrue(subs.isVariableSubstitution)
         XCTAssertTrue(subs.isRenaming)
     }
-    
-    func testConnectiveQuintuples() {
-        for connectiveSymbol in ["~"] {
-        guard let category = TptpNode.quintuple(connectiveSymbol)?.category else {
-            XCTFail(connectiveSymbol)
-            continue
-        }
-        XCTAssertEqual(category,SymbolCategory.Connective,connectiveSymbol)
-        }
-    }
 }

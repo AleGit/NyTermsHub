@@ -21,14 +21,11 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     
     init (symbol:Symbol, nodes:[Self]?)
     
-    static func quintuple(symbol:Symbol) -> SymbolQuintuple?
+    var symbolQuintuple : SymbolQuintuple? { get }
     static func symbol(type:SymbolType) -> Symbol
 }
 
 extension Node {
-    var symbolQuintuple : SymbolQuintuple? {
-        return Self.quintuple(self.symbol)
-    }
     
     var symbolString: String {
         return self.symbolQuintuple?.string ?? "\(self.symbol)"

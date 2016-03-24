@@ -138,6 +138,9 @@ struct LaTeX {
     
 }
 
+
+typealias SymbolQuintuple = (string:String,type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+
 enum SymbolType {
     
     case LeftParenthesis, RightParenthesis

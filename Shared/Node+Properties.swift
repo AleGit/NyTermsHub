@@ -143,7 +143,7 @@ extension Node {
     var isFormula : Bool {
         guard !self.isLiteral else { return true }
         
-        guard let quintuple = Self.quintuple(self.symbol)
+        guard let quintuple = self.symbolQuintuple
             where quintuple.category == SymbolCategory.Connective
             else {
                 // undefined or non-connective symbol

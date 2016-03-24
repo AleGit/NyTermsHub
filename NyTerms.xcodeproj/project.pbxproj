@@ -93,6 +93,8 @@
 		515F0F0E1B6BB80000B470B4 /* TestGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515F0F0D1B6BB80000B470B4 /* TestGlobals.swift */; };
 		515F2B461C918016004F93E9 /* sizeDemo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 515F2B451C918016004F93E9 /* sizeDemo.txt */; };
 		516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516107AD1C5A53E100FD3637 /* LinearSearch.swift */; };
+		516587C91CA3A550002DABFE /* Node(Int).swift in Sources */ = {isa = PBXBuildFile; fileRef = 516587C81CA3A550002DABFE /* Node(Int).swift */; };
+		516587CA1CA3A550002DABFE /* Node(Int).swift in Sources */ = {isa = PBXBuildFile; fileRef = 516587C81CA3A550002DABFE /* Node(Int).swift */; };
 		516D1A431C32C3A0000E152A /* Node+Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D1A421C32C3A0000E152A /* Node+Trie.swift */; };
 		516D1A441C32C3A0000E152A /* Node+Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D1A421C32C3A0000E152A /* Node+Trie.swift */; };
 		516D251F1C3EB26C0075D362 /* Nodal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D251E1C3EB26C0075D362 /* Nodal.swift */; };
@@ -269,6 +271,7 @@
 		516107AD1C5A53E100FD3637 /* LinearSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearSearch.swift; sourceTree = "<group>"; };
 		516107B11C5A605800FD3637 /* HWV119-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV119-iMac.txt"; path = "Docs/HWV119-iMac.txt"; sourceTree = SOURCE_ROOT; };
 		516107B21C5A611800FD3637 /* HWV066-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV066-iMac.txt"; path = "Docs/HWV066-iMac.txt"; sourceTree = SOURCE_ROOT; };
+		516587C81CA3A550002DABFE /* Node(Int).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node(Int).swift"; sourceTree = "<group>"; };
 		516A73D81C902CF1007E5DEC /* iPuzzlesResults.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = iPuzzlesResults.txt; sourceTree = "<group>"; };
 		516D1A421C32C3A0000E152A /* Node+Trie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Trie.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		516D251E1C3EB26C0075D362 /* Nodal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nodal.swift; sourceTree = "<group>"; };
@@ -477,8 +480,10 @@
 		512977351B677DBE003D3E80 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				514F82651C9C17A600B1559C /* FancyNode.swift */,
 				5100656D1C897A6800F2A67B /* MingyProver.swift */,
 				512977361B677E1B003D3E80 /* Node.swift */,
+				516587C81CA3A550002DABFE /* Node(Int).swift */,
 				510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */,
 				515D462D1C999A7100A7111E /* Node(String).swift */,
 				510811EB1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift */,
@@ -490,12 +495,11 @@
 				51D2765F1BC57879005A0213 /* Order.swift */,
 				51192D1A1B67B059008C03B2 /* Position.swift */,
 				515F0F031B6BAB0500B470B4 /* Rule.swift */,
+				514E93871C9FB6BA00787661 /* ShareNode.swift */,
 				512F75E31BE20FDD007EBA4A /* SimpleProver.swift */,
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				51378A501C8F15190000757E /* YicesProver+Node.swift */,
-				514F82651C9C17A600B1559C /* FancyNode.swift */,
-				514E93871C9FB6BA00787661 /* ShareNode.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -934,6 +938,7 @@
 				51FD00C31C3133E1008C5AD1 /* Operators.swift in Sources */,
 				513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */,
 				511E95841B8AE7B80093F4E8 /* Rule.swift in Sources */,
+				516587CA1CA3A550002DABFE /* Node(Int).swift in Sources */,
 				5179948E1C96C83300791916 /* MereParser.swift in Sources */,
 				517994871C96BEC900791916 /* MereParser.y in Sources */,
 				515D462F1C999A7100A7111E /* Node(String).swift in Sources */,
@@ -1001,6 +1006,7 @@
 				512977371B677E1B003D3E80 /* Node.swift in Sources */,
 				512F75E41BE20FDD007EBA4A /* SimpleProver.swift in Sources */,
 				5179948A1C96C63B00791916 /* MereParser.c in Sources */,
+				516587C91CA3A550002DABFE /* Node(Int).swift in Sources */,
 				5131E8AB1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */,
 				514AD8681C6B7DF900652004 /* TrieType.swift in Sources */,
 				515D462E1C999A7100A7111E /* Node(String).swift in Sources */,

@@ -140,22 +140,24 @@ class SwiftTests: XCTestCase {
     }
     
     func testIntegerMinMax() {
-        print("\(Int.self)", sizeof(Int), Int.min, Int.max)
+        print("\(Int.self) \t", sizeof(Int), Int.min..<Int.max)
+        print("\(UInt.self)\t", sizeof(UInt), UInt.min..<UInt.max)
         
-        print("\(Int8.self)", sizeof(Int8), Int8.min, Int8.max)
-        print("\(Int16.self)", sizeof(Int16), Int16.min, Int16.max)
-        print("\(Int32.self)", sizeof(Int32), Int32.min, Int32.max)
+        print("\(Int8.self)\t", sizeof(Int8), Int8.min..<Int8.max)
+        print("\(Int16.self)\t", sizeof(Int16), Int16.min..<Int16.max)
+        print("\(Int32.self)\t", sizeof(Int32), Int32.min..<Int32.max)
         
-        print("\(Int64.self)", sizeof(Int64), Int64.min, Int64.max)
+        print("\(Int64.self)\t", sizeof(Int64), Int64.min..<Int64.max)
         
         
-        print("\(UInt.self)", sizeof(UInt), UInt.min, UInt.max)
         
-        print("\(UInt8.self)", sizeof(UInt8), UInt8.min, UInt8.max)
-        print("\(UInt16.self)", sizeof(UInt16), UInt16.min, UInt16.max)
-        print("\(UInt32.self)", sizeof(UInt32), UInt32.min, UInt32.max)
+        print("\(UInt8.self)\t", sizeof(UInt8), UInt8.min..<UInt8.max)
+        print("\(UInt16.self)\t", sizeof(UInt16), UInt16.min..<UInt16.max)
+        print("\(UInt32.self)\t", sizeof(UInt32), UInt32.min..<UInt32.max)
         
-        print("\(UInt64.self)", sizeof(UInt64), UInt64.min, UInt64.max)
+        print("\(UInt64.self)\t", sizeof(UInt64), UInt64.min..<UInt64.max)
+        
+    
     }
 }
 

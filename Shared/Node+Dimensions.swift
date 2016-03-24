@@ -81,7 +81,7 @@ extension Node where Symbol == String {
         ) -> (height:Int, size:Int, width:Int) {
             
             guard let nodes = self.nodes else {
-                assert(self.symbolQuintuple == nil, "variable \(self.symbolString) is predefined \(self.symbolQuintuple!))")
+                assert(self.symbolQuadruple == nil, "variable \(self.symbolString) is predefined \(self.symbolQuadruple!))")
                 assert(belowPredicate)
                 
                 var value = symbols[self.symbol] ?? (SymbolType.Variable,Set<Int>(),0)

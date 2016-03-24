@@ -143,14 +143,14 @@ extension Node {
     var isFormula : Bool {
         guard !self.isLiteral else { return true }
         
-        guard let quintuple = self.symbolQuintuple
-            where quintuple.category == SymbolCategory.Connective
+        guard let quartuple = self.symbolQuadruple
+            where quartuple.category == SymbolCategory.Connective
             else {
                 // undefined or non-connective symbol
                 return false
         }
         guard let nodes = self.nodes
-            where quintuple.arities.contains(nodes.count)
+            where quartuple.arities.contains(nodes.count)
             else {
                 // self has wrong number of subnodes
                 return false

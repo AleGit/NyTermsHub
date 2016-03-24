@@ -4,7 +4,7 @@
 import Foundation
 
 typealias StringSymbol = String
-typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+// typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 func +<Key,Value>(lhs:[Key:Value], rhs:[Key:Value]) -> [Key:Value]{
     var left = lhs
@@ -139,7 +139,7 @@ struct LaTeX {
 }
 
 
-typealias SymbolQuintuple = (string:String,type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
+typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arities:Range<Int>)
 
 enum SymbolType {
     

@@ -305,39 +305,39 @@ private extension SimpleProver {
 
 extension SimpleProver {
     
-    private func createquintuple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
-        guard var quintuple = symbols[symbol] else {
+    private func createquartuple(symbol: String, type:SymbolType, arity:Int) -> SymbolQuadruple {
+        guard var quartuple = symbols[symbol] else {
             return (type:type, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: arity...arity)
         }
         
-        assert(quintuple.type == type, "type of \(symbol) is \(quintuple.type) instead of \(type)")
-        assert(quintuple.category == SymbolCategory.Functor, "category of \(symbol) is \(quintuple.category) instead of \(SymbolCategory.Functor)")
-        assert(quintuple.notation == SymbolNotation.Prefix, "notation of \(symbol) is \(quintuple.notation) instead of \(SymbolNotation.Prefix)")
-        assert(quintuple.arities.contains(arity), "arities of \(symbol): \(quintuple.arities) does not include \(arity)")
+        assert(quartuple.type == type, "type of \(symbol) is \(quartuple.type) instead of \(type)")
+        assert(quartuple.category == SymbolCategory.Functor, "category of \(symbol) is \(quartuple.category) instead of \(SymbolCategory.Functor)")
+        assert(quartuple.notation == SymbolNotation.Prefix, "notation of \(symbol) is \(quartuple.notation) instead of \(SymbolNotation.Prefix)")
+        assert(quartuple.arities.contains(arity), "arities of \(symbol): \(quartuple.arities) does not include \(arity)")
         
-        quintuple.arities.insert(arity)
+        quartuple.arities.insert(arity)
         
-        return quintuple
+        return quartuple
         
         
     }
     
     /// protocol extension Prover.register cannot be invoked in the class?
     func register(predicate symbol:String, arity:Int) -> SymbolQuadruple {
-        let quintuple = createquintuple(symbol, type:SymbolType.Predicate, arity:arity)
+        let quartuple = createquartuple(symbol, type:SymbolType.Predicate, arity:arity)
         
-        self.symbols[symbol] = quintuple
+        self.symbols[symbol] = quartuple
         
-        return quintuple
+        return quartuple
     }
     
     func register(function symbol:String, arity:Int) -> SymbolQuadruple {
         
-        let quintuple = createquintuple(symbol, type:SymbolType.Function, arity:arity)
+        let quartuple = createquartuple(symbol, type:SymbolType.Function, arity:arity)
         
-        // self.symbols[symbol] = quintuple // do not register function symbols
+        // self.symbols[symbol] = quartuple // do not register function symbols
         
-        return quintuple
+        return quartuple
     }
     
 }
@@ -348,9 +348,9 @@ extension SimpleProver {
 //    func buildYicesClause<N:Node>(clause:N) -> (yicesClause: term_t, yicesLiterals: [term_t]) {
 //        guard let literals = clause.nodes else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
 //        
-//        let quintuple = self.symbols[clause.symbol] ?? register(predicate: clause.symbol, arity: literals.count)
+//        let quartuple = self.symbols[clause.symbol] ?? register(predicate: clause.symbol, arity: literals.count)
 //        
-//        switch quintuple.type {
+//        switch quartuple.type {
 //            //        case SymbolType.Disjunction where literals.count == 0:
 //            //            // clause with literals
 //            //            guard literals.count > 0 else { return (yicesClause: yices_false(), yicesLiterals: [term_t]()) }
@@ -370,7 +370,7 @@ extension SimpleProver {
 //            
 //            
 //        default:
-//            assertionFailure("\(clause.symbol):\(quintuple) is not the root of a clause.")
+//            assertionFailure("\(clause.symbol):\(quartuple) is not the root of a clause.")
 //            return (yicesClause: yices_false(), yicesLiterals: [term_t]())
 //        }
 //    }
@@ -382,14 +382,14 @@ extension SimpleProver {
 //        guard let nodes = term.nodes else { return 🚧 }
 //        
 //        
-//        let quintuple = self.symbols[term.symbol] ?? (
+//        let quartuple = self.symbols[term.symbol] ?? (
 //            range_tau == bool_tau ?
 //                register(predicate: term.symbol, arity: nodes.count)
 //                :
 //                (type:SymbolType.Function, category:SymbolCategory.Functor, notation:SymbolNotation.Prefix, arities: nodes.count...nodes.count)
 //        )
 //        
-//        switch quintuple.type {
+//        switch quartuple.type {
 //        case .Negation:
 //            assert(nodes.count == 1)
 //            return yices_not( buildYicesTerm(nodes.first!, range_tau:bool_tau))

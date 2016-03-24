@@ -22,7 +22,7 @@ import Foundation
 //
 //
 //extension FancyNode {
-//    static func quintuple(symbol:Int) -> SymbolQuintuple? {
+//    static func quartuple(symbol:Int) -> SymbolQuadruple? {
 //        assert(false, "Mandatory \(#function) not implemented yet.")
 //        return nil
 //    }

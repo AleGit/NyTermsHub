@@ -17,14 +17,14 @@ extension Node {
         guard let nodes = self.nodes else {
             // since self has not list of subnodes at all,
             // self must be a variable term
-            assert((self.symbolType ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbolString) is variable term with wrong type \(self.symbolQuintuple)!)")
+            assert((self.symbolType ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbolString) is variable term with wrong type \(self.symbolQuadruple)!)")
             
             return decorate(symbol:self.symbol, type:SymbolType.Variable)
         }
         
         let decors = nodes.map { $0.buildDescription(decorate) }
         
-        guard let quintuple = self.symbolQuintuple else {
+        guard let quartuple = self.symbolQuadruple else {
             // If the symbol is not defined in the global symbol table,
             // i.e. a function or predicate symbol
             let decor = decorate(symbol:self.symbol,type:SymbolType.Function)
@@ -38,39 +38,39 @@ extension Node {
             }
         }
         
-        assert(quintuple.arities.contains(nodes.count), "'\(self.symbolDebugString)' has invalid number \(nodes.count).")
+        assert(quartuple.arities.contains(nodes.count), "'\(self.symbolDebugString)' has invalid number \(nodes.count).")
         
-        let decor = decorate(symbol:self.symbol, type:quintuple.type)
+        let decor = decorate(symbol:self.symbol, type:quartuple.type)
         
-        switch quintuple {
+        switch quartuple {
             
-        case (_,.Universal,_,.TptpSpecific,_), (_,.Existential,_,.TptpSpecific,_):
+        case (.Universal,_,.TptpSpecific,_), (.Existential,_,.TptpSpecific,_):
             return "(\(decor)[\(decors.first!)]:(\(decors.last!)))" // e.g.: ! [X,Y,Z] : ( P(f(X,Y),Z) & f(X,X)=g(X) )
             
-        case (_,_,_,.TptpSpecific,_):
+        case (_,_,.TptpSpecific,_):
             assertionFailure("\(self.symbolDebugString)' has ambiguous notation.")
             return "\(decor)☇(\(decors.joinWithSeparator(",")))"
             
-        case (_,.Universal,_,_,_), (_,.Existential,_,_,_):
+        case (.Universal,_,_,_), (.Existential,_,_,_):
             return "(\(decor)\(decors.first!) (\(decors.last!)))" // e.g.: ∀ x,y,z : ( P(f(x,y),z) ∧ f(x,x)=g(x) )
             
-        case (_,_,_,.Prefix,_) where nodes.count == 0:
+        case (_,_,.Prefix,_) where nodes.count == 0:
             return "\(decor)"
             
-        case (_,_,_,.Prefix,_):
+        case (_,_,.Prefix,_):
             return "\(decor)(\(decors.joinWithSeparator(separator)))"
             
-        case (_,_,_,.Minus,_) where nodes.count == 1:
+        case (_,_,.Minus,_) where nodes.count == 1:
             return "\(decor)(\(decors.first!)"
             
-        case (_,_,_,.Minus,_), (_,_,_,.Infix,_):
+        case (_,_,.Minus,_), (_,_,.Infix,_):
             return decors.joinWithSeparator(decor)
             
-        case (_,_,_,.Postfix,_):
+        case (_,_,.Postfix,_):
             assertionFailure("'\(symbolDebugString),\(decor)' uses unsupported postfix notation.")
             return "(\(decors.joinWithSeparator(separator)))\(decor)"
             
-        case (_,_,_,.Invalid,_):
+        case (_,_,.Invalid,_):
             assertionFailure("'\(symbolDebugString),\(decor)' has invalid notation.")
             return "☇\(decor)☇(\(decors.joinWithSeparator(separator)))"
             

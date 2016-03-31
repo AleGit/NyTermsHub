@@ -6,13 +6,59 @@
 //  Copyright © 2016 Alexander Maringele. All rights reserved.
 //
 
+/* Encoding of symbols in UInt (at least UInt64)
+ 
+ variables
+                  lookup
+ 0x  00 00 00 00  00 00 00 00       variable #0 (placeholder)
+ 0x  00 00 00 00  00 00 00 01       variable #1
+ 0x  00 00 00 00  .. .. .. ..
+ 0x  00 00 00 00  FF FF FF FF       variable #4.294.967.295
+ 
+ predefined symbols
+ 
+ 0x  00 00 00 01  00 00 00 00     invalid
+ 0x  00 00 00 01  00 00 00 01     negation (unary)
+ 0x  00 00 00 01  00 11 00 02     disjunction (associative)
+ 0x  00 00 00 01  00 11 00 03     conjunction (associative)
+ 0x  00 00 00 01  00 01 00 04     implication (binary)
+ 0x  00 00 00 01  00 00 00 05     converse (binary)
+ 0x  00 00 00 01  00 00 00 06     iff (binary)
+ 0x  00 00 00 01  00 00 00 07     niff (binary)
+ 0x  00 00 00 01  00 00 00 08     nor (binary)
+ 0x  00 00 00 01  00 00 00 09     nand (binary)
+ 0x  00 00 00 01  00 00 00 0a     sequent (binary)
+ 0x  00 00 00 01  00 00 00 0b     universal (binary)
+ 0x  00 00 00 01  00 00 00 0c     existential (binary)
+ 0x  00 00 00 01  00 00 00 0d     equation (binary)
+ 0x  00 00 00 01  00 00 00 0e     inequation (binary)
+ 
+ symbols
+ 
+ 0x  00 00 00 02
+ 0x  ff ff ff ff
+ 
+ 
+ 
+ 
+ 
+ 
+ */
+
 import Foundation
 
+let nameMask : UInt     = 0b11111111_11111111_11111111_11111111_00000000_00000000_00000000_00000000 // 32 bit: 4.294.967.296
+let variableMask : UInt = 0b00000000_00000000_00000000_00000000_11111111_11111111_11111111_11111111 // 32 bit: 4.294.967.296
+
+let typeMask : UInt     = 0b00000000_00000000_00000000_00000000_11111000_00000000_00000000_00000000 //  5 bit: 32
+let categoryMask : UInt = 0b00000000_00000000_00000000_00000000_00000111_00000000_00000000_00000000 //  3 bit: 8
+let notationMask : UInt = 0b00000000_00000000_00000000_00000000_00000000_11110000_00000000_00000000 //  4 bit: 16
+let arityMask : UInt    = 0b00000000_00000000_00000000_00000000_00000000_00001111_11111111_11111111 // 20 bit: [0..<1024,start+0..<1024]
+
 extension Node where Symbol == Int {
-//    
-//    func decode(typeBits:UInt8 = 5, categoryBits:UInt8 = 3, notationBits:UInt8 = 3, arityBits:UInt8) -> SymbolQuadruple {
-//        
-//    }
+
+    
+    
 }
 
 extension Node where Symbol == Int {

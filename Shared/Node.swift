@@ -21,15 +21,23 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     
     init (symbol:Symbol, nodes:[Self]?)
     
+    var symbolString : String { get }
     var symbolQuadruple : SymbolQuadruple? { get }
+    
     static func symbol(type:SymbolType) -> Symbol
 }
 
 extension Node {
     
-    var symbolString: String {
-        return "\(self.symbol)"
-    }
+//    var symbolString: String {
+//        assert(false, "this is the most generic implementation of \(#function).")
+//        return "\(self.symbol)"
+//    }
+//    
+//    var symbolQuadruple : SymbolQuadruple? {
+//        assert(false, "this is the most generic implementation of \(#function).")
+//        return nil
+//    }
     
     var symbolDebugString : String {
         guard let quartuple = self.symbolQuadruple else {

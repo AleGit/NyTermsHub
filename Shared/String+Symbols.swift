@@ -143,10 +143,12 @@ typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:
 
 enum SymbolType {
     
-    case LeftParenthesis, RightParenthesis
-    case LeftCurlyBracket, RightCurlyBracket
-    case LeftSquareBracket, RightSquareBracket
-    case LeftAngleBracket, RightAngleBracket
+    @available(*,deprecated=1.0)
+    case
+    LeftParenthesis, RightParenthesis,
+    LeftCurlyBracket, RightCurlyBracket,
+    LeftSquareBracket, RightSquareBracket,
+    LeftAngleBracket, RightAngleBracket
     
     /* CNF */
     

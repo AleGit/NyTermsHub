@@ -10,18 +10,18 @@
  
  variables
                   lookup
- 0x  00 00 00 00  00 00 00 00       variable #0 (placeholder)
+ 0x  00 00 00 00  00 00 00 00       variable #0 (placeholder variable)
  0x  00 00 00 00  00 00 00 01       variable #1
  0x  00 00 00 00  .. .. .. ..
  0x  00 00 00 00  FF FF FF FF       variable #4.294.967.295
  
- predefined symbols
+ predefined symbols/arities/notation
  
  0x  00 00 00 01  00 00 00 00     invalid
  0x  00 00 00 01  00 00 00 01     negation (unary)
- 0x  00 00 00 01  00 11 00 02     disjunction (associative)
- 0x  00 00 00 01  00 11 00 03     conjunction (associative)
- 0x  00 00 00 01  00 01 00 04     implication (binary)
+ 0x  00 00 00 01  00 00 00 02     disjunction (variadic 0-n, associative)
+ 0x  00 00 00 01  00 00 00 03     conjunction (variadic 0-n, associative)
+ 0x  00 00 00 01  00 00 00 04     implication (binary)
  0x  00 00 00 01  00 00 00 05     converse (binary)
  0x  00 00 00 01  00 00 00 06     iff (binary)
  0x  00 00 00 01  00 00 00 07     niff (binary)
@@ -33,9 +33,14 @@
  0x  00 00 00 01  00 00 00 0d     equation (binary)
  0x  00 00 00 01  00 00 00 0e     inequation (binary)
  
- symbols
+ symbols with non-variadic arities and pre-order notation
+ (4.294.967.294 different symbols are possible)
  
- 0x  00 00 00 02
+ T ... type:        4 bit 0..<15        predicate, function, n/a
+ R ... reserverd:   12 bit 0..<4.095    for future use
+ A ... arity:       2 byte 0..<65.535
+ 
+ 0x  00 00 00 02  TR RR AA AA
  0x  ff ff ff ff
  
  

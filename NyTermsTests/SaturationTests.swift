@@ -59,7 +59,7 @@ class SaturationTests: XCTestCase {
                 guard let unifier = aLiteral ~?= (bLiteral ** 0) else { continue}
                 
                 print("\(aClauseIndex).\(aLiteralIndex) ~?= \(bClauseIndex).\(bLiteralIndex)",
-                "\t","\(aLiteral) ~?= \(bLiteral)")
+                "\t","\(aLiteral) ~?= \(bLiteral) = \(unifier)")
                 
                 
             }

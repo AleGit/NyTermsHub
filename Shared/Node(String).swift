@@ -92,7 +92,13 @@ extension Node where Symbol == String {
             return "n/a"
         }
     }
+    
+    static var connectives : [Symbol] {
+        return [ "&", "|", "~", "=>", "<=", "<=>", "~&", "~|", "<~>", "!", "?", "-->"]
+    }
 }
+
+
 
 // MARK: CustomStringConvertible
 

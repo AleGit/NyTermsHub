@@ -144,15 +144,12 @@ extension TptpNode {
 extension TptpNode : StringLiteralConvertible {
     private static func node(stringLiteral value:String) -> TptpNode {
         assert(!value.isEmpty)
-        
-        let connectives = Symbols.defaultSymbols.keys { $0.1.category == SymbolCategory.Connective }
-        let leftpars = Symbols.defaultSymbols.keys { $0.1.type == SymbolType.LeftParenthesis }
 
-        if value.containsOne(connectives) {
+        if value.containsOne(TptpNode.connectives) {
             // fof_formula or cnf_formula (i.e. fof_formula in connjective normal form)
             return TptpFormula.FOF(stringLiteral: value).root
         }
-        else if value.containsOne(leftpars) {
+        else if value.contains("(") {
             
             // single equation, predicate or (function) term
             let cnf = TptpFormula.CNF(stringLiteral: value)

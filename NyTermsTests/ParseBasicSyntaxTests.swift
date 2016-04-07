@@ -62,8 +62,8 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let last = MyTestTerm(tptpFormulae.last!.root)
         XCTAssertEqual("!=", last.symbol)
-        XCTAssertNotNil(last.symbolQuadruple)
-        let quartuple = last.symbolQuadruple!
+        XCTAssertNotNil(last.symbolQuadruple())
+        let quartuple = last.symbolQuadruple()!
         
         XCTAssertEqual(SymbolNotation.Infix, quartuple.notation)
         let actual = last.description

@@ -21,8 +21,8 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     
     init (symbol:Symbol, nodes:[Self]?)
     
-    var symbolString : String { get }
-    var symbolQuadruple : SymbolQuadruple? { get }
+    var symbolString : () -> String { get }
+    var symbolQuadruple : () -> SymbolQuadruple? { get }
     
     static func symbol(type:SymbolType) -> Symbol
 }
@@ -34,13 +34,13 @@ extension Node {
 //        return "\(self.symbol)"
 //    }
 //    
-//    var symbolQuadruple : SymbolQuadruple? {
+//    var symbolQuadruple() : SymbolQuadruple? {
 //        assert(false, "this is the most generic implementation of \(#function).")
 //        return nil
 //    }
     
     var symbolDebugString : String {
-        guard let quartuple = self.symbolQuadruple else {
+        guard let quartuple = self.symbolQuadruple() else {
             return "'\(self.symbolString)' (\(self.symbol)) n/a"
         }
         
@@ -48,19 +48,19 @@ extension Node {
     }
     
     var symbolType : SymbolType? {
-        return self.symbolQuadruple?.type
+        return self.symbolQuadruple()?.type
     }
     
     var symbolCategory : SymbolCategory? {
-        return self.symbolQuadruple?.category
+        return self.symbolQuadruple()?.category
     }
     
     var symbolArities : Range<Int>? {
-        return self.symbolQuadruple?.arities
+        return self.symbolQuadruple()?.arities
     }
     
     var symbolNotation : SymbolNotation? {
-        return self.symbolQuadruple?.notation
+        return self.symbolQuadruple()?.notation
     }
 }
 

@@ -10,12 +10,12 @@ import Foundation
 
 extension Node where Symbol == String {
     
-    var symbolString : String {
-        return self.symbol
+    var symbolString : () -> String {
+        return { self.symbol }
     }
     
-    var symbolQuadruple : SymbolQuadruple? {
-        return Self.quadruple(self.symbol)
+    var symbolQuadruple : () -> SymbolQuadruple? {
+        return { Self.quadruple(self.symbol) }
     }
     
     static func quadruple(symbol:Symbol) -> SymbolQuadruple? {
@@ -119,10 +119,10 @@ extension Node where Symbol == String {
 extension Node where Symbol == String {
     init<N:Node>(_ s:N) {
         if let nodes = s.nodes {
-            self = Self(symbol: s.symbolString, nodes: nodes.map { Self($0) })
+            self = Self(symbol: s.symbolString(), nodes: nodes.map { Self($0) })
         }
         else {
-            self = Self(variable: s.symbolString)
+            self = Self(variable: s.symbolString())
         }
     }
 }

@@ -10,10 +10,10 @@ extension SharingNode where Symbol == String {
     
     init<N:Node>(_ s:N) {
         if let nodes = s.nodes {
-            self = Self(symbol: s.symbolString, nodes: nodes.map { Self($0) })
+            self = Self(symbol: s.symbolString(), nodes: nodes.map { Self($0) })
         }
         else {
-            self = Self(variable: s.symbolString)
+            self = Self(variable: s.symbolString())
         }
         
         self = Self.singular(self)

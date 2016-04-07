@@ -17,14 +17,14 @@ extension Node {
         guard let nodes = self.nodes else {
             // since self has not list of subnodes at all,
             // self must be a variable term
-            assert((self.symbolType ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbolString) is variable term with wrong type \(self.symbolQuadruple)!)")
+            assert((self.symbolType ?? SymbolType.Variable) == SymbolType.Variable, "\(self.symbolString) is variable term with wrong type \(self.symbolQuadruple())!)")
             
             return decorate(symbol:self.symbol, type:SymbolType.Variable)
         }
         
         let decors = nodes.map { $0.buildDescription(decorate) }
         
-        guard let quartuple = self.symbolQuadruple else {
+        guard let quartuple = self.symbolQuadruple() else {
             // If the symbol is not defined in the global symbol table,
             // i.e. a function or predicate symbol
             let decor = decorate(symbol:self.symbol,type:SymbolType.Function)

@@ -127,4 +127,16 @@ extension Node where Symbol == String {
     }
 }
 
+extension Node where Symbol == String {
+    var preorderString : String {
+        guard let nodes = self.nodes else {
+            // a variable
+            return Self.symbol(.Wildcard)
+        }
+        
+        let prefix = self.symbolString()
+        return nodes.map { $0.preorderString }.reduce(prefix) { $0 + $1 }
+     }
+}
+
 

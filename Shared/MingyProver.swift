@@ -16,8 +16,11 @@ final class MingyProver<N:Node where N.Symbol == String> : YicesProver {
     let bool_tau = yices_bool_type()
     let 🚧 : term_t
     
+    // literalsIndex
     private var literalsTrie = TrieClass<SymHop<String>,Int>()
-    private var clausesTrie = TrieClass<SymHop<String>,Int>()
+    
+    // clause Index
+    private var clausesTrie = TrieClass<String,Int>()
     
     typealias ClauseTriple = (N, literalIndex:Int?, yices:(clause:term_t,literals:[term_t]))
     

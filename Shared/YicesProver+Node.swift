@@ -19,7 +19,7 @@ protocol YicesProver {
 extension YicesProver {
     
     /// Build a yices disjunction from clause.
-    func clause<N:Node where N.Symbol==String>(clause:N) -> (yicesClause:term_t,yicesLiterals:[term_t]) {
+    func clause<N:Node>(clause:N) -> (yicesClause:term_t,yicesLiterals:[term_t]) {
         assert(clause.isClause,"'\(clause)' is not a clause.")
         
         guard let literals = clause.nodes where literals.count > 0 else {
@@ -27,8 +27,12 @@ extension YicesProver {
             return (yices_false(), [term_t]())
         }
         
+        return self.literals(literals)
+    }
+    
+    private func literals<N:Node>(literals:[N]) -> (yicesClause:term_t,yicesLiterals:[term_t]) {
         let yicesLiterals = literals.map { self.literal($0) }
-        var copy = yicesLiterals // yices_or might change order of array
+        var copy = yicesLiterals // yices_or might change the order of the array
         let yicesClause = yices_or( UInt32(yicesLiterals.count), &copy)
         
         return (yicesClause, yicesLiterals)
@@ -39,7 +43,7 @@ extension YicesProver {
     /// - an equation
     /// - an inequation
     /// - a predicatate term or a proposition constant
-    private func literal<N:Node where N.Symbol == String>(literal:N) -> term_t {
+    private func literal<N:Node>(literal:N) -> term_t {
         assert(literal.isLiteral,"'\(literal)' is not a literal.")
         
         guard let nodes = literal.nodes
@@ -66,7 +70,7 @@ extension YicesProver {
             
         case .Predicate:
             // proposition or predicate term
-            return self.application(literal.symbol, nodes:nodes, term_tau: self.bool_tau)
+            return self.application(literal.symbolString(), nodes:nodes, term_tau: self.bool_tau)
             
         default:
             assert(false, "This must not happen.")
@@ -75,18 +79,18 @@ extension YicesProver {
     }
     
     /// Build uninterpreted function term from term.
-    private func term<N:Node where N.Symbol==String>(term:N) -> term_t {
+    private func term<N:Node>(term:N) -> term_t {
         assert(term.isTerm,"'\(term)' is not a term.")
         guard let nodes = term.nodes else {
             return self.🚧 // substitute all variables with global constant '⊥'
         }
         
         // function or constant term
-        return self.application(term.symbol, nodes:nodes, term_tau:self.free_tau)
+        return self.application(term.symbolString(), nodes:nodes, term_tau:self.free_tau)
     }
     
     /// Build predicate or function.
-    private func application<N:Node where N.Symbol==String>(symbol:N.Symbol, nodes:[N], term_tau:type_t) -> term_t {
+    private func application<N:Node>(symbol:String, nodes:[N], term_tau:type_t) -> term_t {
         
         guard nodes.count > 0 else {
             return constant(symbol,term_tau: term_tau)

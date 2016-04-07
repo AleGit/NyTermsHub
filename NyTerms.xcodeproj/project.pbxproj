@@ -93,6 +93,9 @@
 		515F0F0E1B6BB80000B470B4 /* TestGlobals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515F0F0D1B6BB80000B470B4 /* TestGlobals.swift */; };
 		515F2B461C918016004F93E9 /* sizeDemo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 515F2B451C918016004F93E9 /* sizeDemo.txt */; };
 		516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516107AD1C5A53E100FD3637 /* LinearSearch.swift */; };
+		5163AE6C1CB6839300C7CD5A /* DiscriminationTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6B1CB6839300C7CD5A /* DiscriminationTreeTests.swift */; };
+		5163AE6E1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */; };
+		5163AE6F1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */; };
 		516587C91CA3A550002DABFE /* Node(Int).swift in Sources */ = {isa = PBXBuildFile; fileRef = 516587C81CA3A550002DABFE /* Node(Int).swift */; };
 		516587CA1CA3A550002DABFE /* Node(Int).swift in Sources */ = {isa = PBXBuildFile; fileRef = 516587C81CA3A550002DABFE /* Node(Int).swift */; };
 		516D1A431C32C3A0000E152A /* Node+Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D1A421C32C3A0000E152A /* Node+Trie.swift */; };
@@ -271,6 +274,8 @@
 		516107AD1C5A53E100FD3637 /* LinearSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearSearch.swift; sourceTree = "<group>"; };
 		516107B11C5A605800FD3637 /* HWV119-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV119-iMac.txt"; path = "Docs/HWV119-iMac.txt"; sourceTree = SOURCE_ROOT; };
 		516107B21C5A611800FD3637 /* HWV066-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV066-iMac.txt"; path = "Docs/HWV066-iMac.txt"; sourceTree = SOURCE_ROOT; };
+		5163AE6B1CB6839300C7CD5A /* DiscriminationTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscriminationTreeTests.swift; sourceTree = "<group>"; };
+		5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscriminationTree.swift; sourceTree = "<group>"; };
 		516587C81CA3A550002DABFE /* Node(Int).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node(Int).swift"; sourceTree = "<group>"; };
 		516A73D81C902CF1007E5DEC /* iPuzzlesResults.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = iPuzzlesResults.txt; sourceTree = "<group>"; };
 		516D1A421C32C3A0000E152A /* Node+Trie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Trie.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -579,6 +584,7 @@
 				51FD00B71C3132F8008C5AD1 /* TrieStruct.swift */,
 				514AD8671C6B7DF900652004 /* TrieType.swift */,
 				51E038121C92A596005BFD42 /* Auxiliary+Process.swift */,
+				5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -603,6 +609,7 @@
 				5146F42E1C7B1B3B00A19EC1 /* BuildTrieStructPerformanceTests.swift */,
 				5146F4301C7B1B5200A19EC1 /* BuildTrieClassPerformanceTests.swift */,
 				51D847691C8069FB003EC848 /* TptpPathTests.swift */,
+				5163AE6B1CB6839300C7CD5A /* DiscriminationTreeTests.swift */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -927,6 +934,7 @@
 				51342AB91B92CA3A0052A72F /* DemoFileParsing.swift in Sources */,
 				511E958B1B8AEB4D0093F4E8 /* TptpInclude.swift in Sources */,
 				511E958C1B8AEB4D0093F4E8 /* TptpNode.swift in Sources */,
+				5163AE6F1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */,
 				5100656F1C897A6800F2A67B /* MingyProver.swift in Sources */,
 				51B26B6E1B8DA41200CC59AD /* Yices.swift in Sources */,
 				510811F01C9AA49600E5A439 /* Node(LaTeX).swift in Sources */,
@@ -1007,6 +1015,7 @@
 				512F75E41BE20FDD007EBA4A /* SimpleProver.swift in Sources */,
 				5179948A1C96C63B00791916 /* MereParser.c in Sources */,
 				516587C91CA3A550002DABFE /* Node(Int).swift in Sources */,
+				5163AE6E1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */,
 				5131E8AB1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */,
 				514AD8681C6B7DF900652004 /* TrieType.swift in Sources */,
 				515D462E1C999A7100A7111E /* Node(String).swift in Sources */,
@@ -1021,6 +1030,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5163AE6C1CB6839300C7CD5A /* DiscriminationTreeTests.swift in Sources */,
 				51431DFD1C85CF9D0053BB18 /* ProverBasicPerformanceTests.swift in Sources */,
 				5150CD3C1C6CA25A00372F04 /* BasicTrieStructTests.swift in Sources */,
 				51D276631BC5805F005A0213 /* OrderTests.swift in Sources */,

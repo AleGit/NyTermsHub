@@ -128,4 +128,58 @@ extension SequenceType {
 
 // MARK: -
 
+extension Array where Element : Hashable {
+    var elementIndices : [Element : [Int]] {
+        var vi = [Element : [Int]]()
+        for (index,value) in self.enumerate() {
+            var array = vi[value] ?? [Int]()
+            array.append(index)
+            vi[value] = array
+        }
+        return vi
+    }
+}
+
+extension Array {
+    
+    func permuter<T:Hashable>() -> (
+        (before:[T]) -> ( (after:[T]) -> [Element])
+    )
+    {
+        return {
+            (before) in return {
+                (after) in return
+                self.permute(before,after:after)
+            }
+            
+        }
+        
+    }
+    
+    func permute<T:Hashable>(before:[T], after:[T]) -> [Element] {
+        assert(Set(before) == Set(after))
+        assert(before.count == after.count)
+        assert(self.count == before.count)
+        
+        let beforeIndices = before.elementIndices
+        let afterIndices = after.elementIndices
+        
+        var target = self
+        
+        for (key,sourceIndices) in beforeIndices {
+            guard let targetIndices = afterIndices[key] else {
+                assert(false)
+                break
+            }
+            assert(sourceIndices.count == targetIndices.count)
+            
+            for (sourceIndex, targetIndex) in zip(sourceIndices, targetIndices) {
+                target[targetIndex] = self[sourceIndex]
+            }
+        }
+        
+        return target
+    }
+}
+
 

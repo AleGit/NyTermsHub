@@ -129,6 +129,7 @@
 		51C0ACB41C4A385800447594 /* DemoComplementaries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C0ACB31C4A385800447594 /* DemoComplementaries.swift */; };
 		51C94CB91B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; };
 		51C94CBA1B987E70004C3082 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C94CB81B987E70004C3082 /* Empty.swift */; };
+		51CD27AE1CBBE6FE00851E89 /* DemoClauseIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD27AD1CBBE6FE00851E89 /* DemoClauseIndex.swift */; };
 		51CD82A61C32D090009166BB /* NodeTrieTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CD82A51C32D090009166BB /* NodeTrieTests.swift */; };
 		51D276601BC57879005A0213 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2765F1BC57879005A0213 /* Order.swift */; };
 		51D276611BC57879005A0213 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2765F1BC57879005A0213 /* Order.swift */; };
@@ -310,6 +311,7 @@
 		51C0ACB51C4A5C4000447594 /* ProcessFiles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ProcessFiles.txt; path = ../Docs/ProcessFiles.txt; sourceTree = "<group>"; };
 		51C94CB81B987E70004C3082 /* Empty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		51CC80F81C553B25008D4D43 /* HWV134lin.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = HWV134lin.txt; path = Docs/HWV134lin.txt; sourceTree = SOURCE_ROOT; };
+		51CD27AD1CBBE6FE00851E89 /* DemoClauseIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoClauseIndex.swift; sourceTree = "<group>"; };
 		51CD82A51C32D090009166BB /* NodeTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeTrieTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51D2765F1BC57879005A0213 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Order.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51D276621BC5805F005A0213 /* OrderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTests.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				51342AB81B92CA3A0052A72F /* DemoFileParsing.swift */,
 				51540DB11C4CBA7B00A145DC /* results */,
 				51E5F9AE1C87179900040B19 /* DemoProofing.swift */,
+				51CD27AD1CBBE6FE00851E89 /* DemoClauseIndex.swift */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;
@@ -909,6 +912,7 @@
 				51D8476D1C8084DC003EC848 /* TptpPath.swift in Sources */,
 				511E958F1B8AEB9C0093F4E8 /* TptpLexer.lm in Sources */,
 				51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */,
+				51CD27AE1CBBE6FE00851E89 /* DemoClauseIndex.swift in Sources */,
 				51E038141C92A596005BFD42 /* Auxiliary+Process.swift in Sources */,
 				516D25201C3EB26C0075D362 /* Nodal.swift in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,

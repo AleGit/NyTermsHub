@@ -30,7 +30,7 @@ extension Yices {
 }
 
 extension Yices {
-    static func clause<N:Node>(clause:N) -> (literals:[N], yicesClause: type_t, yicesLiterals:[type_t], selected:Int?) {
+    static func clause<N:Node>(clause:N) -> (literals:[N], yicesClause: term_t, yicesLiterals:[term_t], selected:Int?) {
         assert(clause.isClause,"\(clause) must be a clause, but is not.")
         
         guard let literals = clause.nodes where literals.count > 0 else {
@@ -45,14 +45,16 @@ extension Yices {
         var yicesLiterals = literals.map { self.literal($0) }
         
         
-        let permuter = literals.permuter()(before:yicesLiterals)
+        let p0 = literals.permuter()(before:yicesLiterals)
+        let p1 = yicesLiterals.permuter()(before:yicesLiterals)
         
         let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
         // yices_or might change the order of the array
         
+        assert(p1(after:yicesLiterals) == yicesLiterals)
         
         return (
-            permuter(after:yicesLiterals),
+            p0(after:yicesLiterals),
             yicesClause,
             yicesLiterals,
             nil

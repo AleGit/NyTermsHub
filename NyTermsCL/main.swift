@@ -11,14 +11,18 @@ print(Process.info)
 print(Yices.info)
 print("tptp root path:",TptpPath.tptpRootPath)
 print(line,line,line)
+yices_init()
 
 // print footer (at end of program)
 defer {
+    yices_exit()
     print(line,line,line)
     print(line,NSDate(),line)
 }
 
-DemoFileParsing.dimensionsDemo()
+DemoClauseIndex.demo("HWV134-1")
+
+// DemoFileParsing.dimensionsDemo()
 
 // demos
 // BuildTries.demo()

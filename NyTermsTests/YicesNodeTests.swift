@@ -10,23 +10,14 @@ import XCTest
 @testable import NyTerms
 
 class YicesNodeTests: XCTestCase {
-    
-    
-    
     override func setUp() {
-        print("setup")
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()
-        print("yices_init")
     }
     
     override func tearDown() {
-        print("yices_exit")
         yices_exit()
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        print("teardown")
     }
     
     func testTerms() {

@@ -3,17 +3,14 @@
 //  NyTerms
 //
 //  Created by Sarah Winkler on 24/09/15.
-//  Copyright © 2015 Alexander Maringele. All rights reserved.
-//
 
 import Foundation
-
 
 extension Node {
     
     var subterms : [Self] {
-        guard nodes != nil else { return [self] }
-        return nodes!.reduce([self], combine: { return $0 + $1.subterms})
+        guard let terms = self.nodes else { return [self] }
+        return terms.reduce([self]) { $0 + $1.subterms }
     }
     
     func is_subterm (t: Self) -> Bool {

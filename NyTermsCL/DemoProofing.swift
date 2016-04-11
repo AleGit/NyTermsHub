@@ -120,42 +120,42 @@ let problems = [
 
 struct Proofing {
     static func demo() {
-        let fto = { (t:Double) -> Double in return t }
-        
-        let list = puzzles.filter {
-            // range.contains(Int($0.2))
-            (name,status,timeout,rating,types) in
-
-            status != STATUS_UNKNOWN &&
-                timeout < 100.0 &&
-                rating < 0.1 &&
-                !types.contains(SymbolType.Equation)
-        }
-        
-        for (name,status,timeout,rating,category) in list {
-            
-            guard let path = name.p else {
-                print("\(name) is not accessible")
-                continue
-            }
-            print(path)
-            
-            yices_init()
-            defer {
-                yices_exit()
-            }
-            
-            let clauses = TptpNode.roots(path)
-            let prover = SimpleProver(clauses: clauses)
-            let (result,runtime) = measure {
-                prover.run(timeLimit:fto(timeout))
-            }
-            let actual = prover.status
-            print("  actual:", actual, "runtime:", runtime.prettyTimeIntervalDescription)
-            print("expected:", status, "timeout:", timeout.prettyTimeIntervalDescription)
-            print("  rating:", rating, (actual == status && result.1 <= timeout) ? "SUCCESS" : "FAILED", "\n")
-            
-        }
+//        let fto = { (t:Double) -> Double in return t }
+//        
+//        let list = puzzles.filter {
+//            // range.contains(Int($0.2))
+//            (name,status,timeout,rating,types) in
+//
+//            status != STATUS_UNKNOWN &&
+//                timeout < 100.0 &&
+//                rating < 0.1 &&
+//                !types.contains(SymbolType.Equation)
+//        }
+//        
+//        for (name,status,timeout,rating,category) in list {
+//            
+//            guard let path = name.p else {
+//                print("\(name) is not accessible")
+//                continue
+//            }
+//            print(path)
+//            
+//            yices_init()
+//            defer {
+//                yices_exit()
+//            }
+//            
+//            let clauses = TptpNode.roots(path)
+//            let prover = SimpleProver(clauses: clauses)
+//            let (result,runtime) = measure {
+//                prover.run(timeLimit:fto(timeout))
+//            }
+//            let actual = prover.status
+//            print("  actual:", actual, "runtime:", runtime.prettyTimeIntervalDescription)
+//            print("expected:", status, "timeout:", timeout.prettyTimeIntervalDescription)
+//            print("  rating:", rating, (actual == status && result.1 <= timeout) ? "SUCCESS" : "FAILED", "\n")
+//            
+//        }
     }
 }
 

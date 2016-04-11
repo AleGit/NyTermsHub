@@ -9,12 +9,12 @@
 import XCTest
 @testable import NyTerms
 
-class DiscriminationTreeTests: XCTestCase {
+class SimpleClauseIndexTests: XCTestCase {
     
-    typealias DiscriminationTree = TrieClass<String,Int>
+    typealias SimpleClauseIndex = TrieClass<String,Int>
 
     func testBasics() {
-        var dt = DiscriminationTree()
+        var sci = SimpleClauseIndex()
         
         let clauses : [TptpNode] = [
             "p(X)|p(Y)",
@@ -41,7 +41,7 @@ class DiscriminationTreeTests: XCTestCase {
             
             for path in preorderPaths {
                 
-                if let result = dt.retrieve(path) {
+                if let result = sci.retrieve(path) {
                     candidates.intersectInPlace(result)
                 }
                 else {
@@ -53,12 +53,9 @@ class DiscriminationTreeTests: XCTestCase {
             
             for path in preorderPaths {
                 
-                dt.insert(path, value: clauseIndex)
+                sci.insert(path, value: clauseIndex)
             }
         }
-        
-        print()
-        print(dt)
     }
 
 }

@@ -9,15 +9,11 @@
 import Foundation
 
 extension Yices {
-    static var free_tau : type_t {
-        return yices_int_type()
-    }
-    
-    static var bool_tau : type_t {
-        return yices_bool_type()
-    }
+    static var free_tau = yices_int_type()
+    static var bool_tau = yices_bool_type()
     
     static var 🚧 : term_t {
+        // print("\(#file),\(#line),\(#column),\(#function)")
         return Yices.constant("⊥", term_tau: free_tau)
     }
 }
@@ -38,7 +34,7 @@ extension Yices {
         assert(clause.isClause,"\(clause) must be a clause, but is not.")
         
         guard let literals = clause.nodes where literals.count > 0 else {
-            return ([N](), Yices.top(), [term_t](), nil)
+            return ([N](), Yices.bot(), [term_t](), nil)
         }
         
         return Yices.literals(literals)

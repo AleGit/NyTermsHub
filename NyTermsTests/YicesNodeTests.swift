@@ -14,15 +14,19 @@ class YicesNodeTests: XCTestCase {
     
     
     override func setUp() {
+        print("setup")
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()
+        print("yices_init")
     }
     
     override func tearDown() {
+        print("yices_exit")
         yices_exit()
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        print("teardown")
     }
     
     func testTerms() {
@@ -108,11 +112,9 @@ class YicesNodeTests: XCTestCase {
             yices_free_model(mdl)
         }
         
-        print(String(model:mdl))
+        print(String(model:mdl)!)
         
     }
-    
-    
     
     func testPredicateTrue() {
         let ctx = yices_new_context(nil)
@@ -134,9 +136,101 @@ class YicesNodeTests: XCTestCase {
             yices_free_model(mdl)
         }
         
-        print(String(model:mdl))
+        print(String(model:mdl)!)
         
         
+    }
+    
+    func testEmptyClause() {
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        let empty = TptpNode(connective:"|",nodes: [TptpNode]())
+        let (_,t,_,_) = Yices.clause(empty)
+        yices_assert_formula(ctx, t)
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_UNSAT, yices_context_status(ctx))
+        
+    }
+
+    func testPropositionalFalse() {
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        
+        for clause in [
+            TptpNode(connective:"|", nodes:[ "p" as TptpNode]),
+            TptpNode(connective:"|", nodes:[ "~p" as TptpNode])] {
+                let (_,t,_,_) = Yices.clause(clause)
+                yices_assert_formula(ctx, t)
+        }
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_UNSAT, yices_context_status(ctx))
+    }
+    
+    
+    
+    func testPredicateFalse() {
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        
+        for clause in [
+            TptpNode(connective:"|", nodes:[ "p(X)" as TptpNode]),
+            TptpNode(connective:"|", nodes:[ "~p(Y)" as TptpNode])] {
+                let (_,t,_,_) = Yices.clause(clause)
+                yices_assert_formula(ctx, t)
+        }
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_UNSAT, yices_context_status(ctx))
+    }
+    
+    func testPropositionalSatisfiable() {
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        
+        for clause in [
+            TptpNode(connective:"|", nodes:[ "p" as TptpNode])] {
+                let (_,t,_,_) = Yices.clause(clause)
+                yices_assert_formula(ctx, t)
+        }
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_SAT, yices_context_status(ctx))
+    }
+    
+    func testPredicateSatisfiable() {
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        
+        for clause in [
+            TptpNode(connective:"|", nodes:[ "p(X)" as TptpNode])] {
+                let (_,t,_,_) = Yices.clause(clause)
+                yices_assert_formula(ctx, t)
+        }
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_SAT, yices_context_status(ctx))
+    }
+    
+    func testPUZ001() {
+        let path = "PUZ001-1".p!
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        let clauses = TptpNode.roots(path)
+        for clause in clauses {
+            let (_,t,_,_) = Yices.clause(clause)
+            yices_assert_formula(ctx, t)
+        }
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_SAT, yices_context_status(ctx))
     }
     
 }

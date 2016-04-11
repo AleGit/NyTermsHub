@@ -27,7 +27,7 @@ struct Yices {
     
         // If code is negative, something went wrong
         if code < 0 {
-            print("Error \(code) in Yices.newIntVar\n")
+            print("Error \(code) in \(#function).")
             yices_print_error(stdout)
             fflush(stdout)
             term = nil

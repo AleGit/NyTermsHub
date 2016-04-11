@@ -16,7 +16,8 @@ class YicesNodeTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        yices_init()    }
+        yices_init()
+    }
     
     override func tearDown() {
         yices_exit()
@@ -97,10 +98,43 @@ class YicesNodeTests: XCTestCase {
         
         let wahr = "p|~p" as TptpNode
         let (_,t,_,_) = Yices.clause(wahr)
-        
-        
         XCTAssertEqual(t,Yices.top())
         
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_SAT, yices_context_status(ctx))
+        
+        let mdl = yices_get_model(ctx, 1)
+        defer {
+            yices_free_model(mdl)
+        }
+        
+        print(String(model:mdl))
+        
+    }
+    
+    
+    
+    func testPredicateTrue() {
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        
+        let wahr = "p(X)|~p(X)" as TptpNode
+        let (_,t,_,_) = Yices.clause(wahr)
+        XCTAssertEqual(t,Yices.top())
+
+        yices_assert_formula(ctx, t)
+        
+        yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_SAT, yices_context_status(ctx))
+        
+        let mdl = yices_get_model(ctx, 1)
+        defer {
+            yices_free_model(mdl)
+        }
+        
+        print(String(model:mdl))
         
         
     }

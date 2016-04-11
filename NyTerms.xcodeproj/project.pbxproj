@@ -49,8 +49,6 @@
 		5131E8AB1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */; };
 		5131E8AC1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */; };
 		51342AB91B92CA3A0052A72F /* DemoFileParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51342AB81B92CA3A0052A72F /* DemoFileParsing.swift */; };
-		51378A511C8F15190000757E /* YicesProver+Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51378A501C8F15190000757E /* YicesProver+Node.swift */; };
-		51378A521C8F15190000757E /* YicesProver+Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51378A501C8F15190000757E /* YicesProver+Node.swift */; };
 		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
 		5146F42C1C7B061F00A19EC1 /* TrieClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5146F42B1C7B061F00A19EC1 /* TrieClass.swift */; };
@@ -221,7 +219,6 @@
 		5129773E1B679177003D3E80 /* Substitution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Substitution.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Auxiliary+Pretty.swift"; sourceTree = "<group>"; };
 		51342AB81B92CA3A0052A72F /* DemoFileParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DemoFileParsing.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		51378A501C8F15190000757E /* YicesProver+Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "YicesProver+Node.swift"; sourceTree = "<group>"; };
 		513CF7E01B8EF6D20063BA57 /* String+Yices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Yices.swift"; sourceTree = "<group>"; };
 		513F24051C04C13F0026A081 /* TargetTests.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetTests.jpg; sourceTree = "<group>"; };
 		513F24061C04C13F0026A081 /* TargetApp.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TargetApp.jpg; sourceTree = "<group>"; };
@@ -493,7 +490,6 @@
 				514E93871C9FB6BA00787661 /* ShareNode.swift */,
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
-				51378A501C8F15190000757E /* YicesProver+Node.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -917,7 +913,6 @@
 				516D25201C3EB26C0075D362 /* Nodal.swift in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				51E5F9AF1C87179900040B19 /* DemoProofing.swift in Sources */,
-				51378A521C8F15190000757E /* YicesProver+Node.swift in Sources */,
 				51E038171C92B864005BFD42 /* Node+Dimensions.swift in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
@@ -1003,7 +998,6 @@
 				515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */,
 				51FD00BC1C3132F8008C5AD1 /* TrieStruct.swift in Sources */,
 				517994841C96BEC900791916 /* MereLexer.l in Sources */,
-				51378A511C8F15190000757E /* YicesProver+Node.swift in Sources */,
 				513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */,
 				510811EF1C9AA49600E5A439 /* Node(LaTeX).swift in Sources */,
 				515D91BE1B6D2513000EDB3B /* TptpNode.swift in Sources */,

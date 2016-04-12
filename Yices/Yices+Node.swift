@@ -36,6 +36,7 @@ extension Yices {
         yicesClause: term_t,
         yicesLiterals:[term_t],
         yicesLiteralsBefore:[type_t]) {
+        
             assert(clause.isClause,"\(clause) must be a clause, but is not.")
             
             guard let literals = clause.nodes where literals.count > 0 else {

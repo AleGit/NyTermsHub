@@ -86,5 +86,44 @@ class YicesIndexingTests: XCTestCase {
             ($0, Yices.clause($0).1, Yices.clause($0).2) }
         print(y)
     }
+    
+    func testSampleClauses() {
+        let xy = TptpNode(equational:"=", nodes:["X","Y"])
+        let clauses : [TptpNode] = [
+            "p(X,Y)  | p(X,Y)  | X = Y",
+            "~p(X,Y) | ~p(X,Y) | X = Y",    
+            "p(X,Y)  | p(X,Y)  | X != Y",   
+            "~p(X,Y) | ~p(X,Y) | X != Y",   
+            "X = Y   | Y != Z  | p(X,Y)",
+            "p(X,Y)  | ~p(X,Y) | X != Y",
+            "p(X,Y)  | ~p(X,Y) | X = Y",
+            TptpNode(connective:"|", nodes:["p(X,Y)"]),
+            TptpNode(connective:"|", nodes:["~p(X,Y)"]),
+            TptpNode(connective:"|", nodes:["X != Y"]),
+            TptpNode(connective:"|", nodes:[xy]),
+            
+        ]
+        
+        /*
+         "p(⊥,⊥)  | p(⊥,⊥)  | ⊥ = ⊥",       (2, [2, 10, 10], [10, 10, 2])
+         "~p(⊥,⊥) | ~p(⊥,⊥) | ⊥ = ⊥",       (2, [2, 11, 11], [11, 11, 2])
+         "p(⊥,⊥)  | p(⊥,⊥)  | ⊥ != ⊥",      (10, [10, 10, 10], [10, 10, 3])
+         "~p(⊥,⊥) | ~p(⊥,⊥) | ⊥ != ⊥",      (11, [11, 11, 11], [11, 11, 3])
+         "⊥ = ⊥   | ⊥ != ⊥"                 (2, [2, 3], [2, 3])
+         "⊥ = ⊥   | ⊥ != ⊥  | p(⊥,⊥)",      (2, [2, 3, 10], [2, 3, 10])
+         "p(⊥,⊥)  | ~p(⊥,⊥) | ⊥ != ⊥",      (2, [10, 10, 11], [10, 11, 3])
+         "p(⊥,⊥)  | ~p(⊥,⊥) | ⊥ = ⊥",       2, [2, 10, 11], [10, 11, 2])
+         */
+ 
+        let yicesTriples = clauses.map {
+            Yices.clause($0)
+        }
+        
+        print(yicesTriples.map { "\($0)" }.joinWithSeparator("\n"))
+        
+        for t:term_t in 0...11 {
+        print(t, String(term:t))
+        }
+    }
 
 }

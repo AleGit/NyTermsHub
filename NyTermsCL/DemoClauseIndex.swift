@@ -48,25 +48,25 @@ struct DemoClauseIndex {
             
             // assert (candis.isSupersetOf(ciyc), "\(candis), \(ciyc)")
             
-//            if candis != ciyc {
-//                print("=== ====")
-//                print("\(index)(\(yicesClause)), \(clause),\(yicesLiterals) :", (candis.count, ciyc.count))
-//                for (label,set) in [
-//                    ("candis only",candis.subtract(ciyc)),
-//                    ("ciyc only", ciyc.subtract(candis)),
-//                    ("both",candis.intersect(ciyc))] {
-//                    
-//                        guard set.count > 0 else {
-//                            continue
-//                        }
-//                        
-//                        print(label)
-//                        for entry in set {
-//                            let e = repository[entry]
-//                            print("\(entry)(\(e.2)), \(e.0),\(e.3)")
-//                        }
-//                }
-//            }
+            if candis != ciyc {
+                print("=== ====")
+                print("\(index)(\(yicesClause)), \(clause),\(yicesLiterals) :", (candis.count, ciyc.count))
+                for (label,set) in [
+                    ("candis only",candis.subtract(ciyc)),
+                    ("ciyc only", ciyc.subtract(candis)),
+                    ("both",candis.intersect(ciyc))] {
+                    
+                        guard set.count > 0 else {
+                            continue
+                        }
+                        
+                        print(label)
+                        for entry in set {
+                            let e = repository[entry]
+                            print("\(entry)(\(e.2)), \(e.0),\(e.3)")
+                        }
+                }
+            }
             
             
             

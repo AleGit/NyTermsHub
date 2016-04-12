@@ -279,6 +279,7 @@
 		517994901C96C94B00791916 /* MereParserBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MereParserBasicTests.swift; sourceTree = "<group>"; };
 		5179949A1C97001D00791916 /* PUZ021-1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "PUZ021-1.txt"; sourceTree = "<group>"; };
 		517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesIndexingTests.swift; sourceTree = "<group>"; };
+		517B23B81CBD28F70049F871 /* changed yices literals.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "changed yices literals.txt"; sourceTree = "<group>"; };
 		517D86371C44F94100930B61 /* DescriptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTests.swift; sourceTree = "<group>"; };
 		517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTests.swift; sourceTree = "<group>"; };
 		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
@@ -636,6 +637,7 @@
 				516A73D81C902CF1007E5DEC /* iPuzzlesResults.txt */,
 				515F2B451C918016004F93E9 /* sizeDemo.txt */,
 				5179949A1C97001D00791916 /* PUZ021-1.txt */,
+				517B23B81CBD28F70049F871 /* changed yices literals.txt */,
 			);
 			name = results;
 			path = ../Docs;

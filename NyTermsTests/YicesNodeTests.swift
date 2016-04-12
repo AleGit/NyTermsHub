@@ -92,7 +92,7 @@ class YicesNodeTests: XCTestCase {
         }
         
         let wahr = "p|~p" as TptpNode
-        let (_,t,_,_) = Yices.clause(wahr)
+        let (t,_,_) = Yices.clause(wahr)
         XCTAssertEqual(t,Yices.top())
         
         yices_check_context(ctx, nil)
@@ -114,7 +114,7 @@ class YicesNodeTests: XCTestCase {
         }
         
         let wahr = "p(X)|~p(X)" as TptpNode
-        let (_,t,_,_) = Yices.clause(wahr)
+        let (t,_,_) = Yices.clause(wahr)
         XCTAssertEqual(t,Yices.top())
 
         yices_assert_formula(ctx, t)
@@ -138,7 +138,7 @@ class YicesNodeTests: XCTestCase {
             yices_free_context(ctx)
         }
         let empty = TptpNode(connective:"|",nodes: [TptpNode]())
-        let (_,t,_,_) = Yices.clause(empty)
+        let (t,_,_) = Yices.clause(empty)
         yices_assert_formula(ctx, t)
         yices_check_context(ctx, nil)
         XCTAssertEqual(STATUS_UNSAT, yices_context_status(ctx))
@@ -154,7 +154,7 @@ class YicesNodeTests: XCTestCase {
         for clause in [
             TptpNode(connective:"|", nodes:[ "p" as TptpNode]),
             TptpNode(connective:"|", nodes:[ "~p" as TptpNode])] {
-                let (_,t,_,_) = Yices.clause(clause)
+                let (t,_,_) = Yices.clause(clause)
                 yices_assert_formula(ctx, t)
         }
         yices_check_context(ctx, nil)
@@ -172,7 +172,7 @@ class YicesNodeTests: XCTestCase {
         for clause in [
             TptpNode(connective:"|", nodes:[ "p(X)" as TptpNode]),
             TptpNode(connective:"|", nodes:[ "~p(Y)" as TptpNode])] {
-                let (_,t,_,_) = Yices.clause(clause)
+                let (t,_,_) = Yices.clause(clause)
                 yices_assert_formula(ctx, t)
         }
         yices_check_context(ctx, nil)
@@ -187,7 +187,7 @@ class YicesNodeTests: XCTestCase {
         
         for clause in [
             TptpNode(connective:"|", nodes:[ "p" as TptpNode])] {
-                let (_,t,_,_) = Yices.clause(clause)
+                let (t,_,_) = Yices.clause(clause)
                 yices_assert_formula(ctx, t)
         }
         yices_check_context(ctx, nil)
@@ -202,7 +202,7 @@ class YicesNodeTests: XCTestCase {
         
         for clause in [
             TptpNode(connective:"|", nodes:[ "p(X)" as TptpNode])] {
-                let (_,t,_,_) = Yices.clause(clause)
+                let (t,_,_) = Yices.clause(clause)
                 yices_assert_formula(ctx, t)
         }
         yices_check_context(ctx, nil)
@@ -252,7 +252,7 @@ class YicesNodeTests: XCTestCase {
         }
         let clauses = TptpNode.roots(path)
         for clause in clauses {
-            let (_,t,_,_) = Yices.clause(clause)
+            let (t,_,_) = Yices.clause(clause)
             yices_assert_formula(ctx, t)
         }
         yices_check_context(ctx, nil)

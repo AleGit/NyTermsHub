@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 extension Yices {
     static var free_tau = yices_int_type()
     static var bool_tau = yices_bool_type()
@@ -30,38 +32,40 @@ extension Yices {
 }
 
 extension Yices {
-    static func clause<N:Node>(clause:N) -> (literals:[N], yicesClause: term_t, yicesLiterals:[term_t], selected:Int?) {
-        assert(clause.isClause,"\(clause) must be a clause, but is not.")
-        
-        guard let literals = clause.nodes where literals.count > 0 else {
-            return ([N](), Yices.bot(), [term_t](), nil)
-        }
-        
-        return Yices.clause(literals)
+    static func clause<N:Node>(clause:N) -> (
+        yicesClause: term_t,
+        yicesLiterals:[term_t],
+        yicesLiteralsBefore:[type_t]) {
+            assert(clause.isClause,"\(clause) must be a clause, but is not.")
+            
+            guard let literals = clause.nodes where literals.count > 0 else {
+                return (Yices.bot(), [term_t](), [term_t]())
+            }
+            
+            return Yices.clause(literals)
     }
     
-    static func clause<N:Node>(literals:[N]) -> (literals:[N], yicesClause: type_t, yicesLiterals:[type_t], selected:Int?) {
-        
-        var yicesLiterals = literals.map { self.literal($0) }
-        
-        
-        let p0 = literals.permuter()(before:yicesLiterals)
-        let p1 = yicesLiterals.permuter()(before:yicesLiterals)
-        
-        let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
-        // yices_or might change the order of the array
-        
-        assert(p1(after:yicesLiterals) == yicesLiterals)
-        
-        return (
-            p0(after:yicesLiterals),
-            yicesClause,
-            yicesLiterals,
-            nil
-        )
-        
-        
-        
+    static func clause<N:Node>(literals:[N]) -> (
+        yicesClause: type_t,
+        yicesLiterals:[type_t],
+        yicesLiteralsBefore:[type_t]) {
+            
+            let yicesLiteralsBefore = literals.map { self.literal($0) }
+            var yicesLiterals = yicesLiteralsBefore
+            
+            // `yices_or` might change the order and content of the array
+            
+            let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
+
+            
+            return (
+                yicesClause,
+                yicesLiterals,
+                yicesLiteralsBefore
+            )
+            
+            
+            
     }
     
     /// Build boolean term from literal, i.e.

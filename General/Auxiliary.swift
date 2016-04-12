@@ -128,15 +128,30 @@ extension SequenceType {
 
 // MARK: -
 
-extension Array where Element : Hashable {
-    var elementIndices : [Element : [Int]] {
-        var vi = [Element : [Int]]()
+
+
+extension SequenceType where Generator.Element : Hashable {
+    typealias Element = Generator.Element
+    
+    var elementPlaces : [Element : [Int]] {
+        var eo = [Element : [Int]]()
         for (index,value) in self.enumerate() {
-            var array = vi[value] ?? [Int]()
+            var array = eo[value] ?? [Int]()
             array.append(index)
-            vi[value] = array
+            eo[value] = array
         }
-        return vi
+        return eo
+    }
+    
+    var elementCounts : [Element: Int] {
+        var ec = [Element : Int]()
+        for value in self {
+            var count = ec[value] ?? 0
+            count += 1
+            ec[value] = count
+        }
+        
+        return ec
     }
 }
 
@@ -161,8 +176,8 @@ extension Array {
         assert(before.count == after.count)
         assert(self.count == before.count)
         
-        let beforeIndices = before.elementIndices
-        let afterIndices = after.elementIndices
+        let beforeIndices = before.elementPlaces
+        let afterIndices = after.elementPlaces
         
         var target = self
         
@@ -173,9 +188,9 @@ extension Array {
             }
             // assert(sourceIndices.count == targetIndices.count)
             if sourceIndices.count != targetIndices.count {
-                print(before, after)
-                print(beforeIndices, afterIndices)
-                print(sourceIndices, targetIndices)
+//                print(before, after)
+//                print(beforeIndices, afterIndices)
+//                print(sourceIndices, targetIndices)
             }
             
             for (sourceIndex, targetIndex) in zip(sourceIndices, targetIndices) {

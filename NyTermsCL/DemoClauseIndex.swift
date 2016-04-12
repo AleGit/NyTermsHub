@@ -18,46 +18,77 @@ struct DemoClauseIndex {
         
         print(path)
         
-        var repository = [(N,[N], term_t, [term_t], Int?)]()
-        var clauseIndex = [ term_t : Set<Int>]() // yices literal : set of claus indices
+        var repository = [(N, term_t, [term_t], [term_t])]()
+        var literalsClauseIndex = [ term_t : Set<Int>]() // yices literal : set of claus indices
+        var clauseIndex = [ term_t : Set<Int>]()
         
         let clauses = TptpNode.roots(path)
         
         for (index,clause) in clauses.enumerate() {
             
-            let (ls,yc,yls,i) = Yices.clause(clause)
+            let (yicesClause,yicesLiterals,yicesLiteralsBefore) = Yices.clause(clause)
             
-            repository.append((clause,ls,yc,yls,i))
+            repository.append((clause,yicesClause,yicesLiterals,yicesLiteralsBefore))
             
-            // find candidates for variants
+            // === find candidates for variants by literal clause indes
             
-            let keys = Set(yls)
+            let keys = Set(yicesLiterals)
             
             var candis = Set<Int>(0..<index) // all clause so far are candidates
             
             for value in keys {
-                guard let entry = clauseIndex[value] else {
+                guard let entry = literalsClauseIndex[value] else {
                     candis.removeAll()
                     break
                 }
                 candis.intersectInPlace(entry)
             }
             
-            if !candis.isEmpty {
-                print(index, clause, candis)
-            }
+            var ciyc = clauseIndex[yicesClause] ?? Set<Int>()
+            
+            // assert (candis.isSupersetOf(ciyc), "\(candis), \(ciyc)")
+            
+//            if candis != ciyc {
+//                print("=== ====")
+//                print("\(index)(\(yicesClause)), \(clause),\(yicesLiterals) :", (candis.count, ciyc.count))
+//                for (label,set) in [
+//                    ("candis only",candis.subtract(ciyc)),
+//                    ("ciyc only", ciyc.subtract(candis)),
+//                    ("both",candis.intersect(ciyc))] {
+//                    
+//                        guard set.count > 0 else {
+//                            continue
+//                        }
+//                        
+//                        print(label)
+//                        for entry in set {
+//                            let e = repository[entry]
+//                            print("\(entry)(\(e.2)), \(e.0),\(e.3)")
+//                        }
+//                }
+//            }
             
             
-            // insert into clause index
+            
+            
+            // insert into literal clause index
             for value in keys {
-                guard var entry = clauseIndex[value] else {
-                    clauseIndex[value] = Set(arrayLiteral:index)
+                guard var entry = literalsClauseIndex[value] else {
+                    literalsClauseIndex[value] = Set(arrayLiteral:index)
                     continue
                 }
                 
                 entry.insert(index)
-                clauseIndex[value] = entry
+                literalsClauseIndex[value] = entry
             }
+            
+            // === 
+            
+            // insert into clause index
+            ciyc.insert(index)
+            clauseIndex[yicesClause] = ciyc
+            
+            
             
             
             

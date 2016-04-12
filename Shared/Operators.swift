@@ -25,3 +25,12 @@ associativity left
 
 /// `t⊥` substitutes all veriables in `t` with constant `⊥`.
 postfix operator ⊥ { }
+
+
+infix operator ≈≈ {
+associativity none
+}
+
+infix operator !≈ {
+associativity none
+}

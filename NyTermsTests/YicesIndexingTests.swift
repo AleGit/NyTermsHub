@@ -34,9 +34,9 @@ class YicesIndexingTests: XCTestCase {
         
         let literals = [
             TptpNode(stringLiteral:p),
-            TptpNode(stringLiteral:np),
             TptpNode(stringLiteral:e),
-            TptpNode(stringLiteral:ne)]
+            TptpNode(stringLiteral:ne).negated!.negated!,
+            TptpNode(stringLiteral:np)]
         
         let ls = literals.map { ($0, Yices.literal($0)) }
         let nls = ls.map { ($0.0.negated!, Yices.not($0.1)) }

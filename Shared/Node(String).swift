@@ -84,6 +84,12 @@ extension Node where Symbol == String {
         case .Equation:
             return "="
             
+        case .Inequation:
+            return "!="
+            
+        case .Negation:
+            return "~"
+            
         case .Wildcard:
             return "*"
             

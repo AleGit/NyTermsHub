@@ -108,6 +108,33 @@ extension Node {
             return nil
         }
     }
+    
+    var negated : Self? {
+        guard let nodes = self.nodes else { return self } // a variable is not negatable
+        
+        let type = self.symbolType ?? SymbolType.Predicate // assume that unregisterd symbols are predicates
+         
+        
+        switch type {
+        case SymbolType.Negation:
+            assert (nodes.count == 1, "a negation with \(nodes.count) subnodes!")
+            return nodes.first
+        case SymbolType.Inequation:
+            assert (nodes.count == 2, "an inequation with \(nodes.count) subnodes!")
+            return Self(equational: Self.symbol(.Equation), nodes: nodes)
+        case SymbolType.Equation:
+            assert (nodes.count == 2, "an equation with \(nodes.count) subnodes!")
+            return Self(equational: Self.symbol(.Inequation), nodes: nodes)
+            
+        case .Predicate:
+            return Self(connective: Self.symbol(.Negation), nodes:[self])
+            
+        default:
+            return nil
+        }
+        
+        
+    }
 }
 
 /// 'lhs ~?= rhs' contstructs mgu(~lhs,rhs) or mgu(lhs,~rhs) iff lhs and rhs are clashing,

@@ -37,10 +37,10 @@ extension Yices {
             return ([N](), Yices.bot(), [term_t](), nil)
         }
         
-        return Yices.literals(literals)
+        return Yices.clause(literals)
     }
     
-    static func literals<N:Node>(literals:[N]) -> (literals:[N], yicesClause: type_t, yicesLiterals:[type_t], selected:Int?) {
+    static func clause<N:Node>(literals:[N]) -> (literals:[N], yicesClause: type_t, yicesLiterals:[type_t], selected:Int?) {
         
         var yicesLiterals = literals.map { self.literal($0) }
         
@@ -133,6 +133,9 @@ extension Yices {
         
         let args = nodes.map { Yices.term($0) }
         let appl = yices_application(t, UInt32(args.count), args)
+        
+        assert (appl >= 0, "\(symbol) \(nodes) - \(t) \(args)")
+        
         return appl
         
     }

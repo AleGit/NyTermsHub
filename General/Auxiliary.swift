@@ -171,7 +171,12 @@ extension Array {
                 assert(false)
                 break
             }
-            assert(sourceIndices.count == targetIndices.count)
+            // assert(sourceIndices.count == targetIndices.count)
+            if sourceIndices.count != targetIndices.count {
+                print(before, after)
+                print(beforeIndices, afterIndices)
+                print(sourceIndices, targetIndices)
+            }
             
             for (sourceIndex, targetIndex) in zip(sourceIndices, targetIndices) {
                 target[targetIndex] = self[sourceIndex]

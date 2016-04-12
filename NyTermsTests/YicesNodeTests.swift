@@ -209,6 +209,41 @@ class YicesNodeTests: XCTestCase {
         XCTAssertEqual(STATUS_SAT, yices_context_status(ctx))
     }
     
+    func testSubterms() {
+        let ctx = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx)
+        }
+        
+        let term = "p(X,f(X),f(f(X)),f(f(X)))" as TptpNode
+        
+        var pairs = [ (TptpNode, term_t)]()
+        
+        for t in [ term, "Z", "f(Y)" ]{
+            pairs.append((t,Yices.term(t)))
+            
+        }
+        
+        for subterm in  term.subterms {
+            
+            pairs.append((subterm,Yices.term(subterm)))
+            
+        }
+        
+        for outer in pairs {
+            pairs.removeFirst()
+            
+            for inner in pairs {
+                XCTAssertTrue(outer.0 != inner.0 || outer.1==inner.1)
+                if outer.1 == inner.1 {
+                    print(outer==inner,outer,inner)
+                }
+            }
+        }
+    }
+    
+
+    
     func testPUZ001() {
         let path = "PUZ001-1".p!
         let ctx = yices_new_context(nil)

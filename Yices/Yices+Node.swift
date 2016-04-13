@@ -9,21 +9,42 @@
 import Foundation
 
 extension Yices {
+    /// built-in type for terms
     static var free_tau = yices_int_type()
+    
+    /// built-in type for predicates and connectives
     static var bool_tau = yices_bool_type()
+    
+    /// Distinct global constant that substitues all variables in terms.
+    /// Since yices_exit() or yices_reset() could have been fired between calls
+    /// of `🚧` it has to be a calculated property.
     static var 🚧 : term_t {
         return Yices.constant("⊥", term_tau: free_tau)
     }
-}
-
-extension Yices {
-    private static func constant(symbol:String, term_tau:type_t) -> term_t {
+    
+    static func constant(symbol:String, term_tau:type_t) -> term_t {
+        assert(!symbol.isEmpty, "a constant symbol must not be empty")
+        
         var t = yices_get_term_by_name(symbol)
         if t == NULL_TERM {
             t = yices_new_uninterpreted_term(term_tau)
             yices_set_term_name(t, symbol)
         }
         return t
+    }
+    
+    static func application(symbol:String, args:[term_t], term_tau:type_t) -> term_t {
+        assert(!symbol.isEmpty, "a function or predicate symbol must not be empty")
+        
+        var t = yices_get_term_by_name(symbol)
+        if t == NULL_TERM {
+            let domain_taus = [type_t](count:args.count, repeatedValue:Yices.free_tau)
+            let func_tau = yices_function_type(UInt32(args.count), domain_taus, term_tau)
+            t = yices_new_uninterpreted_term(func_tau)
+            yices_set_term_name(t,symbol)
+        }
+        
+        return yices_application(t, UInt32(args.count), args)
     }
 }
 
@@ -118,35 +139,13 @@ extension Yices {
         return Yices.application(term.symbolString(), nodes:nodes, term_tau:Yices.free_tau)
     }
     
-    /// Build predicate or function.
+    /// Build (constant) predicate or function.
     static func application<N:Node>(symbol:String, nodes:[N], term_tau:type_t) -> term_t {
         
         guard nodes.count > 0 else {
             return constant(symbol,term_tau: term_tau)
         }
         
-        var t = yices_get_term_by_name(symbol)
-        if t == NULL_TERM {
-            let domain_taus = [type_t](count:nodes.count, repeatedValue:Yices.free_tau)
-            let func_tau = yices_function_type(UInt32(nodes.count), domain_taus, term_tau)
-            t = yices_new_uninterpreted_term(func_tau)
-            yices_set_term_name(t,symbol)
-        }
-        
-        
-        let args = nodes.map { Yices.term($0) }
-        let appl = yices_application(t, UInt32(args.count), args)
-        
-        if appl == NULL_TERM {
-            yices_print_error(stdout);
-        }
-        
-        assert (appl >= 0, "\(symbol) \(nodes) - \(t) \(args)")
-        
-        return appl
-        
+        return application(symbol, args: nodes.map { Yices.term($0) }, term_tau: term_tau)
     }
-    
-    
-    
 }

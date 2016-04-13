@@ -10,7 +10,7 @@ import XCTest
 @testable import NyTerms
 
 class YicesIndexingTests: XCTestCase {
-
+    
     override func setUp() {
         super.setUp()
         yices_init()
@@ -25,7 +25,7 @@ class YicesIndexingTests: XCTestCase {
     let b = "g(h(Z),X)"
     
     
-
+    
     func testLiterals() {
         let p = "p(\(a),\(b))"
         let np = "~\(p)"
@@ -88,42 +88,44 @@ class YicesIndexingTests: XCTestCase {
     }
     
     func testSampleClauses() {
-        let xy = TptpNode(equational:"=", nodes:["X","Y"])
+        let x_equals_y = TptpNode(equational:TptpNode.symbol(.Equation), nodes:["X","Y"])
+        let x_neq_y = TptpNode(equational:TptpNode.symbol(.Inequation), nodes:["X","Y"])
         let clauses : [TptpNode] = [
             "p(X,Y)  | p(X,Y)  | X = Y",
-            "~p(X,Y) | ~p(X,Y) | X = Y",    
-            "p(X,Y)  | p(X,Y)  | X != Y",   
-            "~p(X,Y) | ~p(X,Y) | X != Y",   
+            "~p(X,Y) | ~p(X,Y) | X = Y",
+            "p(X,Y)  | p(X,Y)  | X != Y",
+            "~p(X,Y) | ~p(X,Y) | X != Y",
             "X = Y   | Y != Z  | p(X,Y)",
             "p(X,Y)  | ~p(X,Y) | X != Y",
             "p(X,Y)  | ~p(X,Y) | X = Y",
             TptpNode(connective:"|", nodes:["p(X,Y)"]),
             TptpNode(connective:"|", nodes:["~p(X,Y)"]),
-            TptpNode(connective:"|", nodes:["X != Y"]),
-            TptpNode(connective:"|", nodes:[xy]),
-            
-        ]
+            TptpNode(connective:"|", nodes:[x_neq_y]),
+            TptpNode(connective:"|", nodes:[x_equals_y]),
+            TptpNode(connective:"|", nodes:[x_neq_y,x_equals_y]),
+            ]
         
         /*
-         "p(⊥,⊥)  | p(⊥,⊥)  | ⊥ = ⊥",       (2, [2, 10, 10], [10, 10, 2])
-         "~p(⊥,⊥) | ~p(⊥,⊥) | ⊥ = ⊥",       (2, [2, 11, 11], [11, 11, 2])
-         "p(⊥,⊥)  | p(⊥,⊥)  | ⊥ != ⊥",      (10, [10, 10, 10], [10, 10, 3])
-         "~p(⊥,⊥) | ~p(⊥,⊥) | ⊥ != ⊥",      (11, [11, 11, 11], [11, 11, 3])
-         "⊥ = ⊥   | ⊥ != ⊥"                 (2, [2, 3], [2, 3])
-         "⊥ = ⊥   | ⊥ != ⊥  | p(⊥,⊥)",      (2, [2, 3, 10], [2, 3, 10])
-         "p(⊥,⊥)  | ~p(⊥,⊥) | ⊥ != ⊥",      (2, [10, 10, 11], [10, 11, 3])
-         "p(⊥,⊥)  | ~p(⊥,⊥) | ⊥ = ⊥",       2, [2, 10, 11], [10, 11, 2])
+         [10, 10, 2] ≡ [2, 10, 10] ≡ 2		'["(p ⊥ ⊥)", "(p ⊥ ⊥)", "true"] ≡ ["true", "(p ⊥ ⊥)", "(p ⊥ ⊥)"] ≡ true'
+         [11, 11, 2] ≡ [2, 11, 11] ≡ 2		'["(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))", "true"] ≡ ["true", "(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))"] ≡ true'
+         [10, 10, 3] ≡ [10, 10, 10] ≡ 10	'["(p ⊥ ⊥)", "(p ⊥ ⊥)", "false"] ≡ ["(p ⊥ ⊥)", "(p ⊥ ⊥)", "(p ⊥ ⊥)"] ≡ (p ⊥ ⊥)'
+         [11, 11, 3] ≡ [11, 11, 11] ≡ 11	'["(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))", "false"] ≡ ["(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))"] ≡ (not (p ⊥ ⊥))'
+         [2, 3, 10] ≡ [2, 3, 10] ≡ 2		'["true", "false", "(p ⊥ ⊥)"] ≡ ["true", "false", "(p ⊥ ⊥)"] ≡ true'
+         [10, 11, 3] ≡ [10, 10, 11] ≡ 2		'["(p ⊥ ⊥)", "(not (p ⊥ ⊥))", "false"] ≡ ["(p ⊥ ⊥)", "(p ⊥ ⊥)", "(not (p ⊥ ⊥))"] ≡ true'
+         [10, 11, 2] ≡ [2, 10, 11] ≡ 2		'["(p ⊥ ⊥)", "(not (p ⊥ ⊥))", "true"] ≡ ["true", "(p ⊥ ⊥)", "(not (p ⊥ ⊥))"] ≡ true'
+         [10] ≡ [10] ≡ 10                   '["(p ⊥ ⊥)"] ≡ ["(p ⊥ ⊥)"] ≡ (p ⊥ ⊥)'
+         [11] ≡ [11] ≡ 11                   '["(not (p ⊥ ⊥))"] ≡ ["(not (p ⊥ ⊥))"] ≡ (not (p ⊥ ⊥))'
+         [3] ≡ [3] ≡ 3                      '["false"] ≡ ["false"] ≡ false'
+         [2] ≡ [2] ≡ 2                      '["true"] ≡ ["true"] ≡ true'
+         [3, 2] ≡ [3, 2] ≡ 2                '["false", "true"] ≡ ["false", "true"] ≡ true'
          */
- 
+        
         let yicesTriples = clauses.map {
             Yices.clause($0)
         }
         
-        print(yicesTriples.map { "\($0)" }.joinWithSeparator("\n"))
-        
-        for t:term_t in 0...11 {
-        print(t, String(term:t))
-        }
+        print(yicesTriples.map {
+            "\($0.2) ≡ \($0.1) ≡ \($0.0)\t\t'\($0.2.map { String(term:$0)! }) ≡ \($0.1.map { String(term:$0)! }) ≡ \(String(term:$0.0)!)'" }.joinWithSeparator("\n"))
     }
-
+    
 }

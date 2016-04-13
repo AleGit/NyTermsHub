@@ -9,7 +9,18 @@
 import XCTest
 @testable import NyTerms
 
+private let fgxy = "f(g(X,Y))"
+private let ghzx = "g(h(Z),X)"
+
+private let p = "p(\(fgxy),\(ghzx))"
+private let np = "~\(p)"
+private let e = "\(fgxy)=\(ghzx)"
+private let ne = "\(fgxy)!=\(ghzx)"
+
+
 class YicesIndexingTests: XCTestCase {
+    
+    
     
     override func setUp() {
         super.setUp()
@@ -17,26 +28,21 @@ class YicesIndexingTests: XCTestCase {
     }
     
     override func tearDown() {
-        yices_exit()
         super.tearDown()
     }
     
-    let a = "f(g(X,Y))"
-    let b = "g(h(Z),X)"
-    
+    deinit {
+        yices_exit()
+    }
     
     
     func testLiterals() {
-        let p = "p(\(a),\(b))"
-        let np = "~\(p)"
-        let e = "\(a)=\(b)"
-        let ne = "~\(e)"
-        
         let literals = [
             TptpNode(stringLiteral:p),
             TptpNode(stringLiteral:e),
-            TptpNode(stringLiteral:ne).negated!.negated!,
-            TptpNode(stringLiteral:np)]
+            TptpNode(stringLiteral:ne),
+            TptpNode(stringLiteral:np)
+        ]
         
         let ls = literals.map { ($0, Yices.literal($0)) }
         let nls = ls.map { ($0.0.negated!, Yices.not($0.1)) }
@@ -71,11 +77,6 @@ class YicesIndexingTests: XCTestCase {
     
     
     func testClauses() {
-        let p = "p(\(a),\(b))"
-        let np = "~\(p)"
-        let e = "\(a)=\(b)"
-        let ne = "~\(e)"
-        
         let clauses = [
             TptpNode(stringLiteral: "\(p)|\(ne)"),
             TptpNode(stringLiteral: "\(ne)|\(p)|\(ne)"),
@@ -104,21 +105,6 @@ class YicesIndexingTests: XCTestCase {
             TptpNode(connective:"|", nodes:[x_equals_y]),
             TptpNode(connective:"|", nodes:[x_neq_y,x_equals_y]),
             ]
-        
-        /*
-         [10, 10, 2] ≡ [2, 10, 10] ≡ 2		'["(p ⊥ ⊥)", "(p ⊥ ⊥)", "true"] ≡ ["true", "(p ⊥ ⊥)", "(p ⊥ ⊥)"] ≡ true'
-         [11, 11, 2] ≡ [2, 11, 11] ≡ 2		'["(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))", "true"] ≡ ["true", "(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))"] ≡ true'
-         [10, 10, 3] ≡ [10, 10, 10] ≡ 10	'["(p ⊥ ⊥)", "(p ⊥ ⊥)", "false"] ≡ ["(p ⊥ ⊥)", "(p ⊥ ⊥)", "(p ⊥ ⊥)"] ≡ (p ⊥ ⊥)'
-         [11, 11, 3] ≡ [11, 11, 11] ≡ 11	'["(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))", "false"] ≡ ["(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))", "(not (p ⊥ ⊥))"] ≡ (not (p ⊥ ⊥))'
-         [2, 3, 10] ≡ [2, 3, 10] ≡ 2		'["true", "false", "(p ⊥ ⊥)"] ≡ ["true", "false", "(p ⊥ ⊥)"] ≡ true'
-         [10, 11, 3] ≡ [10, 10, 11] ≡ 2		'["(p ⊥ ⊥)", "(not (p ⊥ ⊥))", "false"] ≡ ["(p ⊥ ⊥)", "(p ⊥ ⊥)", "(not (p ⊥ ⊥))"] ≡ true'
-         [10, 11, 2] ≡ [2, 10, 11] ≡ 2		'["(p ⊥ ⊥)", "(not (p ⊥ ⊥))", "true"] ≡ ["true", "(p ⊥ ⊥)", "(not (p ⊥ ⊥))"] ≡ true'
-         [10] ≡ [10] ≡ 10                   '["(p ⊥ ⊥)"] ≡ ["(p ⊥ ⊥)"] ≡ (p ⊥ ⊥)'
-         [11] ≡ [11] ≡ 11                   '["(not (p ⊥ ⊥))"] ≡ ["(not (p ⊥ ⊥))"] ≡ (not (p ⊥ ⊥))'
-         [3] ≡ [3] ≡ 3                      '["false"] ≡ ["false"] ≡ false'
-         [2] ≡ [2] ≡ 2                      '["true"] ≡ ["true"] ≡ true'
-         [3, 2] ≡ [3, 2] ≡ 2                '["false", "true"] ≡ ["false", "true"] ≡ true'
-         */
         
         let yicesTriples = clauses.map {
             Yices.clause($0)

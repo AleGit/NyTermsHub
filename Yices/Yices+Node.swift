@@ -8,14 +8,10 @@
 
 import Foundation
 
-
-
 extension Yices {
     static var free_tau = yices_int_type()
     static var bool_tau = yices_bool_type()
-    
     static var 🚧 : term_t {
-        // print("\(#file),\(#line),\(#column),\(#function)")
         return Yices.constant("⊥", term_tau: free_tau)
     }
 }
@@ -82,25 +78,27 @@ extension Yices {
                 return yices_false()
         }
         
+        // By default a symbol is a predicate symbol
+        // if it is not predefined or registered.
         let type = literal.symbolType ?? SymbolType.Predicate
         
         switch type {
         case .Negation:
-            assert(nodes.count == 1)
+            assert(nodes.count == 1, "A negation must have exactly one child.")
             return yices_not( Yices.literal(nodes.first! ))
             
         case .Inequation:
-            assert(nodes.count == 2)
+            assert(nodes.count == 2, "An inequation must have exactly two children.")
             let args = nodes.map { Yices.term($0) }
             return yices_neq(args.first!, args.last!)
             
         case .Equation:
-            assert(nodes.count == 2)
+            assert(nodes.count == 2, "An equation must have exactly two children.")
             let args = nodes.map { Yices.term($0) }
             return yices_eq(args.first!, args.last!)
             
         case .Predicate:
-            // proposition or predicate term
+            // proposition or predicate term (an application of Boolean type)
             return Yices.application(literal.symbolString(), nodes:nodes, term_tau: Yices.bool_tau)
             
         default:
@@ -116,7 +114,7 @@ extension Yices {
             return Yices.🚧 // substitute all variables with global constant '⊥'
         }
         
-        // function or constant term
+        // function or constant term (an application of uninterpreted type)
         return Yices.application(term.symbolString(), nodes:nodes, term_tau:Yices.free_tau)
     }
     
@@ -138,6 +136,10 @@ extension Yices {
         
         let args = nodes.map { Yices.term($0) }
         let appl = yices_application(t, UInt32(args.count), args)
+        
+        if appl == NULL_TERM {
+            yices_print_error(stdout);
+        }
         
         assert (appl >= 0, "\(symbol) \(nodes) - \(t) \(args)")
         

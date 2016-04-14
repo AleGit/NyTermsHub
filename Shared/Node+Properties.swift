@@ -150,7 +150,7 @@ extension Node {
                 return false
         }
         guard let nodes = self.nodes
-            where quartuple.arities.contains(nodes.count)
+            where quartuple.arity.contains(nodes.count)
             else {
                 // self has wrong number of subnodes
                 return false

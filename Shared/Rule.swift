@@ -5,13 +5,13 @@ import Foundation
 
 
 
-func ==<S:Hashable>(lhs:[S:(count:Int,arities:Set<Int>)],rhs:[S:(count:Int,arities:Set<Int>)]) -> Bool {
+func ==<S:Hashable>(lhs:[S:(count:Int,arity:Set<Int>)],rhs:[S:(count:Int,arity:Set<Int>)]) -> Bool {
     if lhs.count != rhs.count { return false }
     
-    for (symbol,(count:occurs,arities:arities)) in lhs {
+    for (symbol,(count:occurs,arity:arity)) in lhs {
         guard let (ro,ra) = rhs[symbol] else { return false }
         
-        if ro != occurs || ra != arities { return false }
+        if ro != occurs || ra != arity { return false }
     }
     
     return true
@@ -19,7 +19,7 @@ func ==<S:Hashable>(lhs:[S:(count:Int,arities:Set<Int>)],rhs:[S:(count:Int,ariti
 
 extension Node
 {
-    typealias SymbolCensus = [ Symbol : (count:Int,arities:Set<Int>)]
+    typealias SymbolCensus = [ Symbol : (count:Int,arity:Set<Int>)]
     typealias VariableCensus = [Symbol : Int]
     /// Get the set of all variable terms.
     var allVariables : Set<Self> {
@@ -29,10 +29,10 @@ extension Node
     }
     
     private func fill(inout census:SymbolCensus) {
-        var arities = Set<Int>()
+        var arity = Set<Int>()
         
         if let nodes = self.nodes {
-            arities.insert(nodes.count)
+            arity.insert(nodes.count)
             
             for node in nodes {
                 node.fill(&census)
@@ -41,18 +41,18 @@ extension Node
         
         if var entry = census[self.symbol] {
             entry.count += 1
-            entry.arities.unionInPlace(arities)
+            entry.arity.unionInPlace(arity)
             census[self.symbol] = entry
         }
         else {
-            census[self.symbol] = (count:1, arities:arities)
+            census[self.symbol] = (count:1, arity:arity)
         }
         
         
     }
     
     /// **(tentative)** Get a dictionary of all symbols as keys and
-    /// the number of the occurencies and arities of each symbol as values
+    /// the number of the occurencies and arity of each symbol as values
     var countedSymbols : SymbolCensus {
         var census = SymbolCensus()
         self.fill(&census)
@@ -63,7 +63,7 @@ extension Node
     /// the number of the occurencies of each variable as values
     var countedVariables : VariableCensus {
         var census = VariableCensus()
-        let list = countedSymbols.filter { $0.1.arities.isEmpty }.map { ($0.0,$0.1.count) }
+        let list = countedSymbols.filter { $0.1.arity.isEmpty }.map { ($0.0,$0.1.count) }
         for (key,value) in list {
             census[key] = value
         }

@@ -149,7 +149,7 @@ extension TptpNode : StringLiteralConvertible {
             // fof_formula or cnf_formula (i.e. fof_formula in connjective normal form)
             return TptpFormula.FOF(stringLiteral: value).root
         }
-        else if value.contains("(") {
+        else if value.containsOne(["(","=","!="]) {
             
             // single equation, predicate or (function) term
             let cnf = TptpFormula.CNF(stringLiteral: value)

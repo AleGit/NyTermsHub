@@ -117,7 +117,7 @@ extension TptpFormula : StringLiteralConvertible {
     convenience init(stringLiteral value: StringLiteralType) {
         
         let formulae = parse(string:value).formulae
-        assert(formulae.count == 1)
+        assert(formulae.count == 1, "\(value) \(formulae)")
         
         switch formulae.count {
         case 0:

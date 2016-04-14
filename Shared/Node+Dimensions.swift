@@ -61,7 +61,7 @@ extension Node {
 // MARK: -
 
 
-typealias SymbolIndications = (type:SymbolType,arities:Set<Int>,occurences:Int)
+typealias SymbolIndications = (type:SymbolType,arity:Set<Int>,occurences:Int)
 typealias NodeDimensions = (height:Int, size:Int, width:Int, indications:[StringSymbol:SymbolIndications])
 
 extension Node where Symbol == String {
@@ -87,7 +87,7 @@ extension Node where Symbol == String {
                 var value = symbols[self.symbol] ?? (SymbolType.Variable,Set<Int>(),0)
                 
                 assert(value.type == .Variable)
-                assert(value.arities.isEmpty)
+                assert(value.arity.isEmpty)
                 
                 value.occurences += 1
                 
@@ -103,17 +103,17 @@ extension Node where Symbol == String {
             var value = symbols[self.symbol] ?? (type,Set(arrayLiteral: nodes.count),0)
             
             assert(value.type == type,"\(self.symbolString) can't be used as \(value.type) and \(type)")
-            // predefined arities (range) or derived arity (set of one) must match
+            // predefined arity (range) or derived arity (set of one) must match
             assert((
                 self.symbolArities?.contains(nodes.count) ?? false) // either the arity of a symbol is predefined and potentially variadic (e.g. disjunction)
-                || value.arities.contains(nodes.count), // or defined at runtime with the first encounter (e.g. predicate and function symbols)
+                || value.arity.contains(nodes.count), // or defined at runtime with the first encounter (e.g. predicate and function symbols)
                 (self.symbolArities != nil ?
-                    "Predefined arities \(self.symbolArities!) does not contain" :
-                    "Runtime arities \(value.arities) does not contain variadic" )
+                    "Predefined arity \(self.symbolArities!) does not contain" :
+                    "Runtime arity \(value.arity) does not contain variadic" )
                 + " arity \(nodes.count) for symbol \(self.symbolString)."
             )
             
-            value.arities.insert(nodes.count)
+            value.arity.insert(nodes.count)
             value.occurences += 1
             
             symbols[self.symbol] = value

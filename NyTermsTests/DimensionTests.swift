@@ -23,7 +23,7 @@ class DimensionTests: XCTestCase {
         
         if let inds = symbols[a.symbol] {
             XCTAssertEqual(inds.type, SymbolType.Predicate)
-            XCTAssertEqual(inds.arities, Set(arrayLiteral: 0))
+            XCTAssertEqual(inds.arity, Set(arrayLiteral: 0))
             XCTAssertEqual(inds.occurences, 1)
             
         }
@@ -43,7 +43,7 @@ class DimensionTests: XCTestCase {
         
         if let inds = symbols["f"] {
             XCTAssertEqual(inds.type, SymbolType.Predicate)
-            XCTAssertEqual(inds.arities, Set(arrayLiteral: 2))
+            XCTAssertEqual(inds.arity, Set(arrayLiteral: 2))
             XCTAssertEqual(inds.occurences, 1)
             
         }
@@ -53,7 +53,7 @@ class DimensionTests: XCTestCase {
         
         if let inds = symbols["a"] {
             XCTAssertEqual(inds.type, SymbolType.Function)
-            XCTAssertEqual(inds.arities, Set(arrayLiteral: 0))
+            XCTAssertEqual(inds.arity, Set(arrayLiteral: 0))
             XCTAssertEqual(inds.occurences, 1)
             
         }
@@ -63,7 +63,7 @@ class DimensionTests: XCTestCase {
         
         if let inds = symbols["X"] {
             XCTAssertEqual(inds.type, SymbolType.Variable)
-            XCTAssertTrue(inds.arities.isEmpty)
+            XCTAssertTrue(inds.arity.isEmpty)
             XCTAssertEqual(inds.occurences, 1)
             
         }
@@ -83,7 +83,7 @@ class DimensionTests: XCTestCase {
         
         if let inds = symbols["g"] {
             XCTAssertEqual(inds.type, SymbolType.Predicate)
-            XCTAssertEqual(inds.arities, Set(arrayLiteral: 1))
+            XCTAssertEqual(inds.arity, Set(arrayLiteral: 1))
             XCTAssertEqual(inds.occurences, 1)
             
         }
@@ -93,7 +93,7 @@ class DimensionTests: XCTestCase {
         
         if let inds = symbols["f"] {
             XCTAssertEqual(inds.type, SymbolType.Function)
-            XCTAssertEqual(inds.arities, Set(arrayLiteral: 2))
+            XCTAssertEqual(inds.arity, Set(arrayLiteral: 2))
             XCTAssertEqual(inds.occurences, 1)
             
         }
@@ -103,7 +103,7 @@ class DimensionTests: XCTestCase {
         
         if let inds = symbols["a"] {
             XCTAssertEqual(inds.type, SymbolType.Function)
-            XCTAssertEqual(inds.arities, Set(arrayLiteral: 0))
+            XCTAssertEqual(inds.arity, Set(arrayLiteral: 0))
             XCTAssertEqual(inds.occurences, 2)
             
         }
@@ -121,9 +121,9 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(width,2)
         XCTAssertEqual(symbols.count,3)
         
-        XCTAssertEqual(symbols["a"]?.arities, Set(arrayLiteral: 0))
-        XCTAssertEqual(symbols["b"]?.arities, Set(arrayLiteral: 0))
-        XCTAssertEqual(symbols["|"]?.arities, Set(arrayLiteral: 2))
+        XCTAssertEqual(symbols["a"]?.arity, Set(arrayLiteral: 0))
+        XCTAssertEqual(symbols["b"]?.arity, Set(arrayLiteral: 0))
+        XCTAssertEqual(symbols["|"]?.arity, Set(arrayLiteral: 2))
         
         XCTAssertEqual(symbols["a"]?.type, SymbolType.Predicate)
         XCTAssertEqual(symbols["b"]?.type, SymbolType.Predicate)
@@ -160,13 +160,13 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(symbols["a"]?.type, SymbolType.Function)
         XCTAssertEqual(symbols["X"]?.type, SymbolType.Variable)
         
-        XCTAssertEqual(symbols["|"]?.arities, Set(arrayLiteral: 2))
-        XCTAssertEqual(symbols["~"]?.arities, Set(arrayLiteral: 1))
-        XCTAssertEqual(symbols["p"]?.arities, Set(arrayLiteral: 1))
-        XCTAssertEqual(symbols["f"]?.arities, Set(arrayLiteral: 2))
-        XCTAssertEqual(symbols["g"]?.arities, Set(arrayLiteral: 1))
-        XCTAssertEqual(symbols["a"]?.arities, Set(arrayLiteral: 0)) // a function with arity 0 is constant.
-        XCTAssertEqual(symbols["X"]?.arities, Set<Int>()) // a variable has no arity
+        XCTAssertEqual(symbols["|"]?.arity, Set(arrayLiteral: 2))
+        XCTAssertEqual(symbols["~"]?.arity, Set(arrayLiteral: 1))
+        XCTAssertEqual(symbols["p"]?.arity, Set(arrayLiteral: 1))
+        XCTAssertEqual(symbols["f"]?.arity, Set(arrayLiteral: 2))
+        XCTAssertEqual(symbols["g"]?.arity, Set(arrayLiteral: 1))
+        XCTAssertEqual(symbols["a"]?.arity, Set(arrayLiteral: 0)) // a function with arity 0 is constant.
+        XCTAssertEqual(symbols["X"]?.arity, Set<Int>()) // a variable has no arity
         
         
     }

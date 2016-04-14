@@ -38,7 +38,7 @@ extension Node {
             }
         }
         
-        assert(quartuple.arities.contains(nodes.count), "'\(self.symbolDebugString)' has invalid number \(nodes.count).")
+        assert(quartuple.arity.contains(nodes.count), "'\(self.symbolDebugString)' has invalid number \(nodes.count).")
         
         let decor = decorate(symbol:self.symbol, type:quartuple.type)
         

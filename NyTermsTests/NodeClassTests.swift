@@ -99,11 +99,11 @@ class NodeClassTests: XCTestCase {
         XCTAssertEqual(2, soa_faa.count)
         XCTAssertEqual(3, soa_fxy.count)
         
-        let efaa = ["f":(count:1,arities:Set(arrayLiteral:2)), "a":(count:2,arities:Set(arrayLiteral:0))]
+        let efaa = ["f":(count:1,arity:Set(arrayLiteral:2)), "a":(count:2,arity:Set(arrayLiteral:0))]
         let efxy = [
-            "f":(count:1,arities:Set(arrayLiteral:2)),
-            "X":(count:1,arities:Set<Int>()),
-            "Y":(count:1,arities:Set<Int>())]
+            "f":(count:1,arity:Set(arrayLiteral:2)),
+            "X":(count:1,arity:Set<Int>()),
+            "Y":(count:1,arity:Set<Int>())]
         
         XCTAssertTrue(efaa == soa_faa)
         XCTAssertTrue(efxy == soa_fxy)

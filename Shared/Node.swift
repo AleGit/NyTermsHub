@@ -55,8 +55,8 @@ extension Node {
         return self.symbolQuadruple()?.category
     }
     
-    var symbolArities : Range<Int>? {
-        return self.symbolQuadruple()?.arities
+    var symbolArities : SymbolArity? {
+        return self.symbolQuadruple()?.arity
     }
     
     var symbolNotation : SymbolNotation? {

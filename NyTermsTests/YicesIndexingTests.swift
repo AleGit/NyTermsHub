@@ -66,16 +66,16 @@ class YicesIndexingTests: XCTestCase {
         XCTAssertEqual(ls[3].0, nls[0].0)
     }
     
-    func testSimpleClauses() {
-        let clauses = ["p|~p" as TptpNode, "~p|p", "p|p|p|~p" ]
-        let y = clauses.map {
-            
-            ($0, Yices.clause($0).1, Yices.clause($0).2) }
-        print(y)
-    }
-    
-    
-    
+//    func testSimpleClauses() {
+//        let clauses = ["p|~p" as TptpNode, "~p|p", "p|p|p|~p" ]
+//        let y = clauses.map {
+//            
+//            ($0, Yices.clause($0).1, Yices.clause($0).2) }
+//        print(y)
+//    }
+//    
+//    
+//    
     func testClauses() {
         let clauses = [
             TptpNode(stringLiteral: "\(p)|\(ne)"),
@@ -88,10 +88,29 @@ class YicesIndexingTests: XCTestCase {
         print(y)
     }
     
+    func testTrue() {
+        let clauses : [TptpNode] = [
+            "X = Y",
+            "p | X = Y",
+            "~p | X = Y",
+            "X != Y | p | ~p",
+            "q(X) | p | ~p",
+            "q(f(X)) | p | ~p",
+        ]
+        
+        for clause in clauses {
+            let triple = Yices.clause(clause)
+            XCTAssertEqual(triple.0, Yices.top(), String(term:triple.0) ?? "")
+            print(triple)
+        }
+    }
+    
     func testSampleClauses() {
         let x_equals_y = TptpNode(equational:TptpNode.symbol(.Equation), nodes:["X","Y"])
         let x_neq_y = TptpNode(equational:TptpNode.symbol(.Inequation), nodes:["X","Y"])
         let clauses : [TptpNode] = [
+            "p(X,Y)  | ~p(X,Y)",
+            "X = Y | X != Y",
             "p(X,Y)  | p(X,Y)  | X = Y",
             "~p(X,Y) | ~p(X,Y) | X = Y",
             "p(X,Y)  | p(X,Y)  | X != Y",
@@ -110,8 +129,18 @@ class YicesIndexingTests: XCTestCase {
             Yices.clause($0)
         }
         
-        print(yicesTriples.map {
-            "\($0.2) ≡ \($0.1) ≡ \($0.0)\t\t'\($0.2.map { String(term:$0)! }) ≡ \($0.1.map { String(term:$0)! }) ≡ \(String(term:$0.0)!)'" }.joinWithSeparator("\n"))
+        for triple in yicesTriples {
+            print("\(triple.2) ≡ \(triple.1) ≡ \(triple.0) \(Yices.children(triple.0))")
+        }
+        
+        print("")
+        
+        for t:term_t in 0..<200 {
+            guard let s = String(term:t) else {
+                continue
+            }
+            print(t, s)
+        }
     }
     
 }

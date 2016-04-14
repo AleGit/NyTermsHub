@@ -15,7 +15,7 @@
  0x  00 00 00 00  .. .. .. ..
  0x  00 00 00 00  FF FF FF FF       variable #4.294.967.295
  
- predefined symbols/arities/notation
+ predefined symbols/arity/notation
  
  0x  00 00 00 01  00 00 00 00     invalid
  0x  00 00 00 01  00 00 00 01     negation (unary)
@@ -33,7 +33,7 @@
  0x  00 00 00 01  00 00 00 0d     equation (binary)
  0x  00 00 00 01  00 00 00 0e     inequation (binary)
  
- symbols with non-variadic arities and pre-order notation
+ symbols with non-variadic arity and pre-order notation
  (4.294.967.294 different symbols are possible)
  
  T ... type:        4 bit 0..<15        predicate, function, n/a
@@ -73,7 +73,7 @@ extension Node where Symbol == Int {
     /// Hence only ranges with startIndex in `0...255` are supported:
     /// * `startIndex...(startIndex+size)` where `size ∈ 0..<255` or
     /// * `startIndex..<Int.max` are supported.
-    private func encode(arities range:Range<Int>) -> UInt16 {
+    private func encode(arity range:Range<Int>) -> UInt16 {
         assert(range.startIndex <= Int(UInt8.max))
         
         let distance = min(range.endIndex - range.startIndex, Int(UInt8.max))

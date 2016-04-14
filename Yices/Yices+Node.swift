@@ -9,19 +9,32 @@
 import Foundation
 
 extension Yices {
-    /// built-in type for terms
-    static var free_tau = yices_int_type()
     
-    /// built-in type for predicates and connectives
+    /// Boolean type for predicates and connectives (built-in)
     static var bool_tau = yices_bool_type()
     
-    /// Distinct global constant that substitues all variables in terms.
-    /// Since yices_exit() or yices_reset() could have been fired between calls
-    /// of `🚧` it has to be a calculated property.
+    /// Uninterpreted global type - the return type of uninterpreted terms 
+    /// (functions or constants).
+    static var free_tau : type_t {
+        return type("𝛕")
+    }
+    
+    /// Uninterpreted global constant of uninterpreted type.
     static var 🚧 : term_t {
         return Yices.constant("⊥", term_tau: free_tau)
     }
     
+    static func type(name:String) -> type_t {
+        assert(!name.isEmpty, "a type name must not be empty")
+        var tau = yices_get_type_by_name(name)
+        if tau == NULL_TYPE {
+            tau = yices_new_uninterpreted_type()
+            yices_set_type_name(tau,name)
+        }
+        return tau
+    }
+    
+    /// Create uninterpreted global constant of type `term_tau`.
     static func constant(symbol:String, term_tau:type_t) -> term_t {
         assert(!symbol.isEmpty, "a constant symbol must not be empty")
         
@@ -33,6 +46,8 @@ extension Yices {
         return t
     }
     
+    /// Create uninterpreted global (predicate) function with uninterpreted arguments `args`
+    /// of global type `free_type` (implicit) and return type `term_tau`.
     static func application(symbol:String, args:[term_t], term_tau:type_t) -> term_t {
         assert(!symbol.isEmpty, "a function or predicate symbol must not be empty")
         
@@ -46,23 +61,59 @@ extension Yices {
         
         return yices_application(t, UInt32(args.count), args)
     }
+    
+    static func children(term:term_t) -> [term_t] {
+        return (0..<yices_term_num_children(term)).map { yices_term_child(term, $0) }
+    }
 }
 
+// MARK - Yices + Node
+
 extension Yices {
+    /// Return a yices clause and yices literals from a node clause.
+    /// The children of `yicesClause` are often different from `yicesLiterals`.
     static func clause<N:Node>(clause:N) -> (
         yicesClause: term_t,
-        yicesLiterals:[term_t],
+        yicesLiterals:[type_t],
         yicesLiteralsBefore:[type_t]) {
         
-            assert(clause.isClause,"\(clause) must be a clause, but is not.")
+            // assert(clause.isClause,"'\(#function)(\(clause))' Argument must be a clause, but it is not.")
             
-            guard let literals = clause.nodes where literals.count > 0 else {
+            let type = clause.symbolType ?? SymbolType.Predicate
+            
+            switch type {
+            case .Disjunction:
+                guard let literals = clause.nodes where literals.count > 0 else {
+                    return (Yices.bot(), [term_t](), [term_t]())
+                }
+                
+                return Yices.clause(literals)
+               
+                // unit clause
+            case .Predicate, .Negation, .Equation, .Inequation:
+                print("\(#function)(\(clause)) Argument node was not a clause, but a literal.")
+                let yicesLiteral = literal(clause)
+                return (yicesLiteral,[yicesLiteral],[yicesLiteral])
+                
+                // not a clause at all
+            default:
+                assert(false,"\(#function)(\(clause)) Argument is of type \(type)")
                 return (Yices.bot(), [term_t](), [term_t]())
             }
             
-            return Yices.clause(literals)
+            
     }
     
+    /// Return a yices clause and yices literals from an array of node literals.
+    /// The children of `yicesClause` are often different from `yicesLiterals`.
+    /// `yicesLiterals` are a mapping from `literals` to yices terms, while 
+    /// `yicesClause` is just equivalent to the conjunction of the `yicesLiterals`.
+    /// * `true ≡ [ ⊥ = ⊥, ... ]`
+    /// * `true ≡ [ p, ~p ]`
+    /// * `true ≡ [ ⊥ = ⊥, ⊥ ~= ⊥ ]`
+    /// * `p ≡ [ p, p ]`
+    /// * `p ≡ [ ⊥ ~= ⊥, p ]`
+    /// * `[p,q,q,q,q] ≡ [ p, q, ⊥ ~= ⊥, p,q ]`
     static func clause<N:Node>(literals:[N]) -> (
         yicesClause: type_t,
         yicesLiterals:[type_t],
@@ -74,7 +125,6 @@ extension Yices {
             // `yices_or` might change the order and content of the array
             
             let yicesClause = yices_or( UInt32(yicesLiterals.count), &yicesLiterals)
-
             
             return (
                 yicesClause,
@@ -92,7 +142,7 @@ extension Yices {
     /// - an inequation
     /// - a predicatate term or a proposition constant
     static func literal<N:Node>(literal:N) -> term_t {
-        assert(literal.isLiteral,"'\(literal)' is not a literal.")
+        assert(literal.isLiteral,"'\(#function)(\(literal))' Argument must be a literal, but it is not.")
         
         guard let nodes = literal.nodes
             else {
@@ -123,14 +173,15 @@ extension Yices {
             return Yices.application(literal.symbolString(), nodes:nodes, term_tau: Yices.bool_tau)
             
         default:
-            assert(false, "This must not happen.")
+            assert(false, "'\(#function)(\(literal))' Argument must not be a \(type).")
             return yices_false()
         }
     }
     
     /// Build uninterpreted function term from term.
     static func term<N:Node>(term:N) -> term_t {
-        assert(term.isTerm,"'\(term)' is not a term.")
+        assert(term.isTerm,"'\(#function)(\(term))' Argument must be a term, but it is not.")
+        
         guard let nodes = term.nodes else {
             return Yices.🚧 // substitute all variables with global constant '⊥'
         }

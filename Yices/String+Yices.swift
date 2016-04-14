@@ -29,7 +29,7 @@ extension String {
     init?(term: term_t, width:UInt32, height:UInt32, offset:UInt32) {
         let cstring = yices_term_to_string(term, width, height, offset)
         guard cstring != nil else {
-            yices_print_error(stdout);
+            // yices_print_error(stdout);
             return nil
         }
         defer {

@@ -25,7 +25,7 @@ class YicesSatTrials : XCTestCase {
         bool_tau = yices_bool_type()
         
         general_constant = yices_new_uninterpreted_term(free_tau)
-        yices_set_term_name(general_constant, "⊥")
+        yices_set_term_name(general_constant, "∴")
     }
     
     override func tearDown() {
@@ -254,28 +254,28 @@ class YicesSatTrials : XCTestCase {
         
         var tptpClauses = tptpFormulae.map { $0.root }
         
-        let clauses = tptpClauses.map {
-            (tptpClause) -> (TptpNode,term_t) in
-            let clause = build_yices_term(tptpClause, range_tau:bool_tau)
+        let yicesClauses = tptpClauses.map {
+            (tptpClause) -> (TptpNode,clause:term_t,after:[term_t],before:[term_t]) in
+            let triple = Yices.clause(tptpClause)
             
-            XCTAssertEqual(0, yices_term_is_atomic(clause))
-            XCTAssertEqual(1, yices_term_is_composite(clause))
-            XCTAssertEqual(1, yices_term_is_bool(clause))
-            XCTAssertEqual(0, yices_term_is_sum(clause))
-            XCTAssertEqual(0, yices_term_is_bvsum(clause))
-            XCTAssertEqual(0, yices_term_is_product(clause))
+            XCTAssertEqual(0, yices_term_is_atomic(triple.0), "\n\(tptpClause) \(triple)")
+            XCTAssertEqual(1, yices_term_is_composite(triple.0), "\n\(tptpClause) \(triple)")
+            XCTAssertEqual(1, yices_term_is_bool(triple.0), "\n\(tptpClause) \(triple)")
+            XCTAssertEqual(0, yices_term_is_sum(triple.0), "\n\(tptpClause) \(triple)")
+            XCTAssertEqual(0, yices_term_is_bvsum(triple.0), "\n\(tptpClause) \(triple)")
+            XCTAssertEqual(0, yices_term_is_product(triple.0), "\n\(tptpClause) \(triple)")
             
-            yices_assert_formula(ctx, clause)
+            yices_assert_formula(ctx, triple.0)
             XCTAssertTrue(STATUS_SAT == yices_check_context(ctx, nil))
             
             let tcount = tptpClause.nodes!.count
-            let ccount = Int(yices_term_num_children(clause))
+            let ccount = Int(yices_term_num_children(triple.0))
             
             if tcount > 1 {
                 XCTAssertEqual(tcount, ccount)
             }
             
-            return (tptpClause,clause)
+            return (tptpClause,triple.0, triple.1, triple.2)
         }
         
         let mdl = yices_get_model(ctx, 1);
@@ -283,52 +283,7 @@ class YicesSatTrials : XCTestCase {
         
         XCTAssertNotNil(mdl)
         
-        let selected = clauses.map {
-            (tptpClause,clause) -> TptpNode in
-            
-            guard let nodes = tptpClause.nodes else { return TptpNode(connective:"|",nodes:[TptpNode]()) } // false
-            
-            switch nodes.count {
-            case 0:
-                return TptpNode(connective:"|",nodes:[TptpNode]())  // false
-            case 1:
-                XCTAssertEqual(1, yices_formula_true_in_model(mdl, clause))
-                return tptpClause
-            case let tcount:
-                let ccount = Int(yices_term_num_children(clause))
-                XCTAssertEqual(tcount, ccount)
-                
-                for idx in 0..<ccount {
-                    let child = yices_term_child(clause, Int32(idx))
-                    XCTAssertEqual(1, yices_term_is_bool(child))
-                    if yices_formula_true_in_model(mdl, child) == 1 {
-                        return nodes[idx]
-                    }
-                }
-            }
-            
-            return TptpNode(connective:"|",nodes:[TptpNode]())  // false
-        }
         
-        var newClauses = [TptpNode]()
-        
-        for i in 0..<(selected.count-1) {
-            for j in (i+1)..<selected.count {
-                let a = selected[i]
-                let b = selected[j]
-                
-                if let unifier = a ~?= b {
-                    
-                    let na = tptpClauses[i] * unifier
-                    let nb = tptpClauses[j] * unifier
-                    
-                    print(na,nb)
-                    
-                    newClauses.append(na)
-                    newClauses.append(nb)
-                }
-            }
-        }
     }
     
     func testTrySymbols() {

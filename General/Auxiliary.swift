@@ -202,4 +202,15 @@ extension Array {
     }
 }
 
+extension Set {
+    mutating func uniqueify(inout member: Element) {
+        guard let index = self.indexOf(member) else {
+            self.insert(member)
+            return
+        }
+        
+        member = self[index]
+    }
+}
+
 

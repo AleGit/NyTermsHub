@@ -67,7 +67,7 @@ extension Yices {
     }
 }
 
-// MARK - Yices + Node
+// MARK: - Yices + Node
 
 extension Yices {
     /// Return a yices clause and yices literals from a node clause.

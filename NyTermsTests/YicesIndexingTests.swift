@@ -20,21 +20,15 @@ private let ne = "\(fgxy)!=\(ghzx)"
 
 class YicesIndexingTests: XCTestCase {
     
-    
-    
     override func setUp() {
         super.setUp()
         yices_init()
     }
     
     override func tearDown() {
+        yices_exit()
         super.tearDown()
     }
-    
-    deinit {
-        yices_exit()
-    }
-    
     
     func testLiterals() {
         let literals = [

@@ -24,6 +24,7 @@ extension Yices {
         return Yices.constant("⊥", term_tau: free_tau)
     }
     
+    /// Get or create (uninterpreted) type `name`.
     static func type(name:String) -> type_t {
         assert(!name.isEmpty, "a type name must not be empty")
         var tau = yices_get_type_by_name(name)
@@ -34,7 +35,7 @@ extension Yices {
         return tau
     }
     
-    /// Create uninterpreted global constant of type `term_tau`.
+    /// Get or create uninterpreted global constant `symbol` of type `term_tau`.
     static func constant(symbol:String, term_tau:type_t) -> term_t {
         assert(!symbol.isEmpty, "a constant symbol must not be empty")
         
@@ -46,8 +47,11 @@ extension Yices {
         return t
     }
     
-    /// Create uninterpreted global (predicate) function with uninterpreted arguments `args`
-    /// of global type `free_type` (implicit) and return type `term_tau`.
+    /// Create uninterpreted global (predicate) function `symbol` application
+    /// with uninterpreted arguments `args` of implicit global type `free_type`
+    /// and explicit return type `term_tau`:
+    /// * `free_tau` - the symbol is a constant/function symbol
+    /// * `bool_tau` - the symbol is a proposition/predicate symbol
     static func application(symbol:String, args:[term_t], term_tau:type_t) -> term_t {
         assert(!symbol.isEmpty, "a function or predicate symbol must not be empty")
         
@@ -62,6 +66,7 @@ extension Yices {
         return yices_application(t, UInt32(args.count), args)
     }
     
+    /// Get yices children of a yices term.
     static func children(term:term_t) -> [term_t] {
         return (0..<yices_term_num_children(term)).map { yices_term_child(term, $0) }
     }

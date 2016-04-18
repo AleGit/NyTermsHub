@@ -21,7 +21,7 @@ extension Node {
 
 
 func &&(t1:term_t, t2:term_t) -> term_t {
-    return Yices.and(t1,t2: t2)
+    return Yices.and(t1,t2)
 }
 
 func ||(t1:term_t, t2:term_t) -> term_t {
@@ -33,15 +33,15 @@ prefix func !(t:term_t) -> term_t {
 }
 
 func >>(t1:term_t, t2:term_t) -> term_t {
-    return Yices.gt(t1, t2: t2)
+    return Yices.gt(t1, t2)
 }
 
 func >>=(t1:term_t, t2:term_t) -> term_t {
-    return Yices.ge(t1, t2: t2)
+    return Yices.ge(t1, t2)
 }
 
 func +(t1:term_t, t2:term_t) -> term_t {
-    return Yices.add(t1, t2: t2)
+    return Yices.add(t1, t2)
 }
 
 
@@ -90,18 +90,18 @@ struct LPO {
         prec = Precedence(count: count, fs: fs)
     }
     
-    func ge<T:Node where T.Symbol==String>(l:T, r:T) -> term_t  {
+    func ge<T:Node>(l:T, r:T) -> term_t  {
         return l.isEqual(r) ? Yices.top() : Yices.bot()
     }
     
-    func gt<T:Node where T.Symbol==String>(l:T, r:T) -> term_t {
+    func gt<T:Node>(l:T, r:T) -> term_t {
         guard l.isTerm else { return Yices.bot() }
         guard r.is_subterm(l) else { return Yices.top() }
         guard r.isTerm else { return Yices.bot() } // subterm case already handled
         
         let case1 = Yices.big_or(l.subterms.map({(li: T) -> term_t in gt(li, r: r)}))
         if l.symbol != r.symbol {
-            let case2 = Yices.ge(prec.get(l.symbol), t2: prec.get(r.symbol)) &&
+            let case2 = Yices.ge(prec.get(l.symbolString()), prec.get(r.symbolString())) &&
                         Yices.big_and(r.subterms.map({(ri: T) -> term_t in gt(l, r: ri)}))
             return case1 || case2
         } else {
@@ -137,17 +137,17 @@ struct KBO {
         }
     }
     
-    func weight<T:Node where T.Symbol==String>(t:T) -> term_t {
+    func weight<T:Node>(t:T) -> term_t {
         guard t.isTerm else { return w0 }
         let ws = t.nodes!.map(weight)
-        return weight_vars[t.symbol]! + ws.reduce(0, combine: +)
+        return weight_vars[t.symbolString()]! + ws.reduce(0, combine: +)
     }
     
-    func ge<T:Node where T.Symbol==String>(l:T, r:T) -> term_t  {
+    func ge<T:Node>(l:T, r:T) -> term_t  {
         return l.isEqual(r) ? Yices.top() : Yices.bot()
     }
     
-    func gt<T:Node where T.Symbol==String>(l:T, r:T) -> term_t {
+    func gt<T:Node>(l:T, r:T) -> term_t {
         guard l.isTerm else { return Yices.bot() }
         guard r.is_subterm(l) else { return Yices.top() }
         guard r.isTerm else { return Yices.bot() } // subterm case already handled
@@ -157,7 +157,7 @@ struct KBO {
         let w_gt = w_l >> w_r, w_ge = w_l >>= w_r
         var dec: term_t
         if l.symbol != r.symbol {
-            dec = Yices.gt(prec.get(l.symbol), t2: prec.get(r.symbol))
+            dec = Yices.gt(prec.get(l.symbolString()), prec.get(r.symbolString()))
         } else {
             dec = lex(l.nodes!, ss: r.nodes!, gt: gt, ge: ge)
         }

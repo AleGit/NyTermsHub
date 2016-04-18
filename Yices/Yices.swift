@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+// MARK: yices info
 struct Yices {
     
     static let version = String.fromCString(yices_version) ?? "yices_version: n/a"
@@ -17,7 +17,11 @@ struct Yices {
     static let buildDate = String.fromCString(yices_build_date) ?? "yices_build_date: n/a"
     
     static let info = "yices \(version) (\(buildArch),\(buildMode),\(buildDate))"
-    
+}
+
+// MARK: - yices + LIA
+extension Yices {
+
     static func newIntVar(name:String) -> term_t?  {
         var term: term_t? = nil
         
@@ -71,27 +75,33 @@ struct Yices {
         return yices_not(t)
     }
     
-    static func and(t1:term_t, t2:term_t) -> term_t  {
+    static func and(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_and2(t1,t2)
     }
     
-    static func and(t1:term_t, t2:term_t, t3:term_t) -> term_t  {
+    static func and(t1:term_t, _ t2:term_t, _ t3:term_t) -> term_t  {
         return yices_and3(t1,t2,t3)
     }
     
-    //static func and(ts:[term_t]) -> term_t  {
-    //    return yices_and(UInt32(ts.count), ts)
-    //}
+    static func and(ts:[term_t]) -> term_t  {
+        var copy = ts // array must be mutable
+        return yices_and(UInt32(ts.count), &copy)
+    }
     
     static func or(t1:term_t, t2:term_t) -> term_t  {
         return yices_or2(t1,t2)
     }
     
-    static func or(t1:term_t, t2:term_t, t3:term_t) -> term_t  {
+    static func or(t1:term_t, _ t2:term_t, _ t3:term_t) -> term_t  {
         return yices_or3(t1,t2,t3)
     }
     
-    static func implies(t1:term_t, t2:term_t) -> term_t  {
+    static func or(ts:[term_t]) -> term_t  {
+        var copy = ts // array must be mutable
+        return yices_or(UInt32(ts.count), &copy)
+    }
+    
+    static func implies(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_implies(t1,t2)
     }
     
@@ -107,15 +117,15 @@ struct Yices {
         return ts.reduce(top(), combine: and)
     }
     
-    static func gt(t1:term_t, t2:term_t) -> term_t  {
+    static func gt(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_arith_gt_atom(t1,t2)
     }
     
-    static func ge(t1:term_t, t2:term_t) -> term_t  {
+    static func ge(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_arith_geq_atom(t1,t2)
     }
     
-    static func add(t1:term_t, t2:term_t) -> term_t  {
+    static func add(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_add(t1, t2)
     }
     
@@ -127,11 +137,11 @@ struct Yices {
         return yices_int32(1)
     }
     
-    /*static func eval_int(t: term_t, m: model_t){
-        term_t val;
-        return yices_get_int32_value(m, t, val)
+    static func eval_int(t: term_t, m: COpaquePointer) -> Int32 {
+        var val : Int32 = 0;
+        yices_get_int32_value(m, t, &val)
         return val;
-    }*/
+    }
     
 }
 

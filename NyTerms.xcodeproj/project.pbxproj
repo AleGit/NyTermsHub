@@ -18,6 +18,7 @@
 		510811ED1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510811EB1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift */; };
 		510811EF1C9AA49600E5A439 /* Node(LaTeX).swift in Sources */ = {isa = PBXBuildFile; fileRef = 510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */; };
 		510811F01C9AA49600E5A439 /* Node(LaTeX).swift in Sources */ = {isa = PBXBuildFile; fileRef = 510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */; };
+		510F5CD51CC4B94C0012B9CC /* MaxCompletionSamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F5CD41CC4B94C0012B9CC /* MaxCompletionSamples.swift */; };
 		511301351C3ACF4F0071D632 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; };
 		5116094B1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
 		5116094C1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
@@ -194,6 +195,7 @@
 		5103EB081C6A27D60079E0A0 /* ParsePerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParsePerformanceTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		510811EB1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+CustomStringConvertible.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node(LaTeX).swift"; sourceTree = "<group>"; };
+		510F5CD41CC4B94C0012B9CC /* MaxCompletionSamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaxCompletionSamples.swift; sourceTree = "<group>"; };
 		5116094A1C3993F10090D447 /* Node+Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Position.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51192D1A1B67B059008C03B2 /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Position.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		511E95721B8AE4070093F4E8 /* NyTermsCL */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NyTermsCL; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -383,6 +385,7 @@
 		26EBF5861B99C251006E5FF4 /* MaxCompTests */ = {
 			isa = PBXGroup;
 			children = (
+				510F5CD41CC4B94C0012B9CC /* MaxCompletionSamples.swift */,
 			);
 			name = MaxCompTests;
 			sourceTree = "<group>";
@@ -1063,6 +1066,7 @@
 				51EFBA291B72046D00A7B16C /* ParseAdvancedSyntaxTests.swift in Sources */,
 				51E038191C92DAA3005BFD42 /* DimensionTests.swift in Sources */,
 				51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */,
+				510F5CD51CC4B94C0012B9CC /* MaxCompletionSamples.swift in Sources */,
 				265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */,
 				517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */,
 				5103EB091C6A27D60079E0A0 /* ParsePerformanceTests.swift in Sources */,

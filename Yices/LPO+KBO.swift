@@ -25,7 +25,7 @@ func &&(t1:term_t, t2:term_t) -> term_t {
 }
 
 func ||(t1:term_t, t2:term_t) -> term_t {
-    return Yices.or(t1,t2: t2)
+    return Yices.or(t1,t2)
 }
 
 prefix func !(t:term_t) -> term_t {

@@ -19,6 +19,8 @@
 		510811EF1C9AA49600E5A439 /* Node(LaTeX).swift in Sources */ = {isa = PBXBuildFile; fileRef = 510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */; };
 		510811F01C9AA49600E5A439 /* Node(LaTeX).swift in Sources */ = {isa = PBXBuildFile; fileRef = 510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */; };
 		510F5CD51CC4B94C0012B9CC /* MaxCompletionSamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F5CD41CC4B94C0012B9CC /* MaxCompletionSamples.swift */; };
+		510F5CD91CC4FCB40012B9CC /* Yices+Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F5CD81CC4FCB40012B9CC /* Yices+Order.swift */; };
+		510F5CDA1CC4FCB40012B9CC /* Yices+Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510F5CD81CC4FCB40012B9CC /* Yices+Order.swift */; };
 		511301351C3ACF4F0071D632 /* PolyTry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150F3981BD62E67003D69A3 /* PolyTry.swift */; };
 		5116094B1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
 		5116094C1C3993F10090D447 /* Node+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5116094A1C3993F10090D447 /* Node+Position.swift */; };
@@ -196,6 +198,7 @@
 		510811EB1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+CustomStringConvertible.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		510811EE1C9AA49600E5A439 /* Node(LaTeX).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node(LaTeX).swift"; sourceTree = "<group>"; };
 		510F5CD41CC4B94C0012B9CC /* MaxCompletionSamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaxCompletionSamples.swift; sourceTree = "<group>"; };
+		510F5CD81CC4FCB40012B9CC /* Yices+Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Yices+Order.swift"; sourceTree = "<group>"; };
 		5116094A1C3993F10090D447 /* Node+Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Position.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51192D1A1B67B059008C03B2 /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Position.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		511E95721B8AE4070093F4E8 /* NyTermsCL */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NyTermsCL; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -732,6 +735,7 @@
 				513CF7E01B8EF6D20063BA57 /* String+Yices.swift */,
 				26EDD91C1BB47BBB001FE0EC /* LPO+KBO.swift */,
 				51FF64001CBBB0AD00AA26B5 /* Yices+Node.swift */,
+				510F5CD81CC4FCB40012B9CC /* Yices+Order.swift */,
 			);
 			path = Yices;
 			sourceTree = "<group>";
@@ -939,6 +943,7 @@
 				5146F42D1C7B061F00A19EC1 /* TrieClass.swift in Sources */,
 				51342AB91B92CA3A0052A72F /* DemoFileParsing.swift in Sources */,
 				511E958B1B8AEB4D0093F4E8 /* TptpInclude.swift in Sources */,
+				510F5CDA1CC4FCB40012B9CC /* Yices+Order.swift in Sources */,
 				511E958C1B8AEB4D0093F4E8 /* TptpNode.swift in Sources */,
 				5163AE6F1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */,
 				5100656F1C897A6800F2A67B /* MingyProver.swift in Sources */,
@@ -987,6 +992,7 @@
 				51FD00B81C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				5129773F1B679177003D3E80 /* Substitution.swift in Sources */,
 				51B26B6D1B8DA41200CC59AD /* Yices.swift in Sources */,
+				510F5CD91CC4FCB40012B9CC /* Yices+Order.swift in Sources */,
 				5151BDC01C3161AF006EFCE0 /* Pair.swift in Sources */,
 				51E038131C92A596005BFD42 /* Auxiliary+Process.swift in Sources */,
 				5116094B1C3993F10090D447 /* Node+Position.swift in Sources */,

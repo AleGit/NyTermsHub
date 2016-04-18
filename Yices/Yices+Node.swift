@@ -12,12 +12,15 @@ extension Yices {
     
     /// Boolean type for predicates and connectives (built-in)
     static var bool_tau = yices_bool_type()
+    /// Integer type for linear integer arithmetic (build-in)
+    static var int_tau = yices_int_type()
     
     /// Uninterpreted global type - the return type of uninterpreted terms 
     /// (functions or constants).
     static var free_tau : type_t {
         return type("𝛕")
     }
+    
     
     /// Uninterpreted global constant of uninterpreted type.
     static var 🚧 : term_t {

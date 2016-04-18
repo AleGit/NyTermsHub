@@ -88,7 +88,7 @@ extension Yices {
         return yices_and(UInt32(ts.count), &copy)
     }
     
-    static func or(t1:term_t, t2:term_t) -> term_t  {
+    static func or(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_or2(t1,t2)
     }
     
@@ -125,8 +125,17 @@ extension Yices {
         return yices_arith_geq_atom(t1,t2)
     }
     
+    static func eq(t1:term_t, _ t2:term_t) -> term_t {
+        return yices_eq(t1,t2)
+    }
+    
     static func add(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_add(t1, t2)
+    }
+    
+    static func sum(ts:[term_t]) -> term_t {
+        var copy = ts
+        return yices_sum(UInt32(copy.count), &copy)
     }
     
     static var zero: term_t {

@@ -175,7 +175,7 @@ func **<T:Node>(t:T, s:T) -> T {
 
 /// 't ** i' appends `@i` to any variable name.
 func **<T:Node where T.Symbol==String>(t:T, idx:Int) -> T {
-    guard let nodes = t.nodes else { return T(variable:"\(t.symbol)@\(idx)") }
+    guard let nodes = t.nodes else { return T(variable:"\(t.symbol)_\(idx)") }
     return T(symbol:t.symbol, nodes: nodes.map { $0 ** idx })
 }
 

@@ -8,135 +8,221 @@
 
 import Foundation
 
-extension Yices {
-    struct Precedence {
-        private let vars : [String : term_t]
+protocol Mapper {
+    associatedtype Symbol : Hashable
+    associatedtype Value
+    var vars : [Symbol : Value] { get set }
+    var prefix : String { get }
+    mutating func register(symbol:Symbol) -> Value
+}
+
+extension Mapper {
+    subscript(symbol:Symbol) -> Value {
+        return vars[symbol]!    // crashes if symbol was not registered
+    }
+}
+
+extension Node {
+    func isFnX(f:Symbol, _ X:Symbol) -> Bool {
+        guard let nodes = self.nodes else {
+            return self.symbol == X // f^0(X)
+        }
+        guard self.symbol == f && nodes.count == 1 else {
+            return false
+        }
         
-        init(symbols:[String]) {
-            var tempvars = [String : term_t]()
-            for f in symbols {
-                tempvars[f] = Yices.constant("p_\(f)", term_tau:Yices.int_tau)
+        return nodes.first!.isFnX(f, X)
+    }
+}
+
+
+
+extension Yices {
+    struct YicesTerms : Mapper {
+        typealias Symbol = String
+        typealias Value = term_t
+        
+        var vars = [String : term_t]()
+        let prefix : String
+        
+        init(prefix:String) { self.prefix = prefix }
+        
+        mutating func register(symbol:String) -> term_t {
+            
+            guard let entry = vars[symbol] else {
+                let newEntry = Yices.constant("\(prefix)\(symbol)", term_tau:Yices.int_tau)
+                vars[symbol] = newEntry
+                return newEntry
             }
-            self.vars = tempvars
+            return entry
         }
         
         subscript(symbol:String) -> term_t {
-            return self.vars[symbol]!
+            return vars[symbol]!    // crash if symbol is not registered!
         }
     }
     
     struct KBO {
-        private let w_0 : term_t
-        private let precedence : Precedence
-        private let vars : [String : term_t]
         
-        init(symbols:[String]) {
-            self.w_0 = Yices.constant("w_0", term_tau:Yices.int_tau)
-            self.precedence = Precedence(symbols: symbols)
-            
-            var tempvars = [String : term_t]()
-            for f in symbols {
-                let name = "kbo_\(f)"
-                tempvars[f] = Yices.constant(name, term_tau:Yices.int_tau)
+        private var precedences = YicesTerms(prefix: "p_")
+        private var weights = YicesTerms(prefix: "w_")
+        var arities = [String : Int]()
+        private var w0 = Yices.constant("𝛚₀", term_tau:Yices.int_tau)
+        
+        var atoms : [term_t] {
+            return [w0] + Array(weights.vars.values) + Array(precedences.vars.values)
+        }
+        
+        subscript(symbol:String) -> Int {
+            get {
+                guard let value = arities[symbol] else {
+                    assert(false,"Function symbol \(symbol) has not registered arity.")
+                    return -1
+                }
+                return value
+            }
+            set {
+                guard let value = arities[symbol] else {
+                    arities[symbol] = newValue
+                    return
+                }
                 
+                assert(value == newValue, "Function symbol \(symbol) must not be variadic (old=\(value),new=\(newValue))")
             }
-            self.vars = tempvars
         }
         
-        subscript(symbol:String) -> term_t {
-            return self.vars[symbol]!
-        }
         
-        func weight<N:Node>(node:N) -> term_t {
-            guard let nodes = node.nodes else {
-                return self.w_0
-            }
-            let w_f = vars[node.symbolString()]!
-            let weights = [w_f] + nodes.map { weight($0) }
-            
-            return Yices.sum(weights)
-        }
         
-        private func countedVariablesDoNotMatch<N:Node>(lhs:N,_ rhs:N) -> Bool {
-            let lcv = lhs.countedVariables
-            
-            for (key,rvalue) in rhs.countedVariables {
-                guard let lvalue = lcv[key] where lvalue >= rvalue
-                    else { return true }
-            }
-            return false
-            
-        }
         
-        func gt<N:Node>(s:N,_ t:N) -> term_t {
+        
+        
+        mutating func weight<N:Node>(t:N) -> term_t {
             
-            if s.isVariable || s == t || countedVariablesDoNotMatch(s,t) {
-                return Yices.bot()
+            guard let nodes = t.nodes else {
+                // w(t) = w_0 if t is a variable
+                return w0
             }
             
-            // we know
-            // s is not a variable
-            // s is not equal to t
-            // |s|_x >= |t|_x for all variables x
+            let symbol = t.symbolString()
+            self[symbol] = nodes.count  // register arity
             
+            // w(t) = w(f) + w(t_1) + ... w(t_n) if t = f(t_1,...,t_n)
+            
+            let w_f = self.weights.register(symbol)
+            self.precedences.register(symbol)
+
+            let summands = [ w_f ] + nodes.map { weight($0) }
+            let sum = Yices.sum(summands)
+            return sum
+        }
+        
+        func comparable<N:Node>(s:N, _ t:N) -> Bool {
+            guard !s.isVariable && s != t else { return false }
+            
+            // false if |s|_x < |t|_x for some variable x
+            
+            let sxs = s.countedVariables
+            for (x,tcount) in t.countedVariables {
+                guard let scount = sxs[x] where scount >= tcount else {
+                    return false // |s|_x < |t|_x
+                }
+                // |s|_x ≥ |t|_x, continue with next variable
+            }
+            
+            // all variables in t occur in s, at least as many times as in t.
+            return true
+        }
+        
+        mutating func orientable<N:Node>(s:N, _ t:N) -> term_t {
+            guard comparable(s,t) else { return Yices.bot() }
+
             let ws = weight(s)
             let wt = weight(t)
             
-            let wsgtwt = Yices.gt(ws,wt)
-            let wseqwt = Yices.eq(ws,wt)
+            let ws_gt_wt = Yices.gt(ws, wt)
+            let ws_eq_wt = Yices.eq(ws, wt)
+            let condition = porientable(s,t)
+            
             return Yices.or(
-                wsgtwt,
-                Yices.and(wseqwt, gt2(s,t))
+                ws_gt_wt,
+                Yices.and(ws_eq_wt, condition)
             )
             
             
+            
         }
         
-        private func gt2<N:Node>(s:N, _ t:N) -> term_t {
-            guard let snodes = s.nodes else {
-                assert(false, "\(#function)(\(s),_) first argument must not be a variable.")
-                return Yices.bot()
-            }
+        mutating func porientable<N:Node>(s:N, _ t:N) -> term_t {
+            assert(comparable(s,t))
             
-            // we know: s is not a variable
+            // we know comparable(s,t) holds, hence
+            // * s is not a variable
+            // * s != t
+            // * t does not increase the occurences of each variable
+            
+            let snodes = s.nodes!
             
             guard let tnodes = t.nodes else {
-                let cs = s.countedSymbols
-                if (Set(cs.keys) == Set([s.symbol, t.symbol])) {
-                    return Yices.top()
-                }
-                return Yices.bot()
+                return s.isFnX(s.symbol, t.symbol) ? Yices.top() : Yices.bot()
             }
             
-            // we know: t is not a variable
+            let pf = precedences[s.symbolString()]
+            let pg = precedences[t.symbolString()]
             
+            let pf_gt_pg = Yices.gt(pf,pg)
+            let pf_eq_pg = Yices.eq(pf,pg)
             
-            let ps = precedence[s.symbolString()]
-            let pt = precedence[t.symbolString()]
+            // let count = min(snodes.count,tnodes.count)
             
-            let psgtpt = Yices.gt( ps, pt )
-            let pseqpt = Yices.eq( ps, pt )
+            var si_gt_ti = Yices.bot()
             
-            let count = min(snodes.count,tnodes.count)
-            
-            let pairs = zip(snodes[0..<count],tnodes[0..<count])
-            
-            for (si,ti) in pairs {
+            for (si,ti) in zip(snodes,tnodes) {
                 if si != ti {
-                    let sigtti = self.gt(si,ti)
-                    return Yices.or(
-                        psgtpt,
-                        Yices.and(pseqpt, sigtti)
-                    )
+                    si_gt_ti = orientable(si,ti)
+                    break
                 }
             }
             
-            return Yices.bot()
-            
-            
+            return Yices.or(
+                pf_gt_pg,
+                Yices.and(pf_eq_pg,si_gt_ti)
+            )
         }
         
         
+        
+        var admissible : term_t {
+            // w_0 > 0 (condition for weight function)
+            let w0Condition = Yices.gt(w0,Yices.zero)
+            
+            let conditions = arities.map {
+                (s,arity) -> term_t in
+                if arity == 0 {
+                    // w_c ≥ w_0
+                    return Yices.ge(weights[s],w0)
+                }
+                else {
+                    // w_f ≥ 0 (non-negative)
+                    return Yices.ge(weights[s],Yices.zero)
+                }
+            }
+            
+            
+            let unariesConditions = arities.filter { $0.1 == 1 }.map {
+                (f,_) -> term_t in
+                let wf_eq_0 = Yices.eq(weights[f], Yices.zero)
+                let pf = precedences[f]
+                let pg_ge_pf = precedences.vars.map {
+                    (_,pg) -> term_t in
+                    Yices.ge(pg,pf)
+                }
+                return Yices.implies(wf_eq_0, Yices.and(pg_ge_pf))
+            }
+            
+            return Yices.and(w0Condition,
+                             Yices.and(conditions),
+                             Yices.and(unariesConditions)
+            )
+        }
     }
-    
 }

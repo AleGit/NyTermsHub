@@ -76,6 +76,7 @@
 		5151BDC01C3161AF006EFCE0 /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5151BDBF1C3161AF006EFCE0 /* Pair.swift */; };
 		5151BDC11C3161AF006EFCE0 /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5151BDBF1C3161AF006EFCE0 /* Pair.swift */; };
 		5154FF1B1C8847B000689C25 /* ProofPUZ010-1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */; };
+		51553EBA1CC79AF100FF616A /* Yices+LPOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51553EB91CC79AF100FF616A /* Yices+LPOTests.swift */; };
 		515D462E1C999A7100A7111E /* Node(String).swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D462D1C999A7100A7111E /* Node(String).swift */; };
 		515D462F1C999A7100A7111E /* Node(String).swift in Sources */ = {isa = PBXBuildFile; fileRef = 515D462D1C999A7100A7111E /* Node(String).swift */; };
 		515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 515D91B61B6CFEF0000EDB3B /* TptpParser.m */; };
@@ -252,6 +253,7 @@
 		51540DB01C4CB7D100A145DC /* HWV074.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV074.md; path = Docs/HWV074.md; sourceTree = SOURCE_ROOT; };
 		5154FF191C88273F00689C25 /* puzzles.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = puzzles.txt; sourceTree = "<group>"; };
 		5154FF1A1C8847B000689C25 /* ProofPUZ010-1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ProofPUZ010-1.txt"; sourceTree = "<group>"; };
+		51553EB91CC79AF100FF616A /* Yices+LPOTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Yices+LPOTests.swift"; sourceTree = "<group>"; };
 		51581E0C1C74684D00075A74 /* Arguments.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Arguments.md; sourceTree = "<group>"; };
 		515D462D1C999A7100A7111E /* Node(String).swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node(String).swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		515D91B61B6CFEF0000EDB3B /* TptpParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TptpParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -756,6 +758,7 @@
 				51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */,
 				517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */,
 				51374D3E1CC635F000BD82BF /* Yices+KBOTests.swift */,
+				51553EB91CC79AF100FF616A /* Yices+LPOTests.swift */,
 			);
 			name = Yices;
 			sourceTree = "<group>";
@@ -1050,6 +1053,7 @@
 				5150F39C1BD62F4C003D69A3 /* PolyTryTests.swift in Sources */,
 				51A4D09C1B70EE0500672898 /* ParseBasicSyntaxTests.swift in Sources */,
 				51B883F51B8E3DAC008D7F22 /* test_pp.c in Sources */,
+				51553EBA1CC79AF100FF616A /* Yices+LPOTests.swift in Sources */,
 				5146F4311C7B1B5200A19EC1 /* BuildTrieClassPerformanceTests.swift in Sources */,
 				515F0F0C1B6BB50200B470B4 /* PositonTests.swift in Sources */,
 				515F0F0E1B6BB80000B470B4 /* TestGlobals.swift in Sources */,

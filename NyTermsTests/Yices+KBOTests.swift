@@ -88,8 +88,8 @@ class YicesKBOTests: XCTestCase {
         let c = "c" as TptpNode
         var kbo = Yices.KBO()
         
-        let lr = kbo.orientable(fX, c)
-        let rl = kbo.orientable(c,fX)
+        let lr = kbo.leftRightCondition(fX, c)
+        let rl = kbo.leftRightCondition(c,fX)
         let adm = kbo.admissible
         
         XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (=> (= w⏑f 0) (>= (+ (* -1 p⏑f) p⏑c) 0)) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
@@ -113,8 +113,8 @@ class YicesKBOTests: XCTestCase {
         let c = "c" as TptpNode
         var kbo = Yices.KBO()
         
-        let lr = kbo.orientable(fc, c)
-        let rl = kbo.orientable(c,fc)
+        let lr = kbo.leftRightCondition(fc, c)
+        let rl = kbo.leftRightCondition(c,fc)
         let adm = kbo.admissible
         
         XCTAssertEqual("(and (=> (= w⏑f 0) (>= (+ (* -1 p⏑f) p⏑c) 0)) (< (* -1 𝛚₀) 0) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
@@ -136,8 +136,8 @@ class YicesKBOTests: XCTestCase {
         let X = "X" as TptpNode
         var kbo = Yices.KBO()
         
-        let lr = kbo.orientable(fX, X)
-        let rl = kbo.orientable(X,fX)
+        let lr = kbo.leftRightCondition(fX, X)
+        let rl = kbo.leftRightCondition(X,fX)
         let adm = kbo.admissible
         
         XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (>= w⏑f 0))", String(term:adm)!)
@@ -173,7 +173,7 @@ class YicesKBOTests: XCTestCase {
         var weights = [(TptpNode,term_t)]()
         
         for (s,t) in trs {
-            let c = kbo.orientable(s, t)
+            let c = kbo.leftRightCondition(s, t)
             weights.append((s,kbo.weight(s)))
             weights.append((t,kbo.weight(t)))
             yices_assert_formula(ctx, c)

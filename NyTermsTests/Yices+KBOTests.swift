@@ -44,6 +44,29 @@ class YicesKBOTests: XCTestCase {
         
     }
     
+    func printTerms(ctx: COpaquePointer, terms: [(TptpNode,term_t)])  {
+        XCTAssertEqual(STATUS_SAT, yices_check_context(ctx, nil))
+        
+        let mdl = yices_get_model(ctx, 1)
+        defer {
+            yices_free_model(mdl)
+        }
+        
+        for (node,t) in terms {
+            if let s = String(term:t) {
+                var val : Int32 = 0
+                if yices_get_int32_value(mdl, t, &val) == 0 {
+                    print("weight(\(node)) = \(val)")
+                } else {
+                    print(s, "yices_get_int32_value(mdl,\(s),&val) failed.")
+                    continue
+                }
+                
+            }
+        }
+        
+    }
+    
     func testEmpty() {
         let ctx = yices_new_context(nil)
         defer { yices_free_context(ctx) }
@@ -69,8 +92,8 @@ class YicesKBOTests: XCTestCase {
         let rl = kbo.orientable(c,fX)
         let adm = kbo.admissible
         
-        XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (=> (= w_f 0) (>= (+ (* -1 p_f) p_c) 0)) (and (>= w_f 0) (>= (+ (* -1 𝛚₀) w_c) 0)))", String(term:adm)!)
-        XCTAssertEqual("(=> (>= (+ (* -1 𝛚₀) (* -1 w_f) w_c) 0) (and (= (+ 𝛚₀ w_f (* -1 w_c)) 0) (< (+ (* -1 p_f) p_c) 0)))", String(term:lr)!)
+        XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (=> (= w⏑f 0) (>= (+ (* -1 p⏑f) p⏑c) 0)) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
+        XCTAssertEqual("(=> (>= (+ (* -1 𝛚₀) (* -1 w⏑f) w⏑c) 0) (and (= (+ 𝛚₀ w⏑f (* -1 w⏑c)) 0) (< (+ (* -1 p⏑f) p⏑c) 0)))", String(term:lr)!)
         XCTAssertEqual("false", String(term:rl)!)
         
         yices_assert_formula(ctx, lr)
@@ -94,9 +117,9 @@ class YicesKBOTests: XCTestCase {
         let rl = kbo.orientable(c,fc)
         let adm = kbo.admissible
         
-        XCTAssertEqual("(and (=> (= w_f 0) (>= (+ (* -1 p_f) p_c) 0)) (< (* -1 𝛚₀) 0) (and (>= w_f 0) (>= (+ (* -1 𝛚₀) w_c) 0)))", String(term:adm)!)
-        XCTAssertEqual("(=> (>= (* -1 w_f) 0) (and (= w_f 0) (< (+ (* -1 p_f) p_c) 0)))", String(term:lr)!)
-        XCTAssertEqual("(=> (>= w_f 0) (and (= w_f 0) (< (+ p_f (* -1 p_c)) 0)))", String(term:rl)!)
+        XCTAssertEqual("(and (=> (= w⏑f 0) (>= (+ (* -1 p⏑f) p⏑c) 0)) (< (* -1 𝛚₀) 0) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
+        XCTAssertEqual("(=> (>= (* -1 w⏑f) 0) (and (= w⏑f 0) (< (+ (* -1 p⏑f) p⏑c) 0)))", String(term:lr)!)
+        XCTAssertEqual("(=> (>= w⏑f 0) (and (= w⏑f 0) (< (+ p⏑f (* -1 p⏑c)) 0)))", String(term:rl)!)
         
         yices_assert_formula(ctx, lr)
         yices_assert_formula(ctx, adm)
@@ -117,8 +140,8 @@ class YicesKBOTests: XCTestCase {
         let rl = kbo.orientable(X,fX)
         let adm = kbo.admissible
         
-        XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (>= w_f 0))", String(term:adm)!)
-        XCTAssertEqual("(=> (>= (* -1 w_f) 0) (= w_f 0))", String(term:lr)!)
+        XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (>= w⏑f 0))", String(term:adm)!)
+        XCTAssertEqual("(=> (>= (* -1 w⏑f) 0) (= w⏑f 0))", String(term:lr)!)
         XCTAssertEqual("false", String(term:rl)!)
         
     
@@ -147,15 +170,22 @@ class YicesKBOTests: XCTestCase {
             ("p(s(X))","X"),
             ("add(X,Y)","sub(X,gg(Y))")]
         
+        var weights = [(TptpNode,term_t)]()
+        
         for (s,t) in trs {
-            let term = kbo.orientable(s, t)
-            yices_assert_formula(ctx, term)
-            print(s,"=",t,"\t",String(term:term)!)
+            let c = kbo.orientable(s, t)
+            weights.append((s,kbo.weight(s)))
+            weights.append((t,kbo.weight(t)))
+            yices_assert_formula(ctx, c)
+            print(s,"=",t,"\t",String(term:c)!)
         }
         
         yices_assert_formula(ctx, kbo.admissible)
         
         printValues(ctx, terms: kbo.atoms)
+        printTerms(ctx, terms: weights)
+        
+
     }
 
 }

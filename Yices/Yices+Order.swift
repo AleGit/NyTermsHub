@@ -63,9 +63,156 @@ extension Yices {
     }
     
     struct KBO {
+        let w0 = Yices.constant("𝛚₀", term_tau:Yices.int_tau)
+        let pPrefix = "p⏑"
+        let wPrefix = "w⏑"
         
-        private var precedences = YicesTerms(prefix: "p_")
-        private var weights = YicesTerms(prefix: "w_")
+        var symbols = [String : (weight:term_t, precedence:term_t, arity: Int)]()
+        
+        var atoms : [term_t] {
+            let ws = symbols.values.map { $0.weight }
+            let ps = symbols.values.map { $0.precedence }
+            return [w0] + ws + ps
+        }
+
+        /// Register symbol with arity and create global weight and preference constants (i.e. variables).
+        /// Return weight constant. (If symbol is allready registered check if arity is consistent.)
+        mutating func register(symbol:String, arity:Int) -> term_t {
+            guard let (w,_,a) = symbols[symbol] else {
+                let weight = Yices.constant("\(wPrefix)\(symbol)", term_tau:Yices.int_tau)
+                let preference = Yices.constant("\(pPrefix)\(symbol)", term_tau:Yices.int_tau)
+                symbols[symbol] = (weight,preference,arity)
+                return weight
+            }
+            
+            assert(a == arity, "\(symbol) must not be variadic: \(a) ≠ \(arity)")
+            
+            return w
+            
+        }
+        
+        /// Returns a yices weight term for the given tptp term.
+        /// Registers occurring symbols on the way.
+        mutating func weight<N:Node>(node:N) -> term_t {
+            guard let nodes = node.nodes else {
+                // w(t) = w_0 if t is a variable
+                return w0
+            }
+            
+            let symbol = node.symbolString()
+            let wf = register(symbol, arity: nodes.count)
+            
+            let summands = [ wf ] + nodes.map { weight($0) }
+            
+            return Yices.sum(summands)
+        }
+        
+        mutating func orientable<N:Node>(s:N, _ t:N) -> term_t {
+            guard preconditional(s,t) else { return Yices.bot() }
+            
+            let ws = weight(s)
+            let wt = weight(t)
+            
+            let ws_gt_wt = Yices.gt(ws, wt)
+            let ws_eq_wt = Yices.eq(ws, wt)
+            let condition = preferencable(s,t)
+            
+            let c = Yices.or(
+                ws_gt_wt,
+                Yices.and(ws_eq_wt, condition)
+            )
+            
+            return c
+        }
+        
+        private func preconditional<N:Node>(s:N, _ t:N) -> Bool {
+            guard !s.isVariable && s != t else { return false }
+            
+            // false if |s|_x < |t|_x for some variable x
+            
+            let sxs = s.countedVariables
+            for (x,tcount) in t.countedVariables {
+                guard let scount = sxs[x] where scount >= tcount else {
+                    return false // |s|_x < |t|_x
+                }
+                // |s|_x ≥ |t|_x, continue with next variable
+            }
+            
+            // all variables in t occur in s, at least as many times as in t.
+            return true
+        }
+        
+        mutating private func preferencable<N:Node>(s:N, _ t:N) -> term_t {
+            assert(preconditional(s,t), "preconditional was not called before")
+            
+            // we know preconditional(s,t) is holding, hence
+            // * s is not a variable
+            // * s != t
+            // * t does not increase the occurences of each variable
+            
+            let snodes = s.nodes!
+            
+            guard let tnodes = t.nodes else {
+                return s.isFnX(s.symbol, t.symbol) ? Yices.top() : Yices.bot()
+            }
+            
+            let pf = symbols[s.symbolString()]!.precedence
+            let pg = symbols[t.symbolString()]!.precedence
+            
+            let pf_gt_pg = Yices.gt(pf,pg)
+            let pf_eq_pg = Yices.eq(pf,pg)
+            
+            // let count = min(snodes.count,tnodes.count)
+            
+            var si_gt_ti = Yices.bot()
+            
+            for (si,ti) in zip(snodes,tnodes) {
+                if si != ti {
+                    si_gt_ti = orientable(si,ti)
+                    break
+                }
+            }
+            
+            return Yices.or(
+                pf_gt_pg,
+                Yices.and(pf_eq_pg,si_gt_ti)
+            )
+        }
+        
+        var admissible : term_t {
+            let w0gt0 = Yices.gt(w0,Yices.zero)
+            
+            let conditions = symbols.map {
+                (_,wpa) -> term_t in
+                let (w,_,a) = wpa
+                if a == 0 { return Yices.ge(w,w0) }
+                else { return Yices.ge(w,Yices.zero) }
+            }
+            
+            let unariesConditions = symbols.filter {
+                $0.1.arity == 1
+                }.map {
+                    (_,wpaf) -> term_t in
+                    let (wf,pf,_) = wpaf
+                    
+                    let wf_eq_0 = Yices.eq(wf,Yices.zero)
+                    
+                    let pg_ge_pf = symbols.map {
+                        (_,wpag) -> term_t in
+                        let (_,pg,_) = wpag
+                        return Yices.ge(pg,pf)
+                    }
+                    return Yices.implies(wf_eq_0, Yices.and(pg_ge_pf))
+            }
+            
+            return Yices.and (w0gt0, Yices.and(conditions), Yices.and(unariesConditions))
+        }
+    }
+    
+    struct oldKBO {
+        
+        private var precedences = YicesTerms(prefix: "p⏑")
+        private var weights = YicesTerms(prefix: "w⏑")
         var arities = [String : Int]()
         private var w0 = Yices.constant("𝛚₀", term_tau:Yices.int_tau)
         
@@ -143,10 +290,12 @@ extension Yices {
             let ws_eq_wt = Yices.eq(ws, wt)
             let condition = porientable(s,t)
             
-            return Yices.or(
+            let c = Yices.or(
                 ws_gt_wt,
                 Yices.and(ws_eq_wt, condition)
             )
+            
+            return c
             
             
             

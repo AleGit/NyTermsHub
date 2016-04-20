@@ -77,7 +77,7 @@ class YicesKBOTests: XCTestCase {
         XCTAssertEqual("(< (* -1 𝛚₀) 0)",String(term:adm)!) // -𝛚₀ < 0, i.e. 𝛚₀ > 0
         
         yices_assert_formula(ctx, adm)
-        print(ctx, kbo.atoms)
+        printValues(ctx, terms: kbo.atoms)
     }
     
     func test_FX_c() {
@@ -129,8 +129,12 @@ class YicesKBOTests: XCTestCase {
     }
     
     func test_FX_X() {
-        let ctx = yices_new_context(nil)
-        defer { yices_free_context(ctx) }
+        let ctx0 = yices_new_context(nil)
+        let ctx1 = yices_new_context(nil)
+        defer {
+            yices_free_context(ctx0)
+            yices_free_context(ctx1)
+        }
         
         let fX = "f(X)" as TptpNode
         let X = "X" as TptpNode
@@ -145,11 +149,19 @@ class YicesKBOTests: XCTestCase {
         XCTAssertEqual("false", String(term:rl)!)
         
     
-        yices_assert_formula(ctx, lr)
-        yices_assert_formula(ctx, adm)
+        yices_assert_formula(ctx0, lr)
+        yices_assert_formula(ctx0, adm)
+        
+        yices_assert_formula(ctx1, rl)
+        yices_assert_formula(ctx1, adm)
+        
+        XCTAssertEqual(STATUS_SAT, yices_check_context(ctx0, nil))
+        XCTAssertEqual(STATUS_UNSAT, yices_check_context(ctx1, nil))
         
         print(fX,"=",X)
-        printValues(ctx, terms: kbo.atoms)
+        printValues(ctx0 , terms: kbo.atoms)
+        
+
     }
     
     func testE435() {

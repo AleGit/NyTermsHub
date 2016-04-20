@@ -19,32 +19,37 @@ extension Node {
 }
 
 
-
+@available(*, deprecated=1.0, message="unused")
 func &&(t1:term_t, t2:term_t) -> term_t {
     return Yices.and(t1,t2)
 }
 
+@available(*, deprecated=1.0, message="unused")
 func ||(t1:term_t, t2:term_t) -> term_t {
     return Yices.or(t1,t2)
 }
 
+@available(*, deprecated=1.0, message="unused")
 prefix func !(t:term_t) -> term_t {
     return Yices.not(t)
 }
 
+@available(*, deprecated=1.0, message="unused")
 func >>(t1:term_t, t2:term_t) -> term_t {
     return Yices.gt(t1, t2)
 }
 
+@available(*, deprecated=1.0, message="unused")
 func >>=(t1:term_t, t2:term_t) -> term_t {
     return Yices.ge(t1, t2)
 }
 
+@available(*, deprecated=1.0, message="unused")
 func +(t1:term_t, t2:term_t) -> term_t {
     return Yices.add(t1, t2)
 }
 
-
+@available(*, deprecated=1.0, message="unused")
 func lex<T:Node>(ts:[T], ss:[T], gt:(T, T) -> term_t, ge:(T, T) -> term_t) -> term_t {
     let lex_fold = {(res: (term_t, term_t), ti_si : (T, T)) -> (term_t, term_t) in
         let (is_ge, is_gt) = res
@@ -54,6 +59,7 @@ func lex<T:Node>(ts:[T], ss:[T], gt:(T, T) -> term_t, ge:(T, T) -> term_t) -> te
     return zip(ss,ts).reduce((Yices.top(), Yices.bot()), combine: lex_fold).1
 }
 
+@available(*, deprecated=1.0, message="unused, see Yices.KBO or Yices.LPO instead.")
 struct Precedence {
     
     var vars = [String: term_t]() // precedence variables
@@ -78,7 +84,7 @@ struct Precedence {
     }*/
 }
 
-
+@available(*, deprecated=1.0, message="unused, see Yices.LPO instead.")
 struct LPO {
     
     var prec: Precedence
@@ -118,6 +124,7 @@ struct LPO {
     
 }
 
+@available(*, deprecated=1.0, message="unused, see Yices.KBO instead.")
 struct KBO {
     
     var prec: Precedence

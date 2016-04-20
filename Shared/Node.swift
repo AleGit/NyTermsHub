@@ -171,6 +171,18 @@ extension Node {
     }
 }
 
+extension Node {
+    
+    var subterms : [Self] {
+        guard let terms = self.nodes else { return [self] }
+        return terms.reduce([self]) { $0 + $1.subterms }
+    }
+    
+    func is_subterm (t: Self) -> Bool {
+        return t.subterms.contains(self)
+    }
+}
+
 
 
 

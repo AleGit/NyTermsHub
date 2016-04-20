@@ -6,19 +6,6 @@
 
 import Foundation
 
-extension Node {
-    
-    var subterms : [Self] {
-        guard let terms = self.nodes else { return [self] }
-        return terms.reduce([self]) { $0 + $1.subterms }
-    }
-    
-    func is_subterm (t: Self) -> Bool {
-      return t.subterms.contains(self)
-    }
-}
-
-
 @available(*, deprecated=1.0, message="unused")
 func &&(t1:term_t, t2:term_t) -> term_t {
     return Yices.and(t1,t2)

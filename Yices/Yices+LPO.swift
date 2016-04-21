@@ -21,7 +21,7 @@ extension Yices {
         
         mutating func register(symbol:String, arity:Int) -> term_t {
             guard let (p,a) = symbols[symbol] else {
-                let precedence = Yices.constant("\(pPrefix)\(symbol)", term_tau:Yices.int_tau)
+                let precedence = Yices.typedSymbol("\(pPrefix)\(symbol)", term_tau:Yices.int_tau)
                 symbols[symbol] = (precedence,arity)
                 return precedence
             }

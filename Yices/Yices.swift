@@ -17,3 +17,20 @@ struct Yices {
     
     static let info = "yices \(version) (\(buildArch),\(buildMode),\(buildDate))"
 }
+
+extension Yices {
+    static func check(code : Int32, label: String) -> Bool {
+        if code < 0 {
+            print("Error \(code) in \(label)\n")
+            yices_print_error(stdout)
+            fflush(stdout)
+            return false
+        }
+        else {
+            return true
+        }
+        
+    }
+}
+
+

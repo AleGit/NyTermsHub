@@ -23,7 +23,7 @@ extension Node {
 
 extension Yices {
     struct KBO {
-        let w0 = Yices.constant("𝛚₀", term_tau:Yices.int_tau)
+        let w0 = Yices.typedSymbol("𝛚₀", term_tau:Yices.int_tau)
         let pPrefix = "p⏑"
         let wPrefix = "w⏑"
         
@@ -35,12 +35,12 @@ extension Yices {
             return [w0] + ws + ps
         }
 
-        /// Register symbol with arity and create global weight and preference constants (i.e. variables).
-        /// Return weight constant. (If symbol is allready registered check if arity is consistent.)
+        /// Register symbol with arity and create global weight and preference typedTerms (i.e. variables).
+        /// Return weight typedSymbol. (If symbol is allready registered check if arity is consistent.)
         mutating func register(symbol:String, arity:Int) -> term_t {
             guard let (w,_,a) = symbols[symbol] else {
-                let weight = Yices.constant("\(wPrefix)\(symbol)", term_tau:Yices.int_tau)
-                let preference = Yices.constant("\(pPrefix)\(symbol)", term_tau:Yices.int_tau)
+                let weight = Yices.typedSymbol("\(wPrefix)\(symbol)", term_tau:Yices.int_tau)
+                let preference = Yices.typedSymbol("\(pPrefix)\(symbol)", term_tau:Yices.int_tau)
                 symbols[symbol] = (weight,preference,arity)
                 return weight
             }

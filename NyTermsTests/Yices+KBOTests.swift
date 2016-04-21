@@ -31,14 +31,12 @@ class YicesKBOTests: XCTestCase {
         
         for t in terms {
             if let s = String(term:t) {
-                var val : Int32 = 0
-                if yices_get_int32_value(mdl, t, &val) == 0 {
-                    print(s,val)
-                } else {
-                    print(s, "yices_get_int32_value(mdl,\(s),&val) failed.")
+                guard let value : Int32 = Yices.getValue(t, mdl: mdl) else {
+                    print(s, "getValue(\(s),mdl) failed in \(#function).")
                     continue
                 }
                 
+                print("::", s,value)
             }
         }
         
@@ -54,13 +52,14 @@ class YicesKBOTests: XCTestCase {
         
         for (node,t) in terms {
             if let s = String(term:t) {
-                var val : Int32 = 0
-                if yices_get_int32_value(mdl, t, &val) == 0 {
-                    print("weight(\(node)) = \(val)")
-                } else {
-                    print(s, "yices_get_int32_value(mdl,\(s),&val) failed.")
+                
+                guard let value : Int32 = Yices.getValue(t, mdl: mdl) else {
+                    print(s, "getValue(\(s),mdl) failed in \(#function).")
                     continue
                 }
+                
+                print("..", "weight(\(node)) = \(value)")
+                
                 
             }
         }

@@ -9,75 +9,6 @@
 import Foundation
 
 extension Yices {
-    
-    /// Boolean type for predicates and connectives (built-in)
-    static var bool_tau = yices_bool_type()
-    /// Integer type for linear integer arithmetic (build-in)
-    static var int_tau = yices_int_type()
-    
-    /// Uninterpreted global type - the return type of uninterpreted terms 
-    /// (functions or constants).
-    static var free_tau : type_t {
-        return type("𝛕")
-    }
-    
-    
-    /// Uninterpreted global constant of uninterpreted type.
-    static var 🚧 : term_t {
-        return Yices.constant("⊥", term_tau: free_tau)
-    }
-    
-    /// Get or create (uninterpreted) type `name`.
-    static func type(name:String) -> type_t {
-        assert(!name.isEmpty, "a type name must not be empty")
-        var tau = yices_get_type_by_name(name)
-        if tau == NULL_TYPE {
-            tau = yices_new_uninterpreted_type()
-            yices_set_type_name(tau,name)
-        }
-        return tau
-    }
-    
-    /// Get or create uninterpreted global constant `symbol` of type `term_tau`.
-    static func constant(symbol:String, term_tau:type_t) -> term_t {
-        assert(!symbol.isEmpty, "a constant symbol must not be empty")
-        
-        var t = yices_get_term_by_name(symbol)
-        if t == NULL_TERM {
-            t = yices_new_uninterpreted_term(term_tau)
-            yices_set_term_name(t, symbol)
-        }
-        return t
-    }
-    
-    /// Create uninterpreted global (predicate) function `symbol` application
-    /// with uninterpreted arguments `args` of implicit global type `free_type`
-    /// and explicit return type `term_tau`:
-    /// * `free_tau` - the symbol is a constant/function symbol
-    /// * `bool_tau` - the symbol is a proposition/predicate symbol
-    static func application(symbol:String, args:[term_t], term_tau:type_t) -> term_t {
-        assert(!symbol.isEmpty, "a function or predicate symbol must not be empty")
-        
-        var t = yices_get_term_by_name(symbol)
-        if t == NULL_TERM {
-            let domain_taus = [type_t](count:args.count, repeatedValue:Yices.free_tau)
-            let func_tau = yices_function_type(UInt32(args.count), domain_taus, term_tau)
-            t = yices_new_uninterpreted_term(func_tau)
-            yices_set_term_name(t,symbol)
-        }
-        
-        return yices_application(t, UInt32(args.count), args)
-    }
-    
-    /// Get yices children of a yices term.
-    static func children(term:term_t) -> [term_t] {
-        return (0..<yices_term_num_children(term)).map { yices_term_child(term, $0) }
-    }
-}
-
-// MARK: - Yices + Node
-
-extension Yices {
     /// Return a yices clause and yices literals from a node clause.
     /// The children of `yicesClause` are often different from `yicesLiterals`.
     static func clause<N:Node>(clause:N) -> (
@@ -148,7 +79,7 @@ extension Yices {
     /// - a negation
     /// - an equation
     /// - an inequation
-    /// - a predicatate term or a proposition constant
+    /// - a predicatate term or a proposition typedSymbol
     static func literal<N:Node>(literal:N) -> term_t {
         assert(literal.isLiteral,"'\(#function)(\(literal))' Argument must be a literal, but it is not.")
         
@@ -191,18 +122,18 @@ extension Yices {
         assert(term.isTerm,"'\(#function)(\(term))' Argument must be a term, but it is not.")
         
         guard let nodes = term.nodes else {
-            return Yices.🚧 // substitute all variables with global constant '⊥'
+            return Yices.🚧 // substitute all variables with global typedSymbol '⊥'
         }
         
-        // function or constant term (an application of uninterpreted type)
+        // function or typedSymbol term (an application of uninterpreted type)
         return Yices.application(term.symbolString(), nodes:nodes, term_tau:Yices.free_tau)
     }
     
-    /// Build (constant) predicate or function.
+    /// Build (typedSymbol) predicate or function.
     static func application<N:Node>(symbol:String, nodes:[N], term_tau:type_t) -> term_t {
         
         guard nodes.count > 0 else {
-            return constant(symbol,term_tau: term_tau)
+            return typedSymbol(symbol,term_tau: term_tau)
         }
         
         return application(symbol, args: nodes.map { Yices.term($0) }, term_tau: term_tau)

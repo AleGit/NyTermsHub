@@ -118,6 +118,8 @@
 		519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A21B84E11F0030A61A /* NodeStructTests.swift */; };
 		519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A41B84E1780030A61A /* NodeClassTests.swift */; };
 		519801A71B84E18C0030A61A /* NodeEnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A61B84E18C0030A61A /* NodeEnumTests.swift */; };
+		51A35E4C1CC90D4A00879944 /* Node+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A35E4B1CC90D4A00879944 /* Node+Index.swift */; };
+		51A35E4D1CC90D4A00879944 /* Node+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A35E4B1CC90D4A00879944 /* Node+Index.swift */; };
 		51A4D09C1B70EE0500672898 /* ParseBasicSyntaxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A4D09B1B70EE0500672898 /* ParseBasicSyntaxTests.swift */; };
 		51B26B621B8DA14F00CC59AD /* NyTermsCL-Headers.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */; };
 		51B26B631B8DA14F00CC59AD /* NyTerms-Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B601B8DA14F00CC59AD /* NyTerms-Flags.jpg */; };
@@ -301,6 +303,7 @@
 		519801A21B84E11F0030A61A /* NodeStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeStructTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A41B84E1780030A61A /* NodeClassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeClassTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A61B84E18C0030A61A /* NodeEnumTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeEnumTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		51A35E4B1CC90D4A00879944 /* Node+Index.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Index.swift"; sourceTree = "<group>"; };
 		51A4D09B1B70EE0500672898 /* ParseBasicSyntaxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ParseBasicSyntaxTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "NyTermsCL-Headers.jpg"; sourceTree = "<group>"; };
 		51B26B601B8DA14F00CC59AD /* NyTerms-Flags.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "NyTerms-Flags.jpg"; sourceTree = "<group>"; };
@@ -508,6 +511,7 @@
 				514E93871C9FB6BA00787661 /* ShareNode.swift */,
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
+				51A35E4B1CC90D4A00879944 /* Node+Index.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -963,6 +967,7 @@
 				5150CD401C6CC1FD00372F04 /* DemoTrieBuild.swift in Sources */,
 				511E95821B8AE7B80093F4E8 /* Substitution.swift in Sources */,
 				511E95831B8AE7B80093F4E8 /* Position.swift in Sources */,
+				51A35E4D1CC90D4A00879944 /* Node+Index.swift in Sources */,
 				51FD00C31C3133E1008C5AD1 /* Operators.swift in Sources */,
 				513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */,
 				511E95841B8AE7B80093F4E8 /* Rule.swift in Sources */,
@@ -1000,6 +1005,7 @@
 				514E93881C9FB6BA00787661 /* ShareNode.swift in Sources */,
 				51E038161C92B864005BFD42 /* Node+Dimensions.swift in Sources */,
 				514AD8651C6B7D7400652004 /* TailTrie.swift in Sources */,
+				51A35E4C1CC90D4A00879944 /* Node+Index.swift in Sources */,
 				51FD00B81C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				5129773F1B679177003D3E80 /* Substitution.swift in Sources */,
 				51B26B6D1B8DA41200CC59AD /* Yices+Wrapper.swift in Sources */,

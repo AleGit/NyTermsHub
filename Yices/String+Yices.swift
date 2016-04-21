@@ -63,4 +63,5 @@ extension String {
     init?(model: COpaquePointer) {
         self.init(model:model, widht:UInt32.max, height:0, offset:0)
     }
+    
 }

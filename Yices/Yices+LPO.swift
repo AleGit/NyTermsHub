@@ -34,7 +34,7 @@ extension Yices {
         mutating func leftRightCondition<N:Node>(s:N, _ t:N) -> term_t {
             guard s.nodes != nil else {
                 // variables must not be on the left hand side
-                return Yices.bot()
+                return Yices.bot
             }
             
             // s = f(s_1,...,s_n) >_lpo t if one of three holds
@@ -46,7 +46,7 @@ extension Yices {
         mutating private func case1<N:Node>(s:N, _ t:N) -> term_t {
             guard s.symbol == t.symbol else {
                 // case 1 is not applicable if symbols are different
-                return Yices.bot()
+                return Yices.bot
             }
             
             guard let snodes = s.nodes, let tnodes = t.nodes
@@ -55,7 +55,7 @@ extension Yices {
                     // hence t cannot be a variable or
                     // a function symbol with different arity
                     assert(false,"\(#function)(\(s),\(t)) - mismatch in type or arity of root symbols.")
-                    return Yices.bot()
+                    return Yices.bot
             }
             
             var conditions = [term_t]()
@@ -79,7 +79,7 @@ extension Yices {
             
             if lastWereEqual {
                 // all were equal, hence s == t, hence not (s > t)
-                return Yices.bot()
+                return Yices.bot
             }
             else {
                 return Yices.and(conditions)
@@ -90,7 +90,7 @@ extension Yices {
             guard let tnodes = t.nodes where s.symbol != t.symbol else {
                 // case 2 is not applicable if t is a variable
                 // case 2 is not applicable if symbols are the same
-                return Yices.bot()
+                return Yices.bot
             }
             
             let f = s.symbolString()
@@ -98,7 +98,7 @@ extension Yices {
             
             guard let snodes = s.nodes else {
                 assert(false,"\(#function)(\(s),_) - must not be called with a variable as first argument.")
-                return Yices.bot()
+                return Yices.bot
             }
             
             let pf = register(f, arity: snodes.count)
@@ -116,12 +116,12 @@ extension Yices {
         mutating private func case3<N:Node>(s:N, _ t:N) -> term_t {
             guard let snodes = s.nodes else {
                 assert(false,"\(#function)(\(s),_) - must not be called with a variable as first argument.")
-                return Yices.bot()
+                return Yices.bot
             }
             
             let conditions = snodes.map {
                 (si) -> term_t in
-                if si == t { return Yices.top() }
+                if si == t { return Yices.top }
                 else {
                     return leftRightCondition(si,t)
                 }

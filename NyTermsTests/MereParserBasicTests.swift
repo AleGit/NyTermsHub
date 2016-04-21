@@ -12,8 +12,9 @@ import XCTest
 class MereParserBasicTests: XCTestCase {
 
     func testParsing() {
-        for (name,limit) in  [ ("PUZ001-1",0.001),
-            // ("HWV134-1",15.250)
+        for (name,limit) in  [
+            ("PUZ001-1",0.005),
+            ("HWV134-1",17.0)
             ] {
         guard let path = name.p else {
             XCTFail("Did not find path for \(name)")

@@ -89,7 +89,7 @@ extension Yices {
         }
         
         mutating func leftRightCondition<N:Node>(s:N, _ t:N) -> term_t {
-            guard leftRightPrerequisite(s,t) else { return Yices.bot() }
+            guard leftRightPrerequisite(s,t) else { return Yices.bot }
             
             let ws = weight(s)
             let wt = weight(t)
@@ -134,7 +134,7 @@ extension Yices {
             let snodes = s.nodes!
             
             guard let tnodes = t.nodes else {
-                return s.isFnX(s.symbol, t.symbol) ? Yices.top() : Yices.bot()
+                return s.isFnX(s.symbol, t.symbol) ? Yices.top : Yices.bot
             }
             
             let pf = symbols[s.symbolString()]!.precedence
@@ -145,7 +145,7 @@ extension Yices {
             
             // let count = min(snodes.count,tnodes.count)
             
-            var si_gt_ti = Yices.bot()
+            var si_gt_ti = Yices.bot
             
             for (si,ti) in zip(snodes,tnodes) {
                 if si != ti {

@@ -113,18 +113,18 @@ class PolyTryTests: XCTestCase {
         let yices_int = Yices.int_tau
         
         let x = yices_new_uninterpreted_term(yices_int)
-        guard yices_set_term_name(x, "X") >= 0 else { yices_print_error(stdout); fflush(stdout); XCTFail(); return }
+        guard Yices.check(yices_set_term_name(x, "X"), label:"\(#function)") else { XCTFail(); return }
         let y = yices_new_uninterpreted_term(yices_int)
-        guard yices_set_term_name(y, "Y") >= 0 else { yices_print_error(stdout); fflush(stdout); XCTFail(); return }
+        guard Yices.check(yices_set_term_name(y, "Y"), label:"\(#function)") else { XCTFail(); return }
         let z = yices_new_uninterpreted_term(yices_int)
-        guard yices_set_term_name(z, "Z") >= 0 else { yices_print_error(stdout); fflush(stdout); XCTFail(); return }
+        guard Yices.check(yices_set_term_name(z, "Z"), label:"\(#function)") else { XCTFail(); return }
         
         let sum = yices_add(x, y)
         let pro = yices_mul(x, y)
         
         
-        print(String(term:sum, width: 3,height: 22,offset: 26))
-        print(String(term:pro, width: 23,height: 22,offset: 2))
+        print(String(term:sum)!)
+        print(String(term:pro)!)
         
     }
     

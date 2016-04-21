@@ -94,7 +94,7 @@ class YicesIndexingTests: XCTestCase {
         
         for clause in clauses {
             let triple = Yices.clause(clause)
-            XCTAssertEqual(triple.0, Yices.top(), String(term:triple.0) ?? "")
+            XCTAssertEqual(triple.0, Yices.top, String(term:triple.0) ?? "")
             print(triple)
         }
     }

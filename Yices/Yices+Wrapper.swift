@@ -36,7 +36,7 @@ extension Yices {
     
     /// Get or create uninterpreted global `symbol` of type `term_tau`.
     static func typedSymbol(symbol:String, term_tau:type_t) -> term_t {
-        assert(!symbol.isEmpty, "a symbol must not be empty")
+        assert(!symbol.isEmpty, "a typed symbol must not be empty")
         
         var c = yices_get_term_by_name(symbol)
         if c == NULL_TERM {
@@ -58,6 +58,7 @@ extension Yices {
     }
     
     static func function(symbol:String, domain: [type_t], range:type_t) -> term_t {
+        
         let f_tau = yices_function_type(UInt32(domain.count), domain, range)
         
         return typedSymbol(symbol, term_tau: f_tau)
@@ -69,7 +70,8 @@ extension Yices {
     /// * `free_tau` - the symbol is a constant/function symbol
     /// * `bool_tau` - the symbol is a proposition/predicate symbol
     static func application(symbol:String, args:[term_t], term_tau:type_t) -> term_t {
-        assert(!symbol.isEmpty, "a function or predicate symbol must not be empty")
+        
+        guard args.count > 0 else { return constant(symbol, term_tau: term_tau) }
         
         let f = function(symbol, domain:domain(args.count, tau:Yices.free_tau), range: term_tau)
         return yices_application(f, UInt32(args.count), args)
@@ -83,11 +85,11 @@ extension Yices {
 
 /// MARK: - Boolean terms
 extension Yices {
-    static func top() -> term_t  {
+    static var top : term_t  {
         return yices_true()
     }
     
-    static func bot() -> term_t  {
+    static var bot : term_t  {
         return yices_false()
     }
     
@@ -104,7 +106,8 @@ extension Yices {
     }
     
     static func and(ts:[term_t]) -> term_t  {
-        var copy = ts // array must be mutable
+        var copy = ts
+        // argument array must be mutable, because it will be reordered and optimized
         return yices_and(UInt32(ts.count), &copy)
     }
     
@@ -117,7 +120,8 @@ extension Yices {
     }
     
     static func or(ts:[term_t]) -> term_t  {
-        var copy = ts // array must be mutable
+        var copy = ts
+        // argument array must be mutable, because it will be reordered and optimized
         return yices_or(UInt32(ts.count), &copy)
     }
     
@@ -237,12 +241,12 @@ extension Yices {
     
     @available(*, deprecated=1.0, message="use `or(ts: [term_t]` instead.")
     static func big_or(ts : [term_t]) -> term_t {
-        return ts.reduce(bot(), combine: or)
+        return ts.reduce(bot, combine: or)
     }
     
     @available(*, deprecated=1.0, message="use `and(ts: [term_t]` instead.")
     static func big_and(ts : [term_t]) -> term_t {
-        return ts.reduce(top(), combine: and)
+        return ts.reduce(top, combine: and)
     }
 }
 

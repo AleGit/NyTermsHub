@@ -43,7 +43,7 @@ func lex<T:Node>(ts:[T], ss:[T], gt:(T, T) -> term_t, ge:(T, T) -> term_t) -> te
         let (ti, si) = ti_si
         return (is_ge && ge(ti, si), is_gt || (is_ge && gt(ti, si)))
     }
-    return zip(ss,ts).reduce((Yices.top(), Yices.bot()), combine: lex_fold).1
+    return zip(ss,ts).reduce((Yices.top, Yices.bot), combine: lex_fold).1
 }
 
 @available(*, deprecated=1.0, message="unused, see Yices.KBO or Yices.LPO instead.")
@@ -84,13 +84,13 @@ struct LPO {
     }
     
     func ge<T:Node>(l:T, r:T) -> term_t  {
-        return l.isEqual(r) ? Yices.top() : Yices.bot()
+        return l.isEqual(r) ? Yices.top : Yices.bot
     }
     
     func gt<T:Node>(l:T, r:T) -> term_t {
-        guard l.isTerm else { return Yices.bot() }
-        guard r.is_subterm(l) else { return Yices.top() }
-        guard r.isTerm else { return Yices.bot() } // subterm case already handled
+        guard l.isTerm else { return Yices.bot }
+        guard r.is_subterm(l) else { return Yices.top }
+        guard r.isTerm else { return Yices.bot } // subterm case already handled
         
         let case1 = Yices.big_or(l.subterms.map({(li: T) -> term_t in gt(li, r: r)}))
         if l.symbol != r.symbol {
@@ -138,13 +138,13 @@ struct KBO {
     }
     
     func ge<T:Node>(l:T, r:T) -> term_t  {
-        return l.isEqual(r) ? Yices.top() : Yices.bot()
+        return l.isEqual(r) ? Yices.top : Yices.bot
     }
     
     func gt<T:Node>(l:T, r:T) -> term_t {
-        guard l.isTerm else { return Yices.bot() }
-        guard r.is_subterm(l) else { return Yices.top() }
-        guard r.isTerm else { return Yices.bot() } // subterm case already handled
+        guard l.isTerm else { return Yices.bot }
+        guard r.is_subterm(l) else { return Yices.top }
+        guard r.isTerm else { return Yices.bot } // subterm case already handled
         
         let w_l = weight(l)
         let w_r = weight(r)

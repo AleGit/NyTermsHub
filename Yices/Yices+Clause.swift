@@ -24,7 +24,7 @@ extension Yices {
             switch type {
             case .Disjunction:
                 guard let literals = clause.nodes where literals.count > 0 else {
-                    return (Yices.bot(), [term_t](), [term_t]())
+                    return (Yices.bot, [term_t](), [term_t]())
                 }
                 
                 return Yices.clause(literals)
@@ -38,7 +38,7 @@ extension Yices {
                 // not a clause at all
             default:
                 assert(false,"\(#function)(\(clause)) Argument is of type \(type)")
-                return (Yices.bot(), [term_t](), [term_t]())
+                return (Yices.bot, [term_t](), [term_t]())
             }
             
             

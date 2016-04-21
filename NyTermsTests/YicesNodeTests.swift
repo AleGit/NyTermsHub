@@ -93,7 +93,7 @@ class YicesNodeTests: XCTestCase {
         
         let wahr = "p|~p" as TptpNode
         let (t,_,_) = Yices.clause(wahr)
-        XCTAssertEqual(t,Yices.top())
+        XCTAssertEqual(t,Yices.top)
         
         yices_check_context(ctx, nil)
         XCTAssertEqual(STATUS_SAT, yices_context_status(ctx))
@@ -115,7 +115,7 @@ class YicesNodeTests: XCTestCase {
         
         let wahr = "p(X)|~p(X)" as TptpNode
         let (t,_,_) = Yices.clause(wahr)
-        XCTAssertEqual(t,Yices.top())
+        XCTAssertEqual(t,Yices.top)
 
         yices_assert_formula(ctx, t)
         

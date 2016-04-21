@@ -12,8 +12,8 @@ import Foundation
 //final class MingyProver<N:Node where N.Symbol == String> : YicesProver {
 //    
 //    private let ctx : COpaquePointer
-//    let free_tau = yices_int_type()
-//    let bool_tau = yices_bool_type()
+//    let free_tau = Yices.int_tau()
+//    let bool_tau = Yices.bool_tau
 //    let 🚧 : term_t
 //    
 //    // literalsIndex

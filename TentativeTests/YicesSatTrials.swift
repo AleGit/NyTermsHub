@@ -21,8 +21,8 @@ class YicesSatTrials : XCTestCase {
         yices_init()    // global initialization
         
         // uni_type = yices_new_uninterpreted_type()
-        free_tau = yices_int_type()
-        bool_tau = yices_bool_type()
+        free_tau = Yices.int_tau
+        bool_tau = Yices.bool_tau
         
         general_constant = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(general_constant, "∴")

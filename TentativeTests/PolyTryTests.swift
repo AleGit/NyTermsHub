@@ -110,7 +110,7 @@ class PolyTryTests: XCTestCase {
             yices_exit()    // global cleanup
         }
         
-        let yices_int = yices_int_type()
+        let yices_int = Yices.int_tau
         
         let x = yices_new_uninterpreted_term(yices_int)
         guard yices_set_term_name(x, "X") >= 0 else { yices_print_error(stdout); fflush(stdout); XCTFail(); return }
@@ -132,7 +132,7 @@ class PolyTryTests: XCTestCase {
         guard let nodes = t.nodes else {
             var v = yices_get_term_by_name(t.symbol)
             if v == NULL_TERM {
-                v = yices_new_uninterpreted_term(yices_int_type())
+                v = yices_new_uninterpreted_term(Yices.int_tau)
                 yices_set_term_name(v, t.symbol)            }
             return v
         } // variable

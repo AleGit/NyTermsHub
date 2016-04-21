@@ -20,7 +20,7 @@ extension Yices {
     /// Uninterpreted global type - the return type of uninterpreted terms
     /// (functions or constants).
     static var free_tau : type_t {
-        return type("𝛕")
+        return namedType("𝛕")
     }
     
     
@@ -30,7 +30,7 @@ extension Yices {
     }
     
     /// Get or create (uninterpreted) type `name`.
-    static func type(name:String) -> type_t {
+    static func namedType(name:String) -> type_t {
         assert(!name.isEmpty, "a type name must not be empty")
         var tau = yices_get_type_by_name(name)
         if tau == NULL_TYPE {
@@ -202,7 +202,7 @@ extension Yices {
     static func newIntVar(name:String) -> term_t?  {
         var term: term_t? = nil
         
-        let t_int = yices_int_type()
+        let t_int = Yices.int_tau
         let t = yices_new_uninterpreted_term(t_int)
         let code = yices_set_term_name(t, name)
         
@@ -224,7 +224,7 @@ extension Yices {
     static func newBoolVar(name:String) -> term_t?  {
         var term: term_t? = nil
         
-        let t_int = yices_bool_type()
+        let t_int = Yices.bool_tau
         let t = yices_new_uninterpreted_term(t_int)
         let code = yices_set_term_name(t, name)
         

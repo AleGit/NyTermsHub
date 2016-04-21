@@ -9,6 +9,7 @@
 import Foundation
 
 extension Yices {
+    
     /// Return a yices clause and yices literals from a node clause.
     /// The children of `yicesClause` are often different from `yicesLiterals`.
     static func clause<N:Node>(clause:N) -> (
@@ -79,7 +80,7 @@ extension Yices {
     /// - a negation
     /// - an equation
     /// - an inequation
-    /// - a predicatate term or a proposition typedSymbol
+    /// - a predicatate term or a proposition constant
     static func literal<N:Node>(literal:N) -> term_t {
         assert(literal.isLiteral,"'\(#function)(\(literal))' Argument must be a literal, but it is not.")
         
@@ -122,20 +123,25 @@ extension Yices {
         assert(term.isTerm,"'\(#function)(\(term))' Argument must be a term, but it is not.")
         
         guard let nodes = term.nodes else {
-            return Yices.🚧 // substitute all variables with global typedSymbol '⊥'
+            return Yices.🚧 // substitute all variables with global constant '⊥'
         }
         
-        // function or typedSymbol term (an application of uninterpreted type)
+        // function or constant term (an application of uninterpreted type)
         return Yices.application(term.symbolString(), nodes:nodes, term_tau:Yices.free_tau)
     }
     
-    /// Build (typedSymbol) predicate or function.
+    /// Build (constant) predicate or function.
     static func application<N:Node>(symbol:String, nodes:[N], term_tau:type_t) -> term_t {
         
         guard nodes.count > 0 else {
-            return typedSymbol(symbol,term_tau: term_tau)
+            return constant(symbol,term_tau: term_tau)
         }
         
         return application(symbol, args: nodes.map { Yices.term($0) }, term_tau: term_tau)
+    }
+    
+    /// Uninterpreted global constant (i.e. variable) of uninterpreted type.
+    static var 🚧 : term_t {
+        return Yices.constant("⊥", term_tau: free_tau)
     }
 }

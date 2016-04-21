@@ -23,12 +23,6 @@ extension Yices {
         return namedType("𝛕")
     }
     
-    
-    /// Uninterpreted global constant (i.e. variable) of uninterpreted type.
-    static var 🚧 : term_t {
-        return Yices.typedSymbol("⊥", term_tau: free_tau)
-    }
-    
     /// Get or create (uninterpreted) type `name`.
     static func namedType(name:String) -> type_t {
         assert(!name.isEmpty, "a type name must not be empty")
@@ -55,9 +49,16 @@ extension Yices {
         return c
     }
     
-    static func function(symbol:String, count:Int, term_tau:type_t) -> term_t {
-        let domain_taus = [type_t](count:count, repeatedValue:Yices.free_tau)
-        let f_tau = yices_function_type(UInt32(count), domain_taus, term_tau)
+    static func constant(symbol:String, term_tau:type_t) -> term_t {
+        return typedSymbol(symbol, term_tau: term_tau)
+    }
+    
+    static func domain(count:Int, tau: type_t) -> [type_t] {
+        return [type_t](count:count, repeatedValue: tau)
+    }
+    
+    static func function(symbol:String, domain: [type_t], range:type_t) -> term_t {
+        let f_tau = yices_function_type(UInt32(domain.count), domain, range)
         
         return typedSymbol(symbol, term_tau: f_tau)
     }
@@ -70,7 +71,7 @@ extension Yices {
     static func application(symbol:String, args:[term_t], term_tau:type_t) -> term_t {
         assert(!symbol.isEmpty, "a function or predicate symbol must not be empty")
         
-        let f = function(symbol, count: args.count, term_tau: term_tau)
+        let f = function(symbol, domain:domain(args.count, tau:Yices.free_tau), range: term_tau)
         return yices_application(f, UInt32(args.count), args)
     }
     
@@ -80,10 +81,8 @@ extension Yices {
     }
 }
 
+/// MARK: - Boolean terms
 extension Yices {
-
-    
-    
     static func top() -> term_t  {
         return yices_true()
     }
@@ -130,16 +129,6 @@ extension Yices {
         return yices_ite(c,t,f)
     }
     
-    @available(*, deprecated=1.0, message="use `or(ts: [term_t]` instead.")
-    static func big_or(ts : [term_t]) -> term_t {
-      return ts.reduce(bot(), combine: or)
-    }
-    
-    @available(*, deprecated=1.0, message="use `and(ts: [term_t]` instead.")
-    static func big_and(ts : [term_t]) -> term_t {
-        return ts.reduce(top(), combine: and)
-    }
-    
     static func gt(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_arith_gt_atom(t1,t2)
     }
@@ -151,7 +140,10 @@ extension Yices {
     static func eq(t1:term_t, _ t2:term_t) -> term_t {
         return yices_eq(t1,t2)
     }
-    
+}
+
+// MARK: - arithmetic terms
+extension Yices {
     static func add(t1:term_t, _ t2:term_t) -> term_t  {
         return yices_add(t1, t2)
     }
@@ -195,7 +187,7 @@ extension Yices {
     }
 }
 
-// MARK: - variables
+// MARK: - deprecated
 
 extension Yices {
     @available(*, deprecated=1.0, message="unused")
@@ -239,6 +231,18 @@ extension Yices {
         }
         
         return term;
+    }
+    
+    
+    
+    @available(*, deprecated=1.0, message="use `or(ts: [term_t]` instead.")
+    static func big_or(ts : [term_t]) -> term_t {
+        return ts.reduce(bot(), combine: or)
+    }
+    
+    @available(*, deprecated=1.0, message="use `and(ts: [term_t]` instead.")
+    static func big_and(ts : [term_t]) -> term_t {
+        return ts.reduce(top(), combine: and)
     }
 }
 

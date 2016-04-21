@@ -9,7 +9,7 @@
 import XCTest
 @testable import NyTerms
 
-class Yices_LPOTests: XCTestCase {
+class YicesLPOTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
@@ -64,10 +64,6 @@ class Yices_LPOTests: XCTestCase {
         }
         
         print (precedences)
-        
-
-        
-        
     }
 
 }

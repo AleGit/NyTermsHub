@@ -9,10 +9,19 @@
 import Foundation
 
 extension Node {
+
+    /// self == f<sup>n</sup>(X), n ≥ 0 ?
+    /// 1. f<sup>0</sup>(X)    := Xx
+    /// 2. f<sup>n+1</sup>(X)  := f(f<sup>n</sup>(X))
     func isFnX(f:Symbol, _ X:Symbol) -> Bool {
         guard let nodes = self.nodes else {
-            return self.symbol == X // f^0(X)
+             // case 1. self == X ?
+            
+            return self.symbol == X
         }
+        
+        // case 2.: self == f(f^(n+1)(X)) ?
+        
         guard self.symbol == f && nodes.count == 1 else {
             return false
         }
@@ -22,10 +31,22 @@ extension Node {
 }
 
 extension Yices {
+    static func integerVariable(symbol:String) -> term_t {
+        return Yices.typedSymbol(symbol, term_tau:Yices.int_tau)
+    }
+    
+    static func weightVariable(symbol:String) -> term_t {
+        return Yices.integerVariable("w⏑\(symbol)")
+    }
+    
+    static func precedenceVariable(symbol:String) -> term_t {
+        return Yices.integerVariable("p⏑\(symbol)")
+    }
+}
+
+extension Yices {
     struct KBO {
-        let w0 = Yices.typedSymbol("𝛚₀", term_tau:Yices.int_tau)
-        let pPrefix = "p⏑"
-        let wPrefix = "w⏑"
+        let w0 = Yices.integerVariable("𝛚₀")
         
         var symbols = [String : (weight:term_t, precedence:term_t, arity: Int)]()
         
@@ -36,11 +57,11 @@ extension Yices {
         }
 
         /// Register symbol with arity and create global weight and preference typedTerms (i.e. variables).
-        /// Return weight typedSymbol. (If symbol is allready registered check if arity is consistent.)
+        /// Return weight of typedSymbol. (If symbol is allready registered check if arity is consistent.)
         mutating func register(symbol:String, arity:Int) -> term_t {
             guard let (w,_,a) = symbols[symbol] else {
-                let weight = Yices.typedSymbol("\(wPrefix)\(symbol)", term_tau:Yices.int_tau)
-                let preference = Yices.typedSymbol("\(pPrefix)\(symbol)", term_tau:Yices.int_tau)
+                let weight = Yices.weightVariable(symbol)
+                let preference = Yices.precedenceVariable(symbol)
                 symbols[symbol] = (weight,preference,arity)
                 return weight
             }

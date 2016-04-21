@@ -29,7 +29,6 @@ extension Yices {
         else {
             return true
         }
-        
     }
 }
 

@@ -11,7 +11,6 @@ import Foundation
 extension Yices {
 
     struct LPO {
-        let pPrefix = "p⏑"
         
         var symbols = [String : (precedence:term_t, arity: Int)]()
         
@@ -21,7 +20,7 @@ extension Yices {
         
         mutating func register(symbol:String, arity:Int) -> term_t {
             guard let (p,a) = symbols[symbol] else {
-                let precedence = Yices.typedSymbol("\(pPrefix)\(symbol)", term_tau:Yices.int_tau)
+                let precedence = Yices.precedenceVariable(symbol)
                 symbols[symbol] = (precedence,arity)
                 return precedence
             }

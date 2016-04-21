@@ -42,7 +42,7 @@ class YicesSatTrials : XCTestCase {
         let ctx = yices_new_context(nil)
         defer {  yices_free_context(ctx) }
         
-        let p = yices_new_uninterpreted_term(bool_tau)
+        let p = Yices.typedSymbol("p", term_tau: Yices.bool_tau)
         let np = yices_not(p)
         let wahr = yices_or2(p, np)
         let falsch = yices_and2(p, np)
@@ -76,15 +76,12 @@ class YicesSatTrials : XCTestCase {
         let ctx = yices_new_context(nil)
         defer { yices_free_context(ctx) }
         
-        // types
-        let unary = yices_function_type1(free_tau, free_tau)    // (tau) -> tau
+        let domain = Yices.domain(1, tau:Yices.free_tau)
+        let range = Yices.free_tau
         
-        let c = yices_new_uninterpreted_term(free_tau)
-        yices_set_term_name(c, "c")
-        let f = yices_new_uninterpreted_term(unary)
-        yices_set_term_name(f, "f")
-        let g = yices_new_uninterpreted_term(unary)
-        yices_set_term_name(g, "g")
+        let c = Yices.constant("c", term_tau: range)
+        let f = Yices.function("f", domain: domain, range: range)    // (tau) -> tau
+        let g = Yices.function("g", domain: domain, range: range)    // (tau) -> tau
         
         let fc = yices_application1(f, c)
         let gc = yices_application1(g, c)

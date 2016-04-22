@@ -78,7 +78,10 @@ class ShareNodeTests: XCTestCase {
         let clause = "f(X,g(Y,X))=g(f(X,Y),h(f(Y,X)))|p(X,X)" as TptpNode
         let (a,b) = ShareNode.insert(clause,belowPredicate: false)
         
-        print(a,b)
+        print(a)
+        for (c,d) in b {
+            print(c,d)
+        }
         
         print(ShareNode.s2i)
         let x = ShareNode.i2s.map {
@@ -87,6 +90,31 @@ class ShareNodeTests: XCTestCase {
         for s in x {
             print(s)
         }
+    }
+    
+    func testHWV134() {
+        let path = "PUZ001-1".p!
+        let start = CFAbsoluteTimeGetCurrent()
+        
+        let clauses = TptpNode.roots(path)
+        
+       print((CFAbsoluteTimeGetCurrent()-start).prettyTimeIntervalDescription)
+        
+        let s2 =  CFAbsoluteTimeGetCurrent()
+        
+        for (index,clause) in clauses.enumerate() {
+            var last = s2
+            let (a,b) = ShareNode.insert(clause, belowPredicate:false)
+            if index % 10000 == 0 {
+                let now = CFAbsoluteTimeGetCurrent()
+                print(index, (now-start).prettyTimeIntervalDescription, (now-s2).prettyTimeIntervalDescription, (now-last).prettyTimeIntervalDescription)
+                print(clause)
+                print(a)
+                print(b)
+                last = now
+            }
+        }
+    
     }
 
 }

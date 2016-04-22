@@ -105,6 +105,8 @@ extension ShareNode : CustomStringConvertible {
 //    else { return lhs.isEqual(rhs) }
 //}
 
+
+
 final class ShareNode : SharingNode {
     static var sharedNodes = Set<ShareNode>()
     
@@ -129,9 +131,7 @@ final class ShareNode : SharingNode {
     
     init() { }
     
-    
-    
-    static func insert<N:Node where N.Symbol == String>(node:N, belowPredicate:Bool) -> (ShareNode,[String]) {
+    static func insert<N:Node where N.Symbol == String>(node:N, belowPredicate:Bool) -> (ShareNode,[(String,Position)]) {
         
         var abovePredicate : Bool
         var isPredicate : Bool
@@ -164,7 +164,7 @@ final class ShareNode : SharingNode {
             
             let x = ShareNode(symbol:0, children:nil)
             
-            return (x,[node.symbol])
+            return (x,[(node.symbol,ε)]) // variable at root position
         }
         
         let symbol = s2i[node.symbol] ?? s2i.count
@@ -184,9 +184,17 @@ final class ShareNode : SharingNode {
         let pairs = nodes.map { insert($0, belowPredicate: belowPredicate || (!abovePredicate && isPredicate)) }
         let f = ShareNode(symbol:symbol, children: pairs.map { $0.0 } )
         
-        return (f, pairs.flatMap { $0.1 })
+        var variables = [(String,Position)]()
+        
+        for (index, entry) in pairs.enumerate() {
+            let array = entry.1.map { ($0.0,[index]+$0.1) }
+            variables += array
+            
+        }
+        
+        // return (f, pairs.flatMap { $0.1 })
+        return (f,variables)
     }
-    
 }
 
 

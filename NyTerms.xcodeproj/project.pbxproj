@@ -64,8 +64,6 @@
 		514AD8661C6B7D7400652004 /* TailTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TailTrie.swift */; };
 		514AD8681C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
 		514AD8691C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
-		514E93881C9FB6BA00787661 /* ShareNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514E93871C9FB6BA00787661 /* ShareNode.swift */; };
-		514E93891C9FB6BA00787661 /* ShareNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514E93871C9FB6BA00787661 /* ShareNode.swift */; };
 		514E938B1C9FBE5C00787661 /* SharingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514E938A1C9FBE5C00787661 /* SharingTests.swift */; };
 		5150CD3C1C6CA25A00372F04 /* BasicTrieStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150CD3B1C6CA25A00372F04 /* BasicTrieStructTests.swift */; };
 		5150CD3E1C6CA6EB00372F04 /* BuildTailTriePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150CD3D1C6CA6EB00372F04 /* BuildTailTriePerformanceTests.swift */; };
@@ -101,6 +99,9 @@
 		516D1A441C32C3A0000E152A /* Node+Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D1A421C32C3A0000E152A /* Node+Trie.swift */; };
 		516D251F1C3EB26C0075D362 /* Nodal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D251E1C3EB26C0075D362 /* Nodal.swift */; };
 		516D25201C3EB26C0075D362 /* Nodal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516D251E1C3EB26C0075D362 /* Nodal.swift */; };
+		5173B5591CC9F7B800A9ABCE /* SharingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B5581CC9F7B800A9ABCE /* SharingNode.swift */; };
+		5173B55A1CC9F7B800A9ABCE /* SharingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B5581CC9F7B800A9ABCE /* SharingNode.swift */; };
+		5173B55D1CCA081200A9ABCE /* ShareNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B55C1CCA081200A9ABCE /* ShareNodeTests.swift */; };
 		517994841C96BEC900791916 /* MereLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 517994821C96BEC900791916 /* MereLexer.l */; };
 		517994851C96BEC900791916 /* MereLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 517994821C96BEC900791916 /* MereLexer.l */; };
 		517994861C96BEC900791916 /* MereParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 517994831C96BEC900791916 /* MereParser.y */; settings = {COMPILER_FLAGS = "-p mere_"; }; };
@@ -245,7 +246,6 @@
 		514AD8621C6B4CDD00652004 /* BasicTailTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTailTrieTests.swift; sourceTree = "<group>"; };
 		514AD8641C6B7D7400652004 /* TailTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TailTrie.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		514AD8671C6B7DF900652004 /* TrieType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrieType.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		514E93871C9FB6BA00787661 /* ShareNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareNode.swift; sourceTree = "<group>"; };
 		514E938A1C9FBE5C00787661 /* SharingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingTests.swift; sourceTree = "<group>"; };
 		5150CD3B1C6CA25A00372F04 /* BasicTrieStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTrieStructTests.swift; sourceTree = "<group>"; };
 		5150CD3D1C6CA6EB00372F04 /* BuildTailTriePerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BuildTailTriePerformanceTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -285,6 +285,8 @@
 		516A73D81C902CF1007E5DEC /* iPuzzlesResults.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = iPuzzlesResults.txt; sourceTree = "<group>"; };
 		516D1A421C32C3A0000E152A /* Node+Trie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Trie.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		516D251E1C3EB26C0075D362 /* Nodal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nodal.swift; sourceTree = "<group>"; };
+		5173B5581CC9F7B800A9ABCE /* SharingNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingNode.swift; sourceTree = "<group>"; };
+		5173B55C1CCA081200A9ABCE /* ShareNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareNodeTests.swift; sourceTree = "<group>"; };
 		517994821C96BEC900791916 /* MereLexer.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = MereLexer.l; sourceTree = "<group>"; };
 		517994831C96BEC900791916 /* MereParser.y */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.yacc; path = MereParser.y; sourceTree = "<group>"; };
 		517994881C96C31900791916 /* MereParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MereParser.h; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 		512977291B677CAB003D3E80 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				5173B55B1CCA07FD00A9ABCE /* ShareNode */,
 				514AD8611C6B4CB700652004 /* General */,
 				26EBF5861B99C251006E5FF4 /* MaxCompTests */,
 				5179948F1C96C93000791916 /* MereParser */,
@@ -508,10 +511,10 @@
 				51D2765F1BC57879005A0213 /* Order.swift */,
 				51192D1A1B67B059008C03B2 /* Position.swift */,
 				515F0F031B6BAB0500B470B4 /* Rule.swift */,
-				514E93871C9FB6BA00787661 /* ShareNode.swift */,
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				51A35E4B1CC90D4A00879944 /* Node+Index.swift */,
+				5173B5581CC9F7B800A9ABCE /* SharingNode.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -680,6 +683,14 @@
 				51226E7C1B6D44E20077E34D /* TptpPrintable.swift */,
 			);
 			path = ParseC;
+			sourceTree = "<group>";
+		};
+		5173B55B1CCA07FD00A9ABCE /* ShareNode */ = {
+			isa = PBXGroup;
+			children = (
+				5173B55C1CCA081200A9ABCE /* ShareNodeTests.swift */,
+			);
+			name = ShareNode;
 			sourceTree = "<group>";
 		};
 		5179948F1C96C93000791916 /* MereParser */ = {
@@ -939,6 +950,7 @@
 				511E958F1B8AEB9C0093F4E8 /* TptpLexer.lm in Sources */,
 				51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */,
 				51CD27AE1CBBE6FE00851E89 /* DemoClauseIndex.swift in Sources */,
+				5173B55A1CC9F7B800A9ABCE /* SharingNode.swift in Sources */,
 				51E038141C92A596005BFD42 /* Auxiliary+Process.swift in Sources */,
 				516D25201C3EB26C0075D362 /* Nodal.swift in Sources */,
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
@@ -949,7 +961,6 @@
 				51C0ACB41C4A385800447594 /* DemoComplementaries.swift in Sources */,
 				514AD8661C6B7D7400652004 /* TailTrie.swift in Sources */,
 				514AD8691C6B7DF900652004 /* TrieType.swift in Sources */,
-				514E93891C9FB6BA00787661 /* ShareNode.swift in Sources */,
 				511E958D1B8AEB6D0093F4E8 /* TptpParser.m in Sources */,
 				51D276611BC57879005A0213 /* Order.swift in Sources */,
 				51FD00BD1C3132F8008C5AD1 /* TrieStruct.swift in Sources */,
@@ -1002,7 +1013,6 @@
 				51FF64011CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */,
 				5129771B1B677CAA003D3E80 /* ViewController.swift in Sources */,
 				516D251F1C3EB26C0075D362 /* Nodal.swift in Sources */,
-				514E93881C9FB6BA00787661 /* ShareNode.swift in Sources */,
 				51E038161C92B864005BFD42 /* Node+Dimensions.swift in Sources */,
 				514AD8651C6B7D7400652004 /* TailTrie.swift in Sources */,
 				51A35E4C1CC90D4A00879944 /* Node+Index.swift in Sources */,
@@ -1024,6 +1034,7 @@
 				51FD00C21C3133E1008C5AD1 /* Operators.swift in Sources */,
 				5146F42C1C7B061F00A19EC1 /* TrieClass.swift in Sources */,
 				51FD00BA1C3132F8008C5AD1 /* BinarySearchTree.swift in Sources */,
+				5173B5591CC9F7B800A9ABCE /* SharingNode.swift in Sources */,
 				515F0EF31B6B740900B470B4 /* TptpLexer.lm in Sources */,
 				51226E791B6D3AB70077E34D /* TptpInclude.swift in Sources */,
 				51192D1B1B67B059008C03B2 /* Position.swift in Sources */,
@@ -1075,6 +1086,7 @@
 				517994911C96C94B00791916 /* MereParserBasicTests.swift in Sources */,
 				51B26B701B8DA75D00CC59AD /* YicesBasicTests.swift in Sources */,
 				51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */,
+				5173B55D1CCA081200A9ABCE /* ShareNodeTests.swift in Sources */,
 				51B26B781B8DB46500CC59AD /* example1.c in Sources */,
 				5146F42F1C7B1B3B00A19EC1 /* BuildTrieStructPerformanceTests.swift in Sources */,
 				51B883F71B8E3F3E008D7F22 /* YicesExamples.swift in Sources */,

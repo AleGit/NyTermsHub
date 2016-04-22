@@ -249,7 +249,7 @@ enum SymbolNotation {
     case Invalid
 }
 
-enum SymbolArity {
+enum SymbolArity : Equatable {
     case None   // variable, auxiliary symbols
     case Fixed(Int) // constant, function, predicate, equaitinal, connective symbols
     case Variadic(Range<Int>)   // associative connectives
@@ -263,5 +263,18 @@ enum SymbolArity {
         case .Variadic(let range):
             return range.contains(value)
         }
+    }
+}
+
+func ==(lhs:SymbolArity, rhs:SymbolArity) -> Bool {
+    switch (lhs,rhs) {
+    case (.None,.None):
+        return true
+    case (.Fixed(let l),.Fixed(let r)):
+        return l == r
+    case (.Variadic(let lr), .Variadic(let rr)):
+        return lr == rr
+    default:
+        return false
     }
 }

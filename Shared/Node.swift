@@ -27,6 +27,8 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     static func symbol(type:SymbolType) -> Symbol
 }
 
+
+
 extension Node {
     
 //    var symbolString: String {

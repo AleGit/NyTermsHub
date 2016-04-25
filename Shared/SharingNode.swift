@@ -129,7 +129,7 @@ final class ShareNode : SharingNode {
     var children : [ShareNode]? = nil
     var parents = Set<ShareNode>()
     
-    init() { }
+    // init() { }
     
     static func insert<N:Node where N.Symbol == String>(node:N, belowPredicate:Bool) -> (ShareNode,[(String,Position)]) {
         

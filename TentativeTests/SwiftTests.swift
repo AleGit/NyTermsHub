@@ -159,43 +159,6 @@ class SwiftTests: XCTestCase {
         
     
     }
-    
-    func testDeEnCode() {
-        let st = SymbolTable()
-        
-        let (a,b)  = (18, 2)
-        let code = st.encode(a, arity: b)
-        let result = st.decode(code)
-        print((a,b), code, result)
-        XCTAssertTrue((a,b) == result)
-        
-        
-    }
-    
-    func testSymbolPaths() {
-        let st = SymbolTable(arityBits:2)
-        
-//        let X = "X" as TptpNode
-//        XCTAssertEqual([[0]], X.paths(st))
-//        
-//        let fX = "f(X)" as TptpNode
-//        XCTAssertEqual([[(1<<32+1),0,0]], fX.paths(st))
-        
-        let g = TptpNode(function: "g", nodes: ["X","f(a)", "h(b)"])
-        
-        let paths = g.paths(st).map {
-            $0.map {
-                st.decode($0).0
-            }}
-        
-        print(paths)
-        print(g.paths)
-        print(g.paths(st))
-        print(st.table.map{
-            ($0.0, st.decode($0.1))
-            })
-        
-    }
 }
 
 

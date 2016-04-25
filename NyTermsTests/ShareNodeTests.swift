@@ -93,27 +93,34 @@ class ShareNodeTests: XCTestCase {
     }
     
     func testHWV134() {
-        let path = "PUZ001-1".p!
-        let start = CFAbsoluteTimeGetCurrent()
+        let path = "HWV134-1".p!
         
-        let clauses = TptpNode.roots(path)
+        let (clauses,parsingTime) = measure {
+            return TptpNode.roots(path)
+        }
         
-       print((CFAbsoluteTimeGetCurrent()-start).prettyTimeIntervalDescription)
+        print("parsed",parsingTime.prettyTimeIntervalDescription)
         
-        let s2 =  CFAbsoluteTimeGetCurrent()
+        let start =  CFAbsoluteTimeGetCurrent()
+        var last = start
+        
+        let (_, convertingTime) = measure {
         
         for (index,clause) in clauses.enumerate() {
-            var last = s2
+            
             let (a,b) = ShareNode.insert(clause, belowPredicate:false)
             if index % 10000 == 0 {
                 let now = CFAbsoluteTimeGetCurrent()
-                print(index, (now-start).prettyTimeIntervalDescription, (now-s2).prettyTimeIntervalDescription, (now-last).prettyTimeIntervalDescription)
+                print(index, (now-start).prettyTimeIntervalDescription, (now-last).prettyTimeIntervalDescription)
                 print(clause)
                 print(a)
                 print(b)
                 last = now
             }
         }
+        }
+        
+        print("converted", (convertingTime).prettyTimeIntervalDescription)
     
     }
 

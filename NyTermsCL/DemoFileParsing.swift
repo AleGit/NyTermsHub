@@ -60,4 +60,23 @@ struct DemoFileParsing {
                 
         }
     }
+    
+    static func parseConvertHWV134() {
+        let path = "HWV134-1".p!
+        
+        let (clauses,parsingTime) = measure {
+            return TptpNode.roots(path)
+        }
+        
+        print("parsed :",parsingTime.prettyTimeIntervalDescription, ":",clauses.count, "=", (parsingTime/Double(clauses.count)).prettyTimeIntervalDescription)
+        
+        
+        let (extras, convertingTime) = measure {
+            
+            return clauses.map { ShareNode.insert($0, belowPredicate: false) }
+        }
+        
+        print("converted", (convertingTime).prettyTimeIntervalDescription, ":", clauses.count, "=", (convertingTime/Double(extras.count)).prettyTimeIntervalDescription)
+        
+    }
 }

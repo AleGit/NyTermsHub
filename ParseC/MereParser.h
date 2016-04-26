@@ -6,8 +6,8 @@
 //  Copyright © 2016 Alexander Maringele. All rights reserved.
 //
 
-#ifndef CParser_h
-#define CParser_h
+#ifndef MereParser_h
+#define MereParser_h
 
 #import <CoreFoundation/CoreFoundation.h>
 
@@ -28,4 +28,4 @@ int mere_error (const char * _Nullable s);
 #pragma mark - parse
 
 
-#endif /* CParser_h */
+#endif /* MereParser_h */

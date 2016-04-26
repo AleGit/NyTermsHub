@@ -7,7 +7,9 @@
     //  Created by Alexander Maringele.
     //  Copyright (c) 2015 Alexander Maringele. All rights reserved.
     //
-    
+
+#import "MereParser.h"
+#import "MereMacros.h"
 #import "MereParser.tab.h"
 
 #define TOKEN(k)    { return k; }

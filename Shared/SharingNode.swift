@@ -45,11 +45,11 @@ extension SharingNode {
             Self.sharedNodes.insert(self)
         }
         
-//        if let cs = self.children {
-//            for var child in cs {
-//                child.parents.insert(self)
-//            }
-//        }
+        if let cs = self.children {
+            for var child in cs {
+                child.parents.insert(self)
+            }
+        }
         
     }
     

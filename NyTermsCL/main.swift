@@ -20,6 +20,10 @@ defer {
     print(line,NSDate(),line)
 }
 
+DemoFileParsing.parseConvertHWV134()
+
+exit(0)
+
 for (name,info) in Infos.files {
     let path = name.p!
     let (clauses,parsetime) = measure { TptpNode.roots(path) }

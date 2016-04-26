@@ -22,6 +22,22 @@ class TptpPathTests: XCTestCase {
         XCTAssertNil("HWV999-9".p, "File must not exist.")
     }
     
+    func testFileSize() {
+        let path = "HWV134-1".p!
+        let size = path.fileSize ?? -1
+        XCTAssertEqual(276455091, size)
+    }
+    
+    func testNoFileSize() {
+        let path = "not/a/path/to/HWV134-1.p"
+        XCTAssertNil(path.fileSize)
+    }
+    
+    func testDirectoryFileSize() {
+        let path = "/Users/Shared/"
+        XCTAssertNil(path.fileSize)
+    }
+    
     func testParseInclude() {
         let string = "include('Axioms/SYN000-0.ax',[ia1,ia3])."
         let result = parse(string:string)

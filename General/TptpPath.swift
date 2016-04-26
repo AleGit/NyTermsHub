@@ -184,4 +184,18 @@ extension TptpPath {
         fclose(f)
         return true
     }
+    
+    /// total size of file in bytes
+    var fileSize : Int? {
+        var status = stat()
+        let code = stat(self, &status)
+        switch (code, S_IFREG & status.st_mode) {
+        case (0,S_IFREG):
+            return Int(status.st_size)
+        default:
+            print("\(code,status.st_mode) ")
+            return nil
+        }
+        
+    }
 }

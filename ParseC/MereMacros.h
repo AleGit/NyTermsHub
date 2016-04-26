@@ -34,7 +34,7 @@
 
 #define CREATE_DISTINCT(a)          NULL
 
-#define MAKE_ROLE(a)                1;
+#define MAKE_ROLE(a)                1
 
 #define NODES_APPEND(a,b)           NULL
 #define STRINGS_APPEND(a,b)         NULL

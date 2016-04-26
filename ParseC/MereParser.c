@@ -95,5 +95,31 @@ EID mere_entry_create(SID sid) {
 }
 
 void mere_entry_append(EID eid, SID sid) {
-    
+    EID lasteid = mere_entry_create(sid);
+    mere_entry *peid = mere_entries + eid;
+    while (peid->next) {
+        peid = mere_entries + peid->next;
+    }
+    peid->next = lasteid;
+}
+
+int mere_entry_count(EID eid) {
+    int count = 1;
+    mere_entry *peid = mere_entries + eid;
+    while (peid->next) {
+        peid = mere_entries + peid->next;
+        count += 1;
+    }
+    return count;
+}
+
+SID mere_entry_string(EID eid, int index) {
+    int count = 0;
+    mere_entry *peid = mere_entries + eid;
+    while (count < index) {
+        assert(peid->next > 0);
+        peid = mere_entries + peid->next;
+        count += 1;
+    }
+    return peid->sid;
 }

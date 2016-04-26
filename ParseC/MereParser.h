@@ -39,10 +39,13 @@ typedef struct {
     EID next;   /* 0 => no next entry */
 } mere_entry;
 
+typedef enum { mere_connective, mere_predicate, mere_function, mere_variable } mere_node_type;
+
 typedef struct {
     SID symbol;
-    NID next;
-    NID child;
+    mere_node_type type;
+    NID next; /* 0 => no sibling */
+    NID child; /* 0 => no children */
 } mere_node;
 
 bool mere_parser_init(size_t);
@@ -55,6 +58,8 @@ EID mere_entry_create(SID sid);
 void mere_entry_append(EID list, SID sid);
 int mere_entry_count(EID list);
 SID mere_entry_string(EID list, int index);
+
+SID mere_create_node(SID, NID, NID);
 
 
 

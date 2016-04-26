@@ -14,9 +14,9 @@ size_t mere_cstrings_size;
 char* mere_cstrings;
 char* next_cstring;
 
-size_t mere_string_lists_size;
-string_list_entry * mere_string_lists;
-string_list_entry * next_string_list_entry;
+size_t mere_entries_size;
+mere_entry * mere_entries;
+mere_entry * next_entry;
 
 bool isNull(void *ptr) {
     if (ptr == NULL) {
@@ -26,36 +26,44 @@ bool isNull(void *ptr) {
     return false;
 }
 
+#define ALLOC_SIZE(base,next,size,need,single) \
+    size = need > 0 ? need : 1; \
+    base = malloc(need * single); \
+    if (isNull(base)) return false; \
+    next = base;
+
+#define ENSURE_SIZE(base,next,size,need,single) \
+    size_t position = next - base; \
+    if ((size - position) <= need) { \
+        printf("%lu %lu %lu\n", size, size-position, need); \
+        size *= 2; \
+        base = realloc(base, size * single); \
+        next = base + position; \
+    }
+
+#define FREE_BASE(base) \
+    if (base != NULL) free(base);
+
+
+
 bool mere_parser_init(size_t size) {
-    mere_cstrings_size = size;
-    mere_cstrings = malloc(mere_cstrings_size * sizeof(char));
-    if (isNull(mere_cstrings)) return false;
-    next_cstring = mere_cstrings;
-    
-    mere_string_lists_size = size/2;
-    mere_string_lists = malloc(mere_cstrings_size * sizeof(string_list_entry));
-    if (isNull(mere_cstrings)) return false;
-    next_string_list_entry = mere_string_lists;
-    
+    ALLOC_SIZE(mere_cstrings,next_cstring, mere_cstrings_size, size, sizeof(char))
+    ALLOC_SIZE(mere_entries, next_entry, mere_entries_size, size, sizeof(mere_entry))
+
     return true;
 }
 
 void mere_parser_exit() {
-    
-    if (mere_string_lists != NULL) free(mere_string_lists);
-    if (mere_cstrings != NULL) free(mere_cstrings);
+    FREE_BASE(mere_entries)
+    FREE_BASE(mere_cstrings)
 }
 
-SID mere_store_string(char * _Nonnull cstring, size_t len) {
+
+
+SID mere_store_string(char const * _Nonnull cstring, size_t len) {
     assert(strlen(cstring) == len);
     
-    size_t position = next_cstring - mere_cstrings;
-    
-    if ( (mere_cstrings_size - position) < len) {
-        mere_cstrings_size *= 2;
-        mere_cstrings = realloc(mere_cstrings, mere_cstrings_size * sizeof(char));
-        next_cstring = mere_cstrings + position;
-    }
+    ENSURE_SIZE(mere_cstrings, next_cstring, mere_cstrings_size, len, sizeof(char));
     
     char * dest = next_cstring;
     next_cstring += len + 1;
@@ -68,7 +76,24 @@ SID mere_store_string(char * _Nonnull cstring, size_t len) {
 }
 
 char * mere_retrieve_string(SID sid) {
+    assert( sid < mere_cstrings_size);
     assert( sid == 0 || '\0' == *(mere_cstrings + (sid-1)));
     
     return mere_cstrings + sid;
+}
+
+EID mere_entry_create(SID sid) {
+    ENSURE_SIZE(mere_entries, next_entry, mere_entries_size, (size_t)1, sizeof(mere_entry))
+    
+    mere_entry * dest = next_entry;
+    next_entry += 1;
+    
+    dest->sid = sid;
+    dest->next = 0; // no next entry.
+    
+    return position;
+}
+
+void mere_entry_append(EID eid, SID sid) {
+    
 }

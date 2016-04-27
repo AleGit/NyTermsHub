@@ -11,7 +11,7 @@
 /* ============================================================== */
 #pragma mark makros
 
-#define MERE_MIN_SIZE 100
+#define MERE_MIN_SIZE 1
 
 #define ALLOC_SIZE(base,count,capacity,need,single) \
     capacity = need >= MERE_MIN_SIZE ? need : MERE_MIN_SIZE; \
@@ -19,14 +19,9 @@
     if (mere_parser_exit_if_null(base)) return false; \
     count = 0;
 
-#define STRUCTURE_INIT(p, capacity, single) \
-    p->count = 0; \
-    p->capacity = capacity >= MERE_MIN_SIZE ? capacity : MERE_MIN_SIZE; \
-    p->base = malloc(p->capacity * single);
-
-#define ENSURE_SIZE(base,count,capacity,need,single) \
+#define ENSURE_SIZE(label,base,count,capacity,need,single) \
     while ( (count+need) > capacity) { \
-        printf("%lu %lu %lu\n", count, need, capacity); \
+        printf("%s: count=%lu need=%lu capacity=%lu\n", label, count, need, capacity); \
         capacity *= 2; \
         base = realloc(base, capacity * single); \
     } \
@@ -83,6 +78,7 @@ mere_trie_type mere_trie;
 bool mere_parser_exit_if_null(void *ptr);
 
 TID mere_trie_node_create();
+SID mere_string_create(char const * _Nonnull cstring);
 
 /* ============================================================== */
 #pragma mark local functions definitions
@@ -105,8 +101,7 @@ bool mere_parser_init(size_t size) {
     
     ALLOC_SIZE(mere_strings.base, mere_strings.count, mere_strings.capacity, size, sizeof(char))
     
-    *mere_strings.base = (char)0; /* sid==0 => empty string */
-    mere_strings.count += 1;
+    assert(0 == mere_string_create(""));
     
     // ALLOC_SIZE(mere_data_entries_base, mere_data_entries_next, mere_data_entries_capacity, size, sizeof(mere_entry))
     // ALLOC_SIZE(mere_data_nodes_base, mere_data_nodes_next, mere_data_nodes_capacity, size, sizeof(mere_node))
@@ -128,12 +123,12 @@ TID mere_trie_node_create() {
     size_t need = 1;
     TID position = mere_trie.count;
     
-    ENSURE_SIZE(mere_trie.base, mere_trie.count, mere_trie.capacity, need, sizeof(mere_trie_node));
+    ENSURE_SIZE("trie", mere_trie.base, mere_trie.count, mere_trie.capacity, need, sizeof(mere_trie_node));
     
     mere_trie_node * pnode = mere_trie.base + position;
     pnode->sid = 0; // empty string
     for (int i=0; i<256; i++) {
-        pnode->nexts[i] = -1;
+        pnode->nexts[i] = -1; // no successor
     }
     return position;
 }
@@ -146,7 +141,7 @@ SID mere_string_create(char const * _Nonnull cstring) {
     
     SID position = mere_strings.count;
     
-    ENSURE_SIZE(mere_strings.base, mere_strings.count, mere_strings.capacity, need, sizeof(char));
+    ENSURE_SIZE("string",mere_strings.base, mere_strings.count, mere_strings.capacity, need, sizeof(char));
     
     char* dest = mere_strings.base + position;
     strncpy(dest, cstring, need); // include terminating zero-byte

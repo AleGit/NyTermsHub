@@ -101,10 +101,7 @@ bool mere_parser_exit_if_null(void *ptr) {
 
 bool mere_parser_init(size_t size) {
     ALLOC_SIZE(mere_trie.base, mere_trie.count, mere_trie.capacity, size, sizeof(mere_trie_node))
-    
-    for (int i=0; i<256; i++) {
-        mere_trie.base->nexts[i] = -1;
-    }
+    assert(0 == mere_trie_node_create());
     
     ALLOC_SIZE(mere_strings.base, mere_strings.count, mere_strings.capacity, size, sizeof(char))
     
@@ -134,6 +131,7 @@ TID mere_trie_node_create() {
     ENSURE_SIZE(mere_trie.base, mere_trie.count, mere_trie.capacity, need, sizeof(mere_trie_node));
     
     mere_trie_node * pnode = mere_trie.base + position;
+    pnode->sid = 0; // empty string
     for (int i=0; i<256; i++) {
         pnode->nexts[i] = -1;
     }

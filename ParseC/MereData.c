@@ -20,14 +20,14 @@
     count = 0;
 
 #define ENSURE_SIZE(label,base,count,capacity,need,single) \
-    void * p = base; \
     while ( (count+need) > capacity) { \
-        printf("%s: count=%lu need=%lu capacity=%lu\n", label, count, need, capacity); \
+        printf("%s : count=%lu need=%lu capacity=%lu\n", label, count, need, capacity); \
         capacity *= 2; \
-        base = realloc(base, capacity * single); \
+        void *newbase = realloc(base, capacity * single); \
+        if (newbase == NULL) { printf(">>> could not allocate memeory <<<"); } \
+        else { base = newbase; } \
     } \
     count += need; \
-    if (p != base) printf("%x %x\n", p, base);
 
 #define FREE_BASE(base) \
     if (base != NULL) free(base); \
@@ -122,10 +122,12 @@ void mere_parser_exit() {
 /* ------------------------------------------------------------- */
 #pragma mark global trie functions definitions
 TID mere_trie_node_create() {
+    static char* const label = "trie";
+    
     size_t need = 1;
     TID position = mere_trie.count;
     
-    ENSURE_SIZE("trie", mere_trie.base, mere_trie.count, mere_trie.capacity, need, sizeof(mere_trie_node));
+    ENSURE_SIZE(label, mere_trie.base, mere_trie.count, mere_trie.capacity, need, sizeof(mere_trie_node));
     
     mere_trie_node * pnode = mere_trie.base + position;
     pnode->sid = 0; // empty string
@@ -139,11 +141,12 @@ TID mere_trie_node_create() {
 #pragma mark global string functions definitions
 
 SID mere_string_create(char const * _Nonnull cstring) {
+    static char* const label = "string";
     size_t need = strlen(cstring) + 1;
     
     SID position = mere_strings.count;
     
-    ENSURE_SIZE("string", mere_strings.base, mere_strings.count, mere_strings.capacity, need, sizeof(char));
+    ENSURE_SIZE(label, mere_strings.base, mere_strings.count, mere_strings.capacity, need, sizeof(char));
     
     char* dest = mere_strings.base + position;
     strncpy(dest, cstring, need); // include terminating zero-byte

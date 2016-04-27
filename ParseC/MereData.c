@@ -25,7 +25,7 @@
     p->base = malloc(p->capacity * single);
 
 #define ENSURE_SIZE(base,count,capacity,need,single) \
-    if ( (count+need) > capacity) { \
+    while ( (count+need) > capacity) { \
         printf("%lu %lu %lu\n", count, need, capacity); \
         capacity *= 2; \
         base = realloc(base, capacity * single); \

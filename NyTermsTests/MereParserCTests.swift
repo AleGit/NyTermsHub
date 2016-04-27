@@ -15,7 +15,7 @@ class MereParserDataTests: XCTestCase {
     let a = ["", "1234567890","ABCDEFGHIJ","abcde67890", "1234", "⦿🍻", "ABC", "abcde"]
     
     func testMereStringStore() {
-        XCTAssertTrue(mere_parser_init(total*2))
+        XCTAssertTrue(mere_parser_init(1))
         defer {
             mere_parser_exit()
         }

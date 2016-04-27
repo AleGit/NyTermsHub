@@ -20,12 +20,14 @@
     count = 0;
 
 #define ENSURE_SIZE(label,base,count,capacity,need,single) \
+    void * p = base; \
     while ( (count+need) > capacity) { \
         printf("%s: count=%lu need=%lu capacity=%lu\n", label, count, need, capacity); \
         capacity *= 2; \
         base = realloc(base, capacity * single); \
     } \
-    count += need;
+    count += need; \
+    if (p != base) printf("%x %x\n", p, base);
 
 #define FREE_BASE(base) \
     if (base != NULL) free(base); \
@@ -141,7 +143,7 @@ SID mere_string_create(char const * _Nonnull cstring) {
     
     SID position = mere_strings.count;
     
-    ENSURE_SIZE("string",mere_strings.base, mere_strings.count, mere_strings.capacity, need, sizeof(char));
+    ENSURE_SIZE("string", mere_strings.base, mere_strings.count, mere_strings.capacity, need, sizeof(char));
     
     char* dest = mere_strings.base + position;
     strncpy(dest, cstring, need); // include terminating zero-byte

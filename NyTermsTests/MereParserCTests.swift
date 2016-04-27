@@ -11,7 +11,7 @@ import XCTest
 
 class MereParserDataTests: XCTestCase {
     
-    let total = 520_000// _000
+    let total = 2_332_428// _000
     let a = ["", "1234567890","ABCDEFGHIJ","abcde67890", "1234", "⦿🍻", "ABC", "abcde"]
     
     func testMereStringStore() {

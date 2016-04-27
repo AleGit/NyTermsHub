@@ -9,38 +9,54 @@
 import XCTest
 @testable import NyTerms
 
-class MereParserCTests: XCTestCase {
+class MereParserDataTests: XCTestCase {
     
-    func testMereStoreString() {
-        let total = 2_000_000
-        let (_,runtime) = measure {
-            XCTAssertTrue(mere_parser_init(total))
-            defer {
-                mere_parser_exit()
-            }
-            let a = "1234567890"
-            
-            let strings = (1...2_000_000).map { (_) -> (SID,String) in
-                let sid = mere_store_string(a, 10);
-                let cstring = mere_retrieve_string(sid)
-                return (sid, String.fromCString(cstring)!)
-            }
-            
-            print(strings.count, strings[92..<94])
-            
-            let entries = strings.map { (sid,_) -> EID in
-                let entry = mere_entry_create(sid)
-                
-                return entry
-            }
-            
-            print(entries.count, entries[100...122])
+    let total = 52_000// _000
+    let a = ["", "1234567890","ABCDEFGHIJ","abcde67890", "1234", "⦿🍻", "ABC", "abcde"]
+    
+    func testMereStringStore() {
+        XCTAssertTrue(mere_parser_init(total*2))
+        defer {
+            mere_parser_exit()
         }
         
-        print(runtime)
+        let (_,runtime) = measure {
+            
+            let strings = (1...self.total).map { (i) -> (SID,String,UInt) in
+            
+                let sid = mere_string_store(self.a[i % self.a.count])
+                let cstring = mere_string_retrieve(sid)
+                return (sid, String.fromCString(cstring)!, strlen(cstring))
+            }
+            
+            print(strings[0..<(self.a.count*3)])
+        }
+        
+        print(runtime.prettyTimeIntervalDescription)
         
         
         
     }
+    
+//    func testMereStringCreate() {
+//        XCTAssertTrue(mere_parser_init(self.total*12))
+//        defer {
+//            mere_parser_exit()
+//        }
+//        let (_,runtime) = measure {
+//            let strings = (1...self.total).map { (i) -> (SID,String) in
+//                let sid = mere_string_create(self.a[i % self.a.count], 10)
+//                let cstring = mere_string_retrieve(sid)
+//                return (sid, String.fromCString(cstring)!)
+//            }
+//            
+//            print(strings[10...12])
+//        }
+//        
+//        print(runtime.prettyTimeIntervalDescription)
+//        
+//        
+//        
+//    }
     
 }

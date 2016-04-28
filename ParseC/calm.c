@@ -14,34 +14,73 @@ typedef size_t calm_tid;   // trie node identifier
 typedef enum { CALM_FAILED = -1, CALM_OK = 0 } CALM_STATUS;
 
 typedef struct {
+    void * memory;
+    size_t capacity;
+    size_t size;
+} calm_memory;
+
+typedef struct {
     char *memory;
     size_t capacity;
     size_t size;
-} calm_string_store;
+} calm_store;
+
+typedef struct {
+    calm_sid sid;
+    calm_tid nexts[256];
+} calm_trie_node;
+
+typedef struct {
+    calm_trie_node *memory;
+    size_t capacity;
+    size_t size;
+} calm_trie;
 
 #pragma mark - declarations
+calm_memory* calm_memory_create(size_t capacity, size_t unitsize);
+CALM_STATUS calm_memory_ensure(calm_memory* ref, size_t capacity, size_t unitsize);
+void calm_memory_delete(calm_memory** refref);
 
-calm_string_store * calm_string_store_create(size_t capacity);
-CALM_STATUS calm_string_store_ensure(calm_string_store* store_ref, size_t capacity);
-void calm_string_store_release(calm_string_store* store_ref);
+calm_store* calm_store_create(size_t capacity);
+CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity);
+void calm_store_delete(calm_store** store_ref);
 
-calm_sid calm_string_store_save(calm_string_store* store_ref, const char* const cstring);
-const char* const calm_string_store_retrieve(calm_string_store* store_ref, const calm_sid sid);
+calm_sid calm_store_save(calm_store* store_ref, const char* const cstring);
+const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid);
 
-#pragma mark - definitions
-calm_string_store* calm_string_store_create(size_t capacity) {
+calm_trie* calm_trie_create(size_t capacity);
+CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity);
+void calm_trie_delete(calm_trie** trie_ref);
+calm_tid calm_trie_insert(calm_trie* trie_ref, const char* const cstring);
+calm_tid calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid);
+
+
+#pragma mark - shared definitions
+calm_memory* calm_memory_create(size_t capacity, size_t unitsize) {
     
-    calm_string_store* store_ref = calloc(1, sizeof(calm_string_store));
+    calm_memory* ref = calloc(1, sizeof(calm_memory));
     
-    if (store_ref == NULL) return NULL;
+    if (ref == NULL) return NULL;
     
-    store_ref->capacity = 0;
-    store_ref->size = 0;
+    ref->capacity = 0;
+    ref->size = 0;
     
-    if (calm_string_store_ensure(store_ref, capacity > 0 ? capacity : 1) == CALM_FAILED) {
-        free(store_ref);
+    if (calm_memory_ensure(ref, capacity > 0 ? capacity : 1, unitsize) == CALM_FAILED) {
+        free(ref);
         return NULL;
     }
+    return ref;
+}
+
+calm_store* calm_store_create(size_t capacity) {
+    assert(sizeof(calm_memory) == sizeof(calm_store));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_store, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_store, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_store, size));
+    
+    calm_store* store_ref = (calm_store*)calm_memory_create(capacity, sizeof(char));
+    
+    if (store_ref == NULL) return NULL;
     
     *(store_ref->memory) = '\0';  // 0-terminator of empty string
     store_ref->size = 1;
@@ -49,40 +88,69 @@ calm_string_store* calm_string_store_create(size_t capacity) {
     return store_ref;
 }
 
-CALM_STATUS calm_string_store_ensure(calm_string_store* store_ref, size_t capacity) {
-    assert(store_ref->size <= store_ref->capacity);
+calm_trie* calm_trie_create(size_t capacity) {
+    assert(sizeof(calm_memory) == sizeof(calm_trie));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_trie, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_trie, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_trie, size));
     
-    if (capacity <= store_ref->capacity) return CALM_OK;
+    calm_trie* trie_ref = (calm_trie*)calm_memory_create(capacity, sizeof(calm_trie_node));
     
-    size_t old_capacity = store_ref->capacity;
+    if (trie_ref == NULL) return NULL;
+    
+    return trie_ref;
+}
+
+CALM_STATUS calm_memory_ensure(calm_memory* ref, size_t capacity, size_t unitsize) {
+    
+    if (capacity <= ref->capacity) return CALM_OK;
+    
+    size_t old_capacity = ref->capacity;
     size_t new_capacity = old_capacity > 0 ? old_capacity : 1;
     while (new_capacity < capacity) new_capacity *= 2;
     
-    void* new_memory = realloc(store_ref->memory, new_capacity * sizeof(char));
+    void* new_memory = realloc(ref->memory, new_capacity * unitsize);
     
     if (new_memory == NULL)  return CALM_FAILED;
     
-    store_ref->memory = new_memory;
-    store_ref->capacity = new_capacity;
+    ref->memory = new_memory;
+    ref->capacity = new_capacity;
     
-    printf("string store capacity: %zu ≤ %zu ≤ %zu\n", old_capacity, capacity, new_capacity);
+    printf("capacity: %zu ≤ %zu ≤ %zu\n", old_capacity, capacity, new_capacity);
     
     return CALM_OK;
+    
 }
 
-void calm_string_store_delete(calm_string_store** store_ref_ref) {
+CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)store_ref, capacity, sizeof(char));
+}
+
+
+CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)trie_ref, capacity, sizeof(calm_trie_node));
+}
+
+void calm_memory_delete(calm_memory** refref) {
+    if (*refref == NULL) return;
     
-    if (*store_ref_ref == NULL) return;
-    
-    if ((*store_ref_ref)->memory != NULL) {
-        free((*store_ref_ref)->memory);
+    if ((*refref)->memory != NULL) {
+        free((*refref)->memory);
     }
     
-    free(*store_ref_ref);
-    *store_ref_ref = NULL;
+    free(*refref);
+    *refref = NULL;
 }
 
-calm_sid calm_string_store_save(calm_string_store* store_ref, const char* const cstring) {
+void calm_store_delete(calm_store** store_ref_ref) {
+    calm_memory_delete((calm_memory**)store_ref_ref);
+}
+
+void calm_trie_delete(calm_trie** trie_ref_ref) {
+    calm_memory_delete((calm_memory**)trie_ref_ref);
+}
+
+calm_sid calm_store_save(calm_store* store_ref, const char* const cstring) {
     assert(store_ref->memory != NULL);
     assert(store_ref->capacity >= 1);
     assert(store_ref->capacity >= store_ref->size);
@@ -94,7 +162,7 @@ calm_sid calm_string_store_save(calm_string_store* store_ref, const char* const 
     
     if (len == 0) return (calm_sid)0;   // empty string's sid is always zero.
     
-    if (calm_string_store_ensure(store_ref, store_ref->size + len + 1) != CALM_OK) {
+    if (calm_store_ensure(store_ref, store_ref->size + len + 1) != CALM_OK) {
         return (calm_sid)0;
     }
     
@@ -112,7 +180,7 @@ calm_sid calm_string_store_save(calm_string_store* store_ref, const char* const 
 }
 
 
-const char* const calm_string_store_retrieve(calm_string_store* store_ref, const calm_sid sid) {
+const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid) {
     assert(sid < store_ref->size);
     
     return store_ref->memory + sid;
@@ -122,25 +190,25 @@ const char* const calm_string_store_retrieve(calm_string_store* store_ref, const
 /* ************************************************************************** */
 #pragma mark - demo
 
-#define X(id) calm_string_store_retrieve(store_ref,id)
-void calm_string_store_demo() {
-    calm_string_store * store_ref = calm_string_store_create(1);
+#define X(id) calm_store_retrieve(store_ref,id)
+void calm_store_demo() {
+    calm_store * store_ref = calm_store_create(1);
     
     for (int i = 0; i <500; i++) {
-        calm_sid a = calm_string_store_save(store_ref, "Hello");
-        calm_sid b = calm_string_store_save(store_ref, ", ");
-        calm_sid c = calm_string_store_save(store_ref, "World");
-        calm_sid d = calm_string_store_save(store_ref, "!");
-        calm_sid e = calm_string_store_save(store_ref, "");
-        calm_sid f = calm_string_store_save(store_ref, "Hello");
+        calm_sid a = calm_store_save(store_ref, "Hello");
+        calm_sid b = calm_store_save(store_ref, ", ");
+        calm_sid c = calm_store_save(store_ref, "World");
+        calm_sid d = calm_store_save(store_ref, "!");
+        calm_sid e = calm_store_save(store_ref, "");
+        calm_sid f = calm_store_save(store_ref, "Hello");
         
         printf("%zu %zu %zu %zu %zu - %zu /**/ %s%s%s%s%s - %s\n",
                a,b,c,d,e,f, /**/ X(a),X(b),X(c),X(d),X(e),X(f));
         
     }
-    calm_string_store_delete(&store_ref);
+    calm_store_delete(&store_ref);
     assert(store_ref == NULL);
-    calm_string_store_delete(&store_ref);
+    calm_store_delete(&store_ref);
 }
 
 

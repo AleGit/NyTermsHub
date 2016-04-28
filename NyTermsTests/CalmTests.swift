@@ -12,7 +12,7 @@ import XCTest
 class CalmTests: XCTestCase {
 
     func testCalmDemo() {
-        calm_string_store_demo()
+        calm_store_demo()
     
     }
 

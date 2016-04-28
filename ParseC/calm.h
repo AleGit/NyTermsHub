@@ -11,6 +11,6 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 
-void calm_string_store_demo();
+void calm_store_demo();
 
 #endif /* calm_h */

@@ -37,6 +37,7 @@ typedef struct {
 } calm_trie;
 
 #pragma mark - declarations
+
 calm_memory* calm_memory_create(size_t capacity, size_t unitsize);
 CALM_STATUS calm_memory_ensure(calm_memory* ref, size_t capacity, size_t unitsize);
 void calm_memory_delete(calm_memory** refref);
@@ -44,15 +45,15 @@ void calm_memory_delete(calm_memory** refref);
 calm_store* calm_store_create(size_t capacity);
 CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity);
 void calm_store_delete(calm_store** store_ref);
-
 calm_sid calm_store_save(calm_store* store_ref, const char* const cstring);
 const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid);
 
 calm_trie* calm_trie_create(size_t capacity);
 CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity);
 void calm_trie_delete(calm_trie** trie_ref);
-calm_tid calm_trie_insert(calm_trie* trie_ref, const char* const cstring);
-calm_tid calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid);
+calm_tid calm_trie_append_one(calm_trie * trie_ref);
+calm_tid calm_trie_save(calm_trie* trie_ref, const char* const cstring);
+calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid);
 
 
 #pragma mark - shared definitions
@@ -70,35 +71,6 @@ calm_memory* calm_memory_create(size_t capacity, size_t unitsize) {
         return NULL;
     }
     return ref;
-}
-
-calm_store* calm_store_create(size_t capacity) {
-    assert(sizeof(calm_memory) == sizeof(calm_store));
-    assert(offsetof(calm_memory, memory) == offsetof(calm_store, memory));
-    assert(offsetof(calm_memory, capacity) == offsetof(calm_store, capacity));
-    assert(offsetof(calm_memory, size) == offsetof(calm_store, size));
-    
-    calm_store* store_ref = (calm_store*)calm_memory_create(capacity, sizeof(char));
-    
-    if (store_ref == NULL) return NULL;
-    
-    *(store_ref->memory) = '\0';  // 0-terminator of empty string
-    store_ref->size = 1;
-    
-    return store_ref;
-}
-
-calm_trie* calm_trie_create(size_t capacity) {
-    assert(sizeof(calm_memory) == sizeof(calm_trie));
-    assert(offsetof(calm_memory, memory) == offsetof(calm_trie, memory));
-    assert(offsetof(calm_memory, capacity) == offsetof(calm_trie, capacity));
-    assert(offsetof(calm_memory, size) == offsetof(calm_trie, size));
-    
-    calm_trie* trie_ref = (calm_trie*)calm_memory_create(capacity, sizeof(calm_trie_node));
-    
-    if (trie_ref == NULL) return NULL;
-    
-    return trie_ref;
 }
 
 CALM_STATUS calm_memory_ensure(calm_memory* ref, size_t capacity, size_t unitsize) {
@@ -122,15 +94,6 @@ CALM_STATUS calm_memory_ensure(calm_memory* ref, size_t capacity, size_t unitsiz
     
 }
 
-CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity) {
-    return calm_memory_ensure((calm_memory*)store_ref, capacity, sizeof(char));
-}
-
-
-CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity) {
-    return calm_memory_ensure((calm_memory*)trie_ref, capacity, sizeof(calm_trie_node));
-}
-
 void calm_memory_delete(calm_memory** refref) {
     if (*refref == NULL) return;
     
@@ -142,12 +105,30 @@ void calm_memory_delete(calm_memory** refref) {
     *refref = NULL;
 }
 
-void calm_store_delete(calm_store** store_ref_ref) {
-    calm_memory_delete((calm_memory**)store_ref_ref);
+#pragma mark - (strings) store
+
+calm_store* calm_store_create(size_t capacity) {
+    assert(sizeof(calm_memory) == sizeof(calm_store));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_store, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_store, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_store, size));
+    
+    calm_store* store_ref = (calm_store*)calm_memory_create(capacity, sizeof(char));
+    
+    if (store_ref == NULL) return NULL;
+    
+    *(store_ref->memory) = '\0';  // 0-terminator of empty string
+    store_ref->size = 1;
+    
+    return store_ref;
 }
 
-void calm_trie_delete(calm_trie** trie_ref_ref) {
-    calm_memory_delete((calm_memory**)trie_ref_ref);
+CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)store_ref, capacity, sizeof(char));
+}
+
+void calm_store_delete(calm_store** store_ref_ref) {
+    calm_memory_delete((calm_memory**)store_ref_ref);
 }
 
 calm_sid calm_store_save(calm_store* store_ref, const char* const cstring) {
@@ -179,11 +160,70 @@ calm_sid calm_store_save(calm_store* store_ref, const char* const cstring) {
     return sid;
 }
 
-
 const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid) {
     assert(sid < store_ref->size);
     
     return store_ref->memory + sid;
+}
+
+#pragma mark - (strings) trie
+
+calm_trie* calm_trie_create(size_t capacity) {
+    assert(sizeof(calm_memory) == sizeof(calm_trie));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_trie, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_trie, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_trie, size));
+    
+    calm_trie* trie_ref = (calm_trie*)calm_memory_create(capacity, sizeof(calm_trie_node));
+    
+    if (trie_ref == NULL) return NULL;
+    
+    calm_tid tid = calm_trie_append_one(trie_ref);
+    
+    assert(tid == 0);
+    assert((trie_ref->memory)->sid == 0);
+    assert((trie_ref->memory)->nexts[0] == 0);
+    assert((trie_ref->memory)->nexts[255] == 0);
+    
+    return trie_ref;
+}
+
+CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)trie_ref, capacity, sizeof(calm_trie_node));
+}
+
+void calm_trie_delete(calm_trie** trie_ref_ref) {
+    calm_memory_delete((calm_memory**)trie_ref_ref);
+}
+
+calm_tid calm_trie_append_one(calm_trie * trie_ref) {
+    calm_tid tid = trie_ref->size;
+    
+    if ( calm_trie_ensure(trie_ref, (trie_ref->size)+1) != CALM_OK) {
+        return (calm_tid)0;
+    }
+    
+    trie_ref->size += 1;
+    
+    calm_trie_node *node = (trie_ref->memory + tid);
+    
+    node->sid = (calm_sid)0;
+    for (int i=0; i<256; i++) {
+        node->nexts[i] = (calm_tid)0;
+    }
+    
+    return tid;
+    
+}
+
+calm_tid calm_trie_save(calm_trie* trie_ref, const char* const cstring) {
+    
+    return (calm_tid)0;
+}
+calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid) {
+    assert(tid < trie_ref->size);
+    
+    return trie_ref->memory + tid;
 }
 
 
@@ -209,6 +249,19 @@ void calm_store_demo() {
     calm_store_delete(&store_ref);
     assert(store_ref == NULL);
     calm_store_delete(&store_ref);
+    
+    
+
+    
+}
+
+void calm_trie_demo() {
+    calm_trie * trie_ref = calm_trie_create(5);
+    assert(trie_ref != NULL);
+    assert(trie_ref->size = 1);
+    calm_trie_delete(&trie_ref);
+    assert(trie_ref == NULL);
+    
 }
 
 

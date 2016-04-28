@@ -11,9 +11,12 @@ import XCTest
 
 class CalmTests: XCTestCase {
 
-    func testCalmDemo() {
+    func testCalmStoreDemo() {
         calm_store_demo()
+    }
     
+    func testCalmTrieDemo() {
+        calm_trie_demo()
     }
 
 }

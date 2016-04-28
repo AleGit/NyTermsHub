@@ -51,7 +51,6 @@
 		5129773F1B679177003D3E80 /* Substitution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5129773E1B679177003D3E80 /* Substitution.swift */; };
 		5131E8AB1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */; };
 		5131E8AC1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */; };
-		51327E5E1CCF881300570A94 /* MereParserCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51327E5D1CCF881300570A94 /* MereParserCTests.swift */; };
 		51342AB91B92CA3A0052A72F /* DemoFileParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51342AB81B92CA3A0052A72F /* DemoFileParsing.swift */; };
 		51374D3F1CC635F000BD82BF /* Yices+KBOTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51374D3E1CC635F000BD82BF /* Yices+KBOTests.swift */; };
 		513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513CF7E01B8EF6D20063BA57 /* String+Yices.swift */; };
@@ -117,8 +116,6 @@
 		517B23B71CBCD6C90049F871 /* YicesIndexingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */; };
 		517D86381C44F94100930B61 /* DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517D86371C44F94100930B61 /* DescriptionTests.swift */; };
 		517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */; };
-		5182C1631CD084BD003CD863 /* MereData.c in Sources */ = {isa = PBXBuildFile; fileRef = 5182C1611CD084BD003CD863 /* MereData.c */; };
-		5182C1641CD084BD003CD863 /* MereData.c in Sources */ = {isa = PBXBuildFile; fileRef = 5182C1611CD084BD003CD863 /* MereData.c */; };
 		51844E161C8439C400DCAA32 /* Infos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E151C8439C400DCAA32 /* Infos.swift */; };
 		51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E171C8448A200DCAA32 /* UnificationTests.swift */; };
 		519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A21B84E11F0030A61A /* NodeStructTests.swift */; };
@@ -237,7 +234,6 @@
 		5129773E1B679177003D3E80 /* Substitution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Substitution.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Auxiliary+Pretty.swift"; sourceTree = "<group>"; };
 		51327E5C1CCF401100570A94 /* MereMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MereMacros.h; sourceTree = "<group>"; };
-		51327E5D1CCF881300570A94 /* MereParserCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MereParserCTests.swift; sourceTree = "<group>"; };
 		51342AB81B92CA3A0052A72F /* DemoFileParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DemoFileParsing.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51374D3E1CC635F000BD82BF /* Yices+KBOTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Yices+KBOTests.swift"; sourceTree = "<group>"; };
 		513CF7E01B8EF6D20063BA57 /* String+Yices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Yices.swift"; sourceTree = "<group>"; };
@@ -307,8 +303,6 @@
 		517D86371C44F94100930B61 /* DescriptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTests.swift; sourceTree = "<group>"; };
 		517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTests.swift; sourceTree = "<group>"; };
 		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
-		5182C1611CD084BD003CD863 /* MereData.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MereData.c; sourceTree = "<group>"; };
-		5182C1621CD084BD003CD863 /* MereData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MereData.h; sourceTree = "<group>"; };
 		51844E151C8439C400DCAA32 /* Infos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Infos.swift; sourceTree = "<group>"; };
 		51844E171C8448A200DCAA32 /* UnificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnificationTests.swift; sourceTree = "<group>"; };
 		518D60A81C0C58B900831FE8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -675,8 +669,6 @@
 			isa = PBXGroup;
 			children = (
 				515F0EEE1B6B723E00B470B4 /* Bridging-Header.h */,
-				5182C1611CD084BD003CD863 /* MereData.c */,
-				5182C1621CD084BD003CD863 /* MereData.h */,
 				517994821C96BEC900791916 /* MereLexer.l */,
 				51327E5C1CCF401100570A94 /* MereMacros.h */,
 				517994891C96C63B00791916 /* MereParser.c */,
@@ -711,7 +703,6 @@
 			isa = PBXGroup;
 			children = (
 				517994901C96C94B00791916 /* MereParserBasicTests.swift */,
-				51327E5D1CCF881300570A94 /* MereParserCTests.swift */,
 				51E32B911CD1EC8300E1AF1E /* CalmTests.swift */,
 			);
 			name = MereParser;
@@ -972,7 +963,6 @@
 				511E95901B8AEB9C0093F4E8 /* TptpParser.ym in Sources */,
 				51E5F9AF1C87179900040B19 /* DemoProofing.swift in Sources */,
 				51E038171C92B864005BFD42 /* Node+Dimensions.swift in Sources */,
-				5182C1641CD084BD003CD863 /* MereData.c in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
 				51C0ACB41C4A385800447594 /* DemoComplementaries.swift in Sources */,
@@ -1035,7 +1025,6 @@
 				51FD00B81C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				5129773F1B679177003D3E80 /* Substitution.swift in Sources */,
 				51B26B6D1B8DA41200CC59AD /* Yices+Wrapper.swift in Sources */,
-				5182C1631CD084BD003CD863 /* MereData.c in Sources */,
 				510F5CD91CC4FCB40012B9CC /* Yices+KBO.swift in Sources */,
 				5151BDC01C3161AF006EFCE0 /* Pair.swift in Sources */,
 				51E038131C92A596005BFD42 /* Auxiliary+Process.swift in Sources */,
@@ -1127,7 +1116,6 @@
 				265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */,
 				517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */,
 				5103EB091C6A27D60079E0A0 /* ParsePerformanceTests.swift in Sources */,
-				51327E5E1CCF881300570A94 /* MereParserCTests.swift in Sources */,
 				514AD8631C6B4CDD00652004 /* BasicTailTrieTests.swift in Sources */,
 				51D8476A1C8069FB003EC848 /* TptpPathTests.swift in Sources */,
 				517B23B71CBCD6C90049F871 /* YicesIndexingTests.swift in Sources */,

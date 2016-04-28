@@ -6,5 +6,4 @@
 
 #import "TptpParser.h"
 #import "MereParser.h"
-#import "MereData.h"
 #import "calm.h"

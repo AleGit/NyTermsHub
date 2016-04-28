@@ -10,13 +10,27 @@ import XCTest
 @testable import NyTerms
 
 class CalmTests: XCTestCase {
-
-    func testCalmStoreDemo() {
-        calm_store_demo()
-    }
     
-    func testCalmTrieDemo() {
-        calm_trie_demo()
+    func testCalmTableDemo() {
+        calm_table_init()
+        
+        let strings = ["Hello", "World", "Hello", "", "∀𝛕", "💤"]
+        
+        let sids = strings.map { calm_table_store($0) }
+        
+        XCTAssertNotEqual(sids[0], sids[1]);
+        XCTAssertEqual(sids[0], sids[2]);
+        XCTAssertNotEqual(sids[0], sids[3]);
+        XCTAssertEqual(0, sids[3]);
+        
+        print(sids);
+        
+        
+        
+        let backs = sids.map { String.fromCString(calm_table_retrieve($0))! }
+        XCTAssertEqual(strings, backs);
+        
+        calm_table_exit()
     }
 
 }

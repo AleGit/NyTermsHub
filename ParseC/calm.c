@@ -161,7 +161,9 @@ calm_sid calm_store_save(calm_store* store_ref, const char* const cstring) {
 }
 
 const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid) {
-    assert(sid < store_ref->size);
+    if(store_ref == NULL || sid >= store_ref->size) {
+        return NULL;
+    }
     
     return store_ref->memory + sid;
 }
@@ -221,7 +223,9 @@ calm_tid calm_trie_save(calm_trie* trie_ref, const char* const cstring) {
     return (calm_tid)0;
 }
 calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid) {
-    assert(tid < trie_ref->size);
+    if (trie_ref == NULL || tid >= trie_ref->size) {
+        return NULL;
+    }
     
     return trie_ref->memory + tid;
 }
@@ -259,6 +263,16 @@ void calm_trie_demo() {
     calm_trie * trie_ref = calm_trie_create(5);
     assert(trie_ref != NULL);
     assert(trie_ref->size = 1);
+    
+    calm_trie_node *node_ref = calm_trie_retrieve(trie_ref, 0);
+    
+    assert(node_ref == trie_ref -> memory);
+    
+    node_ref = calm_trie_retrieve(trie_ref, 1);
+    
+    assert(node_ref == NULL);
+    
+    
     calm_trie_delete(&trie_ref);
     assert(trie_ref == NULL);
     

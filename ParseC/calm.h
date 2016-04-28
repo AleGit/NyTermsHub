@@ -19,6 +19,7 @@ void calm_trie_demo();
 void calm_table_init();
 void calm_table_exit();
 calm_id calm_table_store(const char * const cstring);
+calm_id calm_table_next(calm_id sid);
 const char * const calm_table_retrieve(const calm_id sid);
 
 #endif /* calm_h */

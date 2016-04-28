@@ -273,7 +273,7 @@ calm_tid calm_trie_node_next(calm_trie* trie_ref, calm_tid tid, calm_cidx cidx) 
 calm_cidx calm_cidx_get(const char* const cstring, size_t pos) {
     calm_cidx cidx = cstring[pos];
     while (cidx < 0) {
-        printf("%s %zu %d %d\n", cstring,pos,cidx,cidx+256);
+        // printf("%s %zu %d %d\n", cstring,pos,cidx,cidx+256);
         cidx += 256;
     }
     return cidx;
@@ -362,6 +362,20 @@ calm_id calm_table_store(const char * const cstring) {
     return node_ref->sid;
     
     
+}
+
+calm_sid calm_table_next(calm_sid sid) {
+    const char* const cstring = calm_table_retrieve(sid);
+    
+    if (cstring == NULL) return (calm_sid)0;
+    
+    size_t len = strlen(cstring);
+    
+    calm_sid next_sid = sid + len + 1;
+    
+    if (next_sid >= internal_calm_table->store->size) return (calm_sid)0;
+    
+    return next_sid;
 }
 
 const char * const calm_table_retrieve(const calm_id sid) {

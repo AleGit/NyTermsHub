@@ -14,7 +14,7 @@ class CalmTests: XCTestCase {
     func testCalmTableDemo() {
         calm_table_init()
         
-        let strings = ["Hello", "World", "Hello", "", "∀𝛕", "💤"]
+        let strings = ["Hello", "World", "Hello", "", "∀𝛕", "💤", "Hällü, Wörld!"]
         
         let sids = strings.map { calm_table_store($0) }
         
@@ -25,7 +25,13 @@ class CalmTests: XCTestCase {
         
         print(sids);
         
-        
+        var sid = calm_table_next(0);
+        while sid != 0 {
+            let string = String.fromCString(calm_table_retrieve(sid))
+            print(sid,string)
+            
+            sid = calm_table_next(sid);
+        }
         
         let backs = sids.map { String.fromCString(calm_table_retrieve($0))! }
         XCTAssertEqual(strings, backs);

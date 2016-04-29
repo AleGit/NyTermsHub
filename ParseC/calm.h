@@ -25,9 +25,18 @@ CalmSID calmStoreSymbol(CalmParsingTableRef, const char * const);
 CalmSID calmNextSymbol(CalmParsingTableRef, CalmSID);
 const char* const calmGetSymbol(CalmParsingTableRef, CalmSID);
 
+
 CalmTID calmStoreConnective(CalmParsingTableRef,CalmSID,CalmTID);
-CalmTID calmStoreVariable(CalmParsingTableRef,CalmSID);
+
+CalmTID calmStoreFunctional(CalmParsingTableRef,CalmSID,CalmTID);
+CalmTID calmStoreEquational(CalmParsingTableRef,CalmSID,CalmTID);
 CalmTID calmStoreConstant(CalmParsingTableRef,CalmSID);
-CalmTID calmLinkTerms(CalmParsingTableRef,CalmTID,CalmTID);
+CalmTID calmStoreVariable(CalmParsingTableRef,CalmSID);
+
+
+CalmTID calmLinkTerms(CalmParsingTableRef, CalmTID, CalmTID);
+void calmTermsAppend(CalmParsingTableRef, CalmTID, CalmTID);
+
+CalmId calm_label(char*);
 
 #endif /* calm_h */

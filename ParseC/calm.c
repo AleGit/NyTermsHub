@@ -19,7 +19,7 @@ typedef CalmSID calm_sid;
 typedef int calm_cidx;
 
 typedef enum { CALM_FAILED = -1, CALM_OK = 0 } CALM_STATUS;
-typedef enum { CALM_TYPE_UNKNOWN = 0, CALM_VARIABLE, CALM_FUNCTION, CALM_CONNECTIVE } CALM_TYPE;
+typedef enum { CALM_TYPE_UNKNOWN = 0, CALM_VARIABLE, CALM_FUNCTIONAL, CALM_EQUATIONAL, CALM_CONNECTIVE } CALM_TYPE;
 
 typedef struct {
     CalmSID sid;
@@ -127,6 +127,8 @@ calm_table* calm_table_check(void* symbolTableRef) {
     assert(ref->signature == CALM_PARSING_TABLE_SIGNATURE);
     return ref;
 }
+
+CalmId calm_label(char *cstring) { printf("%s\n",cstring); return 0; }
 
 
 #pragma mark - shared definitions
@@ -511,30 +513,58 @@ const char* const calmGetSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid)
     return calm_table_retrieve(calm_table_check(symbolTableRef), sid);
 }
 
+
+
 /* */
 
-CalmTID calmStoreVariable(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_VARIABLE);
-    
-}
-CalmTID calmStoreConstant(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_FUNCTION);
-}
 
 CalmTID calmStoreConnective(CalmParsingTableRef symbolTableRef, CalmSID sid, CalmTID firstchild) {
     return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_CONNECTIVE);
 }
 
+
+
+CalmTID calmStoreEquational(CalmParsingTableRef symbolTableRef,CalmSID sid, CalmTID firstchild) {
+    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_EQUATIONAL);
+}
+
+CalmTID calmStoreFunctional(CalmParsingTableRef symbolTableRef,CalmSID sid, CalmTID firstchild) {
+    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_FUNCTIONAL);
+}
+
+CalmTID calmStoreConstant(CalmParsingTableRef symbolTableRef, CalmSID sid) {
+    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_FUNCTIONAL);
+}
+
+CalmTID calmStoreVariable(CalmParsingTableRef symbolTableRef, CalmSID sid) {
+    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_VARIABLE);
+    
+}
+
 /****/
 
 CalmTID calmLinkTerms(CalmParsingTableRef symbolTableRef,CalmTID first,CalmTID next) {
-    calm_term_node *node = calm_term_store_retrieve(symbolTableRef, first);
+    calm_term_node *node = calm_term_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
     assert(node != NULL);
     assert(node->sibling == 0);
     
     node->sibling = next;
     
     return first;
+    
+}
+
+void calmTermsAppend(CalmParsingTableRef symbolTableRef, CalmTID first, CalmTID last) {
+    calm_term_node *node = calm_term_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
+    assert(node != NULL);
+    
+    if (node->sibling == 0) {
+        node->sibling = last;
+    }
+    else {
+        calmTermsAppend(symbolTableRef, node->sibling, last);
+    }
+    
     
 }
 

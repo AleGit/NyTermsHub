@@ -14,6 +14,8 @@
 typedef size_t CalmId;
 typedef void* CalmSymbolTableRef;
 
+#pragma mark - symbol table
+
 CalmSymbolTableRef calmMakeSymbolTable(size_t);
 void calmDeleteSymbolTable(CalmSymbolTableRef*);
 CalmId calmStoreSymbol(CalmSymbolTableRef, const char * const);

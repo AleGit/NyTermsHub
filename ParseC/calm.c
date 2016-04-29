@@ -14,6 +14,7 @@
 
 typedef CalmId calm_sid;   // string identifier
 typedef CalmId calm_tid;   // trie node identifier
+typedef CalmId calm_vid;
 
 typedef int calm_cidx;
 
@@ -23,6 +24,13 @@ typedef struct {
     calm_sid sid;
     calm_tid nexts[256];
 } calm_trie_node;
+
+typedef struct calm_vertex {
+    calm_sid sid;
+    calm_vid *children; // dynamically allocated
+    size_t size;    // 0...256
+    size_t capacity; // 0,4,16,256
+} calm_vertex;
 
 typedef struct {
     void * memory;
@@ -43,20 +51,33 @@ typedef struct {
 } calm_trie;
 
 typedef struct {
+    calm_vertex *memory;
+    size_t capacity;
+    size_t size;
+} calm_vertices;
+
+
+typedef struct {
     unsigned long signature;
     calm_store* store;
     calm_trie* trie;
 } calm_table;
 
+/* memory */
+
 calm_memory* calm_memory_create(size_t capacity, size_t unitsize);
 CALM_STATUS calm_memory_ensure(calm_memory* ref, size_t capacity, size_t unitsize);
 void calm_memory_delete(calm_memory** refref);
+
+/* (string) store */
 
 calm_store* calm_store_create(size_t capacity);
 CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity);
 void calm_store_delete(calm_store** store_ref);
 calm_sid calm_store_save(calm_store* store_ref, const char* const cstring);
 const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid);
+
+/* trie */
 
 calm_trie* calm_trie_create(size_t capacity);
 CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity);
@@ -67,6 +88,19 @@ calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid);
 
 calm_tid calm_trie_node_next(calm_trie* trie_ref, calm_tid tid, calm_cidx cidx);
 calm_tid calm_trie_build_prefix(calm_trie* trie_ref, const char* const cstring);
+
+/* (term) vertices */
+
+calm_vertices* calm_vertices_create(size_t);
+CALM_STATUS calm_vertices_ensure(calm_vertices*, size_t);
+void calm_vertices_delete(calm_vertices**);
+
+calm_vid calm_vertex_append(calm_vertices*);
+calm_vertex* calm_verex_retrieve(calm_vertices*, calm_vid);
+
+
+
+/* -------------------------------------------------------------------------- */
 
 calm_table* calm_table_create(const size_t);
 void calm_table_delete(calm_table**);
@@ -308,6 +342,64 @@ calm_tid calm_trie_build_prefix(calm_trie* trie_ref, const char* const cstring) 
     }
     
     return tid;
+}
+
+#pragma mark - vertices (terms)
+
+calm_vertices* calm_vertices_create(size_t capacity) {
+    
+    assert(sizeof(calm_memory) == sizeof(calm_vertices));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_vertices, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_vertices, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_vertices, size));
+    
+    calm_vertices* vertices_ref = (calm_vertices*)calm_memory_create(capacity, sizeof(calm_vertex));
+    
+    if (vertices_ref == NULL) return NULL;
+    
+    calm_vid vid = calm_vertex_append(vertices_ref);
+    
+    assert(vid == 0);
+    assert((vertices_ref->memory)->sid == 0);
+    
+    return vertices_ref;
+    
+}
+
+CALM_STATUS calm_vertices_ensure(calm_vertices* vertices_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)vertices_ref, capacity, sizeof(calm_vertex));
+}
+
+void calm_vertices_delete(calm_vertices** vertices_ref_ref) {
+    calm_memory_delete((calm_memory**)vertices_ref_ref);
+}
+
+calm_vid calm_vertex_append(calm_vertices* vertices_ref) {
+    calm_vid vid = vertices_ref->size;
+    
+    if ( calm_vertices_ensure(vertices_ref, (vertices_ref->size)+1) != CALM_OK) {
+        return (calm_vid)0;
+    }
+    
+    vertices_ref->size += 1;
+    
+    calm_vertex *vertex = (vertices_ref->memory + vid);
+    
+    vertex->sid = (calm_sid)0;
+    vertex->children = NULL;
+    vertex->capacity = 0;
+    vertex->size = 0;
+    
+    // implicityl variable "" (empty name)
+    
+    return vid;
+    
+}
+
+calm_vertex* calm_verex_retrieve(calm_vertices* vertices_ref, calm_vid vid) {
+    if (vertices_ref == NULL || vid > vertices_ref->size) return NULL;
+    
+    return vertices_ref->memory + vid;
 }
 
 #pragma mark - symbol table

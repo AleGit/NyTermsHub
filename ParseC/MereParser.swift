@@ -12,9 +12,18 @@ func mereParse(path:TptpPath) -> Int32 {
     let file = fopen(path,"r")  // open file to read
     
     guard file != nil else { return -1 }
+    guard let size = path.fileSize where size > 0 else {
+        return -1
+    }
     
     defer {
         fclose(file)
+    }
+    
+    symbolTable = calmMakeSymbolTable(size)
+    defer {
+        print("calmDeleteSymbolTable")
+        calmDeleteSymbolTable(&symbolTable)
     }
     
     mere_in = file
@@ -22,5 +31,14 @@ func mereParse(path:TptpPath) -> Int32 {
     mere_lineno = 1
     
     let code = mere_parse()
+    
+//    var sid = calmNextSymbol(symbolTable, 0);
+//    while sid != 0 {
+//        let string = String.fromCString( calmGetSybmol(symbolTable, sid) )
+//        print(sid,string)
+//        
+//        sid = calmNextSymbol(symbolTable, sid);
+//    }
+    
     return code
 }

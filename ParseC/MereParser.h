@@ -10,6 +10,7 @@
 #define MereParser_h
 
 #import <CoreFoundation/CoreFoundation.h>
+#import "calm.h"
 
 #pragma mark - MereLexer.l
 
@@ -31,6 +32,8 @@ int mere_parse(void);
 int mere_error (const char * _Nullable s);
 
 #pragma mark - parse functions and data structures
+
+extern _Nullable CalmSymbolTableRef symbolTable;
 
 
 

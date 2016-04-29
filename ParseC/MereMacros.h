@@ -13,23 +13,23 @@
 #define CREATE_INCLUDE(a,b)         NULL
 
 
-#define CREATE_Quantified(b,c,d)    NULL    // quantified
-#define CREATE_Functional(b,c)      NULL      // function, predicate
-#define CREATE_Equational(b,c)      NULL      // equation, inequation
-#define CREATE_Connective(b,c)      NULL      // connective
-#define CREATE_Constant(b)          NULL          // constant
-#define CREATE_Variable(b)          NULL          // variable
+#define CREATE_Quantified(b,c,d)    NULL // quantified
+#define CREATE_Functional(b,c)      NULL // function, predicate
+#define CREATE_Equational(b,c)      NULL // equation, inequation
+#define CREATE_Connective(b,c)      NULL // connective
+#define CREATE_Constant(b)          NULL // constant
+#define CREATE_Variable(b)          NULL // variable
 
-#define CREATE_NODES0()             NULL         // empty list
-#define CREATE_NODES1(a)            NULL        // unary list
-#define CREATE_NODES2(a,b)          NULL      // binary list
+#define CREATE_NODES0()             NULL // empty list
+#define CREATE_NODES1(a)            NULL // unary list
+#define CREATE_NODES2(a,b)          NULL // binary list
 
-#define PREDICATE(a)       a; /* register_predicate(a) */
+#define PREDICATE(a)                a;  /* register_predicate(a) */
 
 #define APPEND(a,b)                 NULL
 #define INSERT(a,b)                 NULL
 
-#define CREATE_STRING(a)            NULL
+#define CREATE_STRING(a)            NULL; calmStoreSymbol(symbolTable, a);
 #define CREATE_STRINGS1(a)          NULL
 
 #define CREATE_DISTINCT(a)          NULL

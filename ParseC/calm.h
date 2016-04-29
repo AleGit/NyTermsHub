@@ -11,15 +11,13 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 
-typedef size_t calm_id;
+typedef size_t CalmId;
+typedef void* CalmSymbolTableRef;
 
-void calm_store_demo();
-void calm_trie_demo();
-
-void calm_table_init();
-void calm_table_exit();
-calm_id calm_table_store(const char * const cstring);
-calm_id calm_table_next(calm_id sid);
-const char * const calm_table_retrieve(const calm_id sid);
+CalmSymbolTableRef calmMakeSymbolTable(size_t);
+void calmDeleteSymbolTable(CalmSymbolTableRef*);
+CalmId calmStoreSymbol(CalmSymbolTableRef, const char * const);
+CalmId calmNextSymbol(CalmSymbolTableRef, CalmId);
+const char* const calmGetSybmol(CalmSymbolTableRef, CalmId);
 
 #endif /* calm_h */

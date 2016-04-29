@@ -8,8 +8,12 @@
 
 #include "calm.h"
 
-typedef calm_id calm_sid;   // string identifier
-typedef calm_id calm_tid;   // trie node identifier
+#define CALM_SYMBOL_TABLE_SIGNATURE 0xFEDCBA9876543210
+
+#pragma mark 'private' functions (declarations)
+
+typedef CalmId calm_sid;   // string identifier
+typedef CalmId calm_tid;   // trie node identifier
 
 typedef int calm_cidx;
 
@@ -39,11 +43,10 @@ typedef struct {
 } calm_trie;
 
 typedef struct {
+    unsigned long signature;
     calm_store* store;
     calm_trie* trie;
 } calm_table;
-
-#pragma mark - declarations
 
 calm_memory* calm_memory_create(size_t capacity, size_t unitsize);
 CALM_STATUS calm_memory_ensure(calm_memory* ref, size_t capacity, size_t unitsize);
@@ -65,8 +68,11 @@ calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid);
 calm_tid calm_trie_node_next(calm_trie* trie_ref, calm_tid tid, calm_cidx cidx);
 calm_tid calm_trie_build_prefix(calm_trie* trie_ref, const char* const cstring);
 
-calm_table* calm_table_create(size_t capacity);
+calm_table* calm_table_create(const size_t);
 void calm_table_delete(calm_table**);
+calm_sid calm_table_store(const calm_table*, const char * const);
+const char * const calm_table_retrieve(const calm_table* const, const calm_sid);
+calm_sid calm_table_next(const calm_table* const, const calm_sid);
 
 
 #pragma mark - shared definitions
@@ -83,6 +89,7 @@ calm_memory* calm_memory_create(size_t capacity, size_t unitsize) {
         free(ref);
         return NULL;
     }
+    
     return ref;
 }
 
@@ -305,8 +312,9 @@ calm_tid calm_trie_build_prefix(calm_trie* trie_ref, const char* const cstring) 
 
 #pragma mark - symbol table
 
-calm_table* calm_table_create(size_t capacity) {
+calm_table* calm_table_create(const size_t capacity) {
     calm_table *table_ref = calloc(1,sizeof(calm_table));
+    table_ref->signature = CALM_SYMBOL_TABLE_SIGNATURE;
     table_ref->store = calm_store_create(capacity);
     table_ref->trie = calm_trie_create(capacity);
     return table_ref;
@@ -314,8 +322,8 @@ calm_table* calm_table_create(size_t capacity) {
 }
 void calm_table_delete(calm_table** refref) {
     assert(refref != NULL);
-    
     calm_table* ref = *refref;
+    assert(ref->signature == CALM_SYMBOL_TABLE_SIGNATURE);
     
     if (ref != NULL) {
         
@@ -330,33 +338,19 @@ void calm_table_delete(calm_table** refref) {
     assert(*refref == NULL);
 }
 
-calm_table* internal_calm_table;
-
-void calm_table_init() {
-    assert(internal_calm_table == NULL);
-    
-    internal_calm_table = calm_table_create(1);
-}
-
-void calm_table_exit() {
-    assert(internal_calm_table != NULL);
-    
-    calm_table_delete(&internal_calm_table);
-}
-
-calm_id calm_table_store(const char * const cstring) {
-    assert(internal_calm_table != NULL);
-    assert(internal_calm_table->trie != NULL);
-    assert(internal_calm_table->store != NULL);
+calm_sid calm_table_store(const calm_table* const table_ref, const char * const cstring) {
+    assert(table_ref != NULL);
+    assert(table_ref->trie != NULL);
+    assert(table_ref->store != NULL);
     
     if (strlen(cstring) == 0) return 0;
     
-    calm_tid tid = calm_trie_build_prefix(internal_calm_table->trie, cstring);
+    calm_tid tid = calm_trie_build_prefix(table_ref->trie, cstring);
     assert(0 < tid);
     
-    calm_trie_node* node_ref = calm_trie_retrieve(internal_calm_table->trie, tid);
+    calm_trie_node* node_ref = calm_trie_retrieve(table_ref->trie, tid);
     if (node_ref->sid == 0) {
-        node_ref->sid = calm_store_save(internal_calm_table->store, cstring);
+        node_ref->sid = calm_store_save(table_ref->store, cstring);
     }
     
     return node_ref->sid;
@@ -364,8 +358,8 @@ calm_id calm_table_store(const char * const cstring) {
     
 }
 
-calm_sid calm_table_next(calm_sid sid) {
-    const char* const cstring = calm_table_retrieve(sid);
+calm_sid calm_table_next(const calm_table* const table_ref, const calm_sid sid) {
+    const char* const cstring = calm_table_retrieve(table_ref,sid);
     
     if (cstring == NULL) return (calm_sid)0;
     
@@ -373,74 +367,46 @@ calm_sid calm_table_next(calm_sid sid) {
     
     calm_sid next_sid = sid + len + 1;
     
-    if (next_sid >= internal_calm_table->store->size) return (calm_sid)0;
+    if (next_sid >= table_ref->store->size) return (calm_sid)0;
     
     return next_sid;
 }
 
-const char * const calm_table_retrieve(const calm_id sid) {
-    assert(internal_calm_table != NULL);
-    assert(internal_calm_table->store != NULL);
+const char * const calm_table_retrieve(const calm_table* const table_ref, const calm_sid sid) {
+    assert(table_ref != NULL);
+    assert(table_ref->store != NULL);
     
-    return calm_store_retrieve(internal_calm_table->store, sid);
+    return calm_store_retrieve(table_ref->store, sid);
 }
 
 
 /* ************************************************************************** */
-#pragma mark - demo
 
-#define X(id) calm_store_retrieve(store_ref,id)
-void calm_store_demo() {
-    calm_store * store_ref = calm_store_create(1);
-    
-    for (int i = 0; i <500; i++) {
-        calm_sid a = calm_store_save(store_ref, "Hello");
-        calm_sid b = calm_store_save(store_ref, ", ");
-        calm_sid c = calm_store_save(store_ref, "World");
-        calm_sid d = calm_store_save(store_ref, "!");
-        calm_sid e = calm_store_save(store_ref, "");
-        calm_sid f = calm_store_save(store_ref, "Hello");
-        
-        printf("%zu %zu %zu %zu %zu - %zu /**/ %s%s%s%s%s - %s\n",
-               a,b,c,d,e,f, /**/ X(a),X(b),X(c),X(d),X(e),X(f));
-        
-    }
-    calm_store_delete(&store_ref);
-    assert(store_ref == NULL);
-    calm_store_delete(&store_ref);
-    
-    
-
-    
+calm_table* calm_table_check(void* symbolTableRef) {
+    calm_table* ref = (calm_table*)symbolTableRef;
+    assert(ref->signature == CALM_SYMBOL_TABLE_SIGNATURE);
+    return ref;
 }
 
-void calm_trie_demo() {
-    calm_trie * trie_ref = calm_trie_create(5);
-    assert(trie_ref != NULL);
-    assert(trie_ref->size = 1);
-    
-    calm_trie_node *node_ref = calm_trie_retrieve(trie_ref, 0);
-    
-    assert(node_ref == trie_ref -> memory);
-    
-    node_ref = calm_trie_retrieve(trie_ref, 1);
-    
-    assert(node_ref == NULL);
-    
-    calm_tid tid0 = calm_trie_build_prefix(trie_ref, "Hello, World!");
-    calm_tid tid1 = calm_trie_build_prefix(trie_ref, "How are you?");
-    calm_tid tid2 = calm_trie_build_prefix(trie_ref, "Hello, World!");
-    
-    printf("%zu %zu %zu\n",tid0,tid1,tid2);
-    assert(tid0 != tid1);
-    assert(tid0 == tid2);
-    
-    assert(tid0 == 13);
-    
-    
-    calm_trie_delete(&trie_ref);
-    assert(trie_ref == NULL);
-    
+#pragma mark - 'public' functions
+
+CalmSymbolTableRef calmMakeSymbolTable(size_t capacity) {
+    return calm_table_create(capacity);
+}
+void calmDeleteSymbolTable(CalmSymbolTableRef* symbolTableRefRef) {
+    calm_table_delete((calm_table**)symbolTableRefRef);
+}
+
+CalmId calmStoreSymbol(CalmSymbolTableRef symbolTableRef, const char * const cstring) {
+    return calm_table_store(calm_table_check(symbolTableRef), cstring);
+}
+
+CalmId calmNextSymbol(CalmSymbolTableRef symbolTableRef, CalmId sid) {
+    return calm_table_next(calm_table_check(symbolTableRef), sid);
+}
+
+const char* const calmGetSybmol(CalmSymbolTableRef symbolTableRef, CalmId sid) {
+    return calm_table_retrieve(calm_table_check(symbolTableRef), sid);
 }
 
 

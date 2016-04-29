@@ -13,6 +13,7 @@
 
 typedef size_t CalmId;
 typedef CalmId CalmSID;     /* Symbol Identifier */
+typedef CalmId CalmTID;     /* term (node) identifier */
 typedef void* CalmParsingTableRef;
 
 #pragma mark - symbol table
@@ -24,6 +25,9 @@ CalmSID calmStoreSymbol(CalmParsingTableRef, const char * const);
 CalmSID calmNextSymbol(CalmParsingTableRef, CalmSID);
 const char* const calmGetSymbol(CalmParsingTableRef, CalmSID);
 
-
+CalmTID calmStoreConnective(CalmParsingTableRef,CalmSID,CalmTID);
+CalmTID calmStoreVariable(CalmParsingTableRef,CalmSID);
+CalmTID calmStoreConstant(CalmParsingTableRef,CalmSID);
+CalmTID calmLinkTerms(CalmParsingTableRef,CalmTID,CalmTID);
 
 #endif /* calm_h */

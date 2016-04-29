@@ -19,7 +19,7 @@ typedef CalmSID calm_sid;
 typedef int calm_cidx;
 
 typedef enum { CALM_FAILED = -1, CALM_OK = 0 } CALM_STATUS;
-typedef enum { CALM_TYPE_UNKNOWN = 0, CALM_VARIABLE, CALM_FUNCTION } CALM_TYPE;
+typedef enum { CALM_TYPE_UNKNOWN = 0, CALM_VARIABLE, CALM_FUNCTION, CALM_CONNECTIVE } CALM_TYPE;
 
 typedef struct {
     CalmSID sid;
@@ -509,6 +509,33 @@ CalmSID calmNextSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid) {
 
 const char* const calmGetSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid) {
     return calm_table_retrieve(calm_table_check(symbolTableRef), sid);
+}
+
+/* */
+
+CalmTID calmStoreVariable(CalmParsingTableRef symbolTableRef, CalmSID sid) {
+    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_VARIABLE);
+    
+}
+CalmTID calmStoreConstant(CalmParsingTableRef symbolTableRef, CalmSID sid) {
+    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_FUNCTION);
+}
+
+CalmTID calmStoreConnective(CalmParsingTableRef symbolTableRef, CalmSID sid, CalmTID firstchild) {
+    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_CONNECTIVE);
+}
+
+/****/
+
+CalmTID calmLinkTerms(CalmParsingTableRef symbolTableRef,CalmTID first,CalmTID next) {
+    calm_term_node *node = calm_term_store_retrieve(symbolTableRef, first);
+    assert(node != NULL);
+    assert(node->sibling == 0);
+    
+    node->sibling = next;
+    
+    return first;
+    
 }
 
 

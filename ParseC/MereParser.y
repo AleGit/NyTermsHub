@@ -19,16 +19,16 @@
 %union
 {
     char* cstring;
-    char* obj;
-    char* node;
-    char* string;
-    char* tptpformula;
-    char* tptpinclude;
-    char* annotations;
-    char* nodes;
-    char* strings;
+    CalmId obj;
+    CalmId node;
+    CalmId string;
+    CalmId tptpformula;
+    CalmId tptpinclude;
+    CalmId annotations;
+    CalmId nodes;
+    CalmId strings;
     int role;
-    char* type;
+    CalmId type;
 }
 
 
@@ -445,36 +445,36 @@ general_term        :   general_data
 |   general_data  ':' general_term
 |   general_list
 general_data        :   atomic_word
-|   general_function
-|   variable { $$=CREATE_Variable($1); }
-|   number { $$=CREATE_Constant($1); }
-|   DISTINCT_OBJECT {$$=CREATE_DISTINCT($1); }
-|   formula_data
+                    |   general_function
+                    |   variable                    { $$=CREATE_Variable($1); }
+                    |   number                      { $$=CREATE_Constant($1); }
+                    |   DISTINCT_OBJECT {$$=CREATE_DISTINCT($1); }
+                    |   formula_data
 general_function    :   atomic_word '(' general_terms ')'
 formula_data        :   DOLLAR_FOF '(' fof_formula ')'
-|   DOLLAR_CNF '(' cnf_formula ')'
-|   DOLLAR_FOT '(' term ')'
+                    |   DOLLAR_CNF '(' cnf_formula ')'
+                    |   DOLLAR_FOT '(' term ')'
 general_list        :   '[' ']' { $$=NULLREF; }
-|   '[' general_terms ']' {$$=NULLREF;}
+                    |   '[' general_terms ']' {$$=NULLREF;}
 general_terms       :   general_term
-|   general_terms ',' general_term
+                    |   general_terms ',' general_term
 
 /*-- general purpose --*/
-name                :   atomic_word      /* { $$ = $1; } */
-|   INTEGER { $$ = CREATE_STRING($1); }
+name                :   atomic_word                 /* { $$ = $1; } */
+                    |   INTEGER                     { $$ = CREATE_STRING($1); }
 
-atomic_word         :   LOWER_WORD { $$ = CREATE_STRING($1); }
-|                       SINGLE_QUOTED { $$ = CREATE_STRING($1); }
-
-
-atomic_defined_word     :   DOLLAR_WORD    { $$ = CREATE_STRING($1); }
-atomic_system_word      :   DOLLAR_DOLLAR_WORD   { $$ = CREATE_STRING($1); }
-number                  :   INTEGER { $$ = CREATE_STRING($1); }
-|   RATIONAL { $$ = CREATE_STRING($1); }
-|   REAL { $$ = CREATE_STRING($1); }
+atomic_word         :   LOWER_WORD                  { $$ = CREATE_STRING($1); }
+                    |   SINGLE_QUOTED               { $$ = CREATE_STRING($1); }
 
 
-file_name           :   SINGLE_QUOTED { $$ = CREATE_STRING($1);}
+atomic_defined_word     :   DOLLAR_WORD             { $$ = CREATE_STRING($1); }
+atomic_system_word      :   DOLLAR_DOLLAR_WORD      { $$ = CREATE_STRING($1); }
+number                  :   INTEGER                 { $$ = CREATE_STRING($1); }
+                        |   RATIONAL                { $$ = CREATE_STRING($1); }
+                        |   REAL                    { $$ = CREATE_STRING($1); }
+
+
+file_name           :   SINGLE_QUOTED               { $$ = CREATE_STRING($1);}
 null                :   /* <null> */
 
 /*

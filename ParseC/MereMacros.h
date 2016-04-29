@@ -4,57 +4,57 @@
 #ifndef MereMacros_h
 #define MereMacros_h
 
-#define NULLREF                     NULL
+#define NULLREF                     0
 
 #define DID_PARSE_FORMULA(a)        return 0
 #define DID_PARSE_INCLUDE(a)        return 0
 
-#define CREATE_ANNOTATED(a,b,c,d,e) NULL
-#define CREATE_INCLUDE(a,b)         NULL
+#define CREATE_ANNOTATED(a,b,c,d,e) NULLREF
+#define CREATE_INCLUDE(a,b)         NULLREF
 
 
-#define CREATE_Quantified(b,c,d)    NULL // quantified
-#define CREATE_Functional(b,c)      NULL // function, predicate
-#define CREATE_Equational(b,c)      NULL // equation, inequation
-#define CREATE_Connective(b,c)      NULL // connective
-#define CREATE_Constant(b)          NULL // constant
-#define CREATE_Variable(b)          NULL // variable
+#define CREATE_Quantified(b,c,d)    NULLREF // quantified
+#define CREATE_Functional(b,c)      NULLREF // function, predicate
+#define CREATE_Equational(b,c)      NULLREF // equation, inequation
+#define CREATE_Connective(sid,child)    calmStoreConnective(symbolTable, sid, child) // connective
+#define CREATE_Constant(sid)    calmStoreConstant(symbolTable, sid) // constant
+#define CREATE_Variable(sid)    calmStoreVariable(symbolTable, sid) // variable
 
-#define CREATE_NODES0()             NULL // empty list
-#define CREATE_NODES1(a)            NULL // unary list
-#define CREATE_NODES2(a,b)          NULL // binary list
+#define CREATE_NODES0()             (CalmSID)0  // empty list
+#define CREATE_NODES1(a)            a           // unary list
+#define CREATE_NODES2(a,b)          calmLinkTerms(symbolTable, a, b) // binary list
 
 #define PREDICATE(a)                a;  /* register_predicate(a) */
 
-#define APPEND(a,b)                 NULL
-#define INSERT(a,b)                 NULL
+#define APPEND(a,b)                 NULLREF
+#define INSERT(a,b)                 NULLREF
 
-#define CREATE_STRING(a)            NULL; calmStoreSymbol(symbolTable, a);
-#define CREATE_STRINGS1(a)          NULL
+#define CREATE_STRING(a)            calmStoreSymbol(symbolTable, a)
+#define CREATE_STRINGS1(a)          NULLREF
 
-#define CREATE_DISTINCT(a)          NULL
+#define CREATE_DISTINCT(a)          NULLREF
 
 #define MAKE_ROLE(a)                1
 
-#define NODES_APPEND(a,b)           NULL
-#define STRINGS_APPEND(a,b)         NULL
+#define NODES_APPEND(a,b)           NULLREF
+#define STRINGS_APPEND(a,b)         NULLREF
 #define SET_PARENTHESES(a)
 
-#define _NOT_       "~"
-#define _OR_        "|"
-#define _AND_       "&"
-#define _GENTZEN_   "-->"
-#define _COMMA_     ","
-#define _IFF_       "<=>"
-#define _IMPLY_     "=>"
-#define _YLPMI_     "<="
-#define _NIFF_      "<~>"
-#define _NOR_       "~|"
-#define _NAND_      "~&"
-#define _FORALL_    "!"
-#define _EXISTS_    "?"
-#define _EQUAL_     "="
-#define _NEQ_       "!="
+#define _NOT_       calmStoreSymbol(symbolTable,"~")
+#define _OR_        calmStoreSymbol(symbolTable,"|")
+#define _AND_       calmStoreSymbol(symbolTable,"&")
+#define _GENTZEN_   calmStoreSymbol(symbolTable,"-->")
+#define _COMMA_     calmStoreSymbol(symbolTable,",")
+#define _IFF_       calmStoreSymbol(symbolTable,"<=>")
+#define _IMPLY_     calmStoreSymbol(symbolTable,"=>")
+#define _YLPMI_     calmStoreSymbol(symbolTable,"<=")
+#define _NIFF_      calmStoreSymbol(symbolTable,"<~>")
+#define _NOR_       calmStoreSymbol(symbolTable,"~|")
+#define _NAND_      calmStoreSymbol(symbolTable,"~&")
+#define _FORALL_    calmStoreSymbol(symbolTable,"!")
+#define _EXISTS_    calmStoreSymbol(symbolTable,"?")
+#define _EQUAL_     calmStoreSymbol(symbolTable,"=")
+#define _NEQ_       calmStoreSymbol(symbolTable,"!=")
 
 
 

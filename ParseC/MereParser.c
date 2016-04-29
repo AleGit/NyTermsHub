@@ -9,7 +9,7 @@
 // #include <stdio.h>
 #import "MereParser.h"
 
-CalmSymbolTableRef symbolTable;
+CalmParsingTableRef symbolTable;
 
 
 

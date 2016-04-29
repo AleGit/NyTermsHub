@@ -13,8 +13,8 @@ class CalmTests: XCTestCase {
     
     func testCalmTableDemo() {
         for capacity in [0, 30, 900, 810000] {
-            var symbolTable = calmMakeSymbolTable(capacity)
-            defer { calmDeleteSymbolTable(&symbolTable) }
+            var symbolTable = calmMakeParsingTable(capacity)
+            defer { calmDeleteParsingTable(&symbolTable) }
             
             let strings = ["Hello", "🍜🍻🍕", "World", "Hello", "", "∀𝛕", "💤", "Hällü, Wörld!"]
             
@@ -27,23 +27,23 @@ class CalmTests: XCTestCase {
             XCTAssertEqual(0, sids[4]);
             
             let mapping = sids[0..<strings.count].map {
-                (CalmId) -> (CalmId, String, UInt) in
-                let cstring = calmGetSybmol(symbolTable, CalmId)
-                return (CalmId, String.fromCString(cstring)!, strlen(cstring))
+                (CalmSID) -> (CalmSID, String, UInt) in
+                let cstring = calmGetSymbol(symbolTable, CalmSID)
+                return (CalmSID, String.fromCString(cstring)!, strlen(cstring))
             }
             
             print(mapping);
             
             var sid = calmNextSymbol(symbolTable, 0);
             while sid != 0 {
-                let string = String.fromCString( calmGetSybmol(symbolTable, sid) )
+                let string = String.fromCString( calmGetSymbol(symbolTable, sid) )
                 print(sid,string)
                 
                 sid = calmNextSymbol(symbolTable, sid);
             }
         }
         
-        //        let backs = sids.map { String.fromCString(calmGetSybmol(symbolTable, $0))! }
+        //        let backs = sids.map { String.fromCString(calmGetSymbol(symbolTable, $0))! }
         //        XCTAssertEqual(strings, backs);
         
     }

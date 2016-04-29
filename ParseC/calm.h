@@ -12,14 +12,18 @@
 #import <CoreFoundation/CoreFoundation.h>
 
 typedef size_t CalmId;
-typedef void* CalmSymbolTableRef;
+typedef CalmId CalmSID;     /* Symbol Identifier */
+typedef void* CalmParsingTableRef;
 
 #pragma mark - symbol table
 
-CalmSymbolTableRef calmMakeSymbolTable(size_t);
-void calmDeleteSymbolTable(CalmSymbolTableRef*);
-CalmId calmStoreSymbol(CalmSymbolTableRef, const char * const);
-CalmId calmNextSymbol(CalmSymbolTableRef, CalmId);
-const char* const calmGetSybmol(CalmSymbolTableRef, CalmId);
+CalmParsingTableRef calmMakeParsingTable(size_t);
+void calmDeleteParsingTable(CalmParsingTableRef*);
+
+CalmSID calmStoreSymbol(CalmParsingTableRef, const char * const);
+CalmSID calmNextSymbol(CalmParsingTableRef, CalmSID);
+const char* const calmGetSymbol(CalmParsingTableRef, CalmSID);
+
+
 
 #endif /* calm_h */

@@ -8,13 +8,13 @@
 
 #include "calm.h"
 
-#define CALM_SYMBOL_TABLE_SIGNATURE 0xFEDCBA9876543210
+#define CALM_PARSING_TABLE_SIGNATURE 0xFEDCBA9876543210
 
 #pragma mark 'private' functions (declarations)
 
-typedef CalmId calm_sid;   // string identifier
-typedef CalmId calm_tid;   // trie node identifier
-typedef CalmId calm_vid;
+typedef CalmId calm_pid;   // trie node identifier
+typedef CalmId calm_tid;
+typedef CalmSID calm_sid;
 
 typedef int calm_cidx;
 
@@ -22,16 +22,16 @@ typedef enum { CALM_FAILED = -1, CALM_OK = 0 } CALM_STATUS;
 typedef enum { CALM_TYPE_UNKNOWN = 0, CALM_VARIABLE, CALM_FUNCTION } CALM_TYPE;
 
 typedef struct {
-    calm_sid sid;
-    calm_tid nexts[256];
-} calm_trie_node;
+    CalmSID sid;
+    calm_pid nexts[256];
+} calm_prefix_node;
 
-typedef struct calm_vertex {
-    calm_sid sid;
-    calm_vid sibling;
-    calm_vid child;
+typedef struct calm_term_node {
+    CalmSID sid;
+    calm_tid sibling;
+    calm_tid child;
     CALM_TYPE type;
-} calm_vertex;
+} calm_term_node;
 
 typedef struct {
     void * memory;
@@ -43,26 +43,26 @@ typedef struct {
     char *memory;
     size_t capacity;
     size_t size;
-} calm_store;
+} calm_char_store;
 
 typedef struct {
-    calm_trie_node *memory;
+    calm_prefix_node *memory;
     size_t capacity;
     size_t size;
-} calm_trie;
+} calm_prefix_store;
 
 typedef struct {
-    calm_vertex *memory;
+    calm_term_node *memory;
     size_t capacity;
     size_t size;
-} calm_vertices;
+} calm_term_store;
 
 
 typedef struct {
     unsigned long signature;
-    calm_store* store;
-    calm_trie* trie;
-    calm_vertices* vertices;
+    calm_char_store* strings;
+    calm_prefix_store* prefixes;
+    calm_term_store* terms;
 } calm_table;
 
 /* memory */
@@ -73,32 +73,32 @@ void calm_memory_delete(calm_memory** refref);
 
 /* (string) store */
 
-calm_store* calm_store_create(size_t capacity);
-CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity);
-void calm_store_delete(calm_store** store_ref);
-calm_sid calm_store_save(calm_store* store_ref, const char* const cstring);
-const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid);
+calm_char_store* calm_char_store_create(size_t capacity);
+CALM_STATUS calm_char_store_ensure(calm_char_store* store_ref, size_t capacity);
+void calm_char_store_delete(calm_char_store** store_ref);
+CalmSID calm_char_store_append(calm_char_store* store_ref, const char* const cstring);
+const char* const calm_char_store_retrieve(calm_char_store* store_ref, const CalmSID sid);
 
 /* trie */
 
-calm_trie* calm_trie_create(size_t capacity);
-CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity);
-void calm_trie_delete(calm_trie** trie_ref);
+calm_prefix_store* calm_prefix_store_create(size_t capacity);
+CALM_STATUS calm_prefix_store_ensure(calm_prefix_store* trie_ref, size_t capacity);
+void calm_prefix_store_delete(calm_prefix_store** trie_ref);
 
-calm_tid calm_trie_node_append(calm_trie * trie_ref);
-calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid);
+calm_pid calm_prefix_store_append(calm_prefix_store * trie_ref, calm_sid);
+calm_prefix_node* calm_prefix_store_retrieve(calm_prefix_store* trie_ref, calm_pid tid);
 
-calm_tid calm_trie_node_next(calm_trie* trie_ref, calm_tid tid, calm_cidx cidx);
-calm_tid calm_trie_build_prefix(calm_trie* trie_ref, const char* const cstring);
+calm_pid calm_prefix_build_step(calm_prefix_store* trie_ref, calm_pid tid, calm_cidx cidx);
+calm_pid calm_prefix_build_path(calm_prefix_store* trie_ref, const char* const cstring);
 
 /* (term) vertices */
 
-calm_vertices* calm_vertices_create(size_t);
-CALM_STATUS calm_vertices_ensure(calm_vertices*, size_t);
-void calm_vertices_delete(calm_vertices**);
+calm_term_store* calm_term_store_create(size_t);
+CALM_STATUS calm_term_store_ensure(calm_term_store*, size_t);
+void calm_term_store_delete(calm_term_store**);
 
-calm_vid calm_vertex_append(calm_vertices*);
-calm_vertex* calm_verex_retrieve(calm_vertices*, calm_vid);
+calm_tid calm_term_store_append(calm_term_store*,calm_sid,calm_tid,calm_tid,CALM_TYPE);
+calm_term_node* calm_term_store_retrieve(calm_term_store*, calm_tid);
 
 
 
@@ -106,9 +106,27 @@ calm_vertex* calm_verex_retrieve(calm_vertices*, calm_vid);
 
 calm_table* calm_table_create(const size_t);
 void calm_table_delete(calm_table**);
-calm_sid calm_table_store(const calm_table*, const char * const);
-const char * const calm_table_retrieve(const calm_table* const, const calm_sid);
-calm_sid calm_table_next(const calm_table* const, const calm_sid);
+CalmSID calm_table_store(const calm_table*, const char * const);
+const char * const calm_table_retrieve(const calm_table* const, const CalmSID);
+CalmSID calm_table_next(const calm_table* const, const CalmSID);
+
+#pragma mark - auxiliary functions
+
+calm_cidx calm_cidx_get(const char* const cstring, size_t pos) {
+    calm_cidx cidx = cstring[pos];
+    while (cidx < 0) {
+        // printf("%s %zu %d %d\n", cstring,pos,cidx,cidx+256);
+        cidx += 256;
+    }
+    return cidx;
+}
+
+
+calm_table* calm_table_check(void* symbolTableRef) {
+    calm_table* ref = (calm_table*)symbolTableRef;
+    assert(ref->signature == CALM_PARSING_TABLE_SIGNATURE);
+    return ref;
+}
 
 
 #pragma mark - shared definitions
@@ -163,13 +181,13 @@ void calm_memory_delete(calm_memory** refref) {
 
 #pragma mark - (strings) store
 
-calm_store* calm_store_create(size_t capacity) {
-    assert(sizeof(calm_memory) == sizeof(calm_store));
-    assert(offsetof(calm_memory, memory) == offsetof(calm_store, memory));
-    assert(offsetof(calm_memory, capacity) == offsetof(calm_store, capacity));
-    assert(offsetof(calm_memory, size) == offsetof(calm_store, size));
+calm_char_store* calm_char_store_create(size_t capacity) {
+    assert(sizeof(calm_memory) == sizeof(calm_char_store));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_char_store, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_char_store, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_char_store, size));
     
-    calm_store* store_ref = (calm_store*)calm_memory_create(capacity, sizeof(char));
+    calm_char_store* store_ref = (calm_char_store*)calm_memory_create(capacity, sizeof(char));
     
     if (store_ref == NULL) return NULL;
     
@@ -179,15 +197,15 @@ calm_store* calm_store_create(size_t capacity) {
     return store_ref;
 }
 
-CALM_STATUS calm_store_ensure(calm_store* store_ref, size_t capacity) {
+CALM_STATUS calm_char_store_ensure(calm_char_store* store_ref, size_t capacity) {
     return calm_memory_ensure((calm_memory*)store_ref, capacity, sizeof(char));
 }
 
-void calm_store_delete(calm_store** store_ref_ref) {
+void calm_char_store_delete(calm_char_store** store_ref_ref) {
     calm_memory_delete((calm_memory**)store_ref_ref);
 }
 
-calm_sid calm_store_save(calm_store* store_ref, const char* const cstring) {
+CalmSID calm_char_store_append(calm_char_store* store_ref, const char* const cstring) {
     assert(store_ref->memory != NULL);
     assert(store_ref->capacity >= 1);
     assert(store_ref->capacity >= store_ref->size);
@@ -197,10 +215,10 @@ calm_sid calm_store_save(calm_store* store_ref, const char* const cstring) {
     size_t sid = store_ref->size;
     size_t len = strlen(cstring);
     
-    if (len == 0) return (calm_sid)0;   // empty string's sid is always zero.
+    if (len == 0) return (CalmSID)0;   // empty string's sid is always zero.
     
-    if (calm_store_ensure(store_ref, store_ref->size + len + 1) != CALM_OK) {
-        return (calm_sid)0;
+    if (calm_char_store_ensure(store_ref, store_ref->size + len + 1) != CALM_OK) {
+        return (CalmSID)0;
     }
     
     char *dest = store_ref->memory + store_ref->size;
@@ -216,7 +234,7 @@ calm_sid calm_store_save(calm_store* store_ref, const char* const cstring) {
     return sid;
 }
 
-const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid) {
+const char* const calm_char_store_retrieve(calm_char_store* store_ref, const CalmSID sid) {
     if(store_ref == NULL || sid >= store_ref->size) {
         return NULL;
     }
@@ -226,17 +244,17 @@ const char* const calm_store_retrieve(calm_store* store_ref, const calm_sid sid)
 
 #pragma mark - (strings) trie
 
-calm_trie* calm_trie_create(size_t capacity) {
-    assert(sizeof(calm_memory) == sizeof(calm_trie));
-    assert(offsetof(calm_memory, memory) == offsetof(calm_trie, memory));
-    assert(offsetof(calm_memory, capacity) == offsetof(calm_trie, capacity));
-    assert(offsetof(calm_memory, size) == offsetof(calm_trie, size));
+calm_prefix_store* calm_prefix_store_create(size_t capacity) {
+    assert(sizeof(calm_memory) == sizeof(calm_prefix_store));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_prefix_store, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_prefix_store, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_prefix_store, size));
     
-    calm_trie* trie_ref = (calm_trie*)calm_memory_create(capacity, sizeof(calm_trie_node));
+    calm_prefix_store* trie_ref = (calm_prefix_store*)calm_memory_create(capacity, sizeof(calm_prefix_node));
     
     if (trie_ref == NULL) return NULL;
     
-    calm_tid tid = calm_trie_node_append(trie_ref);
+    calm_pid tid = calm_prefix_store_append(trie_ref, 0);
     
     assert(tid == 0);
     assert((trie_ref->memory)->sid == 0);
@@ -246,34 +264,34 @@ calm_trie* calm_trie_create(size_t capacity) {
     return trie_ref;
 }
 
-CALM_STATUS calm_trie_ensure(calm_trie* trie_ref, size_t capacity) {
-    return calm_memory_ensure((calm_memory*)trie_ref, capacity, sizeof(calm_trie_node));
+CALM_STATUS calm_prefix_store_ensure(calm_prefix_store* trie_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)trie_ref, capacity, sizeof(calm_prefix_node));
 }
 
-void calm_trie_delete(calm_trie** trie_ref_ref) {
+void calm_prefix_store_delete(calm_prefix_store** trie_ref_ref) {
     calm_memory_delete((calm_memory**)trie_ref_ref);
 }
 
-calm_tid calm_trie_node_append(calm_trie * trie_ref) {
-    calm_tid tid = trie_ref->size;
+calm_pid calm_prefix_store_append(calm_prefix_store * trie_ref, calm_sid sid) {
+    calm_pid tid = trie_ref->size;
     
-    if ( calm_trie_ensure(trie_ref, (trie_ref->size)+1) != CALM_OK) {
-        return (calm_tid)0;
+    if ( calm_prefix_store_ensure(trie_ref, (trie_ref->size)+1) != CALM_OK) {
+        return (calm_pid)0;
     }
     
     trie_ref->size += 1;
     
-    calm_trie_node *node = (trie_ref->memory + tid);
+    calm_prefix_node *node = (trie_ref->memory + tid);
     
-    node->sid = (calm_sid)0;
+    node->sid = sid;
     for (calm_cidx cidx=0; cidx<256; cidx++) {
-        node->nexts[cidx] = (calm_tid)0;
+        node->nexts[cidx] = (calm_pid)0;
     }
     
     return tid;
     
 }
-calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid) {
+calm_prefix_node* calm_prefix_store_retrieve(calm_prefix_store* trie_ref, calm_pid tid) {
     if (trie_ref == NULL || tid >= trie_ref->size) {
         return NULL;
     }
@@ -281,27 +299,27 @@ calm_trie_node* calm_trie_retrieve(calm_trie* trie_ref, calm_tid tid) {
     return trie_ref->memory + tid;
 }
 
-calm_tid calm_trie_node_next(calm_trie* trie_ref, calm_tid tid, calm_cidx cidx) {
+calm_pid calm_prefix_build_step(calm_prefix_store* trie_ref, calm_pid tid, calm_cidx cidx) {
     assert(0 <= cidx);
     assert(cidx < 256);
     
-    calm_trie_node * node_ref = calm_trie_retrieve(trie_ref, tid);
+    calm_prefix_node * node_ref = calm_prefix_store_retrieve(trie_ref, tid);
     assert(node_ref != NULL);
     
-    calm_tid next_tid = node_ref->nexts[cidx];
+    calm_pid next_tid = node_ref->nexts[cidx];
     
     if (next_tid == 0) {
         void* old_memory = trie_ref->memory;
         size_t old_capacity = trie_ref->capacity;
         size_t old_size = trie_ref->size;
         
-        next_tid = calm_trie_node_append(trie_ref);
+        next_tid = calm_prefix_store_append(trie_ref, 0);
         
         assert(trie_ref->capacity >= old_capacity);
         assert(trie_ref->size == old_size+1);
         
         if (old_memory != trie_ref->memory) {
-            node_ref = calm_trie_retrieve(trie_ref, tid);
+            node_ref = calm_prefix_store_retrieve(trie_ref, tid);
             assert(node_ref != NULL);
         }
         
@@ -313,29 +331,20 @@ calm_tid calm_trie_node_next(calm_trie* trie_ref, calm_tid tid, calm_cidx cidx) 
     
 }
 
-calm_cidx calm_cidx_get(const char* const cstring, size_t pos) {
-    calm_cidx cidx = cstring[pos];
-    while (cidx < 0) {
-        // printf("%s %zu %d %d\n", cstring,pos,cidx,cidx+256);
-        cidx += 256;
-    }
-    return cidx;
-}
-
-calm_tid calm_trie_build_prefix(calm_trie* trie_ref, const char* const cstring) {
+calm_pid calm_prefix_build_path(calm_prefix_store* trie_ref, const char* const cstring) {
     assert(trie_ref != NULL);
     assert(trie_ref->memory != NULL);
     assert(trie_ref->capacity > 0);
     assert(trie_ref->size > 0);
     
-    calm_tid tid = (calm_tid)0;
+    calm_pid tid = (calm_pid)0;
     size_t len = strlen(cstring);
     size_t pos = (size_t)0;
     
     while (pos < len) {
         calm_cidx cidx = calm_cidx_get(cstring,pos);
         
-        tid = calm_trie_node_next(trie_ref, tid, cidx);
+        tid = calm_prefix_build_step(trie_ref, tid, cidx);
         
         assert(0 < tid);
         assert(tid < trie_ref->size);
@@ -348,86 +357,85 @@ calm_tid calm_trie_build_prefix(calm_trie* trie_ref, const char* const cstring) 
 
 #pragma mark - vertices (terms)
 
-calm_vertices* calm_vertices_create(size_t capacity) {
+calm_term_store* calm_term_store_create(size_t capacity) {
     
-    assert(sizeof(calm_memory) == sizeof(calm_vertices));
-    assert(offsetof(calm_memory, memory) == offsetof(calm_vertices, memory));
-    assert(offsetof(calm_memory, capacity) == offsetof(calm_vertices, capacity));
-    assert(offsetof(calm_memory, size) == offsetof(calm_vertices, size));
+    assert(sizeof(calm_memory) == sizeof(calm_term_store));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_term_store, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_term_store, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_term_store, size));
     
-    calm_vertices* vertices_ref = (calm_vertices*)calm_memory_create(capacity, sizeof(calm_vertex));
+    calm_term_store* term_store_ref = (calm_term_store*)calm_memory_create(capacity, sizeof(calm_term_node));
     
-    if (vertices_ref == NULL) return NULL;
+    if (term_store_ref == NULL) return NULL;
     
-    calm_vid vid = calm_vertex_append(vertices_ref);
+    calm_tid vid = calm_term_store_append(term_store_ref, 0,0,0,CALM_TYPE_UNKNOWN);
     
     assert(vid == 0);
-    assert((vertices_ref->memory)->sid == 0);
+    assert((term_store_ref->memory)->sid == 0);
     
-    return vertices_ref;
+    return term_store_ref;
     
 }
 
-CALM_STATUS calm_vertices_ensure(calm_vertices* vertices_ref, size_t capacity) {
-    return calm_memory_ensure((calm_memory*)vertices_ref, capacity, sizeof(calm_vertex));
+CALM_STATUS calm_term_store_ensure(calm_term_store* term_store_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)term_store_ref, capacity, sizeof(calm_term_node));
 }
 
-void calm_vertices_delete(calm_vertices** vertices_ref_ref) {
-    calm_memory_delete((calm_memory**)vertices_ref_ref);
+void calm_term_store_delete(calm_term_store** term_store_ref_ref) {
+    calm_memory_delete((calm_memory**)term_store_ref_ref);
 }
 
-calm_vid calm_vertex_append(calm_vertices* vertices_ref) {
-    calm_vid vid = vertices_ref->size;
+calm_tid calm_term_store_append(calm_term_store* term_store_ref, calm_sid sid, calm_tid sibling, calm_tid child, CALM_TYPE type) {
+    calm_tid vid = term_store_ref->size;
     
-    if ( calm_vertices_ensure(vertices_ref, (vertices_ref->size)+1) != CALM_OK) {
-        return (calm_vid)0;
+    if ( calm_term_store_ensure(term_store_ref, (term_store_ref->size)+1) != CALM_OK) {
+        return (calm_tid)0;
     }
     
-    vertices_ref->size += 1;
+    term_store_ref->size += 1;
     
-    calm_vertex *vertex = (vertices_ref->memory + vid);
+    calm_term_node *vertex = (term_store_ref->memory + vid);
     
-    vertex->sid = (calm_sid)0;          // no name
-    vertex->sibling = (calm_vid)0;      // no sibling
-    vertex->child = (calm_vid)0;        // no child
-    vertex->type = CALM_TYPE_UNKNOWN;   // no type
+    vertex->sid = sid;          // no name
+    vertex->sibling = sibling;      // no sibling
+    vertex->child = child;        // no child
+    vertex->type = type;   // no type
     
     return vid;
-    
 }
 
-calm_vertex* calm_verex_retrieve(calm_vertices* vertices_ref, calm_vid vid) {
-    if (vertices_ref == NULL || vid > vertices_ref->size) return NULL;
+calm_term_node* calm_term_store_retrieve(calm_term_store* term_store_ref, calm_tid vid) {
+    if (term_store_ref == NULL || vid > term_store_ref->size) return NULL;
     
-    return vertices_ref->memory + vid;
+    return term_store_ref->memory + vid;
 }
 
 #pragma mark - symbol table
 
 calm_table* calm_table_create(const size_t capacity) {
     calm_table *table_ref = calloc(1,sizeof(calm_table));
-    table_ref->signature = CALM_SYMBOL_TABLE_SIGNATURE;
-    table_ref->store = calm_store_create(capacity);
-    table_ref->trie = calm_trie_create(capacity);
-    table_ref->vertices = calm_vertices_create(capacity/10);
+    table_ref->signature = CALM_PARSING_TABLE_SIGNATURE;
+    table_ref->strings = calm_char_store_create(capacity);
+    table_ref->prefixes = calm_prefix_store_create(capacity);
+    table_ref->terms = calm_term_store_create(capacity/10);
     return table_ref;
     
 }
 void calm_table_delete(calm_table** refref) {
     assert(refref != NULL);
     calm_table* ref = *refref;
-    assert(ref->signature == CALM_SYMBOL_TABLE_SIGNATURE);
+    assert(ref->signature == CALM_PARSING_TABLE_SIGNATURE);
     
     if (ref != NULL) {
         
-        calm_store_delete(&(ref->store));
-        assert(ref->store == NULL);
+        calm_char_store_delete(&(ref->strings));
+        assert(ref->strings == NULL);
         
-        calm_trie_delete(&(ref->trie));
-        assert(ref->trie == NULL);
+        calm_prefix_store_delete(&(ref->prefixes));
+        assert(ref->prefixes == NULL);
         
-        calm_vertices_delete(&(ref->vertices));
-        assert(ref->vertices == NULL);
+        calm_term_store_delete(&(ref->terms));
+        assert(ref->terms == NULL);
         
         free(ref);
         *refref = NULL;
@@ -436,19 +444,19 @@ void calm_table_delete(calm_table** refref) {
     assert(*refref == NULL);
 }
 
-calm_sid calm_table_store(const calm_table* const table_ref, const char * const cstring) {
+CalmSID calm_table_store(const calm_table* const table_ref, const char * const cstring) {
     assert(table_ref != NULL);
-    assert(table_ref->trie != NULL);
-    assert(table_ref->store != NULL);
+    assert(table_ref->prefixes != NULL);
+    assert(table_ref->strings != NULL);
     
     if (strlen(cstring) == 0) return 0;
     
-    calm_tid tid = calm_trie_build_prefix(table_ref->trie, cstring);
+    calm_pid tid = calm_prefix_build_path(table_ref->prefixes, cstring);
     assert(0 < tid);
     
-    calm_trie_node* node_ref = calm_trie_retrieve(table_ref->trie, tid);
+    calm_prefix_node* node_ref = calm_prefix_store_retrieve(table_ref->prefixes, tid);
     if (node_ref->sid == 0) {
-        node_ref->sid = calm_store_save(table_ref->store, cstring);
+        node_ref->sid = calm_char_store_append(table_ref->strings, cstring);
     }
     
     return node_ref->sid;
@@ -456,54 +464,50 @@ calm_sid calm_table_store(const calm_table* const table_ref, const char * const 
     
 }
 
-calm_sid calm_table_next(const calm_table* const table_ref, const calm_sid sid) {
+CalmSID calm_table_next(const calm_table* const table_ref, const CalmSID sid) {
     const char* const cstring = calm_table_retrieve(table_ref,sid);
     
-    if (cstring == NULL) return (calm_sid)0;
+    if (cstring == NULL) return (CalmSID)0;
     
     size_t len = strlen(cstring);
     
-    calm_sid next_sid = sid + len + 1;
+    CalmSID next_sid = sid + len + 1;
     
-    if (next_sid >= table_ref->store->size) return (calm_sid)0;
+    if (next_sid >= table_ref->strings->size) return (CalmSID)0;
     
     return next_sid;
 }
 
-const char * const calm_table_retrieve(const calm_table* const table_ref, const calm_sid sid) {
+const char * const calm_table_retrieve(const calm_table* const table_ref, const CalmSID sid) {
     assert(table_ref != NULL);
-    assert(table_ref->store != NULL);
+    assert(table_ref->strings != NULL);
     
-    return calm_store_retrieve(table_ref->store, sid);
+    return calm_char_store_retrieve(table_ref->strings, sid);
 }
 
 
 /* ************************************************************************** */
 
-calm_table* calm_table_check(void* symbolTableRef) {
-    calm_table* ref = (calm_table*)symbolTableRef;
-    assert(ref->signature == CALM_SYMBOL_TABLE_SIGNATURE);
-    return ref;
-}
 
-#pragma mark - 'public' functions
+#pragma mark - 'public' functions definitions
 
-CalmSymbolTableRef calmMakeSymbolTable(size_t capacity) {
+CalmParsingTableRef calmMakeParsingTable(size_t capacity) {
     return calm_table_create(capacity);
 }
-void calmDeleteSymbolTable(CalmSymbolTableRef* symbolTableRefRef) {
+
+void calmDeleteParsingTable(CalmParsingTableRef* symbolTableRefRef) {
     calm_table_delete((calm_table**)symbolTableRefRef);
 }
 
-CalmId calmStoreSymbol(CalmSymbolTableRef symbolTableRef, const char * const cstring) {
+CalmSID calmStoreSymbol(CalmParsingTableRef symbolTableRef, const char * const cstring) {
     return calm_table_store(calm_table_check(symbolTableRef), cstring);
 }
 
-CalmId calmNextSymbol(CalmSymbolTableRef symbolTableRef, CalmId sid) {
+CalmSID calmNextSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid) {
     return calm_table_next(calm_table_check(symbolTableRef), sid);
 }
 
-const char* const calmGetSybmol(CalmSymbolTableRef symbolTableRef, CalmId sid) {
+const char* const calmGetSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid) {
     return calm_table_retrieve(calm_table_check(symbolTableRef), sid);
 }
 

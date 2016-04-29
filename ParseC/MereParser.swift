@@ -20,10 +20,10 @@ func mereParse(path:TptpPath) -> Int32 {
         fclose(file)
     }
     
-    symbolTable = calmMakeSymbolTable(size)
+    symbolTable = calmMakeParsingTable(size)
     defer {
-        print("calmDeleteSymbolTable")
-        calmDeleteSymbolTable(&symbolTable)
+        print("calmDeleteParsingTable")
+        calmDeleteParsingTable(&symbolTable)
     }
     
     mere_in = file
@@ -34,7 +34,7 @@ func mereParse(path:TptpPath) -> Int32 {
     
 //    var sid = calmNextSymbol(symbolTable, 0);
 //    while sid != 0 {
-//        let string = String.fromCString( calmGetSybmol(symbolTable, sid) )
+//        let string = String.fromCString( calmGetSymbol(symbolTable, sid) )
 //        print(sid,string)
 //        
 //        sid = calmNextSymbol(symbolTable, sid);

@@ -19,6 +19,7 @@ typedef CalmId calm_vid;
 typedef int calm_cidx;
 
 typedef enum { CALM_FAILED = -1, CALM_OK = 0 } CALM_STATUS;
+typedef enum { CALM_TYPE_UNKNOWN = 0, CALM_VARIABLE, CALM_FUNCTION } CALM_TYPE;
 
 typedef struct {
     calm_sid sid;
@@ -27,9 +28,9 @@ typedef struct {
 
 typedef struct calm_vertex {
     calm_sid sid;
-    calm_vid *children; // dynamically allocated
-    size_t size;    // 0...256
-    size_t capacity; // 0,4,16,256
+    calm_vid sibling;
+    calm_vid child;
+    CALM_TYPE type;
 } calm_vertex;
 
 typedef struct {
@@ -61,6 +62,7 @@ typedef struct {
     unsigned long signature;
     calm_store* store;
     calm_trie* trie;
+    calm_vertices* vertices;
 } calm_table;
 
 /* memory */
@@ -385,12 +387,10 @@ calm_vid calm_vertex_append(calm_vertices* vertices_ref) {
     
     calm_vertex *vertex = (vertices_ref->memory + vid);
     
-    vertex->sid = (calm_sid)0;
-    vertex->children = NULL;
-    vertex->capacity = 0;
-    vertex->size = 0;
-    
-    // implicityl variable "" (empty name)
+    vertex->sid = (calm_sid)0;          // no name
+    vertex->sibling = (calm_vid)0;      // no sibling
+    vertex->child = (calm_vid)0;        // no child
+    vertex->type = CALM_TYPE_UNKNOWN;   // no type
     
     return vid;
     
@@ -409,6 +409,7 @@ calm_table* calm_table_create(const size_t capacity) {
     table_ref->signature = CALM_SYMBOL_TABLE_SIGNATURE;
     table_ref->store = calm_store_create(capacity);
     table_ref->trie = calm_trie_create(capacity);
+    table_ref->vertices = calm_vertices_create(capacity/10);
     return table_ref;
     
 }
@@ -421,8 +422,13 @@ void calm_table_delete(calm_table** refref) {
         
         calm_store_delete(&(ref->store));
         assert(ref->store == NULL);
+        
         calm_trie_delete(&(ref->trie));
         assert(ref->trie == NULL);
+        
+        calm_vertices_delete(&(ref->vertices));
+        assert(ref->vertices == NULL);
+        
         free(ref);
         *refref = NULL;
     }

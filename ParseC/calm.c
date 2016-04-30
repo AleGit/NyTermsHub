@@ -19,19 +19,32 @@ typedef CalmSID calm_sid;
 typedef int calm_cidx;
 
 typedef enum { CALM_FAILED = -1, CALM_OK = 0 } CALM_STATUS;
-typedef enum { CALM_TYPE_UNKNOWN = 0, CALM_VARIABLE, CALM_FUNCTIONAL, CALM_EQUATIONAL, CALM_CONNECTIVE } CALM_TYPE;
+typedef enum {
+    CALM_TYPE_UNKNOWN = 0,
+    CALM_VARIABLE,
+    CALM_FUNCTIONAL,
+    CALM_EQUATIONAL,
+    CALM_CONNECTIVE,
+    
+    /* annotated_formula | include */
+    CALM_TPTP_ROLE,
+    CALM_TPTP_ANNOTATIONS,
+    CALM_TPTP_CNF_ANNOTATED,
+    CALM_TPTP_FOF_ANNOTATED,
+    CALM_TPTP_INCLUDE
+} CALM_TREE_NODE_TYPE;
 
 typedef struct {
     CalmSID sid;
     calm_pid nexts[256];
 } calm_prefix_node;
 
-typedef struct calm_term_node {
+typedef struct {
     CalmSID sid;
     calm_tid sibling;
     calm_tid child;
-    CALM_TYPE type;
-} calm_term_node;
+    CALM_TREE_NODE_TYPE type;
+} calm_tree_node;
 
 typedef struct {
     void * memory;
@@ -52,17 +65,17 @@ typedef struct {
 } calm_prefix_store;
 
 typedef struct {
-    calm_term_node *memory;
+    calm_tree_node *memory;
     size_t capacity;
     size_t size;
-} calm_term_store;
+} calm_tree_store;
 
 
 typedef struct {
     unsigned long signature;
     calm_char_store* strings;
     calm_prefix_store* prefixes;
-    calm_term_store* terms;
+    calm_tree_store* terms;
 } calm_table;
 
 /* memory */
@@ -93,12 +106,12 @@ calm_pid calm_prefix_build_path(calm_prefix_store* trie_ref, const char* const c
 
 /* (term) vertices */
 
-calm_term_store* calm_term_store_create(size_t);
-CALM_STATUS calm_term_store_ensure(calm_term_store*, size_t);
-void calm_term_store_delete(calm_term_store**);
+calm_tree_store* calm_tree_store_create(size_t);
+CALM_STATUS calm_tree_store_ensure(calm_tree_store*, size_t);
+void calm_tree_store_delete(calm_tree_store**);
 
-calm_tid calm_term_store_append(calm_term_store*,calm_sid,calm_tid,calm_tid,CALM_TYPE);
-calm_term_node* calm_term_store_retrieve(calm_term_store*, calm_tid);
+calm_tid calm_tree_store_append(calm_tree_store*,calm_sid,calm_tid,calm_tid,CALM_TREE_NODE_TYPE);
+calm_tree_node* calm_tree_store_retrieve(calm_tree_store*, calm_tid);
 
 
 
@@ -359,18 +372,18 @@ calm_pid calm_prefix_build_path(calm_prefix_store* trie_ref, const char* const c
 
 #pragma mark - vertices (terms)
 
-calm_term_store* calm_term_store_create(size_t capacity) {
+calm_tree_store* calm_tree_store_create(size_t capacity) {
     
-    assert(sizeof(calm_memory) == sizeof(calm_term_store));
-    assert(offsetof(calm_memory, memory) == offsetof(calm_term_store, memory));
-    assert(offsetof(calm_memory, capacity) == offsetof(calm_term_store, capacity));
-    assert(offsetof(calm_memory, size) == offsetof(calm_term_store, size));
+    assert(sizeof(calm_memory) == sizeof(calm_tree_store));
+    assert(offsetof(calm_memory, memory) == offsetof(calm_tree_store, memory));
+    assert(offsetof(calm_memory, capacity) == offsetof(calm_tree_store, capacity));
+    assert(offsetof(calm_memory, size) == offsetof(calm_tree_store, size));
     
-    calm_term_store* term_store_ref = (calm_term_store*)calm_memory_create(capacity, sizeof(calm_term_node));
+    calm_tree_store* term_store_ref = (calm_tree_store*)calm_memory_create(capacity, sizeof(calm_tree_node));
     
     if (term_store_ref == NULL) return NULL;
     
-    calm_tid vid = calm_term_store_append(term_store_ref, 0,0,0,CALM_TYPE_UNKNOWN);
+    calm_tid vid = calm_tree_store_append(term_store_ref, 0,0,0,CALM_TYPE_UNKNOWN);
     
     assert(vid == 0);
     assert((term_store_ref->memory)->sid == 0);
@@ -379,24 +392,24 @@ calm_term_store* calm_term_store_create(size_t capacity) {
     
 }
 
-CALM_STATUS calm_term_store_ensure(calm_term_store* term_store_ref, size_t capacity) {
-    return calm_memory_ensure((calm_memory*)term_store_ref, capacity, sizeof(calm_term_node));
+CALM_STATUS calm_tree_store_ensure(calm_tree_store* term_store_ref, size_t capacity) {
+    return calm_memory_ensure((calm_memory*)term_store_ref, capacity, sizeof(calm_tree_node));
 }
 
-void calm_term_store_delete(calm_term_store** term_store_ref_ref) {
+void calm_tree_store_delete(calm_tree_store** term_store_ref_ref) {
     calm_memory_delete((calm_memory**)term_store_ref_ref);
 }
 
-calm_tid calm_term_store_append(calm_term_store* term_store_ref, calm_sid sid, calm_tid sibling, calm_tid child, CALM_TYPE type) {
+calm_tid calm_tree_store_append(calm_tree_store* term_store_ref, calm_sid sid, calm_tid sibling, calm_tid child, CALM_TREE_NODE_TYPE type) {
     calm_tid vid = term_store_ref->size;
     
-    if ( calm_term_store_ensure(term_store_ref, (term_store_ref->size)+1) != CALM_OK) {
+    if ( calm_tree_store_ensure(term_store_ref, (term_store_ref->size)+1) != CALM_OK) {
         return (calm_tid)0;
     }
     
     term_store_ref->size += 1;
     
-    calm_term_node *vertex = (term_store_ref->memory + vid);
+    calm_tree_node *vertex = (term_store_ref->memory + vid);
     
     vertex->sid = sid;          // no name
     vertex->sibling = sibling;      // no sibling
@@ -406,7 +419,7 @@ calm_tid calm_term_store_append(calm_term_store* term_store_ref, calm_sid sid, c
     return vid;
 }
 
-calm_term_node* calm_term_store_retrieve(calm_term_store* term_store_ref, calm_tid vid) {
+calm_tree_node* calm_tree_store_retrieve(calm_tree_store* term_store_ref, calm_tid vid) {
     if (term_store_ref == NULL || vid > term_store_ref->size) return NULL;
     
     return term_store_ref->memory + vid;
@@ -414,12 +427,78 @@ calm_term_node* calm_term_store_retrieve(calm_term_store* term_store_ref, calm_t
 
 #pragma mark - symbol table
 
+#define PREDEFINED_SYMBOLS_COUNT 12
+
+void calm_table_store_predefined_symbols(calm_table* table_ref) {
+    
+    char* symbols[PREDEFINED_SYMBOLS_COUNT];
+    size_t index = 0;
+    
+    symbols[index++] = "~";
+    symbols[index++] = "|";
+    symbols[index++] = "&";
+    
+    symbols[index++] = "=";
+    symbols[index++] = "!=";
+    
+    symbols[index++] = "=>";
+    symbols[index++] = "<=";
+    symbols[index++] = "<=>";
+    
+    symbols[index++] = "<~>";
+    symbols[index++] = "~|";
+    symbols[index++] = "~&";
+    
+    symbols[index++] = "-->";
+    
+    
+
+    /* 14 roles
+    symbols[index++] = "unknown";
+    symbols[index++] = "type";
+    symbols[index++] = "fi_predicates";
+    symbols[index++] = "fi_functors";
+    symbols[index++] = "fi_domain";
+    symbols[index++] = "plain";
+    symbols[index++] = "negated_conjecture";
+    symbols[index++] = "conjecture";
+    symbols[index++] = "theorem";
+    symbols[index++] = "lemma";
+    symbols[index++] = "assumption";
+    symbols[index++] = "definition";
+    symbols[index++] = "hypothesis";
+    symbols[index++] = "axiom";
+     */
+    
+    assert(PREDEFINED_SYMBOLS_COUNT == index);
+    
+    
+    size_t expected = 1;
+    
+    for (index = 0; index < PREDEFINED_SYMBOLS_COUNT; index++) {
+        char *symbol = symbols[index];
+        calm_sid sid = calmStoreSymbol(table_ref, symbol);
+        
+#ifdef DEBUG
+        printf("%zu %s #%zu\n",sid, symbol, index);
+#endif
+        assert(sid == expected);
+        expected += strlen(symbols[index])+1;
+    }
+    
+    
+    
+}
+
 calm_table* calm_table_create(const size_t capacity) {
     calm_table *table_ref = calloc(1,sizeof(calm_table));
     table_ref->signature = CALM_PARSING_TABLE_SIGNATURE;
     table_ref->strings = calm_char_store_create(capacity);
     table_ref->prefixes = calm_prefix_store_create(capacity);
-    table_ref->terms = calm_term_store_create(capacity/10);
+    table_ref->terms = calm_tree_store_create(capacity/10);
+    
+    calm_table_store_predefined_symbols(table_ref);
+    
     return table_ref;
     
 }
@@ -436,7 +515,7 @@ void calm_table_delete(calm_table** refref) {
         calm_prefix_store_delete(&(ref->prefixes));
         assert(ref->prefixes == NULL);
         
-        calm_term_store_delete(&(ref->terms));
+        calm_tree_store_delete(&(ref->terms));
         assert(ref->terms == NULL);
         
         free(ref);
@@ -517,34 +596,52 @@ const char* const calmGetSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid)
 
 /* */
 
+CalmTID calmStoreAnnotated(CalmParsingTableRef symbolTableRef, CalmSID nameSID, CalmSID role, CalmTID root, CalmTID annotations,CALM_TREE_NODE_TYPE type) {
+    
+    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, nameSID, 0,
+                                  calmLinkTerms(symbolTableRef, role, calmLinkTerms(symbolTableRef,root,annotations))
+                                  , type);
+}
+
+
+CalmTID calmStoreAnnotatedCnf(CalmParsingTableRef symbolTableRef, CalmSID nameSID, CalmTID role, CalmTID root, CalmTID annotations) {
+    return calmStoreAnnotated(symbolTableRef, nameSID, role, root, annotations, CALM_TPTP_CNF_ANNOTATED);
+}
+
+
+CalmTID calmStoreRole(CalmParsingTableRef symbolTableRef, const char* const role) {
+    CalmSID sid = calm_table_store(symbolTableRef, role);
+    assert(sid != 0);
+    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_TPTP_ROLE);
+}
 
 CalmTID calmStoreConnective(CalmParsingTableRef symbolTableRef, CalmSID sid, CalmTID firstchild) {
-    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_CONNECTIVE);
+    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_CONNECTIVE);
 }
 
 
 
 CalmTID calmStoreEquational(CalmParsingTableRef symbolTableRef,CalmSID sid, CalmTID firstchild) {
-    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_EQUATIONAL);
+    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_EQUATIONAL);
 }
 
 CalmTID calmStoreFunctional(CalmParsingTableRef symbolTableRef,CalmSID sid, CalmTID firstchild) {
-    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_FUNCTIONAL);
+    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_FUNCTIONAL);
 }
 
 CalmTID calmStoreConstant(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_FUNCTIONAL);
+    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_FUNCTIONAL);
 }
 
 CalmTID calmStoreVariable(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_term_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_VARIABLE);
+    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_VARIABLE);
     
 }
 
 /****/
 
 CalmTID calmLinkTerms(CalmParsingTableRef symbolTableRef,CalmTID first,CalmTID next) {
-    calm_term_node *node = calm_term_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
+    calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
     assert(node != NULL);
     assert(node->sibling == 0);
     
@@ -555,7 +652,7 @@ CalmTID calmLinkTerms(CalmParsingTableRef symbolTableRef,CalmTID first,CalmTID n
 }
 
 void calmTermsAppend(CalmParsingTableRef symbolTableRef, CalmTID first, CalmTID last) {
-    calm_term_node *node = calm_term_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
+    calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
     assert(node != NULL);
     
     if (node->sibling == 0) {

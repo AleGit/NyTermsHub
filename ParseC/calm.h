@@ -12,8 +12,8 @@
 #import <CoreFoundation/CoreFoundation.h>
 
 typedef size_t CalmId;
-typedef CalmId CalmSID;     /* Symbol Identifier */
-typedef CalmId CalmTID;     /* term (node) identifier */
+typedef CalmId CalmSID;     /* symbol identifier (filename, name, role) */
+typedef CalmId CalmTID;     /* tree node identifier */
 typedef void* CalmParsingTableRef;
 
 #pragma mark - symbol table
@@ -26,7 +26,9 @@ CalmSID calmNextSymbol(CalmParsingTableRef, CalmSID);
 const char* const calmGetSymbol(CalmParsingTableRef, CalmSID);
 
 
+CalmTID calmStoreAnnotatedCnf(CalmParsingTableRef,CalmSID,CalmSID,CalmTID,CalmTID);
 CalmTID calmStoreConnective(CalmParsingTableRef,CalmSID,CalmTID);
+CalmTID calmStoreRole(CalmParsingTableRef,const char* const);
 
 CalmTID calmStoreFunctional(CalmParsingTableRef,CalmSID,CalmTID);
 CalmTID calmStoreEquational(CalmParsingTableRef,CalmSID,CalmTID);

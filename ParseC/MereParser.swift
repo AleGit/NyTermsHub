@@ -32,13 +32,20 @@ func mereParse(path:TptpPath) -> Int32 {
     
     let code = mere_parse()
     
-//    var sid = calmNextSymbol(symbolTable, 0);
-//    while sid != 0 {
-//        let string = String.fromCString( calmGetSymbol(symbolTable, sid) )
-//        print(sid,string)
-//        
-//        sid = calmNextSymbol(symbolTable, sid);
-//    }
+    #if DEBUG
+    
+    print(lastInput)
+    
+    var sid = calmNextSymbol(symbolTable, 0);
+    while sid != 0 && sid < 300 {
+        if sid > 160 {
+            let string = String.fromCString( calmGetSymbol(symbolTable, sid) )
+            print(sid,string)
+        }
+        
+        sid = calmNextSymbol(symbolTable, sid);
+    }
+    #endif
     
     return code
 }

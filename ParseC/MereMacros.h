@@ -11,13 +11,15 @@
 #define DID_PARSE_FORMULA(a)        return 0
 #define DID_PARSE_INCLUDE(a)        return 0
 
-#define CREATE_ANNOTATED(a,b,c,d,e) 0 /* calm_label("annotated") */
+#define CREATE_ANNOTATED(a,b,c,d,e)     calm_label("annotated")
+
+#define CREATE_CNF(name,role,root,annotations)    calmStoreAnnotatedCnf(symbolTable,name,role,root,annotations)
 #define CREATE_INCLUDE(a,b)         calm_label("include")
 
 
-#define CREATE_Quantified(b,c,d)    calm_label("CREATE_Quantified") // quantified
-#define CREATE_Functional(sid,first)      calmStoreFunctional(symbolTable, sid, first) // function, predicate
-#define CREATE_Equational(sid,first)      calmStoreEquational(symbolTable, sid, first) // equation, inequation
+#define CREATE_Quantified(b,c,d)        calm_label("CREATE_Quantified") // quantified
+#define CREATE_Functional(sid,first)    calmStoreFunctional(symbolTable, sid, first) // function, predicate
+#define CREATE_Equational(sid,first)    calmStoreEquational(symbolTable, sid, first) // equation, inequation
 #define CREATE_Connective(sid,first)    calmStoreConnective(symbolTable, sid, first) // connective
 #define CREATE_Constant(sid)            calmStoreConstant(symbolTable, sid) // constant
 #define CREATE_Variable(sid)            calmStoreVariable(symbolTable, sid) // variable
@@ -36,7 +38,7 @@
 
 #define CREATE_DISTINCT(a)          calm_label("CREATE_DISTINCT")
 
-#define MAKE_ROLE(a)                1
+#define MAKE_ROLE(a)                calmStoreRole(symbolTable, a)
 
 #define NODES_APPEND(first,last)    calmTermsAppend(symbolTable,first,last)
 #define STRINGS_APPEND(a,b)         calm_label("STRINGS_APPEND")

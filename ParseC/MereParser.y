@@ -19,15 +19,20 @@
 %union
 {
     char* cstring;
-    CalmId obj;
-    CalmId node;
     CalmId string;
+    CalmId node;
+    CalmId role;
+    
     CalmId tptpformula;
     CalmId tptpinclude;
     CalmId annotations;
+    
+    
+    CalmId obj;
+    //
+    //
     CalmId nodes;
     CalmId strings;
-    int role;
     CalmId type;
 }
 
@@ -154,8 +159,8 @@
 TPTP_file       :   /* epsilon */ { $$ = NULLREF; }
 |   TPTP_sequence // { $$ = CREATE_FILE($1); TPTP_FILE_NAME=$$; }
 
-TPTP_sequence   :   TPTP_input // { $$ = CREATE_NODES1($1); }
-|   TPTP_sequence TPTP_input // { NODES_APPEND($1,$2); $$=$1; }
+TPTP_sequence   :   TPTP_input  { lastInput = $1; $$ = $1; }
+|   TPTP_sequence TPTP_input { NODES_APPEND(lastInput,$2); lastInput=$2; $$=$1; }
 
 TPTP_input      :   annotated_formula { ; }
 |   include { ; }
@@ -182,7 +187,8 @@ fof_annotated       :   FOF '(' name ',' formula_role ',' fof_formula annotation
 }
 
 cnf_annotated       :   CNF '(' name ',' formula_role ',' cnf_formula annotations ')' '.' {
-    $$=CREATE_ANNOTATED(TptpLanguageCNF, ($3), ($5), ($7), ($8));
+    /* $$=CREATE_CNF($3, ($5), ($7), $8); */
+    $$ = CREATE_CNF(0,0,0,0);
 }
 
 annotations         :   /* epsilon */   { $$ = NULLREF; }

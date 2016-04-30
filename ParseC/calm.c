@@ -427,7 +427,7 @@ calm_tree_node* calm_tree_store_retrieve(calm_tree_store* term_store_ref, calm_t
 
 #pragma mark - symbol table
 
-#define PREDEFINED_SYMBOLS_COUNT 12
+#define PREDEFINED_SYMBOLS_COUNT 15
 
 void calm_table_store_predefined_symbols(calm_table* table_ref) {
     
@@ -438,20 +438,32 @@ void calm_table_store_predefined_symbols(calm_table* table_ref) {
     symbols[index++] = "|";
     symbols[index++] = "&";
     
-    symbols[index++] = "=";
-    symbols[index++] = "!=";
+    symbols[index++] = "-->";
+    symbols[index++] = ",";
     
+    symbols[index++] = "<=>";
     symbols[index++] = "=>";
     symbols[index++] = "<=";
-    symbols[index++] = "<=>";
     
     symbols[index++] = "<~>";
     symbols[index++] = "~|";
     symbols[index++] = "~&";
     
-    symbols[index++] = "-->";
     
+    symbols[index++] = "!";
+    symbols[index++] = "?";
     
+    symbols[index++] = "=";
+    symbols[index++] = "!=";
+    
+    size_t sids[PREDEFINED_SYMBOLS_COUNT] = {
+        1, 3, 5,
+        7, 11,
+        13, 17, 20,
+        23, 27, 30,
+        33, 35,
+        37, 39
+    };
 
     /* 14 roles
     symbols[index++] = "unknown";
@@ -483,6 +495,7 @@ void calm_table_store_predefined_symbols(calm_table* table_ref) {
         printf("%zu %s #%zu\n",sid, symbol, index);
 #endif
         assert(sid == expected);
+        assert(sids[index] == sid);
         expected += strlen(symbols[index])+1;
     }
     

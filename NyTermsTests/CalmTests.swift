@@ -13,12 +13,12 @@ class CalmTests: XCTestCase {
     
     func testCalmTableDemo() {
         for capacity in [0, 30, 900, 810000] {
-            var symbolTable = calmMakeParsingTable(capacity)
-            defer { calmDeleteParsingTable(&symbolTable) }
+            var parsingTable = calmMakeParsingTable(capacity)
+            defer { calmDeleteParsingTable(&parsingTable) }
             
             let strings = ["Hello", "🍜🍻🍕", "World", "Hello", "", "∀𝛕", "💤", "Hällü, Wörld!"]
             
-            let sids = (0...2000).map { calmStoreSymbol(symbolTable, strings[$0 % (strings.count)]) }
+            let sids = (0...2000).map { calmStoreSymbol(parsingTable, strings[$0 % (strings.count)]) }
             
             XCTAssertNotEqual(sids[0], sids[1]);
             XCTAssertNotEqual(sids[0], sids[2]);
@@ -28,22 +28,22 @@ class CalmTests: XCTestCase {
             
             let mapping = sids[0..<strings.count].map {
                 (CalmSID) -> (CalmSID, String, UInt) in
-                let cstring = calmGetSymbol(symbolTable, CalmSID)
+                let cstring = calmGetSymbol(parsingTable, CalmSID)
                 return (CalmSID, String.fromCString(cstring)!, strlen(cstring))
             }
             
             print(mapping);
             
-            var sid = calmNextSymbol(symbolTable, 0);
+            var sid = calmNextSymbol(parsingTable, 0);
             while sid != 0 {
-                let string = String.fromCString( calmGetSymbol(symbolTable, sid) )
+                let string = String.fromCString( calmGetSymbol(parsingTable, sid) )
                 print(sid,string)
                 
-                sid = calmNextSymbol(symbolTable, sid);
+                sid = calmNextSymbol(parsingTable, sid);
             }
         }
         
-        //        let backs = sids.map { String.fromCString(calmGetSymbol(symbolTable, $0))! }
+        //        let backs = sids.map { String.fromCString(calmGetSymbol(parsingTable, $0))! }
         //        XCTAssertEqual(strings, backs);
         
     }

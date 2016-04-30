@@ -20,10 +20,10 @@ func mereParse(path:TptpPath) -> Int32 {
         fclose(file)
     }
     
-    symbolTable = calmMakeParsingTable(size)
+    parsingTable = calmMakeParsingTable(size)
     defer {
         print("calmDeleteParsingTable")
-        calmDeleteParsingTable(&symbolTable)
+        calmDeleteParsingTable(&parsingTable)
     }
     
     mere_in = file
@@ -36,14 +36,14 @@ func mereParse(path:TptpPath) -> Int32 {
     
     print(lastInput)
     
-    var sid = calmNextSymbol(symbolTable, 0);
+    var sid = calmNextSymbol(parsingTable, 0);
     while sid != 0 && sid < 300 {
         if sid > 160 {
-            let string = String.fromCString( calmGetSymbol(symbolTable, sid) )
+            let string = String.fromCString( calmGetSymbol(parsingTable, sid) )
             print(sid,string)
         }
         
-        sid = calmNextSymbol(symbolTable, sid);
+        sid = calmNextSymbol(parsingTable, sid);
     }
     #endif
     

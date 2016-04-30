@@ -13,52 +13,52 @@
 
 #define CREATE_ANNOTATED(a,b,c,d,e)     calm_label("annotated")
 
-#define CREATE_CNF(name,role,root,annotations)    calmStoreAnnotatedCnf(symbolTable,name,role,root,annotations)
+#define CREATE_CNF(name,role,root,annotations)    calmStoreAnnotatedCnf(parsingTable,name,role,root,annotations)
 #define CREATE_INCLUDE(a,b)         calm_label("include")
 
 
 #define CREATE_Quantified(b,c,d)        calm_label("CREATE_Quantified") // quantified
-#define CREATE_Functional(sid,first)    calmStoreFunctional(symbolTable, sid, first) // function, predicate
-#define CREATE_Equational(sid,first)    calmStoreEquational(symbolTable, sid, first) // equation, inequation
-#define CREATE_Connective(sid,first)    calmStoreConnective(symbolTable, sid, first) // connective
-#define CREATE_Constant(sid)            calmStoreConstant(symbolTable, sid) // constant
-#define CREATE_Variable(sid)            calmStoreVariable(symbolTable, sid) // variable
+#define CREATE_Functional(sid,first)    calmStoreFunctional(parsingTable, sid, first) // function, predicate
+#define CREATE_Equational(sid,first)    calmStoreEquational(parsingTable, sid, first) // equation, inequation
+#define CREATE_Connective(sid,first)    calmStoreConnective(parsingTable, sid, first) // connective
+#define CREATE_Constant(sid)            calmStoreConstant(parsingTable, sid) // constant
+#define CREATE_Variable(sid)            calmStoreVariable(parsingTable, sid) // variable
 
 #define CREATE_NODES0()             (CalmSID)0  // empty list
 #define CREATE_NODES1(a)            a           // unary list
-#define CREATE_NODES2(first,next)   calmLinkTerms(symbolTable, first, next) // binary list
+#define CREATE_NODES2(first,next)   calmLinkTerms(parsingTable, first, next) // binary list
 
 #define PREDICATE(a)                a;  /* register_predicate(a) */
 
 #define APPEND(a,b)                 calm_label("APPEND")
 #define INSERT(a,b)                 calm_label("INSERT")
 
-#define CREATE_STRING(a)            calmStoreSymbol(symbolTable, a)
+#define CREATE_STRING(a)            calmStoreSymbol(parsingTable, a)
 #define CREATE_STRINGS1(a)          calm_label("CREATE_STRINGS1")
 
 #define CREATE_DISTINCT(a)          calm_label("CREATE_DISTINCT")
 
-#define MAKE_ROLE(a)                calmStoreRole(symbolTable, a)
+#define MAKE_ROLE(a)                calmStoreRole(parsingTable, a)
 
-#define NODES_APPEND(first,last)    calmTermsAppend(symbolTable,first,last)
+#define NODES_APPEND(first,last)    calmTermsAppend(parsingTable,first,last)
 #define STRINGS_APPEND(a,b)         calm_label("STRINGS_APPEND")
 #define SET_PARENTHESES(a)
 
-#define _NOT_       calmStoreSymbol(symbolTable,"~")
-#define _OR_        calmStoreSymbol(symbolTable,"|")
-#define _AND_       calmStoreSymbol(symbolTable,"&")
-#define _GENTZEN_   calmStoreSymbol(symbolTable,"-->")
-#define _COMMA_     calmStoreSymbol(symbolTable,",")
-#define _IFF_       calmStoreSymbol(symbolTable,"<=>")
-#define _IMPLY_     calmStoreSymbol(symbolTable,"=>")
-#define _YLPMI_     calmStoreSymbol(symbolTable,"<=")
-#define _NIFF_      calmStoreSymbol(symbolTable,"<~>")
-#define _NOR_       calmStoreSymbol(symbolTable,"~|")
-#define _NAND_      calmStoreSymbol(symbolTable,"~&")
-#define _FORALL_    calmStoreSymbol(symbolTable,"!")
-#define _EXISTS_    calmStoreSymbol(symbolTable,"?")
-#define _EQUAL_     calmStoreSymbol(symbolTable,"=")
-#define _NEQ_       calmStoreSymbol(symbolTable,"!=")
+#define _NOT_       calmStoreSymbol(parsingTable,"~")
+#define _OR_        calmStoreSymbol(parsingTable,"|")
+#define _AND_       calmStoreSymbol(parsingTable,"&")
+#define _GENTZEN_   calmStoreSymbol(parsingTable,"-->")
+#define _COMMA_     calmStoreSymbol(parsingTable,",")
+#define _IFF_       calmStoreSymbol(parsingTable,"<=>")
+#define _IMPLY_     calmStoreSymbol(parsingTable,"=>")
+#define _YLPMI_     calmStoreSymbol(parsingTable,"<=")
+#define _NIFF_      calmStoreSymbol(parsingTable,"<~>")
+#define _NOR_       calmStoreSymbol(parsingTable,"~|")
+#define _NAND_      calmStoreSymbol(parsingTable,"~&")
+#define _FORALL_    calmStoreSymbol(parsingTable,"!")
+#define _EXISTS_    calmStoreSymbol(parsingTable,"?")
+#define _EQUAL_     calmStoreSymbol(parsingTable,"=")
+#define _NEQ_       calmStoreSymbol(parsingTable,"!=")
 
 
 

@@ -187,8 +187,7 @@ fof_annotated       :   FOF '(' name ',' formula_role ',' fof_formula annotation
 }
 
 cnf_annotated       :   CNF '(' name ',' formula_role ',' cnf_formula annotations ')' '.' {
-    /* $$=CREATE_CNF($3, ($5), ($7), $8); */
-    $$ = CREATE_CNF(0,0,0,0);
+    $$=CREATE_CNF($3, ($5), ($7), $8);
 }
 
 annotations         :   /* epsilon */   { $$ = NULLREF; }
@@ -466,7 +465,7 @@ general_terms       :   general_term
                     |   general_terms ',' general_term
 
 /*-- general purpose --*/
-name                :   atomic_word                 /* { $$ = $1; } */
+name                :   atomic_word                 { $$ = $1; }
                     |   INTEGER                     { $$ = CREATE_STRING($1); }
 
 atomic_word         :   LOWER_WORD                  { $$ = CREATE_STRING($1); }

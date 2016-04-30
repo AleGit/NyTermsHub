@@ -135,8 +135,8 @@ calm_cidx calm_cidx_get(const char* const cstring, size_t pos) {
 }
 
 
-calm_table* calm_table_check(void* symbolTableRef) {
-    calm_table* ref = (calm_table*)symbolTableRef;
+calm_table* calm_table_check(void* parsingTableRef) {
+    calm_table* ref = (calm_table*)parsingTableRef;
     assert(ref->signature == CALM_PARSING_TABLE_SIGNATURE);
     return ref;
 }
@@ -589,72 +589,88 @@ CalmParsingTableRef calmMakeParsingTable(size_t capacity) {
     return calm_table_create(capacity);
 }
 
-void calmDeleteParsingTable(CalmParsingTableRef* symbolTableRefRef) {
-    calm_table_delete((calm_table**)symbolTableRefRef);
+void calmDeleteParsingTable(CalmParsingTableRef* parsingTableRefRef) {
+    calm_table_delete((calm_table**)parsingTableRefRef);
 }
 
-CalmSID calmStoreSymbol(CalmParsingTableRef symbolTableRef, const char * const cstring) {
-    return calm_table_store(calm_table_check(symbolTableRef), cstring);
+CalmSID calmStoreSymbol(CalmParsingTableRef parsingTableRef, const char * const cstring) {
+    return calm_table_store(calm_table_check(parsingTableRef), cstring);
 }
 
-CalmSID calmNextSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_table_next(calm_table_check(symbolTableRef), sid);
+CalmSID calmNextSymbol(CalmParsingTableRef parsingTableRef, CalmSID sid) {
+    return calm_table_next(calm_table_check(parsingTableRef), sid);
 }
 
-const char* const calmGetSymbol(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_table_retrieve(calm_table_check(symbolTableRef), sid);
+const char* const calmGetSymbol(CalmParsingTableRef parsingTableRef, CalmSID sid) {
+    return calm_table_retrieve(calm_table_check(parsingTableRef), sid);
+}
+
+
+size_t calmGetTreeNodeSize(CalmParsingTableRef parsingTableRef) {
+    return calm_table_check(parsingTableRef)->terms->size;
+}
+
+const char* const calmGetTreeNodeSymbol(CalmParsingTableRef parsingTableRef, CalmTID tid) {
+    assert(tid < calmGetTreeNodeSize(parsingTableRef));
+    
+    calm_tree_node* node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, tid);
+    
+    return calmGetSymbol(parsingTableRef, node->sid);
+    
 }
 
 
 
 /* */
 
-CalmTID calmStoreAnnotated(CalmParsingTableRef symbolTableRef, CalmSID nameSID, CalmSID role, CalmTID root, CalmTID annotations,CALM_TREE_NODE_TYPE type) {
+CalmTID calmStoreAnnotated(CalmParsingTableRef parsingTableRef, CalmSID nameSID, CalmSID role, CalmTID root, CalmTID annotations,CALM_TREE_NODE_TYPE type) {
     
-    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, nameSID, 0,
-                                  calmLinkTerms(symbolTableRef, role, calmLinkTerms(symbolTableRef,root,annotations))
+    assert(nameSID != 0);
+    
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, nameSID, 0,
+                                  calmLinkTerms(parsingTableRef, role, calmLinkTerms(parsingTableRef,root,annotations))
                                   , type);
 }
 
 
-CalmTID calmStoreAnnotatedCnf(CalmParsingTableRef symbolTableRef, CalmSID nameSID, CalmTID role, CalmTID root, CalmTID annotations) {
-    return calmStoreAnnotated(symbolTableRef, nameSID, role, root, annotations, CALM_TPTP_CNF_ANNOTATED);
+CalmTID calmStoreAnnotatedCnf(CalmParsingTableRef parsingTableRef, CalmSID nameSID, CalmTID role, CalmTID root, CalmTID annotations) {
+    return calmStoreAnnotated(parsingTableRef, nameSID, role, root, annotations, CALM_TPTP_CNF_ANNOTATED);
 }
 
 
-CalmTID calmStoreRole(CalmParsingTableRef symbolTableRef, const char* const role) {
-    CalmSID sid = calm_table_store(symbolTableRef, role);
+CalmTID calmStoreRole(CalmParsingTableRef parsingTableRef, const char* const role) {
+    CalmSID sid = calm_table_store(parsingTableRef, role);
     assert(sid != 0);
-    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_TPTP_ROLE);
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, 0, CALM_TPTP_ROLE);
 }
 
-CalmTID calmStoreConnective(CalmParsingTableRef symbolTableRef, CalmSID sid, CalmTID firstchild) {
-    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_CONNECTIVE);
+CalmTID calmStoreConnective(CalmParsingTableRef parsingTableRef, CalmSID sid, CalmTID firstchild) {
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, firstchild, CALM_CONNECTIVE);
 }
 
 
 
-CalmTID calmStoreEquational(CalmParsingTableRef symbolTableRef,CalmSID sid, CalmTID firstchild) {
-    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_EQUATIONAL);
+CalmTID calmStoreEquational(CalmParsingTableRef parsingTableRef,CalmSID sid, CalmTID firstchild) {
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, firstchild, CALM_EQUATIONAL);
 }
 
-CalmTID calmStoreFunctional(CalmParsingTableRef symbolTableRef,CalmSID sid, CalmTID firstchild) {
-    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, firstchild, CALM_FUNCTIONAL);
+CalmTID calmStoreFunctional(CalmParsingTableRef parsingTableRef,CalmSID sid, CalmTID firstchild) {
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, firstchild, CALM_FUNCTIONAL);
 }
 
-CalmTID calmStoreConstant(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_FUNCTIONAL);
+CalmTID calmStoreConstant(CalmParsingTableRef parsingTableRef, CalmSID sid) {
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, 0, CALM_FUNCTIONAL);
 }
 
-CalmTID calmStoreVariable(CalmParsingTableRef symbolTableRef, CalmSID sid) {
-    return calm_tree_store_append(calm_table_check(symbolTableRef)->terms, sid, 0, 0, CALM_VARIABLE);
+CalmTID calmStoreVariable(CalmParsingTableRef parsingTableRef, CalmSID sid) {
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, 0, CALM_VARIABLE);
     
 }
 
 /****/
 
-CalmTID calmLinkTerms(CalmParsingTableRef symbolTableRef,CalmTID first,CalmTID next) {
-    calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
+CalmTID calmLinkTerms(CalmParsingTableRef parsingTableRef,CalmTID first,CalmTID next) {
+    calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, first);
     assert(node != NULL);
     assert(node->sibling == 0);
     
@@ -664,15 +680,15 @@ CalmTID calmLinkTerms(CalmParsingTableRef symbolTableRef,CalmTID first,CalmTID n
     
 }
 
-void calmTermsAppend(CalmParsingTableRef symbolTableRef, CalmTID first, CalmTID last) {
-    calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(symbolTableRef)->terms, first);
+void calmTermsAppend(CalmParsingTableRef parsingTableRef, CalmTID first, CalmTID last) {
+    calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, first);
     assert(node != NULL);
     
     if (node->sibling == 0) {
         node->sibling = last;
     }
     else {
-        calmTermsAppend(symbolTableRef, node->sibling, last);
+        calmTermsAppend(parsingTableRef, node->sibling, last);
     }
     
     

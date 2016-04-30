@@ -25,6 +25,9 @@ CalmSID calmStoreSymbol(CalmParsingTableRef, const char * const);
 CalmSID calmNextSymbol(CalmParsingTableRef, CalmSID);
 const char* const calmGetSymbol(CalmParsingTableRef, CalmSID);
 
+size_t calmGetTreeNodeSize(CalmParsingTableRef);
+const char* const calmGetTreeNodeSymbol(CalmParsingTableRef, CalmTID);
+
 
 CalmTID calmStoreAnnotatedCnf(CalmParsingTableRef,CalmSID,CalmSID,CalmTID,CalmTID);
 CalmTID calmStoreConnective(CalmParsingTableRef,CalmSID,CalmTID);

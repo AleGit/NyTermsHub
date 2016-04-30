@@ -32,9 +32,18 @@ func mereParse(path:TptpPath) -> Int32 {
     
     let code = mere_parse()
     
-    #if DEBUG
     
-    print(lastInput)
+    
+    let value = calmGetTreeNodeSize(parsingTable);
+    
+    
+    print(lastInput, value)
+    
+    for i in 0..<value {
+        print(i, String.fromCString(calmGetTreeNodeSymbol(parsingTable,i))!)
+    }
+    
+    #if DEBUG
     
     var sid = calmNextSymbol(parsingTable, 0);
     while sid != 0 && sid < 300 {

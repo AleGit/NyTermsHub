@@ -28,9 +28,12 @@ typedef enum {
     /* annotated_formula | include */
     CALM_TPTP_ROLE,
     CALM_TPTP_ANNOTATIONS,
+    
     CALM_TPTP_CNF_ANNOTATED,
     CALM_TPTP_FOF_ANNOTATED,
-    CALM_TPTP_INCLUDE
+    CALM_TPTP_INCLUDE,
+    
+    CALM_TPTP_FILE
 } CALM_TREE_NODE_TYPE;
 
 typedef struct {
@@ -70,6 +73,8 @@ calm_tid calmStoreVariable(CalmParsingTableRef,calm_sid);
 
 calm_tid calmNodeListCreate(CalmParsingTableRef, calm_tid, calm_tid);
 void calmNodeListAppend(CalmParsingTableRef, calm_tid, calm_tid);
+void calmNodeSetChild(CalmParsingTableRef, calm_tid, calm_tid);
+void calmNodeSetSymbol(CalmParsingTableRef, calm_tid, const char* const);
 
 calm_id calm_label(char*);
 

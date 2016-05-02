@@ -48,8 +48,9 @@ class TreeNodeGenerator : GeneratorType {
 
 class ParsingTable {
     let tableRef : CalmParsingTableRef;
-    init(size:Int) {
+    init(size:Int, path:TptpPath) {
         tableRef = calmMakeParsingTable(size)
+        calmNodeSetSymbol(tableRef, 0, path)
     }
     
     deinit {
@@ -87,7 +88,7 @@ func mereParse(path:TptpPath) -> (Int32, ParsingTable?) {
     }
     
     // allocate memory depending on the size of the file
-    let theParsing = ParsingTable(size: size)
+    let theParsing = ParsingTable(size: size, path:path)
     mereParsingTable = theParsing.tableRef
     
     mere_in = file

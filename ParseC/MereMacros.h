@@ -16,7 +16,7 @@
 #define CREATE_CNF(name,role,root,annotations)    calmStoreAnnotatedCnf(mereParsingTable,name,role,root,annotations)
 #define CREATE_INCLUDE(a,b)         calm_label("include")
 
-#define TPTP_INPUT(input)                       input; mereLastInput = input
+#define TPTP_INPUT(input)                       input; mereLastInput = input; calmNodeSetChild(mereParsingTable,0,input)
 #define TPTP_INPUT_APPEND(sequence,input)       sequence; calmNodeListAppend(mereParsingTable,mereLastInput,input)
 
 #define CREATE_Quantified(b,c,d)        calm_label("CREATE_Quantified") // quantified

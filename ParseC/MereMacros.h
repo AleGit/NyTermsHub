@@ -24,11 +24,11 @@
 #define CREATE_Constant(sid)            calmStoreConstant(parsingTable, sid) // constant
 #define CREATE_Variable(sid)            calmStoreVariable(parsingTable, sid) // variable
 
-#define CREATE_NODES0()             (CalmSID)0  // empty list
+#define CREATE_NODES0()             (calm_sid)0  // empty list
 #define CREATE_NODES1(a)            a           // unary list
-#define CREATE_NODES2(first,next)   calmLinkTerms(parsingTable, first, next) // binary list
+#define CREATE_NODES2(first,next)   calmNodeListCreate(parsingTable, first, next) // binary list
 
-#define PREDICATE(a)                a;  /* register_predicate(a) */
+#define PREDICATE(tid)                calmSetPredicate(parsingTable,tid); /* register_predicate(a) */
 
 #define APPEND(a,b)                 calm_label("APPEND")
 #define INSERT(a,b)                 calm_label("INSERT")
@@ -40,7 +40,7 @@
 
 #define MAKE_ROLE(a)                calmStoreRole(parsingTable, a)
 
-#define NODES_APPEND(first,last)    calmTermsAppend(parsingTable,first,last)
+#define NODES_APPEND(member,last)    calmNodeListAppend(parsingTable,member,last)
 #define STRINGS_APPEND(a,b)         calm_label("STRINGS_APPEND")
 #define SET_PARENTHESES(a)
 

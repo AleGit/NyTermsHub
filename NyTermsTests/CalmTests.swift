@@ -27,9 +27,9 @@ class CalmTests: XCTestCase {
             XCTAssertEqual(0, sids[4]);
             
             let mapping = sids[0..<strings.count].map {
-                (CalmSID) -> (CalmSID, String, UInt) in
-                let cstring = calmGetSymbol(parsingTable, CalmSID)
-                return (CalmSID, String.fromCString(cstring)!, strlen(cstring))
+                (calm_sid) -> (calm_sid, String, UInt) in
+                let cstring = calmGetSymbol(parsingTable, calm_sid)
+                return (calm_sid, String.fromCString(cstring)!, strlen(cstring))
             }
             
             print(mapping);

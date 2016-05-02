@@ -13,7 +13,6 @@ class MereParserBasicTests: XCTestCase {
 
     func testParsing() {
         for (name,limit) in  [
-            ("PUZ001-1x",0.002), // > 1 ms
             ("PUZ001-1",0.1), // > 1 ms
             // ("HWV134-1",49.9) // > 17.0 s
             ] {
@@ -22,14 +21,41 @@ class MereParserBasicTests: XCTestCase {
             continue
         }
         
-        let (code,runtime) = measure {
+        let (pair,runtime) = measure {
          
             mereParse(path)
         }
+                
+             
             
             XCTAssertTrue(runtime < limit, "\(runtime.prettyTimeIntervalDescription) exceeds limit of \(limit.prettyTimeIntervalDescription)")
+                
+                let (code,_) = pair
         
             print("name:", name, "code:", code,"runtime:",runtime.prettyTimeIntervalDescription, "< limit:", limit.prettyTimeIntervalDescription)
+                
+                //    let value = calmGetTreeNodeSize(parsingTable);
+                //
+                //
+                //    print(lastInput, value)
+                //
+                //    for i in 0..<value {
+                //        print(i, String.fromCString(calmGetTreeNodeSymbol(parsingTable,i))!)
+                //    }
+                //
+                //    #if DEBUG
+                //
+                //    var sid = calmNextSymbol(parsingTable, 0);
+                //    while sid != 0 && sid < 300 {
+                //        if sid > 160 {
+                //            let string = String.fromCString( calmGetSymbol(parsingTable, sid) )
+                //            print(sid,string)
+                //        }
+                //        
+                //        sid = calmNextSymbol(parsingTable, sid);
+                //    }
+                //    #endif
+
         }
     }
 }

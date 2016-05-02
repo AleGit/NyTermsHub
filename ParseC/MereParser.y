@@ -19,21 +19,24 @@
 %union
 {
     char* cstring;
-    CalmId string;
-    CalmId node;
-    CalmId role;
+    calm_sid string;
+    calm_tid role;
     
-    CalmId tptpformula;
-    CalmId tptpinclude;
-    CalmId annotations;
+    calm_tid node;
+    calm_tid nodes;
+    
+    calm_tid tptpformula;
+    calm_tid tptpinclude;
+    
+    calm_id annotations;
     
     
-    CalmId obj;
+    calm_id obj;
     //
     //
-    CalmId nodes;
-    CalmId strings;
-    CalmId type;
+    
+    calm_tid strings;
+    calm_tid type;
 }
 
 

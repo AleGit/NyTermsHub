@@ -10,7 +10,7 @@
 #import "MereParser.h"
 
 CalmParsingTableRef parsingTable = NULL;
-CalmId lastInput = 0;
+calm_id lastInput = 0;
 
 
 

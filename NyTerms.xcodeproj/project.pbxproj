@@ -1282,6 +1282,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = NyTerms/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LLVM_LTO = NO;
 				OTHER_LDFLAGS = (
 					"-lyices",
 					"-L/usr/local/lib",

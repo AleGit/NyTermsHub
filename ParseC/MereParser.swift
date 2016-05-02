@@ -28,10 +28,10 @@ class TreeNodeGenerator : GeneratorType {
     init(tableRef:CalmParsingTableRef) {
         self.tableRef = tableRef
         self.nextTid = 0
-        self.size = calmGetTreeStoreSize(tableRef)
+        self.size = calmGetTreeNodeStoreSize(tableRef)
     }
     
-    func next() -> String? {
+    func next() -> (id:calm_tid,symbol:String,sibling:calm_tid,last:calm_tid, child:calm_tid,type:UInt32)? {
         guard nextTid < size else {
             return nil
         }
@@ -39,10 +39,10 @@ class TreeNodeGenerator : GeneratorType {
             nextTid += 1
         }
         
-        let tidRef = calmGetTreeNode(tableRef, nextTid)
-        let symbol = String.fromCString(calmGetSymbol(tableRef,tidRef.memory.sid))!
+        let data = calmCopyTreeNodeData(tableRef, nextTid)
+        let symbol = String.fromCString(calmGetSymbol(tableRef,data.sid))!
         
-        return "\(nextTid) \(symbol) \t sibling:\(tidRef.memory.sibling) child:\(tidRef.memory.child) \t type:\(tidRef.memory.type.rawValue)"
+        return (id:nextTid , symbol , data.sibling, data.lastSibling, data.child, data.type.rawValue)
     }
 }
 
@@ -55,12 +55,13 @@ class ParsingTable {
     
     deinit {
         var copy = tableRef
+        print("calmDeleteParsingTable \(calmGetTreeNodeStoreSize(tableRef))")
         calmDeleteParsingTable(&copy)
         assert(copy == nil)
     }
     
     var treeSize : Int {
-        return calmGetTreeStoreSize(tableRef)
+        return calmGetTreeNodeStoreSize(tableRef)
     }
     
     var treeNodes : TreeNodeSequence {

@@ -113,6 +113,7 @@ calm_cidx calm_cidx_get(const char* const cstring, size_t pos) {
 
 
 calm_table* calm_table_check(void* parsingTableRef) {
+    assert(parsingTableRef != NULL);
     calm_table* ref = (calm_table*)parsingTableRef;
     assert(ref->signature == CALM_PARSING_TABLE_SIGNATURE);
     return ref;
@@ -390,6 +391,7 @@ calm_tid calm_tree_store_append(calm_tree_store* term_store_ref, calm_sid sid, c
     
     vertex->sid = sid;          // no name
     vertex->sibling = sibling;      // no sibling
+    vertex->lastSibling = 0;
     vertex->child = child;        // no child
     vertex->type = type;   // no type
     
@@ -468,7 +470,7 @@ void calm_table_store_predefined_symbols(calm_table* table_ref) {
         char *symbol = symbols[index];
         calm_sid sid = calmStoreSymbol(table_ref, symbol);
         
-#ifdef DEBUG
+#ifdef DEBUG_VERBOSE
         printf("%zu %s #%zu\n",sid, symbol, index);
 #endif
         assert(sid == expected);
@@ -483,9 +485,9 @@ void calm_table_store_predefined_symbols(calm_table* table_ref) {
 calm_table* calm_table_create(const size_t capacity) {
     calm_table *table_ref = calloc(1,sizeof(calm_table));
     table_ref->signature = CALM_PARSING_TABLE_SIGNATURE;
-    table_ref->strings = calm_char_store_create(capacity);
+    table_ref->strings = calm_char_store_create(capacity); //
     table_ref->prefixes = calm_prefix_store_create(capacity);
-    table_ref->terms = calm_tree_store_create(capacity/10);
+    table_ref->terms = calm_tree_store_create(capacity/4); // 4 chars per node
     
     calm_table_store_predefined_symbols(table_ref);
     
@@ -582,26 +584,44 @@ const char* const calmGetSymbol(CalmParsingTableRef parsingTableRef, calm_sid si
     return calm_table_retrieve(calm_table_check(parsingTableRef), sid);
 }
 
-size_t calmGetTreeStoreSize(CalmParsingTableRef parsingTableRef) {
+size_t calmGetTreeNodeStoreSize(CalmParsingTableRef parsingTableRef) {
     calm_tree_store* tree_store = calm_table_check(parsingTableRef)->terms;
     assert(tree_store->size <= tree_store->capacity);
     return tree_store->size;
 }
 
-const char* const calmGetTreeNodeSymbol(CalmParsingTableRef parsingTableRef, calm_tid tid) {
-    assert(tid < calmGetTreeStoreSize(parsingTableRef));
-    
-    calm_tree_node* node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, tid);
-    
-    return calmGetSymbol(parsingTableRef, node->sid);
-    
-}
-
 const calm_tree_node* calmGetTreeNode(CalmParsingTableRef parsingTableRef, calm_tid tid) {
-    assert(tid < calmGetTreeStoreSize(parsingTableRef));
+    assert(tid < calmGetTreeNodeStoreSize(parsingTableRef));
     
     return calm_table_check(parsingTableRef)->terms->memory + tid;
 }
+
+calm_tree_node calmCopyTreeNodeData(CalmParsingTableRef parsingTableRef, calm_tid tid) {
+    const calm_tree_node* node = calmGetTreeNode(parsingTableRef, tid);
+    return *node;
+}
+
+//const char* const calmGetTreeNodeSymbol(CalmParsingTableRef parsingTableRef, calm_tid tid) {
+//    const calm_tree_node* node = calmGetTreeNode(parsingTableRef, tid);
+//    
+//    return calmGetSymbol(parsingTableRef, node->sid);
+//}
+//
+//calm_tid calmGetTreeNodeSibling(CalmParsingTableRef parsingTableRef, calm_tid tid) {
+//    const calm_tree_node* node = calmGetTreeNode(parsingTableRef, tid);
+//    return node->sibling;
+//    
+//}
+//calm_tid calmGetTreeNodeChild(CalmParsingTableRef parsingTableRef, calm_tid tid) {
+//    const calm_tree_node* node = calmGetTreeNode(parsingTableRef, tid);
+//    return node->child;
+//    
+//}
+//CALM_TREE_NODE_TYPE calmGetTreeNodeType(CalmParsingTableRef parsingTableRef, calm_tid tid) {
+//    const calm_tree_node* node = calmGetTreeNode(parsingTableRef, tid);
+//    return node->type;
+//    
+//}
 
 
 
@@ -653,7 +673,7 @@ calm_tid calmStoreFunctional(CalmParsingTableRef parsingTableRef,calm_sid sid, c
 }
 
 calm_tid calmStoreConstant(CalmParsingTableRef parsingTableRef, calm_sid sid) {
-    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, 0, CALM_CONSTANT);
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, 0, CALM_FUNCTIONAL);
 }
 
 calm_tid calmStoreVariable(CalmParsingTableRef parsingTableRef, calm_sid sid) {
@@ -664,25 +684,41 @@ calm_tid calmStoreVariable(CalmParsingTableRef parsingTableRef, calm_sid sid) {
 /****/
 
 calm_tid calmNodeListCreate(CalmParsingTableRef parsingTableRef,calm_tid first,calm_tid second) {
+    assert(first != second);
+    
     calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, first);
+    
     assert(node != NULL);
     assert(node->sibling == 0);
     
     node->sibling = second;
+    node->lastSibling = second;
     
     return first;
     
 }
 
 void calmNodeListAppend(CalmParsingTableRef parsingTableRef, calm_tid first, calm_tid last) {
-    calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, first);
-    assert(node != NULL);
+    assert(first == 0 || first != last);
     
-    if (node->sibling == 0) {
-        node->sibling = last;
+    calm_tree_node *firstNode = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, first);
+
+    assert(firstNode != NULL);
+
+    
+    if (firstNode->lastSibling != 0) {
+        calmNodeListAppend(parsingTableRef, firstNode->lastSibling, last);
+        firstNode->lastSibling = last;
+    }
+    else if (firstNode->sibling == 0) {
+        firstNode->sibling = last;
+        firstNode->lastSibling = last;
     }
     else {
-        calmNodeListAppend(parsingTableRef, node->sibling, last);
+        printf("calmNodeListAppend(ref, %zu %zu) %zu %zu\n",first,last,firstNode->sibling, firstNode->lastSibling);
+        assert(false);
+
+        calmNodeListAppend(parsingTableRef, firstNode->sibling, last);
     }
     
     
@@ -690,10 +726,14 @@ void calmNodeListAppend(CalmParsingTableRef parsingTableRef, calm_tid first, cal
 
 
 void calmNodeSetChild(CalmParsingTableRef parsingTableRef, calm_tid parent, calm_tid child) {
+    assert(parent == 0 || parent != child);
+    
     calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, parent);
+    
     assert(node != NULL);
     assert(node->type != CALM_TYPE_UNKNOWN);
     assert(node->child == 0);
+    
     node->child = child;
 }
 

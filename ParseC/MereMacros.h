@@ -16,8 +16,8 @@
 #define CREATE_CNF(name,role,root,annotations)    calmStoreAnnotatedCnf(mereParsingTable,name,role,root,annotations)
 #define CREATE_INCLUDE(a,b)         calm_label("include")
 
-#define TPTP_INPUT(input)                       input; mereLastInput = input; calmNodeSetChild(mereParsingTable,0,input)
-#define TPTP_INPUT_APPEND(sequence,input)       sequence; calmNodeListAppend(mereParsingTable,mereLastInput,input)
+#define TPTP_INPUT(input)                       input; calmNodeSetChild(mereParsingTable,0,input)
+#define TPTP_INPUT_APPEND(sequence,input)       sequence; calmNodeListAppend(mereParsingTable,sequence,input)
 
 #define CREATE_Quantified(b,c,d)        calm_label("CREATE_Quantified") // quantified
 #define CREATE_Functional(sid,first)    calmStoreFunctional(mereParsingTable, sid, first) // function, predicate
@@ -30,7 +30,7 @@
 #define CREATE_NODES1(a)            a           // unary list
 #define CREATE_NODES2(first,next)   calmNodeListCreate(mereParsingTable, first, next) // binary list
 
-#define PREDICATE(tid)                calmSetPredicate(mereParsingTable,tid); /* register_predicate(a) */
+#define PREDICATE(tid)                  calmSetPredicate(mereParsingTable,tid); /* register_predicate(tid) */
 
 #define APPEND(a,b)                 calm_label("APPEND")
 #define INSERT(a,b)                 calm_label("INSERT")

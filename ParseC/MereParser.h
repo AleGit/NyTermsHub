@@ -34,7 +34,6 @@ int mere_error (const char * _Nullable s);
 #pragma mark - parse functions and data structures
 
 extern _Nullable CalmParsingTableRef mereParsingTable;
-extern calm_id mereLastInput;
 
 
 

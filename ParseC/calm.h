@@ -18,27 +18,34 @@ typedef void* CalmParsingTableRef;
 
 typedef enum {
     CALM_TYPE_UNKNOWN = 0,
-    CALM_VARIABLE,
-    CALM_CONSTANT,
-    CALM_FUNCTIONAL,
-    CALM_PREDICATE,
-    CALM_EQUATIONAL,
-    CALM_CONNECTIVE,
     
-    /* annotated_formula | include */
-    CALM_TPTP_ROLE,
-    CALM_TPTP_ANNOTATIONS,
+    CALM_TPTP_FILE, /* TPTP_squence */
+    
+    /* annotated formula | inlcude */
     
     CALM_TPTP_CNF_ANNOTATED,
     CALM_TPTP_FOF_ANNOTATED,
+    
     CALM_TPTP_INCLUDE,
     
-    CALM_TPTP_FILE
+    CALM_TPTP_ROLE,
+    CALM_TPTP_ANNOTATIONS,
+
+    CALM_CONNECTIVE,
+    CALM_EQUATIONAL,
+    CALM_PREDICATE,     // includes PROPOSTION
+    CALM_FUNCTIONAL,    // includes CONSTANT
+    CALM_VARIABLE
+    
+    /* annotated_formula | include */
+    
+    
 } CALM_TREE_NODE_TYPE;
 
 typedef struct {
     calm_sid sid;
     calm_tid sibling;
+    calm_tid lastSibling;
     calm_tid child;
     CALM_TREE_NODE_TYPE type;
 } calm_tree_node;
@@ -54,11 +61,6 @@ void calmDeleteParsingTable(CalmParsingTableRef*);
 calm_sid calmStoreSymbol(CalmParsingTableRef, const char * const);
 /// Get next symbol id after given id in parsing table .
 calm_sid calmNextSymbol(CalmParsingTableRef, calm_sid);
-
-
-size_t calmGetTreeStoreSize(CalmParsingTableRef);
-const char* const calmGetTreeNodeSymbol(CalmParsingTableRef, calm_tid);
-
 
 calm_tid calmStoreAnnotatedCnf(CalmParsingTableRef,calm_sid,calm_sid,calm_tid,calm_tid);
 calm_tid calmStoreConnective(CalmParsingTableRef,calm_sid,calm_tid);
@@ -82,6 +84,13 @@ calm_id calm_label(char*);
 /// Get (pointer to) symbol in parsing table with given id.
 const char* const calmGetSymbol(CalmParsingTableRef, calm_sid);
 /// Get (pointer to) tree node with givern id.
-const calm_tree_node* calmGetTreeNode(CalmParsingTableRef, calm_tid);
+//const calm_tree_node* calmGetTreeNode(CalmParsingTableRef, calm_tid);
+
+size_t calmGetTreeNodeStoreSize(CalmParsingTableRef);
+calm_tree_node calmCopyTreeNodeData(CalmParsingTableRef, calm_tid);
+//const char* const calmGetNodeTreeSymbol(CalmParsingTableRef, calm_tid);
+//calm_tid calmGetTreeNodeSibling(CalmParsingTableRef, calm_tid);
+//calm_tid calmGetTreeNodeChild(CalmParsingTableRef, calm_tid);
+//CALM_TREE_NODE_TYPE calmGetTreeNodeType(CalmParsingTableRef, calm_tid);
 
 #endif /* calm_h */

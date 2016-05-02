@@ -16,34 +16,12 @@ typedef calm_id calm_pid;
 typedef int calm_cidx;
 
 typedef enum { CALM_FAILED = -1, CALM_OK = 0 } CALM_STATUS;
-typedef enum {
-    CALM_TYPE_UNKNOWN = 0,
-    CALM_VARIABLE,
-    CALM_CONSTANT,
-    CALM_FUNCTIONAL,
-    CALM_PREDICATE,
-    CALM_EQUATIONAL,
-    CALM_CONNECTIVE,
-    
-    /* annotated_formula | include */
-    CALM_TPTP_ROLE,
-    CALM_TPTP_ANNOTATIONS,
-    CALM_TPTP_CNF_ANNOTATED,
-    CALM_TPTP_FOF_ANNOTATED,
-    CALM_TPTP_INCLUDE
-} CALM_TREE_NODE_TYPE;
+
 
 typedef struct {
     calm_sid sid;
     calm_pid nexts[256];
 } calm_prefix_node;
-
-typedef struct {
-    calm_sid sid;
-    calm_tid sibling;
-    calm_tid child;
-    CALM_TREE_NODE_TYPE type;
-} calm_tree_node;
 
 typedef struct {
     void * memory;
@@ -604,18 +582,25 @@ const char* const calmGetSymbol(CalmParsingTableRef parsingTableRef, calm_sid si
     return calm_table_retrieve(calm_table_check(parsingTableRef), sid);
 }
 
-
-size_t calmGetTreeNodeSize(CalmParsingTableRef parsingTableRef) {
-    return calm_table_check(parsingTableRef)->terms->size;
+size_t calmGetTreeStoreSize(CalmParsingTableRef parsingTableRef) {
+    calm_tree_store* tree_store = calm_table_check(parsingTableRef)->terms;
+    assert(tree_store->size <= tree_store->capacity);
+    return tree_store->size;
 }
 
 const char* const calmGetTreeNodeSymbol(CalmParsingTableRef parsingTableRef, calm_tid tid) {
-    assert(tid < calmGetTreeNodeSize(parsingTableRef));
+    assert(tid < calmGetTreeStoreSize(parsingTableRef));
     
     calm_tree_node* node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, tid);
     
     return calmGetSymbol(parsingTableRef, node->sid);
     
+}
+
+const calm_tree_node* calmGetTreeNode(CalmParsingTableRef parsingTableRef, calm_tid tid) {
+    assert(tid < calmGetTreeStoreSize(parsingTableRef));
+    
+    return calm_table_check(parsingTableRef)->terms->memory + tid;
 }
 
 

@@ -10,31 +10,36 @@ import XCTest
 @testable import NyTerms
 
 class MereParserBasicTests: XCTestCase {
-
+    
     func testParsing() {
-        for (name,limit) in  [
-            ("PUZ001-1",0.1), // > 1 ms
+        for (name,limit,expectedTreeSize) in  [
+            ("PUZ001-1",0.1, 106), // > 1 ms
             // ("HWV134-1",49.9) // > 17.0 s
             ] {
-        guard let path = name.p else {
-            XCTFail("Did not find path for \(name)")
-            continue
-        }
-        
-        let (pair,runtime) = measure {
-         
-            mereParse(path)
-        }
+                guard let path = name.p else {
+                    XCTFail("Did not find path for \(name)")
+                    continue
+                }
                 
-             
-            
-            XCTAssertTrue(runtime < limit, "\(runtime.prettyTimeIntervalDescription) exceeds limit of \(limit.prettyTimeIntervalDescription)")
+                let (pair,runtime) = measure {
+                    
+                    mereParse(path)
+                }
                 
-                let (code,_) = pair
-        
-            print("name:", name, "code:", code,"runtime:",runtime.prettyTimeIntervalDescription, "< limit:", limit.prettyTimeIntervalDescription)
+                let code = pair.0
+                print("'name:", name, "'code:", code,"'runtime:",runtime.prettyTimeIntervalDescription, "'limit:", limit.prettyTimeIntervalDescription, "'tree store size:", pair.1?.treeSize)
+                XCTAssertTrue(runtime < limit, "\(runtime.prettyTimeIntervalDescription) exceeds limit of \(limit.prettyTimeIntervalDescription)")
                 
-                //    let value = calmGetTreeNodeSize(parsingTable);
+                let table = pair.1!
+                let treeStoreSize = table.treeSize
+                XCTAssertEqual(expectedTreeSize, treeStoreSize)
+                
+                for s in table.treeNodes {
+                    print(s)
+                }
+                
+                
+                //    let value = calmGetTreeStoreSize(parsingTable);
                 //
                 //
                 //    print(lastInput, value)
@@ -51,11 +56,11 @@ class MereParserBasicTests: XCTestCase {
                 //            let string = String.fromCString( calmGetSymbol(parsingTable, sid) )
                 //            print(sid,string)
                 //        }
-                //        
+                //
                 //        sid = calmNextSymbol(parsingTable, sid);
                 //    }
                 //    #endif
-
+                
         }
     }
 }

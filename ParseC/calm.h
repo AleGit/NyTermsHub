@@ -16,6 +16,30 @@ typedef calm_id calm_sid;     /* symbol identifier (filename, name, role) */
 typedef calm_id calm_tid;     /* tree node identifier */
 typedef void* CalmParsingTableRef;
 
+typedef enum {
+    CALM_TYPE_UNKNOWN = 0,
+    CALM_VARIABLE,
+    CALM_CONSTANT,
+    CALM_FUNCTIONAL,
+    CALM_PREDICATE,
+    CALM_EQUATIONAL,
+    CALM_CONNECTIVE,
+    
+    /* annotated_formula | include */
+    CALM_TPTP_ROLE,
+    CALM_TPTP_ANNOTATIONS,
+    CALM_TPTP_CNF_ANNOTATED,
+    CALM_TPTP_FOF_ANNOTATED,
+    CALM_TPTP_INCLUDE
+} CALM_TREE_NODE_TYPE;
+
+typedef struct {
+    calm_sid sid;
+    calm_tid sibling;
+    calm_tid child;
+    CALM_TREE_NODE_TYPE type;
+} calm_tree_node;
+
 #pragma mark - symbol table
 
 /// Allocate memory to store and access symbols, terms, etc.
@@ -27,11 +51,9 @@ void calmDeleteParsingTable(CalmParsingTableRef*);
 calm_sid calmStoreSymbol(CalmParsingTableRef, const char * const);
 /// Get next symbol id after given id in parsing table .
 calm_sid calmNextSymbol(CalmParsingTableRef, calm_sid);
-/// Get (pointer to) symbol in parsing table with given id.
-const char* const calmGetSymbol(CalmParsingTableRef, calm_sid);
 
 
-size_t calmGetTreeNodeSize(CalmParsingTableRef);
+size_t calmGetTreeStoreSize(CalmParsingTableRef);
 const char* const calmGetTreeNodeSymbol(CalmParsingTableRef, calm_tid);
 
 
@@ -50,5 +72,11 @@ calm_tid calmNodeListCreate(CalmParsingTableRef, calm_tid, calm_tid);
 void calmNodeListAppend(CalmParsingTableRef, calm_tid, calm_tid);
 
 calm_id calm_label(char*);
+
+#pragma mark - retrieval
+/// Get (pointer to) symbol in parsing table with given id.
+const char* const calmGetSymbol(CalmParsingTableRef, calm_sid);
+/// Get (pointer to) tree node with givern id.
+const calm_tree_node* calmGetTreeNode(CalmParsingTableRef, calm_tid);
 
 #endif /* calm_h */

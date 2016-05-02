@@ -457,7 +457,7 @@ general_data        :   atomic_word
                     |   general_function
                     |   variable                    { $$=CREATE_Variable($1); }
                     |   number                      { $$=CREATE_Constant($1); }
-                    |   DISTINCT_OBJECT {$$=CREATE_DISTINCT($1); }
+                    |   DISTINCT_OBJECT             { $$=CREATE_DISTINCT($1); }
                     |   formula_data
 general_function    :   atomic_word '(' general_terms ')'
 formula_data        :   DOLLAR_FOF '(' fof_formula ')'

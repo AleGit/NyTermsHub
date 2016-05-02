@@ -14,7 +14,7 @@ class MereParserBasicTests: XCTestCase {
     func testParsing() {
         for (name,limit,expectedTreeSize) in  [
             ("PUZ001-1",0.003, 106), // ~ 1 ms
-            ("SYN000-2",1.0,142),
+            ("SYN000-2",1.0,145),
 //            ("PUZ051-1",1.0,200),
 //?            ("SYN000-2",1.0,100),
 //            ("HWV001-1",0.003, 412),

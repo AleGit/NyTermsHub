@@ -38,7 +38,8 @@
 #define CREATE_STRING(a)                            calmStoreSymbol(mereParsingTable, a)
 #define CREATE_STRINGS1(a)                          calmStoreNameNode(mereParsingTable, a)
 
-#define CREATE_DISTINCT(a)                          calm_label("CREATE_DISTINCT")
+#define CREATE_DISTINCT(a)                          calmStoreConstant(mereParsingTable, calmStoreSymbol(mereParsingTable,a))
+/*calm_label("CREATE_DISTINCT") */
 
 #define MAKE_ROLE(a)                                calmStoreRole(mereParsingTable, a)
 

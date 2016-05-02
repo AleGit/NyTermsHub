@@ -40,7 +40,7 @@ func mereParse(path:TptpPath) -> (Int32, ParsingTable?) {
     
     // allocate memory depending on the size of the file
     let theParsing = ParsingTable(size: size)
-    parsingTable = theParsing.table
+    mereParsingTable = theParsing.table
     
     mere_in = file
     mere_restart(file)

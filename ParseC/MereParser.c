@@ -9,8 +9,8 @@
 // #include <stdio.h>
 #import "MereParser.h"
 
-CalmParsingTableRef parsingTable = NULL;
-calm_id lastInput = 0;
+CalmParsingTableRef mereParsingTable = NULL;
+calm_id mereLastInput = 0;
 
 
 

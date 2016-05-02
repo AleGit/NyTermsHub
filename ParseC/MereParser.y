@@ -162,8 +162,8 @@
 TPTP_file       :   /* epsilon */ { $$ = NULLREF; }
 |   TPTP_sequence // { $$ = CREATE_FILE($1); TPTP_FILE_NAME=$$; }
 
-TPTP_sequence   :   TPTP_input  { lastInput = $1; $$ = $1; }
-|   TPTP_sequence TPTP_input { NODES_APPEND(lastInput,$2); lastInput=$2; $$=$1; }
+TPTP_sequence   :   TPTP_input  { $$ = TPTP_INPUT($1); }
+|   TPTP_sequence TPTP_input { $$=TPTP_INPUT_APPEND($1,$2); }
 
 TPTP_input      :   annotated_formula { ; }
 |   include { ; }

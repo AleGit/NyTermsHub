@@ -62,6 +62,8 @@ calm_sid calmStoreSymbol(CalmParsingTableRef, const char * const);
 /// Get next symbol id after given id in parsing table .
 calm_sid calmNextSymbol(CalmParsingTableRef, calm_sid);
 
+calm_tid calmStoreInclude(CalmParsingTableRef,calm_sid,calm_tid);
+
 calm_tid calmStoreAnnotatedCnf(CalmParsingTableRef,calm_sid,calm_sid,calm_tid,calm_tid);
 calm_tid calmStoreConnective(CalmParsingTableRef,calm_sid,calm_tid);
 calm_tid calmStoreRole(CalmParsingTableRef,const char* const);

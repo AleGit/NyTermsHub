@@ -636,6 +636,12 @@ calm_tid calmStoreAnnotated(CalmParsingTableRef parsingTableRef, calm_sid nameSI
                                   , type);
 }
 
+calm_tid calmStoreInclude(CalmParsingTableRef parsingTableRef, calm_sid sid, calm_tid tid) {
+    assert(sid != 0);
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, tid, CALM_TPTP_INCLUDE);
+    
+}
+
 
 calm_tid calmStoreAnnotatedCnf(CalmParsingTableRef parsingTableRef, calm_sid nameSID, calm_tid role, calm_tid root, calm_tid annotations) {
     return calmStoreAnnotated(parsingTableRef, nameSID, role, root, annotations, CALM_TPTP_CNF_ANNOTATED);

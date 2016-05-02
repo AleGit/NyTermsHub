@@ -11,39 +11,39 @@
 #define DID_PARSE_FORMULA(a)        return 0
 #define DID_PARSE_INCLUDE(a)        return 0
 
-#define CREATE_ANNOTATED(a,b,c,d,e)     calm_label("annotated")
+#define CREATE_ANNOTATED(a,b,c,d,e)                 calm_label("annotated")
 
-#define CREATE_CNF(name,role,root,annotations)    calmStoreAnnotatedCnf(mereParsingTable,name,role,root,annotations)
-#define CREATE_INCLUDE(a,b)         calm_label("include")
+#define CREATE_CNF(name,role,root,annotations)      calmStoreAnnotatedCnf(mereParsingTable,name,role,root,annotations)
+#define CREATE_INCLUDE(fileName,nameList)           calmStoreInclude(mereParsingTable,fileName,nameList)
 
-#define TPTP_INPUT(input)                       input; calmNodeSetChild(mereParsingTable,0,input)
-#define TPTP_INPUT_APPEND(sequence,input)       sequence; calmNodeListAppend(mereParsingTable,sequence,input)
+#define TPTP_INPUT(input)                           input; calmNodeSetChild(mereParsingTable,0,input)
+#define TPTP_INPUT_APPEND(sequence,input)           sequence; calmNodeListAppend(mereParsingTable,sequence,input)
 
-#define CREATE_Quantified(b,c,d)        calm_label("CREATE_Quantified") // quantified
-#define CREATE_Functional(sid,first)    calmStoreFunctional(mereParsingTable, sid, first) // function, predicate
-#define CREATE_Equational(sid,first)    calmStoreEquational(mereParsingTable, sid, first) // equation, inequation
-#define CREATE_Connective(sid,first)    calmStoreConnective(mereParsingTable, sid, first) // connective
-#define CREATE_Constant(sid)            calmStoreConstant(mereParsingTable, sid) // constant
-#define CREATE_Variable(sid)            calmStoreVariable(mereParsingTable, sid) // variable
+#define CREATE_Quantified(b,c,d)                    calm_label("CREATE_Quantified") // quantified
+#define CREATE_Functional(sid,first)                calmStoreFunctional(mereParsingTable, sid, first) // function, predicate
+#define CREATE_Equational(sid,first)                calmStoreEquational(mereParsingTable, sid, first) // equation, inequation
+#define CREATE_Connective(sid,first)                calmStoreConnective(mereParsingTable, sid, first) // connective
+#define CREATE_Constant(sid)                        calmStoreConstant(mereParsingTable, sid) // constant
+#define CREATE_Variable(sid)                        calmStoreVariable(mereParsingTable, sid) // variable
 
-#define CREATE_NODES0()             (calm_sid)0  // empty list
-#define CREATE_NODES1(a)            a           // unary list
-#define CREATE_NODES2(first,next)   calmNodeListCreate(mereParsingTable, first, next) // binary list
+#define CREATE_NODES0()                             (calm_sid)0  // empty list
+#define CREATE_NODES1(a)                            a           // unary list
+#define CREATE_NODES2(first,next)                   calmNodeListCreate(mereParsingTable, first, next) // binary list
 
-#define PREDICATE(tid)                  calmSetPredicate(mereParsingTable,tid); /* register_predicate(tid) */
+#define PREDICATE(tid)                              calmSetPredicate(mereParsingTable,tid); /* register_predicate(tid) */
 
-#define APPEND(a,b)                 calm_label("APPEND")
-#define INSERT(a,b)                 calm_label("INSERT")
+#define APPEND(a,b)                                 calm_label("APPEND")
+#define INSERT(a,b)                                 calm_label("INSERT")
 
-#define CREATE_STRING(a)            calmStoreSymbol(mereParsingTable, a)
-#define CREATE_STRINGS1(a)          calm_label("CREATE_STRINGS1")
+#define CREATE_STRING(a)                            calmStoreSymbol(mereParsingTable, a)
+#define CREATE_STRINGS1(a)                          calm_label("CREATE_STRINGS1")
 
-#define CREATE_DISTINCT(a)          calm_label("CREATE_DISTINCT")
+#define CREATE_DISTINCT(a)                          calm_label("CREATE_DISTINCT")
 
-#define MAKE_ROLE(a)                calmStoreRole(mereParsingTable, a)
+#define MAKE_ROLE(a)                                calmStoreRole(mereParsingTable, a)
 
-#define NODES_APPEND(member,last)    calmNodeListAppend(mereParsingTable,member,last)
-#define STRINGS_APPEND(a,b)         calm_label("STRINGS_APPEND")
+#define NODES_APPEND(member,last)                   calmNodeListAppend(mereParsingTable,member,last)
+#define STRINGS_APPEND(a,b)                         calm_label("STRINGS_APPEND")
 #define SET_PARENTHESES(a)
 
 /* predefined symbols */

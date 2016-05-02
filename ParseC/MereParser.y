@@ -20,7 +20,8 @@
 {
     char* cstring;
     calm_sid string;
-    calm_tid role;
+    
+    calm_tid strings;
     
     calm_tid node;
     calm_tid nodes;
@@ -28,6 +29,7 @@
     calm_tid tptpformula;
     calm_tid tptpinclude;
     
+    calm_tid role;
     calm_id annotations;
     
     
@@ -35,7 +37,6 @@
     //
     //
     
-    calm_tid strings;
     calm_tid type;
 }
 
@@ -446,7 +447,7 @@ include             :   INCLUDE '(' file_name formula_selection ')' '.'  { $$ = 
 formula_selection   :   /* null */       {$$=NULLREF;}
 |   ',' '[' name_list ']' { $$=$3; }
 name_list           :   name { $$ = CREATE_STRINGS1($1); }
-|   name_list ',' name { STRINGS_APPEND($1,$3); $$ = $1; }
+|   name_list ',' name { STRINGS_APPEND($1,CREATE_STRINGS1($3)); $$ = $1; }
 
 /*---- Non-logical data */
 general_term        :   general_data

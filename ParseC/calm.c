@@ -690,7 +690,7 @@ calm_tid calmStoreVariable(CalmParsingTableRef parsingTableRef, calm_sid sid) {
 /****/
 
 calm_tid calmNodeListCreate(CalmParsingTableRef parsingTableRef,calm_tid first,calm_tid second) {
-    assert(first != second);
+    assert(first != second || second == 0);
     
     calm_tree_node *node = calm_tree_store_retrieve(calm_table_check(parsingTableRef)->terms, first);
     
@@ -755,5 +755,11 @@ void calmNodeSetSymbol(CalmParsingTableRef parsingTableRef, calm_tid tid, const 
     assert(sid != 0);
     
     node->sid = sid;
+}
+
+calm_tid calmStoreNameNode(CalmParsingTableRef parsingTableRef, calm_sid sid) {
+    printf("calmStoreNameNode: %zu\n",sid);
+    assert(sid != 0);
+    return calm_tree_store_append(calm_table_check(parsingTableRef)->terms, sid, 0, 0, CALM_NAME);
 }
 

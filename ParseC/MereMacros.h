@@ -36,14 +36,14 @@
 #define INSERT(a,b)                                 calm_label("INSERT")
 
 #define CREATE_STRING(a)                            calmStoreSymbol(mereParsingTable, a)
-#define CREATE_STRINGS1(a)                          calm_label("CREATE_STRINGS1")
+#define CREATE_STRINGS1(a)                          calmStoreNameNode(mereParsingTable, a)
 
 #define CREATE_DISTINCT(a)                          calm_label("CREATE_DISTINCT")
 
 #define MAKE_ROLE(a)                                calmStoreRole(mereParsingTable, a)
 
 #define NODES_APPEND(member,last)                   calmNodeListAppend(mereParsingTable,member,last)
-#define STRINGS_APPEND(a,b)                         calm_label("STRINGS_APPEND")
+#define STRINGS_APPEND(a,b)                         calmNodeListAppend(mereParsingTable,a,b)
 #define SET_PARENTHESES(a)
 
 /* predefined symbols */

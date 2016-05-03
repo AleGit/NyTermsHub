@@ -13,7 +13,7 @@ struct NodeGenerator<S,T> : GeneratorType {
     private let step : (S) -> S?
     private let data : (S) -> T
     
-    init(first:S, step:(S)->S?, data:(S)->T) {
+    init(first:S?, step:(S)->S?, data:(S)->T) {
         self.this = first
         self.step = step
         self.data = data
@@ -29,11 +29,11 @@ struct NodeGenerator<S,T> : GeneratorType {
 }
 
 struct NodeSequence<S,T> : SequenceType {
-    private let this : S
+    private let this : S?
     private let step : (S) -> S?
     private let data : (S) -> T
     
-    init(first:S, step:(S)->S?, data:(S)->T) {
+    init(first:S?, step:(S)->S?, data:(S)->T) {
         self.this = first
         self.step = step
         self.data = data
@@ -43,53 +43,6 @@ struct NodeSequence<S,T> : SequenceType {
         return NodeGenerator(first: this, step: step, data: data)
     }
 
-}
-
-struct TreeNodeGenerator<T> : GeneratorType {
-    private var tid : calm_tid?
-    private var step : (calm_tid) -> calm_tid?
-    private var f : (calm_tid) -> T
-    
-    init(firstTid:calm_tid, step:(calm_tid)->calm_tid?, f: (calm_tid) -> T) {
-        self.tid = firstTid
-        self.step = step
-        self.f = f
-    }
-    
-    mutating func next() -> T? {
-        guard let tid = self.tid else { return nil }
-    
-        defer {
-            // will change after return statement
-            self.tid = step(tid)
-        }
-        return f(tid)
-    }
-}
-
-struct TreeNodeSequence<T> : SequenceType {
-    private let firstTid : calm_tid
-    private let step: (calm_tid) -> calm_tid?
-    private var f : (calm_tid) -> T
-    
-    init(tableRef:CalmParsingTableRef, parentTid:calm_tid, step:(calm_tid) -> calm_tid?, f:(calm_tid)->T) {
-        assert(tableRef != nil)
-        assert(parentTid < calmGetTreeNodeStoreSize(tableRef))
-        
-        self.firstTid = calmGetTreeNode(tableRef,parentTid).memory.child
-        self.step = step
-        self.f = f
-    }
-    
-    init(firstTid:calm_tid, step:(calm_tid) -> calm_tid?, f:(calm_tid)->T) {
-        self.firstTid = firstTid
-        self.step = step
-        self.f = f
-    }
-    
-    func generate() -> TreeNodeGenerator<T> {
-        return TreeNodeGenerator(firstTid: firstTid, step:step, f:f)
-    }
 }
 
 class ParsingTable {
@@ -108,12 +61,6 @@ class ParsingTable {
     
     var treeSize : Int {
         return calmGetTreeNodeStoreSize(tableRef)
-    }
-    
-    var treeNodes : TreeNodeSequence<(calm_tid,calm_tree_node)> {
-        return TreeNodeSequence(firstTid:0, step:self.nextNode) {
-            ($0,calmCopyTreeNodeData(self.tableRef,$0))
-        }
     }
     
     private var nextSibling : (calm_tid) -> calm_tid? {
@@ -138,46 +85,45 @@ class ParsingTable {
             return nextTid
         }
     }
+    private static func treeNodePair(ref:CalmParsingTableRef,tid:calm_tid)->(calm_tid,calm_tree_node) {
+        return (tid, calmGetTreeNode(ref, tid).memory)
+    }
     
+    func siblings<T>(first:calm_tid?, g:(CalmParsingTableRef,calm_tid) ->T) -> NodeSequence<calm_tid,T> {
+        return NodeSequence(first:first, step:self.nextSibling){
+            g(self.tableRef,$0)
+        }
+    }
+    
+    func children<T>(parentTid:calm_tid, g:(CalmParsingTableRef,calm_tid) -> T) -> NodeSequence<calm_tid,T> {
+        let first = calmGetTreeNode(tableRef,parentTid).memory.child
+        
+        guard first > 0 else { return siblings(nil, g:g) }
+        
+        return siblings(first, g:g)
+    }
+    
+    func children(parentTid:calm_tid) -> NodeSequence<calm_tid,(calm_tid,calm_tree_node)> {
+        return children(parentTid, g:ParsingTable.treeNodePair)
+    }
+    
+    func siblings(firstTid:calm_tid)  -> NodeSequence<calm_tid,(calm_tid,calm_tree_node)> {
+        return siblings(firstTid, g:ParsingTable.treeNodePair)
+    }
+    
+    var treeNodes : NodeSequence<calm_tid,(calm_tid,calm_tree_node)> {
+        return NodeSequence(first:0, step:self.nextNode) {
+            ParsingTable.treeNodePair(self.tableRef, tid: $0)
+        }
+    }
+    
+    var tptpSequence : NodeSequence<calm_tid,(calm_tid,calm_tree_node)> {
+        return self.children(0)
+    }
+    
+        
+        
 
-    
-    func siblings<T>(firstTid:calm_tid, g:(CalmParsingTableRef,calm_tid) -> T) -> TreeNodeSequence<T> {
-        return TreeNodeSequence(firstTid:firstTid, step:self.nextSibling) {
-            g(self.tableRef,$0)
-        }
-    }
-    
-    func children<T>(parentTid:calm_tid, g:(CalmParsingTableRef,calm_tid) -> T) -> TreeNodeSequence<T> {
-        return TreeNodeSequence(tableRef: tableRef, parentTid:parentTid, step:self.nextSibling) {
-            g(self.tableRef,$0)
-        }
-    }
-    
-    
-    func siblings(firstTid:calm_tid) -> TreeNodeSequence<(calm_tid,calm_tree_node)> {
-        
-        return self.children(firstTid) {
-            ($1, calmCopyTreeNodeData($0, $1))
-        }
-        
-//        return TreeNodeSequence(firstTid:firstTid, step:self.nextSibling) {
-//            ($0, calmCopyTreeNodeData(self.tableRef, $0))
-//        }
-    }
-    
-    func children(parentTid:calm_tid) -> TreeNodeSequence<(calm_tid,calm_tree_node)> {
-        return self.children(parentTid) {
-            ($1, calmCopyTreeNodeData($0, $1))
-        }
-        
-//        return TreeNodeSequence(tableRef: tableRef, parentTid:parentTid, step:self.nextSibling) {
-//            ($0, calmCopyTreeNodeData(self.tableRef, $0))
-//        }
-    }
-    
-    var tptpSequence : TreeNodeSequence<calm_tid> {
-        return TreeNodeSequence(firstTid:self[0]!.child, step:self.nextSibling) { $0 }
-    }
     
     subscript(tid:calm_tid) -> calm_tree_node? {
         guard tid < treeSize else { return nil }

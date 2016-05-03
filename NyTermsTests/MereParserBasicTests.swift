@@ -83,19 +83,19 @@ class MereParserBasicTests: XCTestCase {
                 
 
                 
-                let (sequence, arrayTime) = measure {
-                    Array(table.tptpSequence)
-                }
-                
-                
-                for s in sequence[0..<min(sequence.count,25)] {
-                    print(s)
-                }
-                
-                print("\(sequence.count) clauses in \(arrayTime.prettyTimeIntervalDescription).")
-                
-                XCTAssertEqual(sequence.count, numberOfClauses)
-                XCTAssertTrue(arrayTime < expectedArrayTime,"\(arrayTime) ≰ \(expectedArrayTime)")
+//                let (sequence, arrayTime) = measure {
+//                    Array(table.tptpSequence)
+//                }
+//                
+//                
+//                for s in sequence[0..<min(sequence.count,25)] {
+//                    print(s)
+//                }
+//                
+//                print("\(sequence.count) clauses in \(arrayTime.prettyTimeIntervalDescription).")
+//                
+//                XCTAssertEqual(sequence.count, numberOfClauses)
+//                XCTAssertTrue(arrayTime < expectedArrayTime,"\(arrayTime) ≰ \(expectedArrayTime)")
                 
         }
     }
@@ -107,63 +107,20 @@ class MereParserBasicTests: XCTestCase {
         
         let table = pair.1!
         
-        var d = Dictionary<calm_sid,String>()
+        let seq0 = table.tptpSequence.map { $0.0 }
+        let seq1 = table.children(0).map { $0.0 }
+        
+        XCTAssertTrue(seq0==seq1)
+        
 
-        for (key,value) in table.symbols {
-            d[key] = value
-        }
-        print(d)
-        
-        for s in table.children(0) {
-            print(s)
-            let cs = table.children(s.0)
-            for c in cs {
-                print("\t\(c)")
-            }
+        let all = table.tptpSequence.map {
+            (String.fromCString(calmGetSymbol(table.tableRef, $0.1.sid)) ?? "n/a:\($0.1.sid)",
+                table.children($0.0).reduce(0) { a,_ in
+                    a + 1; }, $0)
         }
         
-//        for s in table.tptpSequence {
-//            print(s)
-//            for c in table.children(s) {
-//                print("\t\t",c)
-//            }
-//        }
-        
-        
-    }
-    
-    
-    
-    func testDemoHWV134Tree() {
-        let path = "HWV134-1".p!
-        let pair = mereParse(path)
-        XCTAssertEqual(0, pair.0)
-        
-        let table = pair.1!
-        
-        //        for s in table.treeNodes {
-        //            print(s)
-        //        }
-        
-        //        for s in table.children(0) {
-        //            print(s)
-        //        }
-        
-        for s in table.children(0) {
-            print(s)
-//            let cs = table.children(s.0)
-//            for c in cs {
-//                print("\t\(c)")
-//            }
+        for n in all {
+            print(n)
         }
-        
-        //        for s in table.tptpSequence {
-        //            print(s)
-        //            for c in table.children(s) {
-        //                print("\t\t",c)
-        //            }
-        //        }
-        
-        
     }
 }

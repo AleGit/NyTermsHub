@@ -59,7 +59,7 @@ class MereParserBasicTests: XCTestCase {
 //            ("HWV117-1",0.9,228613),
 //            ("HWV124-1",9.9,7098296),
             
-            ("HWV134-1",45.6, 29_953_326, 2_332_428, 5.0)
+            ("HWV134-1",45.6, 29_953_326, 2_332_428, 5.1)
             ] {
                 guard let path = name.p else {
                     XCTFail("Did not find path for \(name)")
@@ -95,8 +95,27 @@ class MereParserBasicTests: XCTestCase {
                 print("\(sequence.count) clauses in \(arrayTime.prettyTimeIntervalDescription).")
                 
                 XCTAssertEqual(sequence.count, numberOfClauses)
-                XCTAssertTrue(arrayTime < expectedArrayTime)
+                XCTAssertTrue(arrayTime < expectedArrayTime,"\(arrayTime) ≰ \(expectedArrayTime)")
                 
+        }
+    }
+    
+    func testDemoPUZ001Tree() {
+        let path = "PUZ001-1".p!
+        let pair = mereParse(path)
+        XCTAssertEqual(0, pair.0)
+        
+        let table = pair.1!
+        
+        for s in table.treeNodes {
+            print(s)
+        }
+        
+        for s in table.tptpSequence {
+            print(s)
+            for c in table.children(s) {
+                print("\t\t",c)
+            }
         }
     }
 }

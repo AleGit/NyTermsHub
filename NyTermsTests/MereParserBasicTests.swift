@@ -107,15 +107,28 @@ class MereParserBasicTests: XCTestCase {
         
         let table = pair.1!
         
-        for s in table.treeNodes {
+//        for s in table.treeNodes {
+//            print(s)
+//        }
+        
+//        for s in table.children(0) {
+//            print(s)
+//        }
+        
+        let childs = table.children(0) {
+            ($0.1, calmCopyTreeNodeData($0.0, $0.1))
+        }
+        for s in childs {
             print(s)
         }
         
-        for s in table.tptpSequence {
-            print(s)
-            for c in table.children(s) {
-                print("\t\t",c)
-            }
-        }
+//        for s in table.tptpSequence {
+//            print(s)
+//            for c in table.children(s) {
+//                print("\t\t",c)
+//            }
+//        }
+        
+        
     }
 }

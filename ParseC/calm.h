@@ -19,13 +19,19 @@ typedef void* CalmParsingTableRef;
 typedef enum {
     CALM_TYPE_UNKNOWN = 0,
     
-    CALM_TPTP_FILE, /* TPTP_squence */
+    ///    <TPTP_file>  ::= <TPTP_input>*
+    ///
+    ///    <TPTP_input> ::= <annotated_formula> | <include>
+    ///
+    ///    <annotated_formula>  ::= ... | <fof_annotated> | <cnf_annotated> | ...
+    CALM_TPTP_FILE,
     
-    /* annotated formula | inlcude */
-    
-    CALM_TPTP_CNF_ANNOTATED,
+    ///    <fof_annotated>      ::= fof(<name>,<formula_role>,<fof_formula><annotations>).
     CALM_TPTP_FOF_ANNOTATED,
+    ///    <cnf_annotated>      ::= cnf(<name>,<formula_role>,<cnf_formula><annotations>).
+    CALM_TPTP_CNF_ANNOTATED,
     
+    ///    <include> ::= include(<file_name><formula_selection>).
     CALM_TPTP_INCLUDE,
     CALM_NAME,  // name, namelist
     
@@ -44,10 +50,31 @@ typedef enum {
 } CALM_TREE_NODE_TYPE;
 
 typedef struct {
+    /// sid denotes the name id of the node
     calm_sid sid;
+    
+    /// sibling denotes the next node in a sequence of nodes
+    ///
+    /// sibling == 'nexttid' for first and intermediate nodes
+    ///
+    /// sibling == 0 for last node
     calm_tid sibling;
+    
+    /// lastSibling is only relevant for the first node of a sequence
+    ///
+    /// lastSibling == 'lasttid' for first node in sequence
+    ///
+    /// lastSibling == 'nexttid' (==sibling) for intermediate nodes in sequence
+    ///
+    /// lastSibling == 0 for last node (lasttid) in sequence
     calm_tid lastSibling;
+    
+    /// child denotes a sequence of child nodes
+    ///
+    /// child == 'first child tid'
     calm_tid child;
+    
+    
     CALM_TREE_NODE_TYPE type;
 } calm_tree_node;
 
@@ -89,7 +116,7 @@ calm_id calm_label(char*);
 /// Get (pointer to) symbol in parsing table with given id.
 const char* const calmGetSymbol(CalmParsingTableRef, calm_sid);
 /// Get (pointer to) tree node with givern id.
-//const calm_tree_node* calmGetTreeNode(CalmParsingTableRef, calm_tid);
+const calm_tree_node* calmGetTreeNode(CalmParsingTableRef, calm_tid);
 
 size_t calmGetTreeNodeStoreSize(CalmParsingTableRef);
 calm_tree_node calmCopyTreeNodeData(CalmParsingTableRef, calm_tid);

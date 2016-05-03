@@ -31,7 +31,7 @@ class TreeNodeGenerator : GeneratorType {
         self.size = calmGetTreeNodeStoreSize(tableRef)
     }
     
-    func next() -> (id:calm_tid,symbol:String,sibling:calm_tid,last:calm_tid, child:calm_tid,type:UInt32)? {
+    func next() -> (calm_tid,calm_tree_node)? {
         guard nextTid < size else {
             return nil
         }
@@ -39,10 +39,41 @@ class TreeNodeGenerator : GeneratorType {
             nextTid += 1
         }
         
-        let data = calmCopyTreeNodeData(tableRef, nextTid)
-        let symbol = String.fromCString(calmGetSymbol(tableRef,data.sid))!
-        
-        return (id:nextTid , symbol , data.sibling, data.lastSibling, data.child, data.type.rawValue)
+        return (nextTid,calmCopyTreeNodeData(tableRef, nextTid))
+    }
+}
+
+class TptpSequenceGenerator : GeneratorType {
+    private let tableRef : CalmParsingTableRef
+    private var nextTid : calm_tid
+    
+    init(tableRef:CalmParsingTableRef) {
+        self.tableRef = tableRef
+        // self.nextTid = calmGetTreeNode(tableRef,0).memory.child
+        self.nextTid = calmCopyTreeNodeData(tableRef, 0).child
+    }
+    
+    func next() -> (calm_tid,calm_tree_node)? {
+        guard nextTid > 0 else { return nil }
+    
+        let p = calmGetTreeNode(tableRef,nextTid)
+        defer {
+            // will change after return statement
+            nextTid = p.memory.sibling
+        }
+        return (nextTid,p.memory)
+    }
+}
+
+class TptpSequence : SequenceType {
+    private var tableRef : CalmParsingTableRef
+    
+    init(tableRef:CalmParsingTableRef) {
+        self.tableRef = tableRef
+    }
+    
+    func generate() -> TptpSequenceGenerator {
+        return TptpSequenceGenerator(tableRef: tableRef)
     }
 }
 
@@ -66,6 +97,15 @@ class ParsingTable {
     
     var treeNodes : TreeNodeSequence {
         return TreeNodeSequence(tableRef: tableRef)
+    }
+    
+    var tptpSequence : TptpSequence {
+        return TptpSequence(tableRef: tableRef)
+    }
+    
+    subscript(tid:calm_tid) -> calm_tree_node? {
+        guard tid < treeSize else { return nil }
+        return calmGetTreeNode(tableRef, tid).memory
     }
     
     

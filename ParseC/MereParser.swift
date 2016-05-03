@@ -8,7 +8,44 @@
 
 import Foundation
 
-class TreeNodeGenerator<T> : GeneratorType {
+struct NodeGenerator<S,T> : GeneratorType {
+    private var this : S?
+    private let step : (S) -> S?
+    private let data : (S) -> T
+    
+    init(first:S, step:(S)->S?, data:(S)->T) {
+        self.this = first
+        self.step = step
+        self.data = data
+    }
+    
+    mutating func next() -> T? {
+        guard let current = self.this else {
+            return nil
+        }
+        self.this = self.step(current)
+        return self.data(current)
+    }
+}
+
+struct NodeSequence<S,T> : SequenceType {
+    private let this : S
+    private let step : (S) -> S?
+    private let data : (S) -> T
+    
+    init(first:S, step:(S)->S?, data:(S)->T) {
+        self.this = first
+        self.step = step
+        self.data = data
+    }
+    
+    func generate() -> NodeGenerator<S,T> {
+        return NodeGenerator(first: this, step: step, data: data)
+    }
+
+}
+
+struct TreeNodeGenerator<T> : GeneratorType {
     private var tid : calm_tid?
     private var step : (calm_tid) -> calm_tid?
     private var f : (calm_tid) -> T
@@ -19,7 +56,7 @@ class TreeNodeGenerator<T> : GeneratorType {
         self.f = f
     }
     
-    func next() -> T? {
+    mutating func next() -> T? {
         guard let tid = self.tid else { return nil }
     
         defer {
@@ -30,7 +67,7 @@ class TreeNodeGenerator<T> : GeneratorType {
     }
 }
 
-class TreeNodeSequence<T> : SequenceType {
+struct TreeNodeSequence<T> : SequenceType {
     private let firstTid : calm_tid
     private let step: (calm_tid) -> calm_tid?
     private var f : (calm_tid) -> T
@@ -77,8 +114,6 @@ class ParsingTable {
         return TreeNodeSequence(firstTid:0, step:self.nextNode) {
             ($0,calmCopyTreeNodeData(self.tableRef,$0))
         }
-        
-        // return self.siblings(firstTid:0, step:self.nextNode)
     }
     
     private var nextSibling : (calm_tid) -> calm_tid? {
@@ -104,14 +139,7 @@ class ParsingTable {
         }
     }
     
-    
-    func siblings(firstTid:calm_tid) -> TreeNodeSequence<calm_tid> {
-        return TreeNodeSequence(firstTid:firstTid, step:self.nextSibling) {$0}
-    }
-    
-    func children(parentTid:calm_tid) -> TreeNodeSequence<calm_tid> {
-        return TreeNodeSequence(tableRef: tableRef, parentTid:parentTid, step:self.nextSibling) {$0}
-    }
+
     
     func siblings<T>(firstTid:calm_tid, g:(CalmParsingTableRef,calm_tid) -> T) -> TreeNodeSequence<T> {
         return TreeNodeSequence(firstTid:firstTid, step:self.nextSibling) {
@@ -125,6 +153,28 @@ class ParsingTable {
         }
     }
     
+    
+    func siblings(firstTid:calm_tid) -> TreeNodeSequence<(calm_tid,calm_tree_node)> {
+        
+        return self.children(firstTid) {
+            ($1, calmCopyTreeNodeData($0, $1))
+        }
+        
+//        return TreeNodeSequence(firstTid:firstTid, step:self.nextSibling) {
+//            ($0, calmCopyTreeNodeData(self.tableRef, $0))
+//        }
+    }
+    
+    func children(parentTid:calm_tid) -> TreeNodeSequence<(calm_tid,calm_tree_node)> {
+        return self.children(parentTid) {
+            ($1, calmCopyTreeNodeData($0, $1))
+        }
+        
+//        return TreeNodeSequence(tableRef: tableRef, parentTid:parentTid, step:self.nextSibling) {
+//            ($0, calmCopyTreeNodeData(self.tableRef, $0))
+//        }
+    }
+    
     var tptpSequence : TreeNodeSequence<calm_tid> {
         return TreeNodeSequence(firstTid:self[0]!.child, step:self.nextSibling) { $0 }
     }
@@ -133,6 +183,29 @@ class ParsingTable {
         guard tid < treeSize else { return nil }
         return calmGetTreeNode(tableRef, tid).memory
     }
+    
+    var symbols : NodeSequence<calm_sid,(calm_sid,String)> {
+        let step = {
+            [unowned self]
+            (sid:calm_sid) -> calm_sid? in
+            assert(sid < calmGetSymbolStoreSize(self.tableRef))
+            let nextSid = calmNextSymbol(self.tableRef, sid)
+            guard nextSid > 0 else { return nil }
+            return nextSid
+        }
+        
+        let data = {
+            [unowned self]
+            (sid:calm_sid) -> (calm_sid,String) in
+            let cstring = calmGetSymbol(self.tableRef, sid)
+            let string = String.fromCString(cstring) ?? "n/a"
+            return (sid,string)
+        }
+        
+        return NodeSequence(first:0,step:step,data:data)
+    }
+    
+    
 }
 
 func mereParse(path:TptpPath) -> (Int32, ParsingTable?) {

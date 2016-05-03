@@ -125,4 +125,6 @@ calm_tree_node calmCopyTreeNodeData(CalmParsingTableRef, calm_tid);
 //calm_tid calmGetTreeNodeChild(CalmParsingTableRef, calm_tid);
 //CALM_TREE_NODE_TYPE calmGetTreeNodeType(CalmParsingTableRef, calm_tid);
 
+size_t calmGetSymbolStoreSize(CalmParsingTableRef);
+
 #endif /* calm_h */

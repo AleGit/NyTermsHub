@@ -107,19 +107,19 @@ class MereParserBasicTests: XCTestCase {
         
         let table = pair.1!
         
-//        for s in table.treeNodes {
-//            print(s)
-//        }
-        
-//        for s in table.children(0) {
-//            print(s)
-//        }
-        
-        let childs = table.children(0) {
-            ($0.1, calmCopyTreeNodeData($0.0, $0.1))
+        var d = Dictionary<calm_sid,String>()
+
+        for (key,value) in table.symbols {
+            d[key] = value
         }
-        for s in childs {
+        print(d)
+        
+        for s in table.children(0) {
             print(s)
+            let cs = table.children(s.0)
+            for c in cs {
+                print("\t\(c)")
+            }
         }
         
 //        for s in table.tptpSequence {
@@ -128,6 +128,41 @@ class MereParserBasicTests: XCTestCase {
 //                print("\t\t",c)
 //            }
 //        }
+        
+        
+    }
+    
+    
+    
+    func testDemoHWV134Tree() {
+        let path = "HWV134-1".p!
+        let pair = mereParse(path)
+        XCTAssertEqual(0, pair.0)
+        
+        let table = pair.1!
+        
+        //        for s in table.treeNodes {
+        //            print(s)
+        //        }
+        
+        //        for s in table.children(0) {
+        //            print(s)
+        //        }
+        
+        for s in table.children(0) {
+            print(s)
+//            let cs = table.children(s.0)
+//            for c in cs {
+//                print("\t\(c)")
+//            }
+        }
+        
+        //        for s in table.tptpSequence {
+        //            print(s)
+        //            for c in table.children(s) {
+        //                print("\t\t",c)
+        //            }
+        //        }
         
         
     }

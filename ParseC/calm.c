@@ -590,6 +590,13 @@ size_t calmGetTreeNodeStoreSize(CalmParsingTableRef parsingTableRef) {
     return tree_store->size;
 }
 
+size_t calmGetSymbolStoreSize(CalmParsingTableRef parsingTableRef) {
+    calm_char_store * symbol_store = calm_table_check(parsingTableRef)->strings;
+    assert(symbol_store->size <= symbol_store->capacity);
+    return symbol_store->size;
+    
+}
+
 const calm_tree_node* calmGetTreeNode(CalmParsingTableRef parsingTableRef, calm_tid tid) {
     assert(tid < calmGetTreeNodeStoreSize(parsingTableRef));
     

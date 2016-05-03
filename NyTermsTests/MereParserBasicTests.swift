@@ -59,7 +59,7 @@ class MereParserBasicTests: XCTestCase {
 //            ("HWV117-1",0.9,228613),
 //            ("HWV124-1",9.9,7098296),
             
-            ("HWV134-1",45.6, 29_953_326, 2_332_428, 5.1)
+            ("HWV134-1",45.6, 29_953_326, 2_332_428, 7.5)
             ] {
                 guard let path = name.p else {
                     XCTFail("Did not find path for \(name)")
@@ -83,19 +83,19 @@ class MereParserBasicTests: XCTestCase {
                 
 
                 
-//                let (sequence, arrayTime) = measure {
-//                    Array(table.tptpSequence)
-//                }
-//                
-//                
-//                for s in sequence[0..<min(sequence.count,25)] {
-//                    print(s)
-//                }
-//                
-//                print("\(sequence.count) clauses in \(arrayTime.prettyTimeIntervalDescription).")
-//                
-//                XCTAssertEqual(sequence.count, numberOfClauses)
-//                XCTAssertTrue(arrayTime < expectedArrayTime,"\(arrayTime) ≰ \(expectedArrayTime)")
+                let (sequence, arrayTime) = measure {
+                    Array(table.tptpSequence)
+                }
+                
+                
+                for s in sequence[0..<min(sequence.count,25)] {
+                    print(s)
+                }
+                
+                print("\(sequence.count) clauses in \(arrayTime.prettyTimeIntervalDescription).")
+                
+                XCTAssertEqual(sequence.count, numberOfClauses)
+                XCTAssertTrue(arrayTime < expectedArrayTime,"\(arrayTime) ≰ \(expectedArrayTime)")
                 
         }
     }

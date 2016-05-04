@@ -81,6 +81,9 @@ prlc_prefix_node* prlc_prefix_node_new(prlc_store* store) {
 }
 
 prlc_prefix_node* prlc_prefix_path_step(prlc_store* store, prlc_prefix_node* p_node, const char* const symbol) {
+    
+    assert(symbol != NULL);
+    
     if (strlen(symbol) == 0) return p_node;
     
     int cidx = symbol[0];
@@ -208,6 +211,9 @@ prlc_tree_node* prlcStoreNodeCnf(prlc_store* store, const char* const name, prlc
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name) {
     return prlc_tree_node_save(store, PRLC_ROLE, name, NULL);
 }
+prlc_tree_node* prlcStoreNodeConnective(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild) {
+    return prlc_tree_node_save(store, PRLC_CONNECTIVE, symbol, firstChild);
+}
 prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild) {
     return prlc_tree_node_save(store, PRLC_FUNCTION, symbol, firstChild);
 }
@@ -225,11 +231,13 @@ prlc_tree_node* prlcStoreNodeName(prlc_store* store, const char* const name) {
     return prlc_tree_node_save(store, PRLC_NAME, name, NULL);
 }
 
-void prlcSetPredicate(prlc_tree_node *t_node) {
+prlc_tree_node* prlcSetPredicate(prlc_tree_node *t_node) {
     
     if (t_node->type == PRLC_FUNCTION) t_node->type = PRLC_PREDICATE;
     
     assert(t_node->type == PRLC_PREDICATE);
+    
+    return t_node;
 }
 
 prlc_tree_node *prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last) {

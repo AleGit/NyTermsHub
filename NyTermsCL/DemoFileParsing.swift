@@ -5,6 +5,40 @@ import Foundation
 
 struct DemoFileParsing {
     
+    static func demoPrlcParseHWV134() {
+        let path = "HWV134-1".p!
+        
+        let (result,time) = measure {
+            prlcParse(path)
+        }
+        
+        print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeNodeCount)
+        assert(time < 40,"\(time)")
+        assert(29_953_326 == result.1?.treeNodeCount)
+        // 29953326
+        
+        assert(0 == result.0);
+        
+        
+    }
+    
+    static func demoMereParseHWV134() {
+        let path = "HWV134-1".p!
+        
+        let (result,time) = measure {
+            mereParse(path)
+        }
+        
+        print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeSize)
+        assert(29_953_326 == result.1?.treeSize)
+        assert(time < 40,"\(time)")
+        // 29953326
+        
+        assert(0 == result.0);
+        
+        
+    }
+    
     static func demo() {
         print(self.self,"\(#function)\n")
         

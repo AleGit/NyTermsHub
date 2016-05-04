@@ -71,6 +71,7 @@ prlc_tree_node* prlcStoreNodeFile(prlc_store* store, const char* const name, prl
 prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection);
 prlc_tree_node* prlcStoreNodeCnf(prlc_store* store, const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations);
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name);
+prlc_tree_node* prlcStoreNodeConnective(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeEquational(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeConstant(prlc_store* store, const char* const symbol);
@@ -78,7 +79,7 @@ prlc_tree_node* prlcStoreNodeVariable(prlc_store* store, const char* const symbo
 
 prlc_tree_node* prlcStoreNodeName(prlc_store* store, const char* const name);
 
-void prlcSetPredicate(prlc_tree_node *t_node);
+prlc_tree_node*  prlcSetPredicate(prlc_tree_node *t_node);
 
 prlc_tree_node* prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last);
 

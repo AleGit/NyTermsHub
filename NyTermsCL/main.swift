@@ -20,9 +20,14 @@ defer {
     print(line,NSDate(),line)
 }
 
-DemoFileParsing.parseConvertHWV134()
+DemoFileParsing.demoMereParseHWV134()
+DemoFileParsing.demoPrlcParseHWV134()
 
 exit(0)
+
+DemoFileParsing.parseConvertHWV134()
+
+
 
 for (name,info) in Infos.files {
     let path = name.p!

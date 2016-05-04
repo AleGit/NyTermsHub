@@ -178,6 +178,10 @@ class PrlcTable {
     
         assert (copy == nil)
     }
+    
+    var treeNodeCount : Int {
+        return store.memory.t_nodes.size
+    }
 }
 
 func prlcParse(path:TptpPath) -> (Int32, PrlcTable?) {

@@ -103,7 +103,7 @@
 		516094311CDA095900B3579D /* PrlcParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5160942B1CDA095900B3579D /* PrlcParser.swift */; };
 		516094321CDA095900B3579D /* PrlcParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5160942B1CDA095900B3579D /* PrlcParser.swift */; };
 		516094331CDA095900B3579D /* PrlcParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 5160942C1CDA095900B3579D /* PrlcParser.y */; settings = {COMPILER_FLAGS = "-p prlc_"; }; };
-		516094341CDA095900B3579D /* PrlcParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 5160942C1CDA095900B3579D /* PrlcParser.y */; };
+		516094341CDA095900B3579D /* PrlcParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 5160942C1CDA095900B3579D /* PrlcParser.y */; settings = {COMPILER_FLAGS = "-p prlc_"; }; };
 		516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516107AD1C5A53E100FD3637 /* LinearSearch.swift */; };
 		5163AE6C1CB6839300C7CD5A /* SimpleClauseIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6B1CB6839300C7CD5A /* SimpleClauseIndexTests.swift */; };
 		5163AE6E1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */; };

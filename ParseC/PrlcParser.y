@@ -260,7 +260,7 @@ fof_quantified_formula  :   fol_quantifier '[' fof_variable_list ']' ':' fof_uni
 }
 
 fof_variable_list       :   variable { $$ = CREATE_STRINGS1($1); }
-|   fof_variable_list ',' variable { STRINGS_APPEND($1,$3); $$ = $1; }
+                        |   fof_variable_list ',' variable { $$ = STRINGS_APPEND($1,$3); }
 
 fof_unary_formula       :   unary_connective fof_unitary_formula  { $$ = CREATE_Connective(_NOT_, CREATE_NODES1($2)); }
 |   fol_infix_unary { $$ = $1; }

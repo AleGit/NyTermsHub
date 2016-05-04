@@ -13,7 +13,7 @@ class MereParserBasicTests: XCTestCase {
     
     func testParsing() {
         for (name,limit,expectedTreeSize, numberOfClauses, expectedArrayTime) in  [
-             ("PUZ001-1",0.003, 106, 12, 0.001),
+//             ("PUZ001-1",0.003, 106, 12, 0.001),
 //            ("PUZ051-1",1.0,110),
 //            
 //            ("SYN000-2",1.0,145),
@@ -58,6 +58,7 @@ class MereParserBasicTests: XCTestCase {
 //            ("HWV107-1",1.0,490794),
 //            ("HWV117-1",0.9,228613),
 //            ("HWV124-1",9.9,7098296),
+
             
             ("HWV134-1",45.6, 29_953_326, 2_332_428, 7.5)
             ] {

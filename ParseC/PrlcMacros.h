@@ -4,6 +4,8 @@
 #ifndef PrlcMacros_h
 #define PrlcMacros_h
 
+#define ps prlcParsingStore
+
 #define NULLREF                     0
 
 #define DID_PARSE_FORMULA(a)        return 0
@@ -11,38 +13,38 @@
 
 #define CREATE_ANNOTATED(a,b,c,d,e)                 prlcLabel("annotated")
 
-#define CREATE_CNF(name,role,root,annotations)      NULL // xStoreAnnotatedCnf(mereParsingTable,name,role,root,annotations)
-#define CREATE_INCLUDE(fileName,nameList)           NULL // xStoreInclude(mereParsingTable,fileName,nameList)
+#define CREATE_CNF(name,role,root,annotations)      prlcStoreNodeCnf(ps,name,role,root,annotations) // xStoreAnnotatedCnf(mereParsingTable,name,role,root,annotations)
+#define CREATE_INCLUDE(fileName,nameList)           prlcStoreNodeInclude(ps,fileName,nameList) // xStoreInclude(mereParsingTable,fileName,nameList)
 
-#define TPTP_INPUT(input)                           input; NULL // xNodeSetChild(mereParsingTable,0,input)
-#define TPTP_INPUT_APPEND(sequence,input)           sequence; NULL // xNodeListAppend(mereParsingTable,sequence,input)
+#define TPTP_INPUT(input)                           input; // xNodeSetChild(mereParsingTable,0,input)
+#define TPTP_INPUT_APPEND(sequence,input)           prlcNodeAppendNode(sequence,input)
 
 #define CREATE_Quantified(b,c,d)                    prlcLabel("CREATE_Quantified") // quantified
-#define CREATE_Functional(sid,first)                NULL // xStoreFunctional(mereParsingTable, sid, first) // function, predicate
-#define CREATE_Equational(sid,first)                NULL // xStoreEquational(mereParsingTable, sid, first) // equation, inequation
-#define CREATE_Connective(sid,first)                NULL // xStoreConnective(mereParsingTable, sid, first) // connective
-#define CREATE_Constant(sid)                        NULL // xStoreConstant(mereParsingTable, sid) // constant
-#define CREATE_Variable(sid)                        NULL // xStoreVariable(mereParsingTable, sid) // variable
+#define CREATE_Functional(c,first)              prlcStoreNodeFunctional(ps, c, first)
+#define CREATE_Equational(c,first)              prlcStoreNodeEquational(ps, c, first)
+#define CREATE_Connective(c,first)              prlcStoreNodeConnective(ps, c, first)
+#define CREATE_Constant(c)                      prlcStoreNodeConstant(ps, c)
+#define CREATE_Variable(v)                      prlcStoreNodeVariable(ps, v)
 
-#define CREATE_NODES0()                             (NULL // x_sid)0  // empty list
-#define CREATE_NODES1(a)                            a           // unary list
-#define CREATE_NODES2(first,next)                   NULL // xNodeListCreate(mereParsingTable, first, next) // binary list
+#define CREATE_NODES0()                         NULL   // empty list
+#define CREATE_NODES1(a)                        a           // unary list
+#define CREATE_NODES2(first,next)               prlcNodeAppendNode(first,next)
 
-#define PREDICATE(tid)                              NULL // xSetPredicate(mereParsingTable,tid); /* register_predicate(tid) */
+#define PREDICATE(p)                              prlcSetPredicate(p) // xSetPredicate(mereParsingTable,tid); /* register_predicate(tid) */
 
 #define APPEND(a,b)                                 prlcLabel("APPEND")
 #define INSERT(a,b)                                 prlcLabel("INSERT")
 
-#define CREATE_STRING(a)                            NULL // xStoreSymbol(mereParsingTable, a)
-#define CREATE_STRINGS1(a)                          NULL // xStoreNameNode(mereParsingTable, a)
+#define CREATE_STRING(a)                            prlcStoreSymbol(ps,a) // xStoreSymbol(mereParsingTable, a)
+#define CREATE_STRINGS1(a)                          prlcStoreNodeName(ps,a) // xStoreNameNode(mereParsingTable, a)
 
-#define CREATE_DISTINCT(a)                          NULL // xStoreConstant(mereParsingTable, NULL // xStoreSymbol(mereParsingTable,a))
+#define CREATE_DISTINCT(a)                          prlcStoreNodeConstant(ps, prlcStoreSymbol(ps,a))
 /*prlcLabel("CREATE_DISTINCT") */
 
-#define MAKE_ROLE(a)                                NULL // xStoreRole(mereParsingTable, a)
+#define MAKE_ROLE(a)                                prlcStoreNodeRole(ps,a) // xStoreRole(mereParsingTable, a)
 
-#define NODES_APPEND(member,last)                   NULL // xNodeListAppend(mereParsingTable,member,last)
-#define STRINGS_APPEND(a,b)                         NULL // xNodeListAppend(mereParsingTable,a,b)
+#define NODES_APPEND(member,last)                   prlcNodeAppendNode(member,last) // xNodeListAppend(mereParsingTable,member,last)
+#define STRINGS_APPEND(a,b)                         prlcNodeAppendNode(a,b) // xNodeListAppend(mereParsingTable,a,b)
 #define SET_PARENTHESES(a)
 
 /* predefined symbols */

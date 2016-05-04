@@ -38,9 +38,30 @@ class PrlcTests: XCTestCase {
     func testParsePUZ001() {
         let path = "PUZ001-1".p!
         
-        let (a,b) = prlcParse(path)
+        let (result,time) = measure {
+            prlcParse(path)
+        }
         
-        XCTAssertEqual(0,a);
+        XCTAssertTrue(time < 0.01)
+        XCTAssertEqual(106, result.1?.treeNodeCount)
+        XCTAssertEqual(0,result.0);
+        
+        
+    }
+    
+    func testParseHWV134() {
+        let path = "HWV134-1".p!
+        
+        let (result,time) = measure {
+            prlcParse(path)
+        }
+        
+        print("time:",time.prettyTimeIntervalDescription)
+        XCTAssertTrue(time < 40,"\(time)")
+        XCTAssertEqual(29_953_326, result.1?.treeNodeCount)
+        // 29953326
+        
+        XCTAssertEqual(0,result.0);
         
         
     }

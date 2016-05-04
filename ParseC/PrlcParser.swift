@@ -157,7 +157,7 @@ import Foundation
 
 
 class PrlcTable {
-    let root : UnsafeMutablePointer<prlc_tree_node>
+    let root : PrlcTreeNodeRef
     let store : PrlcStoreRef
     
     init(size:Int, path:TptpPath) {
@@ -205,6 +205,7 @@ func prlcParse(path:TptpPath) -> (Int32, PrlcTable?) {
     
     let table = PrlcTable(size: size,path: path)
     prlcParsingStore = table.store
+    prlcParsingRoot = table.root
 
     prlc_in = file
     prlc_restart(file)

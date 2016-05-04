@@ -34,6 +34,7 @@ int prlc_error (const char * _Nullable s);
 #pragma mark - parse functions and data structures
 
 extern prlc_store* _Nullable prlcParsingStore;
+extern prlc_tree_node* _Nullable prlcParsingRoot;
 
 
 

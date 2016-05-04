@@ -9,7 +9,8 @@
 // #include <stdio.h>
 #import "PrlcParser.h"
 
-prlc_store* _Nullable prlcParsingStore = NULL;
+prlc_store* prlcParsingStore = NULL;
+prlc_tree_node* prlcParsingRoot = NULL;
 
 
 

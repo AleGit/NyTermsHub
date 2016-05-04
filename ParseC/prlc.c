@@ -195,19 +195,22 @@ prlc_tree_node* prlcStoreNodeFile(prlc_store* store, const char* const name, prl
     return prlc_tree_node_save(store, PRLC_FILE, name, input);
 }
 
-prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection) {
-    return prlc_tree_node_save(store, PRLC_INCLUDE, file, selection);
-}
-prlc_tree_node* prlcStoreNodeCnf(prlc_store* store, const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations) {
+prlc_tree_node* prlcStoreNodeAnnotated(prlc_store* store, PRLC_TREE_NODE_TYPE type, const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations) {
     
+    assert(type == PRLC_CNF || type == PRLC_FOF);
     assert(role != NULL);
     assert(formula != NULL);
     
     prlc_tree_node* first = prlcNodeAppendNode(role,formula);
     if (annotations!=NULL) prlcNodeAppendNode(first,annotations);
     
-    return prlc_tree_node_save(store, PRLC_CNF, name, first);
+    return prlc_tree_node_save(store, type, name, first);
 }
+
+prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection) {
+    return prlc_tree_node_save(store, PRLC_INCLUDE, file, selection);
+}
+
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name) {
     return prlc_tree_node_save(store, PRLC_ROLE, name, NULL);
 }
@@ -255,6 +258,15 @@ prlc_tree_node *prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last) 
         prlcNodeAppendNode(first->sibling, last);
     }
     return first;
+}
+
+
+void prlcNodeSetChild(prlc_tree_node* parent, prlc_tree_node* child) {
+    assert(parent != NULL);
+    assert(parent->child == NULL);
+    assert(child != NULL);
+    
+    parent->child = child;
 }
 
 void* prlcLabel(const char* const label) {

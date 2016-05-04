@@ -27,19 +27,21 @@ typedef enum {
     PRLC_VARIABLE
 } PRLC_TREE_NODE_TYPE;
 
+typedef struct prlc_tree_node {
+    const char* symbol;
+    PRLC_TREE_NODE_TYPE type;
+    
+    struct prlc_tree_node* sibling;
+    struct prlc_tree_node* lastSibling;
+    struct prlc_tree_node* child;
+} prlc_tree_node;
+
 typedef struct prlc_prefix_node {
     const char* symbol;
     struct prlc_prefix_node* nexts[256];
 } prlc_prefix_node;
 
-typedef struct prlc_tree_node {
-    const char* symbol;
-    PRLC_TREE_NODE_TYPE type;
 
-    struct prlc_tree_node* sibling;
-    struct prlc_tree_node* lastSibling;
-    struct prlc_tree_node* child;
-} prlc_tree_node;
 
 typedef struct {
     void *memory;
@@ -55,6 +57,8 @@ typedef struct {
 } prlc_store;
 
 typedef prlc_store* PrlcStoreRef;
+typedef prlc_tree_node* PrlcTreeNodeRef;
+typedef char* PrlcStringRef;
 
 #pragma mark - memory
 prlc_store* prlcCreateStore(size_t);
@@ -69,7 +73,8 @@ const char* const prlcNextSymbol(prlc_store* store, const char* const symbol);
 
 prlc_tree_node* prlcStoreNodeFile(prlc_store* store, const char* const name, prlc_tree_node* input);
 prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection);
-prlc_tree_node* prlcStoreNodeCnf(prlc_store* store, const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations);
+prlc_tree_node* prlcStoreNodeAnnotated(prlc_store* store, PRLC_TREE_NODE_TYPE type,
+                                       const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations);
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name);
 prlc_tree_node* prlcStoreNodeConnective(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
@@ -82,6 +87,7 @@ prlc_tree_node* prlcStoreNodeName(prlc_store* store, const char* const name);
 prlc_tree_node*  prlcSetPredicate(prlc_tree_node *t_node);
 
 prlc_tree_node* prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last);
+void prlcNodeSetChild(PrlcTreeNodeRef parent, PrlcTreeNodeRef child);
 
 void* prlcLabel(const char* const label);
 

@@ -18,26 +18,8 @@
 
 %union
 {
-    char* cstring;
-    char* string;
-    
-    prlc_tree_node* strings;
-    
+    const char* cstring;        // basic to
     prlc_tree_node* node;
-    prlc_tree_node* nodes;
-    
-    prlc_tree_node* tptpformula;
-    prlc_tree_node* tptpinclude;
-    
-    prlc_tree_node* role;
-    prlc_tree_node* annotations;
-    
-    
-    prlc_tree_node* obj;
-    //
-    //
-    
-    char* type;
 }
 
 
@@ -70,55 +52,55 @@
 %token <cstring> RATIONAL
 %token <cstring> REAL
 
-%type <obj>  TPTP_file
-%type <obj>  TPTP_sequence
-%type <obj>  TPTP_input
+%type <node>  TPTP_file
+%type <node>  TPTP_sequence
+%type <node>  TPTP_input
 
-%type <tptpformula>  annotated_formula
-%type <tptpformula>  fof_annotated
-%type <tptpformula>  cnf_annotated
-%type <annotations>  annotations
-%type <role> formula_role
+%type <node>  annotated_formula
+%type <node>  fof_annotated
+%type <node>  cnf_annotated
+%type <node>  annotations
+%type <node> formula_role
 /* thf ...*/
 /* tff ...*/
 /* %----FOF formulae.*/
 %type <node> fof_formula fof_logic_formula fof_binary_formula fof_binary_nonassoc
 %type <node> fof_binary_assoc fof_or_formula fof_and_formula
 %type <node> fof_unitary_formula fof_quantified_formula
-%type <strings> fof_variable_list
+%type <node> fof_variable_list
 %type <node> fof_unary_formula
 /* */
 %type <node> fof_sequent fof_tuple
-%type <nodes> fof_tuple_list
+%type <node> fof_tuple_list
 /* %----CNF formulae (variables implicitly universally quantified) */
 %type <node> cnf_formula
-%type <nodes> disjunction
+%type <node> disjunction
 %type <node> literal
 /* %----Special formulae */
 %type <node> fol_infix_unary
 /* %----Connectives - FOF */
-%type <type> fol_quantifier binary_connective /* assoc_connective */ unary_connective
+%type <cstring> fol_quantifier binary_connective /* assoc_connective */ unary_connective
 /* %type <nodetype> gentzen_arrow, see GENTZEN_ARROW */
 /* defined_type */
 /* %----First order atoms */
 %type <node> atomic_formula plain_atomic_formula
 %type <node> defined_atomic_formula defined_plain_formula
 %type <node> defined_infix_formula
-%type <type> defined_infix_pred
+%type <cstring> defined_infix_pred
 
 %type <node> system_atomic_formula
 
 %type <node> term function_term plain_term
-%type <string> constant functor
+%type <cstring> constant functor
 
 %type <node> defined_term defined_atom defined_atomic_term defined_plain_term
-%type <string> defined_constant defined_functor
+%type <cstring> defined_constant defined_functor
 
 %type <node> system_term
-%type <string> system_constant system_functor
+%type <cstring> system_constant system_functor
 
-%type <string> variable
-%type <nodes> arguments
+%type <cstring> variable
+%type <node> arguments
 
 
 /*
@@ -126,7 +108,7 @@
 %type <node> source /* sources /* */
 /*
  %----Useful info fields */
-%type <nodes> optional_info useful_info
+%type <node> optional_info useful_info
 /*
  %----Non-logical data */
 %type <node> general_term general_data general_function
@@ -134,17 +116,17 @@
  %----A <general_data> bind() term is used to record a variable binding in an
  %----inference, as an element of the <parent_details> list. */
 %type <node> formula_data
-%type <nodes> general_list general_terms
+%type <node> general_list general_terms
 
 
-%type <tptpinclude> include
-%type <strings> formula_selection name_list
+%type <node> include
+%type <node> formula_selection name_list
 
 
-%type <string> name
-%type <string> atomic_word atomic_defined_word atomic_system_word
-%type <string> number
-%type <string> file_name
+%type <cstring> name
+%type <cstring> atomic_word atomic_defined_word atomic_system_word
+%type <cstring> number
+%type <cstring> file_name
 
 %start TPTP_file
 
@@ -161,20 +143,20 @@
  */
 
 TPTP_file       :   /* epsilon */ { $$ = NULLREF; }
-|   TPTP_sequence // { $$ = CREATE_FILE($1); TPTP_FILE_NAME=$$; }
+                |   TPTP_sequence // { $$ = CREATE_FILE($1); TPTP_FILE_NAME=$$; }
 
-TPTP_sequence   :   TPTP_input  { $$ = TPTP_INPUT($1); }
-|   TPTP_sequence TPTP_input { $$=TPTP_INPUT_APPEND($1,$2); }
+TPTP_sequence   :   TPTP_input                  { $$ = TPTP_INPUT($1); }
+                |   TPTP_sequence TPTP_input    { $$ = TPTP_INPUT_APPEND($1,$2); }
 
-TPTP_input      :   annotated_formula { ; }
-|   include { ; }
+TPTP_input      :   annotated_formula
+                |   include
 
 
 /*
  %----Formula records
  */
 annotated_formula   :   fof_annotated
-|   cnf_annotated
+                    |   cnf_annotated
 
 /*
  %----Future languages may include ... english | efof | tfof | mathml | ...
@@ -187,11 +169,11 @@ annotated_formula   :   fof_annotated
  tff_annotated       :   TFF '(' name ',' formula_role ',' tff_formula annotations ')' '.'
  */
 fof_annotated       :   FOF '(' name ',' formula_role ',' fof_formula annotations ')' '.' {
-    $$=CREATE_ANNOTATED(TptpLanguageFOF, ($3), ($5), ($7), ($8));
+    $$=CREATE_FOF($3, $5, $7, $8);
 }
 
 cnf_annotated       :   CNF '(' name ',' formula_role ',' cnf_formula annotations ')' '.' {
-    $$=CREATE_CNF($3, ($5), ($7), $8);
+    $$=CREATE_CNF($3, $5, $7, $8);
 }
 
 annotations         :   /* epsilon */   { $$ = NULLREF; }
@@ -259,8 +241,8 @@ fof_quantified_formula  :   fol_quantifier '[' fof_variable_list ']' ':' fof_uni
     $$ = CREATE_Quantified($1, $6, $3);
 }
 
-fof_variable_list       :   variable { $$ = CREATE_STRINGS1($1); }
-                        |   fof_variable_list ',' variable { $$ = STRINGS_APPEND($1,$3); }
+fof_variable_list       :   variable { $$ = CREATE_Variable($1); } /* $1 is char* */
+                        |   fof_variable_list ',' variable { $$ = NODES_APPEND($1,CREATE_Variable($3)); }
 
 fof_unary_formula       :   unary_connective fof_unitary_formula  { $$ = CREATE_Connective(_NOT_, CREATE_NODES1($2)); }
 |   fol_infix_unary { $$ = $1; }
@@ -359,7 +341,7 @@ system_atomic_formula   :   system_term  { $$ = $1; }
 
 /*---- First order terms */
 term                :   function_term { $$ = $1; }
-|   variable   { $$ = CREATE_Variable($1); }
+                    |   variable   { $$ = CREATE_Variable($1); }
 /* |   conditional_term
  |   let_term */
 function_term       :   plain_term { $$ = $1; }
@@ -392,9 +374,9 @@ system_functor      :   atomic_system_word { $$ = $1; }
 /*
  %----Variables, and only variables, start with uppercase
  */
-variable            :   UPPER_WORD    { $$ = CREATE_STRING($1); }
-arguments           :   term   { $$ = CREATE_NODES1($1); }
-|   arguments ',' term  { NODES_APPEND($1,$3); $$ = $1; }
+variable            :   UPPER_WORD          { $$ = CREATE_STRING($1); }
+arguments           :   term                { $$ = CREATE_NODES1($1); }
+                    |   arguments ',' term  { NODES_APPEND($1,$3); $$ = $1; }
 
 
 /*--- Fromual sources */

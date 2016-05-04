@@ -245,6 +245,9 @@ prlc_tree_node *prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last) 
     return first;
 }
 
-void prlcLabel(const char* const label);
+void* prlcLabel(const char* const label) {
+    printf("\t*** %s ***\n",label);
+    return NULL;
+}
 
 

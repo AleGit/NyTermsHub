@@ -79,7 +79,7 @@ void prlcSetPredicate(prlc_tree_node *t_node);
 
 prlc_tree_node* prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last);
 
-void prlcLabel(const char* const label);
+void* prlcLabel(const char* const label);
 
 
 

@@ -3,21 +3,27 @@
 
 import Foundation
 
-//extension UnsafeMutablePointer where Memory : prlc_tree_node {
-//    var symbolString : String {
-//        return String.fromCString(self.memory.symbol) ?? "n/a"
-//    }
-//}
-
-private func symbol(node : PrlcTreeNodeRef) -> String {
-    return String.fromCString(node.memory.symbol) ?? "n/a"
+protocol PrlcTreeNodeType {
+    var symbol : UnsafePointer<Int8> { get }
 }
+
+extension prlc_tree_node : PrlcTreeNodeType {
+    
+}
+
+extension UnsafeMutablePointer where Memory : PrlcTreeNodeType {
+    var symbolString : String {
+        return String.fromCString(self.memory.symbol) ?? "n/a"
+    }
+}
+
+
 
 private func sibling(base: PrlcTreeNodeRef, node: PrlcTreeNodeRef) -> (Int,String)? {
     let sibling = node.memory.sibling
     guard sibling != nil else { return nil }
     
-    return (base.distanceTo(sibling), symbol(sibling))
+    return (base.distanceTo(sibling), sibling.symbolString)
     
 }
 
@@ -25,15 +31,26 @@ private func child(base: PrlcTreeNodeRef, node: PrlcTreeNodeRef) -> (Int,String)
     let child = node.memory.child
     guard child != nil else { return nil }
     
-    return (base.distanceTo(child), symbol(child))
+    return (base.distanceTo(child), child.symbolString)
     
+}
+
+private func output(node: PrlcTreeNodeRef) {
+    guard node != nil else { return }
+    
+    if node.memory.type.rawValue < 6 { print("") }
+    
+    print(node.symbolString, terminator:" ")
+    output(node.memory.child)
+    
+    output(node.memory.sibling)
 }
 
 struct DemoFileParsing {
     
     
     static func demoPrlcParseHWV134() {
-        let path = "HWV134-1".p!
+        let path = "PUZ001-1".p! // "HWV134-1".p!
         
         let (result,time) = measure {
             prlcParse(path)
@@ -50,17 +67,19 @@ struct DemoFileParsing {
             
             
             print(table.root.memory)
-            print(symbol(table.root), sibling(table.root, node:table.root), "child:", child(table.root, node: table.root))
+            print(table.root.symbolString, sibling(table.root, node:table.root), "child:", child(table.root, node: table.root))
             
             var node = table.root
             var count = 0
             while count < size {
-                print(node, table.root.advancedBy(count))
+                assert(node == table.root.advancedBy(count))
                 // let node = table.root.advanceBy(count)
-                print(count, symbol(node), "\t\tsibling:",sibling(table.root, node:node), "child:", child(table.root, node: node))
+                print(count, node.symbolString, "\t\tsibling:",sibling(table.root, node:node), "child:", child(table.root, node: node))
                 count += 1
                 node = node.successor()
             }
+            
+            output(table.root)
         }
         else {
             assert(false)

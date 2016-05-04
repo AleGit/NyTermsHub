@@ -93,6 +93,9 @@
 		515F2B461C918016004F93E9 /* sizeDemo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 515F2B451C918016004F93E9 /* sizeDemo.txt */; };
 		516063271CD1D8780096A3E2 /* calm.c in Sources */ = {isa = PBXBuildFile; fileRef = 516063251CD1D8780096A3E2 /* calm.c */; };
 		516063281CD1D8780096A3E2 /* calm.c in Sources */ = {isa = PBXBuildFile; fileRef = 516063251CD1D8780096A3E2 /* calm.c */; };
+		516094231CD9C0E300B3579D /* prlc.c in Sources */ = {isa = PBXBuildFile; fileRef = 516094211CD9C0E300B3579D /* prlc.c */; };
+		516094241CD9C0E300B3579D /* prlc.c in Sources */ = {isa = PBXBuildFile; fileRef = 516094211CD9C0E300B3579D /* prlc.c */; };
+		516094261CD9D06F00B3579D /* PrlcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516094251CD9D06F00B3579D /* PrlcTests.swift */; };
 		516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516107AD1C5A53E100FD3637 /* LinearSearch.swift */; };
 		5163AE6C1CB6839300C7CD5A /* SimpleClauseIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6B1CB6839300C7CD5A /* SimpleClauseIndexTests.swift */; };
 		5163AE6E1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */; };
@@ -280,6 +283,9 @@
 		515F2B451C918016004F93E9 /* sizeDemo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sizeDemo.txt; sourceTree = "<group>"; };
 		516063251CD1D8780096A3E2 /* calm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calm.c; sourceTree = "<group>"; };
 		516063261CD1D8780096A3E2 /* calm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calm.h; sourceTree = "<group>"; };
+		516094211CD9C0E300B3579D /* prlc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prlc.c; sourceTree = "<group>"; };
+		516094221CD9C0E300B3579D /* prlc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prlc.h; sourceTree = "<group>"; };
+		516094251CD9D06F00B3579D /* PrlcTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrlcTests.swift; sourceTree = "<group>"; };
 		516107A81C5A18E000FD3637 /* ParsingConversion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; lineEnding = 0; name = ParsingConversion.txt; path = Docs/ParsingConversion.txt; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = "<none>"; };
 		516107AD1C5A53E100FD3637 /* LinearSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearSearch.swift; sourceTree = "<group>"; };
 		516107B11C5A605800FD3637 /* HWV119-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV119-iMac.txt"; path = "Docs/HWV119-iMac.txt"; sourceTree = SOURCE_ROOT; };
@@ -687,6 +693,8 @@
 				51226E7C1B6D44E20077E34D /* TptpPrintable.swift */,
 				516063251CD1D8780096A3E2 /* calm.c */,
 				516063261CD1D8780096A3E2 /* calm.h */,
+				516094211CD9C0E300B3579D /* prlc.c */,
+				516094221CD9C0E300B3579D /* prlc.h */,
 			);
 			path = ParseC;
 			sourceTree = "<group>";
@@ -704,6 +712,7 @@
 			children = (
 				517994901C96C94B00791916 /* MereParserBasicTests.swift */,
 				51E32B911CD1EC8300E1AF1E /* CalmTests.swift */,
+				516094251CD9D06F00B3579D /* PrlcTests.swift */,
 			);
 			name = MereParser;
 			sourceTree = "<group>";
@@ -987,6 +996,7 @@
 				511E95831B8AE7B80093F4E8 /* Position.swift in Sources */,
 				51FD00C31C3133E1008C5AD1 /* Operators.swift in Sources */,
 				513CF7E21B8EF6D20063BA57 /* String+Yices.swift in Sources */,
+				516094241CD9C0E300B3579D /* prlc.c in Sources */,
 				516063281CD1D8780096A3E2 /* calm.c in Sources */,
 				511E95841B8AE7B80093F4E8 /* Rule.swift in Sources */,
 				5179948E1C96C83300791916 /* MereParser.swift in Sources */,
@@ -1016,6 +1026,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				516094231CD9C0E300B3579D /* prlc.c in Sources */,
 				51226E771B6D3A0B0077E34D /* TptpFormula.swift in Sources */,
 				51FF64011CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */,
 				5129771B1B677CAA003D3E80 /* ViewController.swift in Sources */,
@@ -1117,6 +1128,7 @@
 				517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */,
 				5103EB091C6A27D60079E0A0 /* ParsePerformanceTests.swift in Sources */,
 				514AD8631C6B4CDD00652004 /* BasicTailTrieTests.swift in Sources */,
+				516094261CD9D06F00B3579D /* PrlcTests.swift in Sources */,
 				51D8476A1C8069FB003EC848 /* TptpPathTests.swift in Sources */,
 				517B23B71CBCD6C90049F871 /* YicesIndexingTests.swift in Sources */,
 				517D86381C44F94100930B61 /* DescriptionTests.swift in Sources */,

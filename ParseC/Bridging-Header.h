@@ -7,3 +7,4 @@
 #import "TptpParser.h"
 #import "MereParser.h"
 #import "calm.h"
+#import "prlc.h"

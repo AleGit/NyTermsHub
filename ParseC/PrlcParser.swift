@@ -154,38 +154,38 @@ import Foundation
 //    
 //}
 //
-//func mereParse(path:TptpPath) -> (Int32, ParsingTable?) {
-//    let file = fopen(path,"r")  // open file to read
-//    
-//    guard file != nil else {
-//        print("File \(path) could not be opened.")
-//        return (-1,nil)
-//    }
-//    // file was opened so it must be closed eventually.
-//    defer {
-//        fclose(file)
-//    }
-//    
-//    guard let size = path.fileSize where size > 0 else {
-//        print("File \(path) is empty.")
-//        return (-1,nil)
-//    }
-//    
-//    // allocate memory depending on the size of the file
-//    let theParsing = ParsingTable(size: size, path:path)
-//    mereParsingTable = theParsing.tableRef
-//    
-//    mere_in = file
-//    mere_restart(file)
-//    mere_lineno = 1
-//    
-//    let code = mere_parse()
-//    
-//    if code != 0 {
-//        print("Parsing of \(path) failed with \(code).")
-//        return (code,nil)
-//    }
-//    
-//    
-//    return (code,theParsing)
-//}
+func prlcParse(path:TptpPath) -> (Int32, UnsafeMutablePointer<prlc_store>) {
+    let file = fopen(path,"r")  // open file to read
+    
+    guard file != nil else {
+        print("File \(path) could not be opened.")
+        return (-1,nil)
+    }
+    // file was opened so it must be closed eventually.
+    defer {
+        fclose(file)
+    }
+    
+    guard let size = path.fileSize where size > 0 else {
+        print("File \(path) is empty.")
+        return (-1,nil)
+    }
+    
+    // allocate memory depending on the size of the file
+    
+    prlcParsingStore = prlcCreateStore(size)
+
+    prlc_in = file
+    prlc_restart(file)
+    prlc_lineno = 1
+    
+    let code = prlc_parse()
+    
+    if code != 0 {
+        print("Parsing of \(path) failed with \(code).")
+        return (code,prlcParsingStore)
+    }
+    
+    
+    return (code, prlcParsingStore)
+}

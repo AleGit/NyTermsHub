@@ -6,8 +6,8 @@
 //  Copyright © 2016 Alexander Maringele. All rights reserved.
 //
 
-#ifndef MereParser_h
-#define MereParser_h
+#ifndef PrlcParser_h
+#define PrlcParser_h
 
 #import <CoreFoundation/CoreFoundation.h>
 #import "prlc.h"

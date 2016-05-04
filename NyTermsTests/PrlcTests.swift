@@ -35,6 +35,17 @@ class PrlcTests: XCTestCase {
         
     }
     
+    func testParsePUZ001() {
+        let path = "PUZ001-1".p!
+        
+        let (a,b) = prlcParse(path)
+        
+        XCTAssertEqual(0,a);
+        
+        var c = b
+        prlcDestroyStore(&c)
+    }
+    
     func testPrlcStoreSymbol() {
         var store = prlcCreateStore(123);
         defer {

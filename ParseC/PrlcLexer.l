@@ -8,13 +8,13 @@
     //  Copyright (c) 2015 Alexander Maringele. All rights reserved.
     //
 
-#import "MereParser.h"
-#import "MereMacros.h"
-#import "MereParser.tab.h"
+#import "PrlcParser.h"
+#import "PrlcMacros.h"
+#import "PrlcParser.tab.h"
 
 #define TOKEN(k)    { return k; }
-#define TSTRING(k)  { mere_lval.cstring = mere_text; return k; }
-#define TNUMBER     { mere_lval.number = atol(mere_text); return NUMBER; }
+#define TSTRING(k)  { prlc_lval.cstring = prlc_text; return k; }
+#define TNUMBER     { prlc_lval.number = atol(prlc_text); return NUMBER; }
 #define TINTEGER 	TSTRING(INTEGER)
 #define	TRATIONAL	TSTRING(RATIONAL)
 #define TREAL		TSTRING(REAL)
@@ -29,7 +29,7 @@
 %option noinput
 /* for the use of multiple lexers (and parsers) */
 %option prefix="prlc_"
-/* similar to -P mere_ (lex) */
+/* similar to -P prlc_ (lex) */
 
 /*
  %----Rules from her on down are for defining tokens (terminal symbols) of the

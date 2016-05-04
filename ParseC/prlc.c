@@ -188,6 +188,10 @@ prlc_tree_node* prlc_tree_node_save(prlc_store *store, PRLC_TREE_NODE_TYPE type,
     return t_node;
 }
 
+prlc_tree_node* prlcStoreNodeFile(prlc_store* store, const char* const name, prlc_tree_node* input) {
+    return prlc_tree_node_save(store, PRLC_FILE, name, input);
+}
+
 prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection) {
     return prlc_tree_node_save(store, PRLC_INCLUDE, file, selection);
 }

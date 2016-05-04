@@ -154,7 +154,33 @@ import Foundation
 //    
 //}
 //
-func prlcParse(path:TptpPath) -> (Int32, UnsafeMutablePointer<prlc_store>) {
+
+
+class PrlcTable {
+    let root : UnsafeMutablePointer<prlc_tree_node>
+    let store : PrlcStoreRef
+    
+    init(size:Int, path:TptpPath) {
+        store = prlcCreateStore(size)
+        root = prlcStoreNodeFile(store,path,nil)
+    }
+    
+    deinit {
+        if let name = String.fromCString(root.memory.symbol) {
+            print("\(#function) \(name) t.nodes.size=\(store.memory.t_nodes.size) t.symbols.size=\(store.memory.symbols.size)")
+        }
+        else {
+            print("\(#function) n/a")
+        }
+        
+        var copy = store
+        prlcDestroyStore(&copy)
+    
+        assert (copy == nil)
+    }
+}
+
+func prlcParse(path:TptpPath) -> (Int32, PrlcTable?) {
     let file = fopen(path,"r")  // open file to read
     
     guard file != nil else {
@@ -173,7 +199,8 @@ func prlcParse(path:TptpPath) -> (Int32, UnsafeMutablePointer<prlc_store>) {
     
     // allocate memory depending on the size of the file
     
-    prlcParsingStore = prlcCreateStore(size)
+    let table = PrlcTable(size: size,path: path)
+    prlcParsingStore = table.store
 
     prlc_in = file
     prlc_restart(file)
@@ -183,9 +210,9 @@ func prlcParse(path:TptpPath) -> (Int32, UnsafeMutablePointer<prlc_store>) {
     
     if code != 0 {
         print("Parsing of \(path) failed with \(code).")
-        return (code,prlcParsingStore)
+        return (code,table)
     }
     
     
-    return (code, prlcParsingStore)
+    return (code, table)
 }

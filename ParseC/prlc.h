@@ -54,6 +54,8 @@ typedef struct {
     prlc_memory t_nodes;
 } prlc_store;
 
+typedef prlc_store* PrlcStoreRef;
+
 #pragma mark - memory
 prlc_store* prlcCreateStore(size_t);
 void prlcDestroyStore(prlc_store**);
@@ -65,6 +67,7 @@ const char* const prlcStoreSymbol(prlc_store* store, const char* const symbol);
 const char* const prlcFirstSymbol(prlc_store *store);
 const char* const prlcNextSymbol(prlc_store* store, const char* const symbol);
 
+prlc_tree_node* prlcStoreNodeFile(prlc_store* store, const char* const name, prlc_tree_node* input);
 prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection);
 prlc_tree_node* prlcStoreNodeCnf(prlc_store* store, const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations);
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name);

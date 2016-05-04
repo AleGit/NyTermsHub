@@ -42,8 +42,7 @@ class PrlcTests: XCTestCase {
         
         XCTAssertEqual(0,a);
         
-        var c = b
-        prlcDestroyStore(&c)
+        
     }
     
     func testPrlcStoreSymbol() {

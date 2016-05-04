@@ -3,7 +3,34 @@
 
 import Foundation
 
+//extension UnsafeMutablePointer where Memory : prlc_tree_node {
+//    var symbolString : String {
+//        return String.fromCString(self.memory.symbol) ?? "n/a"
+//    }
+//}
+
+private func symbol(node : PrlcTreeNodeRef) -> String {
+    return String.fromCString(node.memory.symbol) ?? "n/a"
+}
+
+private func sibling(base: PrlcTreeNodeRef, node: PrlcTreeNodeRef) -> (Int,String)? {
+    let sibling = node.memory.sibling
+    guard sibling != nil else { return nil }
+    
+    return (base.distanceTo(sibling), symbol(sibling))
+    
+}
+
+private func child(base: PrlcTreeNodeRef, node: PrlcTreeNodeRef) -> (Int,String)? {
+    let child = node.memory.child
+    guard child != nil else { return nil }
+    
+    return (base.distanceTo(child), symbol(child))
+    
+}
+
 struct DemoFileParsing {
+    
     
     static func demoPrlcParseHWV134() {
         let path = "HWV134-1".p!
@@ -14,10 +41,30 @@ struct DemoFileParsing {
         
         print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeNodeCount)
         assert(time < 40,"\(time)")
-        assert(29_953_326 == result.1?.treeNodeCount)
-        // 29953326
-        
         assert(0 == result.0);
+        
+        if let table = result.1 {
+            let size = table.treeNodeCount
+            assert(29_953_326 == size)
+            
+            
+            
+            print(table.root.memory)
+            print(symbol(table.root), sibling(table.root, node:table.root), "child:", child(table.root, node: table.root))
+            
+            var node = table.root
+            var count = 0
+            while count < size {
+                print(node, table.root.advancedBy(count))
+                // let node = table.root.advanceBy(count)
+                print(count, symbol(node), "\t\tsibling:",sibling(table.root, node:node), "child:", child(table.root, node: node))
+                count += 1
+                node = node.successor()
+            }
+        }
+        else {
+            assert(false)
+        }
         
         
     }

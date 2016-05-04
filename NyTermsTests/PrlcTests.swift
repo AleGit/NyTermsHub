@@ -31,6 +31,8 @@ class PrlcTests: XCTestCase {
         XCTAssertEqual(20, store.memory.p_nodes.size);
         XCTAssertEqual(0, store.memory.t_nodes.size);
         
+        XCTAssertEqual("", String.fromCString(prlcFirstSymbol(store))!);
+        
     }
     
     func testPrlcStoreSymbol() {

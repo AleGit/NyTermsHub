@@ -33,7 +33,7 @@ typedef struct prlc_prefix_node {
 } prlc_prefix_node;
 
 typedef struct prlc_tree_node {
-    char* symbol;
+    const char* symbol;
     PRLC_TREE_NODE_TYPE type;
 
     struct prlc_tree_node* sibling;
@@ -64,6 +64,23 @@ void prlcDestroyStore(prlc_store**);
 const char* const prlcStoreSymbol(prlc_store* store, const char* const symbol);
 const char* const prlcFirstSymbol(prlc_store *store);
 const char* const prlcNextSymbol(prlc_store* store, const char* const symbol);
+
+prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection);
+prlc_tree_node* prlcStoreNodeCnf(prlc_store* store, const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations);
+prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name);
+prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
+prlc_tree_node* prlcStoreNodeEquational(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
+prlc_tree_node* prlcStoreNodeConstant(prlc_store* store, const char* const symbol);
+prlc_tree_node* prlcStoreNodeVariable(prlc_store* store, const char* const symbol);
+
+prlc_tree_node* prlcStoreNodeName(prlc_store* store, const char* const name);
+
+void prlcSetPredicate(prlc_tree_node *t_node);
+
+prlc_tree_node* prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last);
+
+void prlcLabel(const char* const label);
+
 
 
 

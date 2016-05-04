@@ -161,3 +161,90 @@ const char* const prlcNextSymbol(prlc_store* store, const char* const symbol) {
     if ( next - base < store->symbols.size) return next;
     else return NULL;
 }
+
+#pragma mark - tree nodes
+
+prlc_tree_node* prlc_tree_node_new(prlc_store* store) {
+    assert(store != NULL);
+    assert(store->t_nodes.memory != NULL);
+    assert(store->t_nodes.size < store->t_nodes.capacity);
+    
+    prlc_tree_node *base = store->t_nodes.memory;
+    prlc_tree_node *node = base + store->t_nodes.size;
+    store->t_nodes.size += 1;
+    
+    return node;
+}
+
+prlc_tree_node* prlc_tree_node_save(prlc_store *store, PRLC_TREE_NODE_TYPE type, const char* const symbol, prlc_tree_node *child) {
+    prlc_tree_node* t_node = prlc_tree_node_new(store);
+    
+    t_node->type = type;
+    t_node->symbol = prlcStoreSymbol(store, symbol);
+    t_node->sibling = NULL;
+    t_node->lastSibling = NULL;
+    t_node->child = child;
+    
+    return t_node;
+}
+
+prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, prlc_tree_node* selection) {
+    return prlc_tree_node_save(store, PRLC_INCLUDE, file, selection);
+}
+prlc_tree_node* prlcStoreNodeCnf(prlc_store* store, const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations) {
+    
+    assert(role != NULL);
+    assert(formula != NULL);
+    
+    prlc_tree_node* first = prlcNodeAppendNode(role,formula);
+    if (annotations!=NULL) prlcNodeAppendNode(first,annotations);
+    
+    return prlc_tree_node_save(store, PRLC_CNF, name, first);
+}
+prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name) {
+    return prlc_tree_node_save(store, PRLC_ROLE, name, NULL);
+}
+prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild) {
+    return prlc_tree_node_save(store, PRLC_FUNCTION, symbol, firstChild);
+}
+prlc_tree_node* prlcStoreNodeEquational(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild) {
+    return prlc_tree_node_save(store, PRLC_EQUATIONAL, symbol, firstChild);
+}
+prlc_tree_node* prlcStoreNodeConstant(prlc_store* store, const char* const symbol) {
+    return prlc_tree_node_save(store, PRLC_FUNCTION, symbol, NULL);
+}
+prlc_tree_node* prlcStoreNodeVariable(prlc_store* store, const char* const symbol) {
+    return prlc_tree_node_save(store, PRLC_VARIABLE, symbol, NULL);
+}
+
+prlc_tree_node* prlcStoreNodeName(prlc_store* store, const char* const name) {
+    return prlc_tree_node_save(store, PRLC_NAME, name, NULL);
+}
+
+void prlcSetPredicate(prlc_tree_node *t_node) {
+    
+    if (t_node->type == PRLC_FUNCTION) t_node->type = PRLC_PREDICATE;
+    
+    assert(t_node->type == PRLC_PREDICATE);
+}
+
+prlc_tree_node *prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last) {
+    assert(first != NULL);
+    assert(last != NULL);
+    if (first->lastSibling != NULL) {
+        prlcNodeAppendNode(first->lastSibling, last);
+        first->lastSibling = last;
+    }
+    else if (first->sibling == NULL) {
+        first->sibling = last;
+        first->lastSibling = last;
+    }
+    else {
+        prlcNodeAppendNode(first->sibling, last);
+    }
+    return first;
+}
+
+void prlcLabel(const char* const label);
+
+

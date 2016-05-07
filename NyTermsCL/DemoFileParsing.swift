@@ -50,39 +50,41 @@ struct DemoFileParsing {
     
     
     static func demoPrlcParseHWV134() {
-        let path = "PUZ001-1".p! // "HWV134-1".p!
-        
-        let (result,time) = measure {
-            prlcParse(path)
-        }
-        
-        print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeNodeCount)
-        assert(time < 40,"\(time)")
-        assert(0 == result.0);
-        
-        if let table = result.1 {
-            let size = table.treeNodeCount
-            assert(29_953_326 == size)
+        for name in ["PUZ001-1", "HWV134-1"] {
+            guard let path = name.p else { continue }
             
-            
-            
-            print(table.root.memory)
-            print(table.root.symbolString, sibling(table.root, node:table.root), "child:", child(table.root, node: table.root))
-            
-            var node = table.root
-            var count = 0
-            while count < size {
-                assert(node == table.root.advancedBy(count))
-                // let node = table.root.advanceBy(count)
-                print(count, node.symbolString, "\t\tsibling:",sibling(table.root, node:node), "child:", child(table.root, node: node))
-                count += 1
-                node = node.successor()
+            let (result,time) = measure {
+                prlcParse(path)
             }
             
-            output(table.root)
-        }
-        else {
-            assert(false)
+            print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeNodeSize)
+            assert(time < 40,"\(time)")
+            assert(0 == result.0);
+            
+            if let table = result.1 {
+                let size = table.treeNodeSize
+                assert(29_953_326 == size)
+                
+                
+                
+                print(table.root.memory)
+                print(table.root.symbolString, sibling(table.root, node:table.root), "child:", child(table.root, node: table.root))
+                
+                var node = table.root
+                var count = 0
+                while count < min(10,size) {
+                    assert(node == table.root.advancedBy(count))
+                    // let node = table.root.advanceBy(count)
+                    print(count, node.symbolString, "\t\tsibling:",sibling(table.root, node:node), "child:", child(table.root, node: node))
+                    count += 1
+                    node = node.successor()
+                }
+                
+                // output(table.root)
+            }
+            else {
+                assert(false)
+            }
         }
         
         
@@ -116,11 +118,11 @@ struct DemoFileParsing {
             }
             
             print(name,
-                formulae.count,
-                "formulae read in",
-                duration.prettyTimeIntervalDescription,
-                "from",
-                path)
+                  formulae.count,
+                  "formulae read in",
+                  duration.prettyTimeIntervalDescription,
+                  "from",
+                  path)
         }
     }
     
@@ -128,7 +130,7 @@ struct DemoFileParsing {
         print(self.self,"\(#function)\n")
         
         for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1",
-            // "HWV134-1"
+                      // "HWV134-1"
             ] {
                 
                 guard let path = name.p else {

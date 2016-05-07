@@ -12,15 +12,16 @@ import XCTest
 class PrlcTests: XCTestCase {
 
     func testPrlcCreateStore() {
-        var store = prlcCreateStore(123);
+        let fileSize = 0
+        var store = prlcCreateStore(fileSize);
         defer {
             prlcDestroyStore(&store);
             XCTAssertTrue(store == nil);
         }
         
-        XCTAssertEqual(123, store.memory.symbols.capacity);
-        XCTAssertEqual(123, store.memory.p_nodes.capacity);
-        XCTAssertEqual(61, store.memory.t_nodes.capacity);
+        XCTAssertEqual(1024, store.memory.symbols.capacity);
+        XCTAssertEqual(1024, store.memory.p_nodes.capacity);
+        XCTAssertEqual(1024, store.memory.t_nodes.capacity);
         
         XCTAssertEqual(1, store.memory.symbols.unit);
         XCTAssertEqual(2056, store.memory.p_nodes.unit);
@@ -43,7 +44,7 @@ class PrlcTests: XCTestCase {
         }
         
         XCTAssertTrue(time < 0.01)
-        XCTAssertEqual(106, result.1?.treeNodeCount)
+        XCTAssertEqual(106, result.1?.treeNodeSize)
         XCTAssertEqual(0,result.0);
         
         
@@ -58,7 +59,7 @@ class PrlcTests: XCTestCase {
         
         print("time:",time.prettyTimeIntervalDescription)
         XCTAssertTrue(time < 40,"\(time)")
-        XCTAssertEqual(29_953_326, result.1?.treeNodeCount)
+        XCTAssertEqual(29_953_326, result.1?.treeNodeSize)
         // 29953326
         
         XCTAssertEqual(0,result.0);

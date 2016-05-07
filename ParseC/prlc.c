@@ -47,12 +47,14 @@ void prlc_copy_predefined_symbols(prlc_store *store) {
     
 }
 
-prlc_store* prlcCreateStore(size_t capacity) {
+prlc_store* prlcCreateStore(size_t fileSize) {
     prlc_store* store = calloc(1,sizeof(prlc_store));
+    
+    fileSize = fileSize >= 1024 ? fileSize : 1024;
 
-    prlc_alloc_memory(&(store->symbols), capacity, sizeof(char));
-    prlc_alloc_memory(&(store->p_nodes), capacity, sizeof(prlc_prefix_node));
-    prlc_alloc_memory(&(store->t_nodes), capacity/2, sizeof(prlc_tree_node));
+    prlc_alloc_memory(&(store->symbols), fileSize, sizeof(char));
+    prlc_alloc_memory(&(store->p_nodes), fileSize, sizeof(prlc_prefix_node));
+    prlc_alloc_memory(&(store->t_nodes), fileSize, sizeof(prlc_tree_node));
     
     prlc_copy_predefined_symbols(store);
 

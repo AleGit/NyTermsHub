@@ -60,7 +60,7 @@ class MereParserBasicTests: XCTestCase {
 //            ("HWV124-1",9.9,7098296),
 
             
-            ("HWV134-1",45.6, 29_953_326, 2_332_428, 7.5)
+            ("HWV134-1",49.9, 29_953_326, 2_332_428, 7.9)
             ] {
                 guard let path = name.p else {
                     XCTFail("Did not find path for \(name)")

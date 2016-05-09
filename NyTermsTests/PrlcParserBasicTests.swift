@@ -18,25 +18,25 @@ class PrlcParserBasicTests: XCTestCase {
             
             ("SYN000-2",1.0,145, 0),
             
-            ("HWV001-1",0.003, 413, 0),
+            ("HWV001-1",0.019, 413, 0),
             ("HWV002-1",0.003, 436, 0),
             
-            ("HWV003-1",0.005, 474, 0),
-            ("HWV003-2",0.005, 372, 0),
-            ("HWV003-3",0.002, 407, 0),
+            ("HWV003-1",0.019, 474, 0),
+            ("HWV003-2",0.1, 372, 0),
+            ("HWV003-3",0.019, 407, 0),
             
-            ("HWV004-1",0.005, 441, 0),
+            ("HWV004-1",0.019, 441, 0),
             
             ("HWV005-1",0.1, 65, 0),
-            ("HWV005-2",0.002, 53, 0),
+            ("HWV005-2",0.5, 53, 0),
             
             ("HWV006-1",0.01, 123, 0),
             
             ("HWV007-1",0.1, 115, 0),
-            ("HWV007-2",0.002, 95, 0),
+            ("HWV007-2",0.005, 95, 0),
             
             ("HWV008-1.001",0.01, 181, 0),
-            ("HWV008-1.002",0.01, 288, 0),
+            ("HWV008-1.002",0.1, 288, 0),
             ("HWV008-2.001",0.01, 134, 0),
             ("HWV008-2.002",0.01, 210, 0),
             
@@ -72,7 +72,7 @@ class PrlcParserBasicTests: XCTestCase {
                     prlcParse(path)
                 }
                 
-                XCTAssertTrue(parseTime < timeLimit,"\(name) \(parseTime)")
+                XCTAssertTrue(parseTime < max(1.0,timeLimit),"\(name) \(parseTime.prettyTimeIntervalDescription)")
                 
                 let code = pair.0
                 XCTAssertEqual(0, code, "\(code)")

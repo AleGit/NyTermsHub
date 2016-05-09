@@ -93,7 +93,9 @@ void prlcNodeSetChild(PrlcTreeNodeRef parent, PrlcTreeNodeRef child);
 
 void* prlcLabel(const char* const label);
 
-PrlcTreeNodeRef prlcTreeNodeAtIndex(prlc_store* store, size_t index);
+PrlcTreeNodeRef prlcFirstTreeNode(prlc_store*);
+PrlcTreeNodeRef prlcTreeNodeAtIndex(prlc_store*, size_t);
+
 
 
 

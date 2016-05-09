@@ -21,9 +21,9 @@ class PrlcTable {
         let symbol = String.fromCString(root.memory.symbol) ?? "(symbol n/a)"
         
         print("\(#function) '\(symbol)'")
-        print("symbols:    \(symbolStoreSize) @ \(symbolStoreFillDegree) %")
-        print("prefixes:   \(prefixStoreSize) @ \(pnodeStoreFillDegree) %")
-        print("term nodes: \(treeStoreSize) @ \(tnodeStoreFillDegree) %")
+        print("symbols:    \(symbolStoreSize) @ \(symbolStoreFillLevel) %")
+        print("prefixes:   \(prefixStoreSize) @ \(prefixStoreFillLevel) %")
+        print("term nodes: \(treeStoreSize) @ \(treeStoreFillLevel) %")
         
         var copy = store
         prlcDestroyStore(&copy)
@@ -46,19 +46,15 @@ extension PrlcTable {
         return store.memory.t_nodes.size
     }
     
-
-    
-
-    
-    var symbolStoreFillDegree : Int {
+    var symbolStoreFillLevel : Int {
         return percent(store.memory.symbols.size, divisor: store.memory.symbols.capacity)
     }
     
-    var tnodeStoreFillDegree : Int {
-        return percent(store.memory.t_nodes.size, divisor: store.memory.t_nodes.capacity)
+    var prefixStoreFillLevel : Int {
+        return percent(store.memory.p_nodes.size, divisor: store.memory.p_nodes.capacity)
     }
     
-    var pnodeStoreFillDegree : Int {
-        return percent(store.memory.p_nodes.size, divisor: store.memory.p_nodes.capacity)
+    var treeStoreFillLevel : Int {
+        return percent(store.memory.t_nodes.size, divisor: store.memory.t_nodes.capacity)
     }
 }

@@ -66,6 +66,8 @@
 		514AD8661C6B7D7400652004 /* TailTrie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8641C6B7D7400652004 /* TailTrie.swift */; };
 		514AD8681C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
 		514AD8691C6B7DF900652004 /* TrieType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514AD8671C6B7DF900652004 /* TrieType.swift */; };
+		514E55961CE05D1A00C8B40E /* PrlcTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514E55951CE05D1A00C8B40E /* PrlcTable.swift */; };
+		514E55971CE05D1A00C8B40E /* PrlcTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514E55951CE05D1A00C8B40E /* PrlcTable.swift */; };
 		514E938B1C9FBE5C00787661 /* SharingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514E938A1C9FBE5C00787661 /* SharingTests.swift */; };
 		5150CD3C1C6CA25A00372F04 /* BasicTrieStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150CD3B1C6CA25A00372F04 /* BasicTrieStructTests.swift */; };
 		5150CD3E1C6CA6EB00372F04 /* BuildTailTriePerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5150CD3D1C6CA6EB00372F04 /* BuildTailTriePerformanceTests.swift */; };
@@ -263,6 +265,7 @@
 		514AD8621C6B4CDD00652004 /* BasicTailTrieTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTailTrieTests.swift; sourceTree = "<group>"; };
 		514AD8641C6B7D7400652004 /* TailTrie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TailTrie.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		514AD8671C6B7DF900652004 /* TrieType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrieType.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		514E55951CE05D1A00C8B40E /* PrlcTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrlcTable.swift; sourceTree = "<group>"; };
 		514E938A1C9FBE5C00787661 /* SharingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingTests.swift; sourceTree = "<group>"; };
 		5150CD3B1C6CA25A00372F04 /* BasicTrieStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTrieStructTests.swift; sourceTree = "<group>"; };
 		5150CD3D1C6CA6EB00372F04 /* BuildTailTriePerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BuildTailTriePerformanceTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -711,6 +714,7 @@
 				5160942A1CDA095900B3579D /* PrlcParser.h */,
 				5160942B1CDA095900B3579D /* PrlcParser.swift */,
 				5160942C1CDA095900B3579D /* PrlcParser.y */,
+				514E55951CE05D1A00C8B40E /* PrlcTable.swift */,
 				515F0EF91B6B746800B470B4 /* TptpEnums.h */,
 				51226E761B6D3A0B0077E34D /* TptpFormula.swift */,
 				51226E781B6D3AB70077E34D /* TptpInclude.swift */,
@@ -1042,6 +1046,7 @@
 				51FD00B91C3132F8008C5AD1 /* Auxiliary.swift in Sources */,
 				51FD00BB1C3132F8008C5AD1 /* BinarySearchTree.swift in Sources */,
 				5151BDC11C3161AF006EFCE0 /* Pair.swift in Sources */,
+				514E55971CE05D1A00C8B40E /* PrlcTable.swift in Sources */,
 				510811ED1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift in Sources */,
 				516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */,
 				517994851C96BEC900791916 /* MereLexer.l in Sources */,
@@ -1113,6 +1118,7 @@
 				51C94CB91B987E70004C3082 /* Empty.swift in Sources */,
 				51226E7D1B6D44E20077E34D /* TptpPrintable.swift in Sources */,
 				516063271CD1D8780096A3E2 /* calm.c in Sources */,
+				514E55961CE05D1A00C8B40E /* PrlcTable.swift in Sources */,
 				51FAF9321BB70330004E6BD5 /* Yices+LPO+KBO (deprecated).swift in Sources */,
 				5150F3991BD62E67003D69A3 /* PolyTry.swift in Sources */,
 			);

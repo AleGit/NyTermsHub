@@ -213,4 +213,28 @@ extension Set {
     }
 }
 
+//extension Double {
+//    init<I:IntegerType>(_ v:I) {
+//        assert(false, "\(#function) \(v)")
+//        self = 0.0
+//    }
+//}
+//
+//extension IntegerType {
+//    init(_ v:Double) {
+//        assert(false, "\(#function) \(v)")
+//        self = 0
+//    }
+//}
+//
+//func percent<I:IntegerType>(dividend:I, divisor:I) -> I {
+//    let result = 0.5 + 100.0 * (Double(dividend) / Double(divisor))
+//    return I(result)
+//}
+
+func percent(dividend:Int, divisor:Int) -> Int {
+    let result = 0.5 + 100.0 * (Double(dividend) / Double(divisor))
+    return Int(result)
+}
+
 

@@ -76,7 +76,7 @@ class PrlcParserBasicTests: XCTestCase {
                 
                 let code = pair.0
                 XCTAssertEqual(0, code, "\(code)")
-                XCTAssertEqual(expectedTreeSize, pair.1?.treeNodeSize, "\(expectedTreeSize) \(pair.1?.treeNodeSize)")
+                XCTAssertEqual(expectedTreeSize, pair.1?.treeStoreSize, "\(expectedTreeSize) \(pair.1?.treeStoreSize)")
                 
                 
                 

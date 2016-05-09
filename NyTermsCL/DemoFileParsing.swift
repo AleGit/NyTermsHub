@@ -57,12 +57,12 @@ struct DemoFileParsing {
                 prlcParse(path)
             }
             
-            print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeNodeSize)
+            print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeStoreSize)
             assert(time < 40,"\(time)")
             assert(0 == result.0);
             
             if let table = result.1 {
-                let size = table.treeNodeSize
+                let size = table.treeStoreSize
                 assert(29_953_326 == size)
                 
                 

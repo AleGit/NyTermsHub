@@ -44,7 +44,7 @@ class PrlcTests: XCTestCase {
         }
         
         XCTAssertTrue(time < 0.01)
-        XCTAssertEqual(106, result.1?.treeNodeSize)
+        XCTAssertEqual(106, result.1?.treeStoreSize)
         XCTAssertEqual(0,result.0);
         
         
@@ -58,8 +58,8 @@ class PrlcTests: XCTestCase {
         }
         
         print("time:",time.prettyTimeIntervalDescription)
-        XCTAssertTrue(time < 40,"\(time)")
-        XCTAssertEqual(29_953_326, result.1?.treeNodeSize)
+        XCTAssertTrue(time < 45,"\(time)")
+        XCTAssertEqual(29_953_326, result.1?.treeStoreSize)
         // 29953326
         
         XCTAssertEqual(0,result.0);

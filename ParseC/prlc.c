@@ -276,4 +276,18 @@ void* prlcLabel(const char* const label) {
     return NULL;
 }
 
+prlc_tree_node* prlcFirstTreeNode(prlc_store* store) {
+    assert(0 < store->t_nodes.size);
+    return store->t_nodes.memory;
+}
+
+prlc_tree_node* prlcTreeNodeAtIndex(prlc_store* store, size_t index) {
+    if (index < store->t_nodes.size) {
+        return prlcFirstTreeNode(store) + index;
+    }
+    else {
+        return NULL;
+    }
+}
+
 

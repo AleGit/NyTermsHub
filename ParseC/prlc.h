@@ -64,6 +64,8 @@ typedef char* PrlcStringRef;
 prlc_store* prlcCreateStore(size_t);
 void prlcDestroyStore(prlc_store**);
 
+prlc_tree_node* treeNode(prlc_store* store, size_t index);
+
 #pragma mark - store
 
 /// Stores every symbol just once
@@ -91,6 +93,7 @@ void prlcNodeSetChild(PrlcTreeNodeRef parent, PrlcTreeNodeRef child);
 
 void* prlcLabel(const char* const label);
 
+PrlcTreeNodeRef prlcTreeNodeAtIndex(prlc_store* store, size_t index);
 
 
 

@@ -47,6 +47,10 @@ class PrlcTests: XCTestCase {
         XCTAssertEqual(106, result.1?.treeStoreSize)
         XCTAssertEqual(0,result.0);
         
+        for node in result.1!.tptpSequence {
+            print(node)
+        }
+        
         
     }
     

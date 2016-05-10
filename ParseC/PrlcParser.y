@@ -238,7 +238,7 @@ fof_unitary_formula     :   fof_quantified_formula { $$ = $1; }
 |   '(' fof_logic_formula ')'  { SET_PARENTHESES($2); $$ = $2; }
 
 fof_quantified_formula  :   fol_quantifier '[' fof_variable_list ']' ':' fof_unitary_formula  {
-    $$ = CREATE_Quantified($1, $6, $3);
+    $$ = CREATE_Quantified($1, $3, $6);
 }
 
 fof_variable_list       :   variable { $$ = CREATE_Variable($1); } /* $1 is char* */

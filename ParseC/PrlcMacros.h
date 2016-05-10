@@ -21,7 +21,7 @@
 #define TPTP_INPUT(input)                               input; prlcNodeSetChild(PR, input)
 #define TPTP_INPUT_APPEND(sequence, input)              prlcNodeAppendNode(sequence, input)
 
-#define CREATE_Quantified(q, vs, frm)                   prlcStoreNodeQuantified(PS, q, vs, frm)
+#define CREATE_Quantified(q, vars, ufrm)                   prlcStoreNodeQuantified(PS, q, vars, ufrm)
 #define CREATE_Functional(f, first)                     prlcStoreNodeFunctional(PS, f, first)
 #define CREATE_Equational(e, first)                     prlcStoreNodeEquational(PS, e, first)
 #define CREATE_Connective(c, first)                     prlcStoreNodeConnective(PS, c, first)

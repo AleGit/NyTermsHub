@@ -62,11 +62,12 @@ extension PrlcTable {
 extension PrlcTable {
     private subscript(distance:size_t) -> PrlcTreeNodeRef? {
         let ref = prlcTreeNodeAtIndex(store, distance)
-        guard ref != nil else { return nil }
+        guard ref != nil else { return nil } // ref != NULL
         return ref
     }
     
-    private func indexOf(treeNode : PrlcTreeNodeRef) -> size_t? {
+    func indexOf(treeNode : PrlcTreeNodeRef) -> size_t? {
+        guard treeNode != nil else { return nil }
         guard let base = self[0] else { return nil }
         let distance = base.distanceTo(treeNode)
         
@@ -75,7 +76,9 @@ extension PrlcTable {
         return distance
     }
     
-    private func indexOf(symbol : PrlcStringRef) -> size_t? {
+    func indexOf(symbol : PrlcStringRef) -> size_t? {
+        guard symbol != nil else { return nil }
+        
         let base = prlcFirstSymbol(store)
         guard base != nil else { return nil }
         let distance = base.distanceTo(symbol)
@@ -118,14 +121,30 @@ extension PrlcTable {
         }
     }
     
+    private var successor : (PrlcTreeNodeRef?) -> PrlcTreeNodeRef? {
+        return {
+            [unowned self]
+            (node:PrlcTreeNodeRef?) -> PrlcTreeNodeRef? in
+            
+            guard let node = node,
+                let index = self.indexOf(node)
+                else { return nil }
+            
+            return self[index+1] // nil if index+1 == treeNodeSize
+            
+        }
+    }
+    
     private func children<T>(parent:PrlcTreeNodeRef?, data:PrlcTreeNodeRef->T) -> NySequence<PrlcTreeNodeRef,T>{
         
-        return NySequence(first: self.child(parent), step:sibling) { data ($0) }
+        return NySequence(first: self.child(parent), step:sibling, data:data)
     
     }
 }
 
 extension PrlcTable {
+    
+    
 
     func tptpSequence<T>(data:(PrlcTreeNodeRef)->T) -> NySequence<PrlcTreeNodeRef,T> {
         return children(self[0]) { data($0) }
@@ -133,6 +152,14 @@ extension PrlcTable {
     
     var tptpSequence : NySequence<PrlcTreeNodeRef,prlc_tree_node>{
         return tptpSequence { $0.memory }
+    }
+    
+    func nodes<T>(data:(PrlcTreeNodeRef) -> T) -> NySequence<PrlcTreeNodeRef,T> {
+        return NySequence(first:self[0], step:successor, data:data)
+    }
+    
+    var nodes: NySequence<PrlcTreeNodeRef,prlc_tree_node> {
+        return nodes { $0.memory }
     }
 }
 

@@ -76,12 +76,14 @@ extension PrlcTable {
         return distance
     }
     
-    func indexOf(symbol : PrlcStringRef) -> size_t? {
-        guard symbol != nil else { return nil }
+    func indexOf(symbol symbol : String) -> size_t? {
         
         let base = prlcFirstSymbol(store)
-        guard base != nil else { return nil }
-        let distance = base.distanceTo(symbol)
+        let symb = prlcGetSymbol(store,symbol)
+        
+        guard base != nil && symb != nil else { return nil }
+        
+        let distance = base.distanceTo(symb)
         
         assert (distance < symbolStoreSize)
         

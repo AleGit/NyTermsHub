@@ -77,6 +77,7 @@ prlc_tree_node* treeNode(prlc_store* store, size_t index);
 
 /// Stores every symbol just once
 const char* const prlcStoreSymbol(prlc_store* store, const char* const symbol);
+const char* const prlcGetSymbol(prlc_store* store, const char* symbol);
 const char* const prlcFirstSymbol(prlc_store *store);
 const char* const prlcNextSymbol(prlc_store* store, const char* const symbol);
 
@@ -86,7 +87,10 @@ prlc_tree_node* prlcStoreNodeAnnotated(prlc_store* store, PRLC_TREE_NODE_TYPE ty
                                        const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations);
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name);
 prlc_tree_node* prlcStoreNodeConnective(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
+
+/// Store a quantified formula.
 prlc_tree_node* prlcStoreNodeQuantified(prlc_store* store, const char* const quantifier, prlc_tree_node* variables, prlc_tree_node* formula);
+
 prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeEquational(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeConstant(prlc_store* store, const char* const symbol);

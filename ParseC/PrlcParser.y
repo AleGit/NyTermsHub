@@ -221,7 +221,6 @@ fof_or_formula          :   fof_unitary_formula '|' fof_unitary_formula {
 }
 |   fof_or_formula '|' fof_unitary_formula {
     $$ = APPEND($1,$3);
-    /* deprecated: $$ = CREATE_NODE(_OR_ , CREATE_NODES2($1,$3)); */
 }
 
 fof_and_formula         :   fof_unitary_formula '&' fof_unitary_formula  {
@@ -229,7 +228,6 @@ fof_and_formula         :   fof_unitary_formula '&' fof_unitary_formula  {
 }
 |   fof_and_formula '&' fof_unitary_formula  {
     $$ = APPEND($1,$3);
-    /* deprecated: $$ = CREATE_NODE(_AND_ , CREATE_NODES2($1,$3)); */
 }
 
 fof_unitary_formula     :   fof_quantified_formula { $$ = $1; }

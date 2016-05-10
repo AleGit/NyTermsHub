@@ -41,7 +41,6 @@
 #define CREATE_STRINGS1(a)                              prlcStoreNodeName(PS, a) // xStoreNameNode(mereParsingTable, a)
 
 #define CREATE_DISTINCT(a)                              prlcStoreNodeConstant(PS, prlcStoreSymbol(PS, a))
-/*prlcLabel("CREATE_DISTINCT") */
 
 #define MAKE_ROLE(a)                                    prlcStoreNodeRole(PS, a) // xStoreRole(mereParsingTable, a)
 

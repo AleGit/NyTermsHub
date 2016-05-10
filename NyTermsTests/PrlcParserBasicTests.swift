@@ -11,6 +11,37 @@ import XCTest
 
 class PrlcParserBasicTests: XCTestCase {
     
+    func testPredefinedSymbols() {
+        let symbols = [
+            (""     ,0),
+            ("~"    ,1),
+            ("|"    ,3),
+            ("&"    ,5),
+            ("-->"  ,7),
+            (","    ,11),
+            ("<=>"  ,13),
+            ("=>"   ,17),
+            ("<="   ,20),
+            ("<~>"  ,23),
+            ("~|"   ,27),
+            ("~&"   ,30),
+            ("!"    ,33),
+            ("?"    ,35),
+            ("="    ,37),
+            ("!="   ,39),
+            ("", 0)
+        ]
+        
+        let table = PrlcTable(size: 0, path: "")
+        
+        XCTAssertEqual(42, table.symbolStoreSize)
+        XCTAssertEqual(1024, table.store.memory.symbols.capacity)
+        
+        for (symbol,index) in symbols {
+            XCTAssertEqual(index, table.indexOf(symbol: symbol),"\(symbol)")
+        }
+    }
+    
     func testParsing() {
         for (name, timeLimit, expectedTreeSize, _) in [
             ("PUZ001-1",0.003, 106, 12),

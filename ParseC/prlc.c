@@ -8,7 +8,7 @@
 
 #include "prlc.h"
 
-const char* const prlcStoreSymbol(prlc_store* store, const char* const symbol);
+// const char* const prlcStoreSymbol(prlc_store* store, const char* const symbol);
 
 #pragma mark - allocate and free store
 
@@ -21,29 +21,29 @@ void prlc_alloc_memory(prlc_memory* memory, size_t capacity, size_t unit) {
 
 void prlc_copy_predefined_symbols(prlc_store *store) {
     
-    prlcStoreSymbol(store, "");
+    prlcStoreSymbol(store, "");     // empty string
     
-    prlcStoreSymbol(store, "~");
-    prlcStoreSymbol(store, "|");
-    prlcStoreSymbol(store, "&");
+    prlcStoreSymbol(store, "~");    // not
+    prlcStoreSymbol(store, "|");    // or
+    prlcStoreSymbol(store, "&");    // and
     
-    prlcStoreSymbol(store, "-->");
-    prlcStoreSymbol(store, ",");
+    prlcStoreSymbol(store, "-->");  // gentzen
+    prlcStoreSymbol(store, ",");    // comma
     
-    prlcStoreSymbol(store, "<=>");
-    prlcStoreSymbol(store, "=>");
-    prlcStoreSymbol(store, "<=");
+    prlcStoreSymbol(store, "<=>");  // if
+    prlcStoreSymbol(store, "=>");   // imply
+    prlcStoreSymbol(store, "<=");   // ylpmi
     
-    prlcStoreSymbol(store, "<~>");
-    prlcStoreSymbol(store, "~|");
-    prlcStoreSymbol(store, "~&");
+    prlcStoreSymbol(store, "<~>");  // niff = xor
+    prlcStoreSymbol(store, "~|");   // nor
+    prlcStoreSymbol(store, "~&");   // nand
     
     
-    prlcStoreSymbol(store, "!");
-    prlcStoreSymbol(store, "?");
+    prlcStoreSymbol(store, "!");    // forall
+    prlcStoreSymbol(store, "?");    // exists
     
-    prlcStoreSymbol(store, "=");
-    prlcStoreSymbol(store, "!=");
+    prlcStoreSymbol(store, "=");    // equals
+    prlcStoreSymbol(store, "!=");   // not equal
     
 }
 
@@ -146,6 +146,33 @@ const char* const prlcStoreSymbol(prlc_store* store, const char* const symbol) {
     }
     
     return p_node->symbol;
+}
+
+prlc_prefix_node* prlc_prefix_path_follow(prlc_store* store, const char* const symbol) {
+    prlc_prefix_node *p_node = NULL;
+    size_t len = strlen(symbol);
+    size_t pos = 0;
+    
+    if (store->p_nodes.size > 0) {
+        p_node = store->p_nodes.memory;
+    }
+    
+    while (p_node != NULL && pos < len) {
+        int c = *(symbol+pos);
+        if (c < 0) c += 256;
+        p_node = p_node->nexts[c];
+        pos += 1;
+    }
+    
+    return p_node;
+}
+
+const char* const prlcGetSymbol(prlc_store* store, const char* symbol) {
+    prlc_prefix_node *p_node = prlc_prefix_path_follow(store, symbol);
+    
+    return p_node ? p_node->symbol : NULL;
+    
+    
 }
 
 const char* const prlcFirstSymbol(prlc_store *store) {

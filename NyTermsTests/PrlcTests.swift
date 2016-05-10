@@ -77,16 +77,6 @@ class PrlcTests: XCTestCase {
         }
         
         XCTAssertEqual(131, table.treeStoreSize)
-
-        
-//        let sequence = result.1!.tptpSequence {
-//            ref in
-//            return (String.fromCString(ref.memory.symbol) ?? "n/a",
-//                String.fromCString(ref.memory.child.memory.symbol) ?? "no 1st child",
-//                String.fromCString(ref.memory.child.memory.sibling.memory.symbol) ?? "no 2nd child"
-//            )
-//            
-//        }
         
         let nodes = table.nodes {
             $0
@@ -98,7 +88,7 @@ class PrlcTests: XCTestCase {
             let sidx = table.indexOf(ref.memory.sibling) ?? 0
             let lidx = table.indexOf(ref.memory.lastSibling) ?? 0
             let cidx = table.indexOf(ref.memory.child) ?? 0
-            print("\(nidx) \(name) • child:\(cidx) • sibling:\(sidx)(\(lidx)")
+            print("\(nidx) '\(name)' • child:\(cidx) • sibling:\(sidx)(\(lidx)")
         }
     }
     

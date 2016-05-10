@@ -13,16 +13,23 @@
 
 typedef enum {
     PRLC_UNDEFINED = 0,
+    
     PRLC_FILE,
+    
     PRLC_FOF,
     PRLC_CNF,
     PRLC_INCLUDE,
+    
     PRLC_NAME,
     PRLC_ROLE,
     PRLC_ANNOTATION,
+    
+    PRLC_QUANTIFIER,
     PRLC_CONNECTIVE,
+    
     PRLC_EQUATIONAL,
     PRLC_PREDICATE,
+    
     PRLC_FUNCTION,
     PRLC_VARIABLE
 } PRLC_TREE_NODE_TYPE;
@@ -79,6 +86,7 @@ prlc_tree_node* prlcStoreNodeAnnotated(prlc_store* store, PRLC_TREE_NODE_TYPE ty
                                        const char* const name, prlc_tree_node* role, prlc_tree_node* formula, prlc_tree_node* annotations);
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name);
 prlc_tree_node* prlcStoreNodeConnective(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
+prlc_tree_node* prlcStoreNodeQuantified(prlc_store* store, const char* const quantifier, prlc_tree_node* variables, prlc_tree_node* formula);
 prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeEquational(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild);
 prlc_tree_node* prlcStoreNodeConstant(prlc_store* store, const char* const symbol);
@@ -89,6 +97,7 @@ prlc_tree_node* prlcStoreNodeName(prlc_store* store, const char* const name);
 prlc_tree_node*  prlcSetPredicate(prlc_tree_node *t_node);
 
 prlc_tree_node* prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last);
+prlc_tree_node *prlcNodeAppendChild(prlc_tree_node* parent, prlc_tree_node *last);
 void prlcNodeSetChild(PrlcTreeNodeRef parent, PrlcTreeNodeRef child);
 
 void* prlcLabel(const char* const label);

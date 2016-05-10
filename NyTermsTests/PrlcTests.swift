@@ -36,7 +36,7 @@ class PrlcTests: XCTestCase {
         
     }
     
-    func testParsePUZ001() {
+    func testParsePUZ001cnf() {
         let path = "PUZ001-1".p!
         
         let (result,time) = measure {
@@ -56,8 +56,33 @@ class PrlcTests: XCTestCase {
         for node in sequence {
             print(node)
         }
+    }
+    
+    
+    
+    func testParsePUZ001fof() {
+        let path = "PUZ001+1".p!
         
+        let (result,time) = measure {
+            prlcParse(path)
+        }
         
+        XCTAssertTrue(time < 0.01)
+        XCTAssertEqual(131, result.1?.treeStoreSize)
+        XCTAssertEqual(0,result.0);
+        
+        let sequence = result.1!.tptpSequence {
+            ref in
+            return (String.fromCString(ref.memory.symbol) ?? "n/a",
+                String.fromCString(ref.memory.child.memory.symbol) ?? "no 1st child",
+                String.fromCString(ref.memory.child.memory.sibling.memory.symbol) ?? "no 2nd child"
+            )
+            
+        }
+        
+        for node in sequence {
+            print(node)
+        }
     }
     
     func testParseHWV134() {

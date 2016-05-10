@@ -216,9 +216,17 @@ prlc_tree_node* prlcStoreNodeInclude(prlc_store* store, const char* const file, 
 prlc_tree_node* prlcStoreNodeRole(prlc_store* store, const char* const name) {
     return prlc_tree_node_save(store, PRLC_ROLE, name, NULL);
 }
+
 prlc_tree_node* prlcStoreNodeConnective(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild) {
     return prlc_tree_node_save(store, PRLC_CONNECTIVE, symbol, firstChild);
 }
+
+
+prlc_tree_node* prlcStoreNodeQuantified(prlc_store* store, const char* const quantifier, prlc_tree_node* variables, prlc_tree_node* formula) {
+    prlc_tree_node* first_child = prlcNodeAppendNode(variables, formula);
+    return prlc_tree_node_save(store, PRLC_QUANTIFIER, quantifier, first_child);
+}
+
 prlc_tree_node* prlcStoreNodeFunctional(prlc_store* store, const char* const symbol, prlc_tree_node* firstChild) {
     return prlc_tree_node_save(store, PRLC_FUNCTION, symbol, firstChild);
 }
@@ -260,6 +268,20 @@ prlc_tree_node *prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last) 
         prlcNodeAppendNode(first->sibling, last);
     }
     return first;
+}
+
+prlc_tree_node *prlcNodeAppendChild(prlc_tree_node* parent, prlc_tree_node *last) {
+    assert(parent != NULL);
+    assert(last != NULL);
+    
+    if (parent->child == NULL) {
+        assert(false);
+        parent->child = last;
+    }
+    else {
+        prlcNodeAppendNode(parent->child, last);
+    }
+    return parent;
 }
 
 

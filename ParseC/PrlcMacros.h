@@ -21,9 +21,9 @@
 #define TPTP_INPUT(input)                               input; prlcNodeSetChild(PR, input)
 #define TPTP_INPUT_APPEND(sequence, input)              prlcNodeAppendNode(sequence, input)
 
-#define CREATE_Quantified(b, c, d)                      prlcLabel("CREATE_Quantified") // quantified
-#define CREATE_Functional(c, first)                     prlcStoreNodeFunctional(PS, c, first)
-#define CREATE_Equational(c, first)                     prlcStoreNodeEquational(PS, c, first)
+#define CREATE_Quantified(q, vs, frm)                   prlcStoreNodeQuantified(PS, q, vs, frm)
+#define CREATE_Functional(f, first)                     prlcStoreNodeFunctional(PS, f, first)
+#define CREATE_Equational(e, first)                     prlcStoreNodeEquational(PS, e, first)
 #define CREATE_Connective(c, first)                     prlcStoreNodeConnective(PS, c, first)
 #define CREATE_Constant(c)                              prlcStoreNodeConstant(PS, c)
 #define CREATE_Variable(v)                              prlcStoreNodeVariable(PS, v)
@@ -34,7 +34,7 @@
 
 #define PREDICATE(p)                                    prlcSetPredicate(p) // xSetPredicate(mereParsingTable, tid); /* register_predicate(tid) */
 
-#define APPEND(a, b)                                    prlcLabel("APPEND")
+#define APPEND(p, c)                                    prlcNodeAppendChild(p,c)
 #define INSERT(a, b)                                    prlcLabel("INSERT")
 
 #define CREATE_STRING(a)                                prlcStoreSymbol(PS, a) // xStoreSymbol(mereParsingTable, a)

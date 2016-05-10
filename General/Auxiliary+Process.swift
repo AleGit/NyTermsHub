@@ -13,7 +13,10 @@ extension Process {
     private static func argumentValueOf(key:String) -> String? {
         guard let valueIndex = Process.arguments.indexOf(key)?.successor()
             where valueIndex < Process.arguments.count
-            else { return nil }
+            else {
+                assert(false, "unbalanced number of arguments \(Process.arguments.count)")
+                return nil
+        }
         
         return Process.arguments[valueIndex]
     }
@@ -53,7 +56,8 @@ extension Process {
         return "\(info.processName) @ " +
             "\(names.first! ?? info.hostName): " +
             "\(info.processorCount) cores, " +
-        "\(info.physicalMemory.prettyByteDescription)."
+        "\(info.physicalMemory.prettyByteDescription), " +
+        "\(self.speed.prettyHzDescription)."
     }
     #endif
     
@@ -64,6 +68,32 @@ extension Process {
             return "process info n/a"
         #endif
     }
+    
+    static var speed : UInt64 {
+        var size : size_t = 8
+        var value : UInt64 = 0
+
+        // let result = sysctlbyname("hw.cpufrequency_max", nil, &size, nil, 0);
+        var code = sysctlbyname("hw.cpufrequency", nil, &size, nil, 0);
+        
+        assert(code == 0, "\(code) \(value) \(size)")
+        assert(size == 8, "\(code) \(value) \(size)")
+        
+        code = sysctlbyname("hw.cpufrequency", &value, &size, nil, 0);
+        assert(code == 0, "\(code) \(value) \(size)")
+        assert(size == sizeof(UInt64), "\(code) \(value) \(size)")
+        
+        return value
+    }
+    
+    static var relativeSpeed : Double {
+        return Double(self.speed) / 3_000_000_000.0
+        
+        
+        
+    }
+    
+    
     
     
     

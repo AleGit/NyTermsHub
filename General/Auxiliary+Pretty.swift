@@ -104,4 +104,40 @@ extension UInt64 {
         
         return "\(dividend) \(UInt64.prefixedByteUnits[index].0)"
     }
+    
+    var prettyHzDescription : String {
+        
+        if self < 1_000 {
+            return "\(self) Hz"
+        }
+        else if self < 10_000 {
+            return "\(Double(self/10)/100) kHz"
+        }
+        else if self < 100_000 {
+            return "\(Double(self/100)/10) kHz"
+        }
+        else if self < 1_000_000 {
+            return "\(Double(self/1_000)) kHz"
+        }
+        else if self < 10_000_000 {
+            return "\(Double(self/10_000)/100) MHz"
+        }
+        else if self < 100_000_000 {
+            return "\(Double(self/100_000)/10) MHz"
+        }
+        else if self < 1_000_000_000 {
+            return "\(Double(self/1_000_000)) MHz"
+        }
+        else if self < 10_000_000_000 {
+            return "\(Double(self/10_000_000)/100) GHz"
+        }
+        else if self < 100_000_000_000 {
+            return "\(Double(self/100_000_000)/10) GHz"
+        }
+        else /* if self < 1_000_000_000_000 */ {
+            return "\(Double(self/1_000_000_000)) GHz"
+        }
+        
+    }
+
 }

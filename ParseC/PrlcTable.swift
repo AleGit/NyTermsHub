@@ -137,6 +137,66 @@ extension PrlcTable {
         }
     }
     
+//    private var nextTptpInclude : (PrlcTreeNodeRef?) -> PrlcTreeNodeRef? {
+//        return {
+//            // [unowned self]
+//            (tptpInput:PrlcTreeNodeRef?) -> PrlcTreeNodeRef? in
+//            
+//            guard var input = tptpInput else { return nil }
+//            
+//            
+//            
+//            assert(input.memory.type == PRLC_FOF
+//                || input.memory.type == PRLC_CNF
+//                || input.memory.type == PRLC_INCLUDE)
+//            
+//            while input.memory.sibling != nil {
+//                if input.memory.sibling.memory.type == PRLC_INCLUDE {
+//                    return input.memory.sibling
+//                }
+//                
+//                input = input.memory.sibling
+//                
+//            }
+//            
+//            return nil
+//        }
+//    }
+    
+    private func nextTptpInclude (tptpInput: PrlcTreeNodeRef?) -> PrlcTreeNodeRef? {
+        guard var input = tptpInput else { return nil }
+        
+        assert(input.memory.type == PRLC_FOF
+            || input.memory.type == PRLC_CNF
+            || input.memory.type == PRLC_INCLUDE)
+        
+        while input.memory.sibling != nil {
+            if input.memory.sibling.memory.type == PRLC_INCLUDE {
+                return input.memory.sibling
+            }
+            
+            input = input.memory.sibling
+            
+        }
+        
+        return nil
+    }
+
+    private var firstTptpInclude : PrlcTreeNodeRef? {
+        guard let root = self[0] else { return nil }
+        
+        assert(root.memory.type == PRLC_FILE)
+        
+        guard root.memory.child != nil else { return nil }
+        
+        if root.memory.child.memory.type == PRLC_INCLUDE {
+            return root.memory.child
+        }
+        
+        return nextTptpInclude(root.memory.child)
+        
+    }
+    
     private func children<T>(parent:PrlcTreeNodeRef?, data:PrlcTreeNodeRef->T) -> NySequence<PrlcTreeNodeRef,T>{
         
         return NySequence(first: self.child(parent), step:sibling, data:data)
@@ -146,22 +206,28 @@ extension PrlcTable {
 
 extension PrlcTable {
     
+    func includes<T>(data:(PrlcTreeNodeRef)->T)  -> NySequence<PrlcTreeNodeRef,T> {
+        return NySequence(first:firstTptpInclude, step:nextTptpInclude, data:data)
+    }
     
+    var includes : NySequence<PrlcTreeNodeRef,PrlcTreeNodeRef> {
+        return includes { $0 }
+    }
 
     func tptpSequence<T>(data:(PrlcTreeNodeRef)->T) -> NySequence<PrlcTreeNodeRef,T> {
         return children(self[0]) { data($0) }
     }
     
-    var tptpSequence : NySequence<PrlcTreeNodeRef,prlc_tree_node>{
-        return tptpSequence { $0.memory }
+    var tptpSequence : NySequence<PrlcTreeNodeRef,PrlcTreeNodeRef>{
+        return tptpSequence { $0 }
     }
     
     func nodes<T>(data:(PrlcTreeNodeRef) -> T) -> NySequence<PrlcTreeNodeRef,T> {
         return NySequence(first:self[0], step:successor, data:data)
     }
     
-    var nodes: NySequence<PrlcTreeNodeRef,prlc_tree_node> {
-        return nodes { $0.memory }
+    var nodes: NySequence<PrlcTreeNodeRef,PrlcTreeNodeRef> {
+        return nodes { $0 }
     }
 }
 

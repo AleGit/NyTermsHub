@@ -4,6 +4,8 @@
 
 #import "/usr/local/include/yices.h"
 
+#import <sys/sysctl.h>
+
 #import "TptpParser.h"
 #import "MereParser.h"
 #import "calm.h"

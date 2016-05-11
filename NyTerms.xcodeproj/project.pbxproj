@@ -602,17 +602,17 @@
 			children = (
 				51FD00B51C3132F8008C5AD1 /* Auxiliary.swift */,
 				5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */,
+				51E038121C92A596005BFD42 /* Auxiliary+Process.swift */,
 				51FD00B61C3132F8008C5AD1 /* BinarySearchTree.swift */,
+				5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */,
 				516D251E1C3EB26C0075D362 /* Nodal.swift */,
+				512B24D41CDE1B7B006496F3 /* NySequence.swift */,
 				5151BDBF1C3161AF006EFCE0 /* Pair.swift */,
 				514AD8641C6B7D7400652004 /* TailTrie.swift */,
 				51D8476B1C8084DC003EC848 /* TptpPath.swift */,
 				5146F42B1C7B061F00A19EC1 /* TrieClass.swift */,
 				51FD00B71C3132F8008C5AD1 /* TrieStruct.swift */,
 				514AD8671C6B7DF900652004 /* TrieType.swift */,
-				51E038121C92A596005BFD42 /* Auxiliary+Process.swift */,
-				5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */,
-				512B24D41CDE1B7B006496F3 /* NySequence.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";

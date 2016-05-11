@@ -72,6 +72,7 @@ extension Process {
     }
     
     static var platform : String {
+        #if os(OSX)
         var size : size_t = 0
         sysctlbyname("hw.machine", nil, &size, nil, 0)
         
@@ -80,6 +81,9 @@ extension Process {
         sysctlbyname("hw.machine", &machine, &size, nil, 0)
         
         return String.fromCString(machine) ?? "n/a"
+        #else
+        return "n/a"
+        #endif
     }
 
     

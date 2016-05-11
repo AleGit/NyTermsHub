@@ -120,15 +120,6 @@
 		5173B5591CC9F7B800A9ABCE /* SharingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B5581CC9F7B800A9ABCE /* SharingNode.swift */; };
 		5173B55A1CC9F7B800A9ABCE /* SharingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B5581CC9F7B800A9ABCE /* SharingNode.swift */; };
 		5173B55D1CCA081200A9ABCE /* ShareNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B55C1CCA081200A9ABCE /* ShareNodeTests.swift */; };
-		517994841C96BEC900791916 /* MereLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 517994821C96BEC900791916 /* MereLexer.l */; };
-		517994851C96BEC900791916 /* MereLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 517994821C96BEC900791916 /* MereLexer.l */; };
-		517994861C96BEC900791916 /* MereParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 517994831C96BEC900791916 /* MereParser.y */; settings = {COMPILER_FLAGS = "-p mere_"; }; };
-		517994871C96BEC900791916 /* MereParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 517994831C96BEC900791916 /* MereParser.y */; settings = {COMPILER_FLAGS = "-p mere_"; }; };
-		5179948A1C96C63B00791916 /* MereParser.c in Sources */ = {isa = PBXBuildFile; fileRef = 517994891C96C63B00791916 /* MereParser.c */; };
-		5179948B1C96C63B00791916 /* MereParser.c in Sources */ = {isa = PBXBuildFile; fileRef = 517994891C96C63B00791916 /* MereParser.c */; };
-		5179948D1C96C83300791916 /* MereParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5179948C1C96C83300791916 /* MereParser.swift */; };
-		5179948E1C96C83300791916 /* MereParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5179948C1C96C83300791916 /* MereParser.swift */; };
-		517994911C96C94B00791916 /* MereParserBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517994901C96C94B00791916 /* MereParserBasicTests.swift */; };
 		517B23B71CBCD6C90049F871 /* YicesIndexingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */; };
 		517D86381C44F94100930B61 /* DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517D86371C44F94100930B61 /* DescriptionTests.swift */; };
 		517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */; };
@@ -252,7 +243,6 @@
 		512B24D41CDE1B7B006496F3 /* NySequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NySequence.swift; sourceTree = "<group>"; };
 		512EE0D91CE0A75200D528A1 /* YicesMaxTrials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesMaxTrials.swift; sourceTree = "<group>"; };
 		5131E8AA1C920648001782C5 /* Auxiliary+Pretty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Auxiliary+Pretty.swift"; sourceTree = "<group>"; };
-		51327E5C1CCF401100570A94 /* MereMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MereMacros.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		51342AB81B92CA3A0052A72F /* DemoFileParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DemoFileParsing.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51374D3E1CC635F000BD82BF /* Yices+KBOTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Yices+KBOTests.swift"; sourceTree = "<group>"; };
 		513CF7E01B8EF6D20063BA57 /* String+Yices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Yices.swift"; sourceTree = "<group>"; };
@@ -320,12 +310,6 @@
 		516D251E1C3EB26C0075D362 /* Nodal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nodal.swift; sourceTree = "<group>"; };
 		5173B5581CC9F7B800A9ABCE /* SharingNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingNode.swift; sourceTree = "<group>"; };
 		5173B55C1CCA081200A9ABCE /* ShareNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareNodeTests.swift; sourceTree = "<group>"; };
-		517994821C96BEC900791916 /* MereLexer.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = MereLexer.l; sourceTree = "<group>"; };
-		517994831C96BEC900791916 /* MereParser.y */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.yacc; path = MereParser.y; sourceTree = "<group>"; };
-		517994881C96C31900791916 /* MereParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MereParser.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		517994891C96C63B00791916 /* MereParser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = MereParser.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		5179948C1C96C83300791916 /* MereParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MereParser.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		517994901C96C94B00791916 /* MereParserBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MereParserBasicTests.swift; sourceTree = "<group>"; };
 		5179949A1C97001D00791916 /* PUZ021-1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "PUZ021-1.txt"; sourceTree = "<group>"; };
 		517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesIndexingTests.swift; sourceTree = "<group>"; };
 		517B23B81CBD28F70049F871 /* changed yices literals.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "changed yices literals.txt"; sourceTree = "<group>"; };
@@ -514,7 +498,7 @@
 				5173B55B1CCA07FD00A9ABCE /* ShareNode */,
 				514AD8611C6B4CB700652004 /* General */,
 				26EBF5861B99C251006E5FF4 /* MaxCompTests */,
-				5179948F1C96C93000791916 /* MereParser */,
+				5179948F1C96C93000791916 /* PrlcParserTests */,
 				51303EB81B9C3D76003011A9 /* MiscTests */,
 				51B26B751B8DB46500CC59AD /* NyTermsTests-Bridging-Header.h */,
 				51D276621BC5805F005A0213 /* OrderTests.swift */,
@@ -703,12 +687,6 @@
 				515F0EEE1B6B723E00B470B4 /* Bridging-Header.h */,
 				516063251CD1D8780096A3E2 /* calm.c */,
 				516063261CD1D8780096A3E2 /* calm.h */,
-				517994821C96BEC900791916 /* MereLexer.l */,
-				51327E5C1CCF401100570A94 /* MereMacros.h */,
-				517994891C96C63B00791916 /* MereParser.c */,
-				517994881C96C31900791916 /* MereParser.h */,
-				5179948C1C96C83300791916 /* MereParser.swift */,
-				517994831C96BEC900791916 /* MereParser.y */,
 				516094211CD9C0E300B3579D /* prlc.c */,
 				516094221CD9C0E300B3579D /* prlc.h */,
 				516094271CDA095900B3579D /* PrlcLexer.l */,
@@ -740,15 +718,14 @@
 			name = ShareNode;
 			sourceTree = "<group>";
 		};
-		5179948F1C96C93000791916 /* MereParser */ = {
+		5179948F1C96C93000791916 /* PrlcParserTests */ = {
 			isa = PBXGroup;
 			children = (
-				517994901C96C94B00791916 /* MereParserBasicTests.swift */,
 				51E32B911CD1EC8300E1AF1E /* CalmTests.swift */,
 				516094251CD9D06F00B3579D /* PrlcTests.swift */,
 				51EDC9EA1CDC83E100BF311B /* PrlcParserBasicTests.swift */,
 			);
-			name = MereParser;
+			name = PrlcParserTests;
 			sourceTree = "<group>";
 		};
 		51844E191C84814100DCAA32 /* old results */ = {
@@ -1036,13 +1013,10 @@
 				516094241CD9C0E300B3579D /* prlc.c in Sources */,
 				516063281CD1D8780096A3E2 /* calm.c in Sources */,
 				511E95841B8AE7B80093F4E8 /* Rule.swift in Sources */,
-				5179948E1C96C83300791916 /* MereParser.swift in Sources */,
 				512B24D61CDE1B7B006496F3 /* NySequence.swift in Sources */,
-				517994871C96BEC900791916 /* MereParser.y in Sources */,
 				515D462F1C999A7100A7111E /* Node(String).swift in Sources */,
 				516D1A441C32C3A0000E152A /* Node+Trie.swift in Sources */,
 				516094341CDA095900B3579D /* PrlcParser.y in Sources */,
-				5179948B1C96C63B00791916 /* MereParser.c in Sources */,
 				511E95851B8AE7B80093F4E8 /* String+Symbols.swift in Sources */,
 				51C94CBA1B987E70004C3082 /* Empty.swift in Sources */,
 				5116094C1C3993F10090D447 /* Node+Position.swift in Sources */,
@@ -1052,7 +1026,6 @@
 				514E55971CE05D1A00C8B40E /* PrlcTable.swift in Sources */,
 				510811ED1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift in Sources */,
 				516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */,
-				517994851C96BEC900791916 /* MereLexer.l in Sources */,
 				51553EBD1CC7B85C00FF616A /* Yices+LPO.swift in Sources */,
 				51553EC01CC7B9EF00FF616A /* Yices.swift in Sources */,
 				511E95751B8AE4070093F4E8 /* main.swift in Sources */,
@@ -1082,7 +1055,6 @@
 				51E038131C92A596005BFD42 /* Auxiliary+Process.swift in Sources */,
 				5116094B1C3993F10090D447 /* Node+Position.swift in Sources */,
 				51D276601BC57879005A0213 /* Order.swift in Sources */,
-				5179948D1C96C83300791916 /* MereParser.swift in Sources */,
 				5101485C1B90382B00D95B00 /* Node+Properties.swift in Sources */,
 				512977191B677CAA003D3E80 /* AppDelegate.swift in Sources */,
 				5100656E1C897A6800F2A67B /* MingyProver.swift in Sources */,
@@ -1098,19 +1070,16 @@
 				51226E791B6D3AB70077E34D /* TptpInclude.swift in Sources */,
 				51192D1B1B67B059008C03B2 /* Position.swift in Sources */,
 				5160942D1CDA095900B3579D /* PrlcLexer.l in Sources */,
-				517994861C96BEC900791916 /* MereParser.y in Sources */,
 				515F0EF51B6B741500B470B4 /* TptpParser.ym in Sources */,
 				516D1A431C32C3A0000E152A /* Node+Trie.swift in Sources */,
 				515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */,
 				51FD00BC1C3132F8008C5AD1 /* TrieStruct.swift in Sources */,
-				517994841C96BEC900791916 /* MereLexer.l in Sources */,
 				51553EBF1CC7B9EF00FF616A /* Yices.swift in Sources */,
 				513CF7E11B8EF6D20063BA57 /* String+Yices.swift in Sources */,
 				510811EF1C9AA49600E5A439 /* Node(LaTeX).swift in Sources */,
 				515D91BE1B6D2513000EDB3B /* TptpNode.swift in Sources */,
 				515F0F061B6BB0A100B470B4 /* String+Symbols.swift in Sources */,
 				512977371B677E1B003D3E80 /* Node.swift in Sources */,
-				5179948A1C96C63B00791916 /* MereParser.c in Sources */,
 				5163AE6E1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */,
 				5131E8AB1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */,
 				514AD8681C6B7DF900652004 /* TrieType.swift in Sources */,
@@ -1149,7 +1118,6 @@
 				51374D3F1CC635F000BD82BF /* Yices+KBOTests.swift in Sources */,
 				51B883F11B8E3D5B008D7F22 /* names.c in Sources */,
 				51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */,
-				517994911C96C94B00791916 /* MereParserBasicTests.swift in Sources */,
 				51B26B701B8DA75D00CC59AD /* YicesBasicTests.swift in Sources */,
 				51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */,
 				5173B55D1CCA081200A9ABCE /* ShareNodeTests.swift in Sources */,

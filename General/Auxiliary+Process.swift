@@ -55,9 +55,11 @@ extension Process {
         
         return "\(info.processName) @ " +
             "\(names.first! ?? info.hostName): " +
+            "\(platform), " +
             "\(info.processorCount) cores, " +
             "\(info.physicalMemory.prettyByteDescription), " +
-            "\(self.speed.prettyHzDescription)."
+            "\(self.cpuFrequency.prettyHzDescription)" +
+        " (mark:\(benchmark))"
     }
     #endif
     
@@ -69,46 +71,73 @@ extension Process {
         #endif
     }
     
-    static var speed : UInt64 {
-        var size : size_t = 8
-        var value : UInt64 = 0
+    static var platform : String {
+        var size : size_t = 0
+        sysctlbyname("hw.machine", nil, &size, nil, 0)
         
-        let (a,b) = measure {
-            _ -> UInt64 in
+        var machine = [CChar](count: Int(size), repeatedValue: 0)
+        
+        sysctlbyname("hw.machine", &machine, &size, nil, 0)
+        
+        return String.fromCString(machine) ?? "n/a"
+    }
+
+    
+    static var cpuFrequency : UInt64 {
+        return sysctl("hw.cpufrequency")
+    }
+    
+    /// higher is better
+    static var benchmark : Double = {
+        let size = 1_000_000
+        let (_,runtime) = measure {
+            let v1 = CFAbsoluteTimeGetCurrent()
             
-            // let result = sysctlbyname("hw.cpufrequency_max", nil, &size, nil, 0);
-            var code = sysctlbyname("hw.cpufrequency", nil, &size, nil, 0);
             
-            assert(code == 0, "\(code) \(value) \(size)")
-            assert(size == 8, "\(code) \(value) \(size)")
+            let sum = (1...size).map { _ in v1 }.reduce(0.0) { $0+$1 }
             
-            code = sysctlbyname("hw.cpufrequency", &value, &size, nil, 0);
-            assert(code == 0, "\(code) \(value) \(size)")
-            assert(size == sizeof(UInt64), "\(code) \(value) \(size)")
-            
-            return value
+            let v2 = sum / Double(size)
+            assert(v1 / 1.01 < v2)
+            assert(v1 * 1.01 > v2)
         }
+        return Double(size) / runtime / 2_345_678.901
         
-        print("speed:\(a.prettyHzDescription), \(b.prettyTimeIntervalDescription)")
+        // goal:iMac24-7 (none) ~ 0.3
+        // iMac24-7 (optimized) is about
+        //
+        // MacMini12 is about
+        // MacMini14 is about
+    }()
+    
+
+    
+    private static func sysctl<T where T:Defaultable>(name:String) -> T {
+        var size : size_t = 0
+        var t : T = T()
         
-        assert(b < 0.009)
+        var code = sysctlbyname(name, nil, &size, nil, 0);
         
-        return a
+        assert(code == 0 && size > 0,"\(#function)(\(name) did not work. code:\(code), size:\(size)")
+
+        code = sysctlbyname(name, &t, &size, nil, 0);
+        
+        assert(code == 0 && size > 0,"\(#function)(\(name) did not work. code:\(code), size:\(size)")
+        
+        return t
         
     }
-    
-    static var relativeSpeed : Double {
-        return Double(self.speed) / 3_500_000_000.0
-        
-        
-        
-    }
-    
-    
-    
-    
-    
-    
     
     
 }
+
+protocol Defaultable {
+    init()
+}
+
+extension String : Defaultable { }
+
+extension UInt64 : Defaultable { }
+
+extension Double : Defaultable { }
+
+

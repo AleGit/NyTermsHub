@@ -47,12 +47,14 @@ class PrlcParserBasicTests: XCTestCase {
     
     func testParsing() {
         
-        let dividend = Process.relativeSpeed
+        let dividend = Process.benchmark
+        
+        XCTAssertTrue(dividend < 0.6)
         
         print(Process.info, dividend)
         
         for (name, timeLimit, expectedTreeSize, expectedInputs, expectedIncludes) in [
-            ("PUZ001-1",    0.002   ,106    , 12,0), // 12
+            ("PUZ001-1",    0.006   ,106    , 12,0), // 12
             ("PUZ051-1",    0.007   ,110    ,  3,1),  // 43 (1 inlc)
             
             ("SYN000-2",    0.003   ,145    , 18,1),          // 19 (1 incl)

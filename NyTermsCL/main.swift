@@ -20,9 +20,11 @@ defer {
     print(line,NSDate(),line)
 }
 
+exit(0)
+
 DemoFileParsing.demoPrlcParseHWV134()
 
-exit(0)
+
 
 DemoFileParsing.parseConvertHWV134()
 

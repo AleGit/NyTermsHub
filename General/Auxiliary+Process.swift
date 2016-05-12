@@ -105,8 +105,10 @@ extension Process {
             assert(v1 / 1.01 < v2)
             assert(v1 * 1.01 > v2)
         }
-        return Double(size) / runtime / 2_345_678.901
+        print("benchmark: \(runtime)")
+        return runtime
         
+        // return Double(size) / runtime / 2_345_678.901
         // goal:iMac24-7 (none) ~ 0.3
         // iMac24-7 (optimized) is about
         //

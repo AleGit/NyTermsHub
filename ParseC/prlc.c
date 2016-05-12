@@ -284,14 +284,18 @@ prlc_tree_node *prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last) 
     assert(first != NULL);
     assert(last != NULL);
     if (first->lastSibling != NULL) {
+        // shortcut from first to last element of list
         prlcNodeAppendNode(first->lastSibling, last);
         first->lastSibling = last;
+        // NOTE: lastSibling == sibling for intermediate nodes
     }
     else if (first->sibling == NULL) {
+        // the first is the last element
         first->sibling = last;
         first->lastSibling = last;
     }
     else {
+        // follow the path
         prlcNodeAppendNode(first->sibling, last);
     }
     return first;
@@ -302,7 +306,7 @@ prlc_tree_node *prlcNodeAppendChild(prlc_tree_node* parent, prlc_tree_node *last
     assert(last != NULL);
     
     if (parent->child == NULL) {
-        assert(false);
+        // parent was childless so far
         parent->child = last;
     }
     else {
@@ -313,6 +317,8 @@ prlc_tree_node *prlcNodeAppendChild(prlc_tree_node* parent, prlc_tree_node *last
 
 
 void prlcNodeSetChild(prlc_tree_node* parent, prlc_tree_node* child) {
+    assert(false);
+    
     assert(parent != NULL);
     assert(parent->child == NULL);
     assert(child != NULL);

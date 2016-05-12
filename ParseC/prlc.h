@@ -102,7 +102,8 @@ prlc_tree_node*  prlcSetPredicate(prlc_tree_node *t_node);
 
 prlc_tree_node* prlcNodeAppendNode(prlc_tree_node *first, prlc_tree_node *last);
 prlc_tree_node *prlcNodeAppendChild(prlc_tree_node* parent, prlc_tree_node *last);
-void prlcNodeSetChild(PrlcTreeNodeRef parent, PrlcTreeNodeRef child);
+
+void prlcNodeSetChild(PrlcTreeNodeRef parent, PrlcTreeNodeRef child) __attribute__ ((deprecated));;
 
 void* prlcLabel(const char* const label);
 

@@ -163,6 +163,30 @@ extension PrlcTable {
 //        }
 //    }
     
+    
+    
+    private func nextNode(node:PrlcTreeNodeRef?, predicate:(PrlcTreeNodeRef)->Bool) -> PrlcTreeNodeRef? {
+        guard var input = node where input != nil else { return nil }
+        
+        while input.memory.sibling != nil {
+            if predicate(input.memory.sibling) { return input.memory.sibling }
+            
+            input = input.memory.sibling
+        }
+        return nil
+        
+    }
+    
+    private func firstNode(predicate:(PrlcTreeNodeRef)->Bool) -> PrlcTreeNodeRef? {
+        guard let root = self[0] else { return nil }
+        assert(root.memory.type == PRLC_FILE)
+        guard root.memory.child != nil else { return nil }
+        if predicate(root.memory.child) { return root.memory.child }
+        return nextNode(root.memory.child, predicate:predicate)
+        
+        
+    }
+    
     private func nextTptpInclude (tptpInput: PrlcTreeNodeRef?) -> PrlcTreeNodeRef? {
         guard var input = tptpInput else { return nil }
         
@@ -181,6 +205,8 @@ extension PrlcTable {
         
         return nil
     }
+    
+    
 
     private var firstTptpInclude : PrlcTreeNodeRef? {
         guard let root = self[0] else { return nil }
@@ -205,6 +231,17 @@ extension PrlcTable {
 }
 
 extension PrlcTable {
+    
+    func cnfs<T>(data:(PrlcTreeNodeRef)->T) -> NySequence<PrlcTreeNodeRef,T> {
+        let predicate = { (ref:PrlcTreeNodeRef) -> Bool in ref.memory.type == PRLC_CNF }
+        return NySequence(first:firstNode(predicate), step:{
+            self.nextNode($0, predicate:predicate)
+            }, data:data)
+    }
+    
+    var cnfs : NySequence<PrlcTreeNodeRef,PrlcTreeNodeRef> {
+        return cnfs { $0 }
+    }
     
     func includes<T>(data:(PrlcTreeNodeRef)->T)  -> NySequence<PrlcTreeNodeRef,T> {
         return NySequence(first:firstTptpInclude, step:nextTptpInclude, data:data)

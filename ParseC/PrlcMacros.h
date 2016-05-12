@@ -18,7 +18,7 @@
 #define CREATE_CNF(name, role, root, annotations)       prlcStoreNodeAnnotated(PS, PRLC_CNF, name, role, root, annotations)
 #define CREATE_INCLUDE(fileName, nameList)              prlcStoreNodeInclude(PS, fileName, nameList)
 
-#define TPTP_INPUT(input)                               input; prlcNodeSetChild(PR, input)
+#define TPTP_INPUT(input)                               input; prlcNodeAppendChild(PR, input)
 #define TPTP_INPUT_APPEND(sequence, input)              prlcNodeAppendNode(sequence, input)
 
 #define CREATE_Quantified(q, vars, ufrm)                   prlcStoreNodeQuantified(PS, q, vars, ufrm)

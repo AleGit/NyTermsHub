@@ -94,7 +94,7 @@ extension Process {
     
     /// higher is better
     static var benchmark : Double = {
-        let size = 1_000_000
+        let size = 1_400_000
         let (_,runtime) = measure {
             let v1 = CFAbsoluteTimeGetCurrent()
             

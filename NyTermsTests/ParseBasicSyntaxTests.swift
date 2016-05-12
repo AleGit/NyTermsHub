@@ -15,8 +15,8 @@ class ParseBasicSyntaxTests: XCTestCase {
         let ((result,tptpFormulae,tptpIncludes),runtime) = measure {
             parse(path:"LCL129-1".p!)
         }
-        XCTAssertTrue(runtime <= expected,"runtime \(runtime.prettyTimeIntervalDescription) ≰ \(expected.prettyTimeIntervalDescription)")
-        print((runtime,runtime/Process.benchmark), (expected,expected/Process.benchmark), Process.benchmark)
+        XCTAssertTrue(runtime <= expected * Process.benchmark,"runtime \(runtime.prettyTimeIntervalDescription) ≰ \(expected.prettyTimeIntervalDescription),\((expected*Process.benchmark).prettyTimeIntervalDescription),")
+        print(runtime, expected, expected*Process.benchmark, Process.benchmark)
         
         
         XCTAssertEqual(1, result.count)

@@ -94,11 +94,11 @@ struct DemoFileParsing {
         let path = "HWV134-1".p!
         
         let (result,time) = measure {
-            mereParse(path)
+            prlcParse(path)
         }
         
-        print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeSize)
-        assert(29_953_326 == result.1?.treeSize)
+        print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeStoreSize)
+        assert(29_953_326 == result.1?.treeStoreSize)
         assert(time < 40,"\(time)")
         // 29953326
         

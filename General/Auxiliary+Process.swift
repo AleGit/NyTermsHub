@@ -11,9 +11,10 @@ import Foundation
 extension Process {
     
     private static func argumentValueOf(key:String) -> String? {
-        guard let valueIndex = Process.arguments.indexOf(key)?.successor()
-            where valueIndex < Process.arguments.count
-            else {
+        guard let valueIndex = Process.arguments.indexOf(key)?.successor() else {
+            return nil
+        }
+        guard valueIndex < Process.arguments.count else {
                 assert(false, "unbalanced number of arguments \(Process.arguments.count)")
                 return nil
         }

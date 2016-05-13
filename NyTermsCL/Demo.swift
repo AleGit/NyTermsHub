@@ -29,8 +29,23 @@ struct Demo {
         print("\(yiClauses.count) yices clauses constructed in \(r1.prettyTimeIntervalDescription).")
         
         for (index,yiClause)in yiClauses.enumerate() {
-            print(index,yiClause.0)
-            print(index,yiClause.1)
+            print(index, yiClause.1, yiClause.0)
+            
+            assert( yices_assert_formula(ctx,yiClause.1.0) >= 0 )
+            
         }
+        
+        let (status, r2) = measure { yices_check_context(ctx,nil) }
+        print("yices check context in \(r2.prettyTimeIntervalDescription).")
+        assert(status == STATUS_SAT)
+        
+        let mdl = yices_get_model(ctx,1)
+        defer {
+            yices_free_model(mdl)
+        }
+        
+        
+        
+        
     }
 }

@@ -9,11 +9,6 @@
 import Foundation
 
 
-
-private func roots(formulae:[TptpFormula]) -> [TptpNode] {
-    return formulae.map { $0.root }
-}
-
 private func literals(formulae:[TptpFormula]) -> [TptpNode] {
     return formulae.flatMap {
         $0.root.nodes ?? [TptpNode]()

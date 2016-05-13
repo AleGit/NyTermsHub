@@ -90,22 +90,7 @@ struct DemoFileParsing {
         
     }
     
-    static func demoMereParseHWV134() {
-        let path = "HWV134-1".p!
-        
-        let (result,time) = measure {
-            prlcParse(path)
-        }
-        
-        print("\(#function) time:",time.prettyTimeIntervalDescription, result.1?.treeStoreSize)
-        assert(29_953_326 == result.1?.treeStoreSize)
-        assert(time < 40,"\(time)")
-        // 29953326
-        
-        assert(0 == result.0);
-        
-        
-    }
+
     
     static func demo() {
         print(self.self,"\(#function)\n")
@@ -119,6 +104,25 @@ struct DemoFileParsing {
             
             print(name,
                   formulae.count,
+                  "formulae read in",
+                  duration.prettyTimeIntervalDescription,
+                  "from",
+                  path)
+        }
+    }
+    
+    static func prlcDemo() {
+        print(self.self,"\(#function)\n")
+        
+        for name in [ "LCL129-1", "SYN000-2", "PUZ051-1", "HWV074-1", "HWV105-1", "HWV062+1","HWV134+1", "HWV134-1" ] {
+            let path = name.p!  // file must be accessible
+            
+            let ((code,table), duration) = measure {
+                prlcParse(path)
+            }
+            
+            print(name,code,
+                  table?.tptpSequence.count { _ in true },
                   "formulae read in",
                   duration.prettyTimeIntervalDescription,
                   "from",

@@ -388,6 +388,8 @@
 		51FD00C11C3133E1008C5AD1 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Clause.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
+		D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrlcSpeed.txt; sourceTree = "<group>"; };
+		D2B588AC1CE5BEEC0086E780 /* mml14FastestSearch.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mml14FastestSearch.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -668,6 +670,7 @@
 				51249BEA1C85FB7100223CE2 /* mmFastestSearchBug.txt */,
 				51431DF61C85780C0053BB18 /* statistics.txt */,
 				51E28CEF1C81E28100404842 /* mmFastestSearch.txt */,
+				D2B588AC1CE5BEEC0086E780 /* mml14FastestSearch.txt */,
 				51E28CEE1C81E28100404842 /* iMacFastestSearch.txt */,
 				51E5F9AD1C8700A300040B19 /* testTriePUZ001.txt */,
 				5154FF191C88273F00689C25 /* puzzles.txt */,
@@ -676,6 +679,7 @@
 				515F2B451C918016004F93E9 /* sizeDemo.txt */,
 				5179949A1C97001D00791916 /* PUZ021-1.txt */,
 				517B23B81CBD28F70049F871 /* changed yices literals.txt */,
+				D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */,
 			);
 			name = results;
 			path = ../Docs;

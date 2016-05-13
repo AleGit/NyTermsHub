@@ -19,3 +19,46 @@ struct Infos {
         "HWV134-1" : (2332428, 6570884, 0)
     ]
 }
+
+extension Infos {
+    static func demo() {
+        for (name,_) in Infos.files {
+            let path = name.p!
+            let (clauses,parsetime) = measure { TptpNode.roots(path) }
+            print("\(path) parsed in \(parsetime.prettyTimeIntervalDescription).")
+            let (yicesClauses,maptime) = measure { clauses.map {
+                (clause) -> term_t in
+                let (yc, yls, ylbs) = Yices.clause(clause)
+                
+                let yicesLiteralsSet = Set(yls)
+                let yicesLiteralsBeforeSet = Set(ylbs)
+                
+                //            if yicesLiterals.elementCounts != yicesLiteralsBefore.elementCounts {
+                //                assert(yicesLiteralsSet.isSupersetOf(yicesLiteralsBeforeSet))
+                //                print("\(yicesLiterals) <- \(yicesLiteralsBefore)")
+                //            }
+                let added = yicesLiteralsSet.subtract(yicesLiteralsBeforeSet    )
+                if added.count > 0 {
+                    print("added:",added,"\(yls) <- \(ylbs)")
+                }
+                let removed = yicesLiteralsBeforeSet.subtract(yicesLiteralsSet)
+                if removed.count > 0 {
+                    let removedLiterals = ylbs.enumerate().filter {
+                        removed.contains($0.1)
+                        }.map {
+                            clause.nodes![$0.0]
+                    }
+                    
+                    print("removed:",removed,"* \(yls) <- \(ylbs)", removedLiterals)
+                }
+                
+                return yc
+                }
+            }
+            print("\(yicesClauses.count) clauses mapped in \(maptime.prettyTimeIntervalDescription).")
+        }
+        
+    }
+}
+
+

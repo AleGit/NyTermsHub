@@ -1,0 +1,81 @@
+DemoFileParsing demo()
+
+LCL129-1 3 formulae read in 540µs 972ns from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+/Users/Shared/TPTP/Problems/SYN/SYN000-2.p tptpPathTo(file: Axioms/SYN000-0.ax ) -> /Users/Shared/TPTP/Axioms/SYN000-0.ax
+SYN000-2 19 formulae read in 972µs 986ns from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p tptpPathTo(file: Axioms/PUZ004-0.ax ) -> /Users/Shared/TPTP/Axioms/PUZ004-0.ax
+PUZ051-1 43 formulae read in 1ms 947µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+HWV074-1 2581 formulae read in 145ms 0µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+HWV105-1 20900 formulae read in 193ms 555µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+HWV062+1 2 formulae read in 248ms 9µs from /Users/Shared/TPTP/Problems/HWV/HWV062+1.p
+HWV134+1 128975 formulae read in 6s 826ms from /Users/Shared/TPTP/Problems/HWV/HWV134+1.p
+HWV134-1 2332428 formulae read in 24s 933ms from /Users/Shared/TPTP/Problems/HWV/HWV134-1.p
+
+========================= 2016-05-13 07:29:59 +0000 =========================
+benchmark: 0.00721299648284912
+NyTermsCL @ mml14.local: x86_64, 4 cores, 16 GiB, 3.0 GHz (mark:0.00721299648284912)
+yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+Key '-tptp_root' is not set or its value was missing.
+Key 'TPTP_ROOT' is not set or its value was missing.
+Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly.
+tptp root path: /Users/Shared/TPTP
+========================= ========================= =========================
+DemoFileParsing prlcDemo()
+
+prlcParse('/Users/Shared/TPTP/Problems/LCL/LCL129-1.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/LCL/LCL129-1.p') $defer() file closed.
+LCL129-1 0 Optional(3) formulae read in 578µs 46ns from /Users/Shared/TPTP/Problems/LCL/LCL129-1.p
+deinit '/Users/Shared/TPTP/Problems/LCL/LCL129-1.p'
+symbols:    186 @ 8 %
+prefixes:   145 @ 7 %
+term nodes: 53 @ 2 %
+prlcParse('/Users/Shared/TPTP/Problems/SYN/SYN000-2.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/SYN/SYN000-2.p') $defer() file closed.
+SYN000-2 0 Optional(18) formulae read in 742µs 972ns from /Users/Shared/TPTP/Problems/SYN/SYN000-2.p
+deinit '/Users/Shared/TPTP/Problems/SYN/SYN000-2.p'
+symbols:    776 @ 25 %
+prefixes:   488 @ 16 %
+term nodes: 145 @ 5 %
+prlcParse('/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p') $defer() file closed.
+PUZ051-1 0 Optional(3) formulae read in 1ms 753µs from /Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p
+deinit '/Users/Shared/TPTP/Problems/PUZ/PUZ051-1.p'
+symbols:    243 @ 12 %
+prefixes:   172 @ 9 %
+term nodes: 110 @ 6 %
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV074-1.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV074-1.p') $defer() file closed.
+HWV074-1 0 Optional(2581) formulae read in 29ms 622µs from /Users/Shared/TPTP/Problems/HWV/HWV074-1.p
+deinit '/Users/Shared/TPTP/Problems/HWV/HWV074-1.p'
+symbols:    31297 @ 3 %
+prefixes:   6304 @ 1 %
+term nodes: 241278 @ 24 %
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV105-1.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV105-1.p') $defer() file closed.
+HWV105-1 0 Optional(20900) formulae read in 65ms 6µs from /Users/Shared/TPTP/Problems/HWV/HWV105-1.p
+deinit '/Users/Shared/TPTP/Problems/HWV/HWV105-1.p'
+symbols:    183205 @ 9 %
+prefixes:   32070 @ 2 %
+term nodes: 236051 @ 11 %
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV062+1.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV062+1.p') $defer() file closed.
+HWV062+1 0 Optional(2) formulae read in 58ms 700µs from /Users/Shared/TPTP/Problems/HWV/HWV062+1.p
+deinit '/Users/Shared/TPTP/Problems/HWV/HWV062+1.p'
+symbols:    106507 @ 5 %
+prefixes:   16877 @ 1 %
+term nodes: 293918 @ 14 %
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV134+1.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV134+1.p') $defer() file closed.
+HWV134+1 0 Optional(128975) formulae read in 1s 546ms from /Users/Shared/TPTP/Problems/HWV/HWV134+1.p
+deinit '/Users/Shared/TPTP/Problems/HWV/HWV134+1.p'
+symbols:    5218458 @ 6 %
+prefixes:   232350 @ 0 %
+term nodes: 7248007 @ 8 %
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV134-1.p') $defer() store=nil.
+prlcParse('/Users/Shared/TPTP/Problems/HWV/HWV134-1.p') $defer() file closed.
+HWV134-1 0 Optional(2332428) formulae read in 7s 239ms from /Users/Shared/TPTP/Problems/HWV/HWV134-1.p
+deinit '/Users/Shared/TPTP/Problems/HWV/HWV134-1.p'
+symbols:    25404639 @ 9 %
+prefixes:   3285581 @ 1 %
+term nodes: 29953326 @ 11 %
+Program ended with exit code: 0

@@ -20,15 +20,15 @@ defer {
     print(line,NSDate(),line)
 }
 
-let files = Infos.files.filter {
-    // $0.1.0 == 17783
-    // $0.0.contains("134")
-    !$0.0.isEmpty
-    }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
-
-print(files)
-
-DemoComplementaries.demo(files, searches: [fastestSearch])
+//let files = Infos.files.filter {
+//    // $0.1.0 == 17783
+//    // $0.0.contains("134")
+//    !$0.0.isEmpty
+//    }.sort { $0.1.0 < $1.1.1 }.map { $0.0 }
+//
+//print(files)
+//
+//DemoComplementaries.demo(files, searches: [fastestSearch])
 
 
 
@@ -48,6 +48,8 @@ DemoComplementaries.demo(files, searches: [fastestSearch])
 
 
 // Proofing.demo()
+
+Demo.demo()
 
 
 

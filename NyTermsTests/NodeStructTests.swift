@@ -15,6 +15,10 @@ struct NodeStruct : Node {
     
     static let equalsSign = "="
     static let starSign = "*"
+    
+    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
+        return false
+    }
 }
 
 extension NodeStruct : StringLiteralConvertible {

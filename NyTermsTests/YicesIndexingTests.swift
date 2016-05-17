@@ -18,17 +18,9 @@ private let e = "\(fgxy)=\(ghzx)"
 private let ne = "\(fgxy)!=\(ghzx)"
 
 
-class YicesIndexingTests: XCTestCase {
+class YicesIndexingTests: YicesTestCase {
     
-    override func setUp() {
-        super.setUp()
-        yices_init()
-    }
-    
-    override func tearDown() {
-        yices_exit()
-        super.tearDown()
-    }
+
     
     func testLiterals() {
         let literals = [

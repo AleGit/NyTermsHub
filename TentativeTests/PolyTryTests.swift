@@ -10,19 +10,11 @@ import XCTest
 @testable
 import NyTerms
 
-class PolyTryTests: XCTestCase {
+class PolyTryTests: YicesTestCase {
     
     
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
+
     
     private func poly<T:Node where T.Symbol == String>(t:T) -> String {
         guard let nodes = t.nodes else { return t.symbol } // variable
@@ -105,11 +97,7 @@ class PolyTryTests: XCTestCase {
     }
     
     func testPolyYices() {
-        yices_init()    // global initialization
-        defer {
-            yices_exit()    // global cleanup
-        }
-        
+
         let yices_int = Yices.int_tau
         
         let x = yices_new_uninterpreted_term(yices_int)
@@ -184,10 +172,6 @@ class PolyTryTests: XCTestCase {
     
     func test_HW_2_1_d_yices() {
         
-        yices_init()    // global initialization
-        defer {
-            yices_exit()    // global cleanup
-        }
 
         let t = "plus(mult(X,Y),xor(Y,mult(X,Z)))" as TestNode
         XCTAssertTrue(t.isTerm)

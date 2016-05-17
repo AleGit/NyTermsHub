@@ -70,7 +70,7 @@ final class TptpNode: NSObject, Node {
             assert(quadruple.category == category)
             assert(quadruple.notation == notation)
             
-            assert(quadruple.arity.contains(arity))
+            assert(quadruple.arity.contains(arity),"\(self.symbol), \(quadruple), \(arity)")
             
             if TptpNode.symbols[self.symbol] == nil {
                 TptpNode.symbols[self.symbol] = quadruple

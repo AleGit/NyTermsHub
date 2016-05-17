@@ -9,17 +9,7 @@
 import XCTest
 @testable import NyTerms
 
-class YicesLPOTests: XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-        yices_init()
-    }
-    
-    override func tearDown() {
-        yices_exit()
-        super.tearDown()
-    }
+class YicesLPOTests: YicesTestCase {
     
     func testE435() {
         let ctx = yices_new_context(nil)

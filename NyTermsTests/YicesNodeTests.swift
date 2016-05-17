@@ -9,16 +9,7 @@
 import XCTest
 @testable import NyTerms
 
-class YicesNodeTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        yices_init()
-    }
-    
-    override func tearDown() {
-        yices_exit()
-        super.tearDown()
-    }
+class YicesNodeTests: YicesTestCase {
     
     func testTerms() {
         let ctx = yices_new_context(nil)

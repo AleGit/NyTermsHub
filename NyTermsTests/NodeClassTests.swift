@@ -17,6 +17,10 @@ final class NodeClass : Node {
         self.symbol = symbol
         self.nodes = nodes
     }
+    
+    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
+        return false
+    }
 }
 
 extension NodeClass {

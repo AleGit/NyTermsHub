@@ -10,7 +10,7 @@ import XCTest
 @testable
 import NyTerms
 
-class YicesSatTrials : XCTestCase {
+class YicesSatTrials : YicesTestCase {
     private var free_tau : type_t = NULL_TYPE           // i.e. not a type
     private var bool_tau : type_t = NULL_TYPE           // i.e. not a type
     private var general_constant : term_t = NULL_TERM   // i.e. not a term
@@ -18,7 +18,6 @@ class YicesSatTrials : XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        yices_init()    // global initialization
         
         // uni_type = yices_new_uninterpreted_type()
         free_tau = Yices.int_tau
@@ -26,12 +25,6 @@ class YicesSatTrials : XCTestCase {
         
         general_constant = yices_new_uninterpreted_term(free_tau)
         yices_set_term_name(general_constant, "∴")
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        yices_exit()
-        super.tearDown()
     }
     
     /// test creates

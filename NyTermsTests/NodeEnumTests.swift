@@ -49,6 +49,10 @@ enum NodeEnum : Node {
             self = Function(symbol: symbol, nodes: ts)
         }
     }
+    
+    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
+        return false
+    }
 }
 
 extension NodeEnum {

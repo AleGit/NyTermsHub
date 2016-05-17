@@ -181,6 +181,7 @@
 		51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64051CBBB71600AA26B5 /* YicesNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */; };
 		D24D5D151CE5DB7200E07E8E /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D5D141CE5DB7200E07E8E /* Demo.swift */; };
+		D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286232E1CEB711000E42070 /* YicesTestCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -391,6 +392,7 @@
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
+		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
 		D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrlcSpeed.txt; sourceTree = "<group>"; };
 		D2B588AC1CE5BEEC0086E780 /* mml14FastestSearch.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mml14FastestSearch.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -814,6 +816,7 @@
 				517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */,
 				51374D3E1CC635F000BD82BF /* Yices+KBOTests.swift */,
 				51553EB91CC79AF100FF616A /* Yices+LPOTests.swift */,
+				D286232E1CEB711000E42070 /* YicesTestCase.swift */,
 			);
 			name = Yices;
 			sourceTree = "<group>";
@@ -1153,6 +1156,7 @@
 				265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */,
 				517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */,
 				5103EB091C6A27D60079E0A0 /* ParsePerformanceTests.swift in Sources */,
+				D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */,
 				514AD8631C6B4CDD00652004 /* BasicTailTrieTests.swift in Sources */,
 				516094261CD9D06F00B3579D /* PrlcTests.swift in Sources */,
 				51D8476A1C8069FB003EC848 /* TptpPathTests.swift in Sources */,

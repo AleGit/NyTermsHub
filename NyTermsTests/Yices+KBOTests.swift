@@ -9,17 +9,13 @@
 import XCTest
 @testable import NyTerms
 
-class YicesKBOTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        yices_init()
-    }
+
+class YicesKBOTests: YicesTestCase {
+
+
     
-    override func tearDown() {
-        yices_exit()
-        super.tearDown()
-    }
+   
     
     func printValues(ctx: COpaquePointer, terms: [term_t])  {
         XCTAssertEqual(STATUS_SAT, yices_check_context(ctx, nil))

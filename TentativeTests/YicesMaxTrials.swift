@@ -9,15 +9,13 @@
 import XCTest
 @testable import NyTerms
 
-class YicesMaxTrials: XCTestCase {
+class YicesMaxTrials: YicesTestCase {
 
     func testMaxXsmallerAsFive() {
-        yices_init()
+
         let ctx = yices_new_context(nil)
         defer {
-            yices_free_context(ctx)
-            yices_exit()
-        }
+            yices_free_context(ctx)        }
         
         let x = Yices.typedSymbol("x", term_tau:Yices.int_tau)
         let y = Yices.typedSymbol("y", term_tau:Yices.int_tau)

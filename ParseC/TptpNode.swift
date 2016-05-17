@@ -72,6 +72,9 @@ final class TptpNode: NSObject, Node {
             
             assert(quadruple.arity.contains(arity))
             
+            if TptpNode.symbols[self.symbol] == nil {
+                TptpNode.symbols[self.symbol] = quadruple
+            }
             
             
             return quadruple.type==type
@@ -89,17 +92,15 @@ final class TptpNode: NSObject, Node {
     }
     
     var symbolQuadruple : () -> SymbolQuadruple? {
-//        return {
-//            if let quadruple = TptpNode.defaultQuadruple(self.symbol) {
-//                assert(TptpNode.symbols[self.symbol] == nil )
-//                return quadruple
-//            }
-//            else {
-//                return TptpNode.symbols[self.symbol] // could be nil
-//            }
-//        }
-        
-        return { TptpNode.symbols[self.symbol] }
+        return {
+            if let quadruple = TptpNode.defaultQuadruple(self.symbol) {
+                // assert(TptpNode.symbols[self.symbol] == nil )
+                return quadruple
+            }
+            else {
+                return TptpNode.symbols[self.symbol] // could be nil
+            }
+        }
     }
 }
 

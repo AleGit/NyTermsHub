@@ -10,12 +10,18 @@ import Foundation
 
 extension Yices {
     
+    typealias Triple = (
+        yicesClause: type_t,
+        yicesLiterals: [type_t],
+        yicesLiteralsBefore: [type_t]
+    )
+    
     /// Return a yices clause and yices literals from a node clause.
     /// The children of `yicesClause` are often different from `yicesLiterals`.
-    static func clause<N:Node>(clause:N) -> (
+    static func clause<N:Node>(clause:N) -> Triple /* (
         yicesClause: term_t,
         yicesLiterals:[type_t],
-        yicesLiteralsBefore:[type_t]) {
+        yicesLiteralsBefore:[type_t]) */ {
         
             // assert(clause.isClause,"'\(#function)(\(clause))' Argument must be a clause, but it is not.")
             
@@ -57,10 +63,10 @@ extension Yices {
     /// * `p ≡ [ p, p ]`
     /// * `p ≡ [ ⊥ ~= ⊥, p ]`
     /// * `[p,q,q,q,q] ≡ [ p, q, ⊥ ~= ⊥, p,q ]`
-    static func clause<N:Node>(literals:[N]) -> (
+    static func clause<N:Node>(literals:[N]) -> Triple /* (
         yicesClause: type_t,
         yicesLiterals:[type_t],
-        yicesLiteralsBefore:[type_t]) {
+        yicesLiteralsBefore:[type_t]) */ {
             
             let yicesLiteralsBefore = literals.map { self.literal($0) }
             var yicesLiterals = yicesLiteralsBefore
@@ -104,14 +110,14 @@ extension Yices {
             
         case .Inequation:
             assert(nodes.count == 2, "An inequation must have exactly two children.")
-            // literal.register(.Inequation, category: .Equational, notation:.Infix, arity:.Fixed(2))
+            literal.register(.Inequation, category: .Equational, notation:.Infix, arity:.Fixed(2))
             
             let args = nodes.map { Yices.term($0) }
             return yices_neq(args.first!, args.last!)
             
         case .Equation:
             assert(nodes.count == 2, "An equation must have exactly two children.")
-            // literal.register(.Equation, category: .Equational, notation:.Infix, arity:.Fixed(2))
+            literal.register(.Equation, category: .Equational, notation:.Infix, arity:.Fixed(2))
             let args = nodes.map { Yices.term($0) }
             return yices_eq(args.first!, args.last!)
             

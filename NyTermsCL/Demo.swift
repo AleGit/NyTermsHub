@@ -9,50 +9,44 @@
 import Foundation
 
 
+typealias YicesClause = (node:TptpNode,selected:Int,triple:Yices.Triple)
+
 struct Demo {
-    static func demo() {
-        let file = "PUZ001-2".p!
-        // let file = "HWV124-1".p!
-        // let file = "HWV134-1".p!
-        print(file)
-        
-        
-        // MARK: scan and parse
+    static func parse(file:TptpPath) -> [TptpNode] {
         let (clauses,parseTime) = measure { TptpNode.roots(file) }
         print("\(clauses.count) clauses parsed in \(parseTime.prettyTimeIntervalDescription).")
-        
-        
-        // MARK: construct
-        let ctx = yices_new_context(nil)
-        defer { yices_free_context(ctx) }
-        
-        var (yiClauses, clauseTime) = measure {
-            clauses.map { ($0, Yices.clause($0.nodes!)) }
+        return clauses
+    }
+    
+    static func construct(clauses:[TptpNode]) -> [YicesClause] {
+        let (yiClauses, clauseTime) = measure {
+            clauses.map { (node:$0, selected:-1,triple:Yices.clause($0.nodes!)) }
         }
         print("\(yiClauses.count) yices clauses constructed in \(clauseTime.prettyTimeIntervalDescription).")
-        
-        
+        return yiClauses
+    }
+    
+    static func axiomize(inout yiClauses:[YicesClause], functors:[(String, SymbolQuadruple)]) {
+        let count = yiClauses.count
         
         let (_,axiomTime) = measure {
             
-            
-            
- 
-            // MARK: handle equality
             let reflexivity = TptpNode(connective:"|",nodes: ["X=X"])
             let symmetry = "X!=Y | Y=X" as TptpNode
             let transitivity = "X!=Y | Y!=Z | X=Z" as TptpNode
             
-            yiClauses.append((reflexivity,Yices.clause(reflexivity)))
-            yiClauses.append((symmetry,Yices.clause(symmetry)))
-            yiClauses.append((transitivity,Yices.clause(transitivity)))
+            yiClauses.append((reflexivity,-1,Yices.clause(reflexivity)))
+            yiClauses.append((symmetry,-1,Yices.clause(symmetry)))
+            yiClauses.append((transitivity,-1,Yices.clause(transitivity)))
             
             let maxArity = 20
             let variables = (1...maxArity).map {
                 (TptpNode(variable:"X\($0)"),TptpNode(variable:"Y\($0)"))
             }
             
-            for (symbol,quadruple) in TptpNode.symbols {
+            
+            
+            for (symbol,quadruple) in functors {
                 var arity = -1
                 switch quadruple.arity {
                 case .None:
@@ -104,57 +98,136 @@ struct Demo {
                 }
                 
                 let congruence = TptpNode(connective:"|", nodes:literals)
-                yiClauses.append((congruence,Yices.clause(congruence)))
+                yiClauses.append((congruence,-1,Yices.clause(congruence)))
                 
             }
         }
-        print("\(yiClauses.count-clauses.count) yices equality axioms in \(axiomTime.prettyTimeIntervalDescription).")
-       
+        print("\(yiClauses.count-count) yices equality axioms in \(axiomTime.prettyTimeIntervalDescription).")
         
-        
-        // MARK: assert
+    }
+    
+    
+    static func yiassert(ctx:COpaquePointer, yiClauses:[YicesClause]) {
         let (_,assertTime) = measure {
-            for (index,yiClause)in yiClauses.enumerate() {
-                
-                
-                assert( yices_assert_formula(ctx,yiClause.1.0) >= 0 )
-                
+            for yiClause in yiClauses {
+                let code = yices_assert_formula(ctx,yiClause.2.0)
+                assert( code >= 0 )
             }
         }
         print("\(yiClauses.count) yices clauses asserted in \(assertTime.prettyTimeIntervalDescription).")
-        
-        
-        //        for (index,yiClause) in yiClauses[clauses.count..<yiClauses.count].enumerate() {
-        //            print(index+clauses.count,yiClause)
-        //        }
-        
-        // MARK: check and model
-        
+    }
+    
+    static func yistatus(ctx:COpaquePointer, expected: smt_status_t?) -> smt_status_t {
+        let status = yistatus(ctx)
+        assert(expected == nil || status == expected!)
+        return status
+    }
+    
+    static func yistatus(ctx:COpaquePointer) -> smt_status_t {
         let (status, checkTime) = measure { yices_check_context(ctx,nil) }
-        print("yices check context in \(checkTime.prettyTimeIntervalDescription).")
-        assert(status == STATUS_SAT)
+        print("'yices_check_context(ctx,nil)' in \(checkTime.prettyTimeIntervalDescription).")
+        return status
+    }
+    
+    static func yimodel(ctx:COpaquePointer) -> COpaquePointer {
         
         let (mdl,modelTime) = measure {
             yices_get_model(ctx,1)
         }
-        defer {
-            yices_free_model(mdl)
+        
+        print("'yices_get_model(ctx,1)' in \(modelTime.prettyTimeIntervalDescription).")
+        return mdl
+        
+    }
+    
+    
+    
+    static func demo() {
+        for name in [// "PUZ001-1",
+                     "PUZ001-2", // "HWV124-1"
+            ] {
+                let file = name.p!
+                let clauses = parse(file)
+                var yiClauses = construct(clauses)
+                
+                let hasEquations = TptpNode.symbols.reduce(false) { (a:Bool,b:(String,SymbolQuadruple)) in a || b.1.category == .Equational }
+                let functors = TptpNode.symbols.filter { (a:String,q:SymbolQuadruple) in q.category == .Functor }
+                
+                if hasEquations { axiomize(&yiClauses,functors:functors) }
+                print("\(file)", hasEquations ? "has equations" : "(has no equations)")
+
+                
+                let ctx = yices_new_context(nil)
+                defer { yices_free_context(ctx) }
+                
+                yiassert(ctx,yiClauses:yiClauses)
+                
+                var status = yistatus(ctx, expected: STATUS_SAT)
+                
+                let mdl = yimodel(ctx)
+                defer { yices_free_model(mdl) }
+                
+                var indexTrie = TrieClass<SymHop<String>,Int>()
+                
+                for (clauseIndex,yicesClause) in yiClauses.enumerate() {
+                    
+                    let (node,selectedLiteralIndex,triple) = yicesClause
+                    let (yiClause,yiLiterals,yiLiteralsBefore) = triple
+                    
+                    assert(yices_formula_true_in_model(mdl, yiClause) == 1)
+                    
+                    for (literalIndex, yiLiteral) in yiLiterals.enumerate() {
+                        if yices_formula_true_in_model(mdl, yiLiteral) == 1 {
+                            
+                            
+                            if (literalIndex != selectedLiteralIndex) {
+                                if selectedLiteralIndex >= 0 {
+                                    indexTrie.delete(selectedLiteralIndex)
+                                }
+                                
+                                if let newSelectedIndex = yiLiteralsBefore.indexOf(yiLiteral) {
+                                    yiClauses[clauseIndex].selected = newSelectedIndex
+                                    
+                                    let literal = node.nodes![newSelectedIndex]
+                                    
+                                    print("\(clauseIndex).\(newSelectedIndex): '\(literal)' was selected from '\(node)'")
+                                    
+                                    // find complementaries
+                                    
+                                    if let candidates = candidateComplementaries(indexTrie,term: literal) {
+                                    for candidate in candidates {
+                                        let node = yiClauses[candidate].node
+                                        let idx = yiClauses[candidate].selected
+                                    
+                                        print(" > \(candidate).\(idx) \t'\(node.nodes![idx])' of '\(node)')")
+                                        
+                                        }
+                                    }
+                                    
+                                    for path in literal.paths {
+                                        indexTrie.insert(path,value: clauseIndex)
+                                    }
+                                    
+                                }
+                                else {
+                                    assert(yiLiteral == yiClause)
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+                
+                
+                print("^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^")
+                
+                
+                
+                
+                
         }
-        print("yices get model in \(modelTime.prettyTimeIntervalDescription).")
-        
-        //        for (key,value) in TptpNode.symbols {
-        //            print(key,value)
-        //        }
-        
-        print("===================================================================================================")
-        
-        print("\(clauses.count) clauses parsed in \(parseTime.prettyTimeIntervalDescription).")
-        print("\(clauses.count) yices clauses constructed in \(clauseTime.prettyTimeIntervalDescription).")
-        print("\(yiClauses.count-clauses.count) yices equality axioms in \(axiomTime.prettyTimeIntervalDescription).")
-        print("\(yiClauses.count) yices clauses asserted in \(assertTime.prettyTimeIntervalDescription).")
-        print("yices check context in \(checkTime.prettyTimeIntervalDescription).")
-        print("yices get model in \(modelTime.prettyTimeIntervalDescription).")
-        
-        
     }
 }

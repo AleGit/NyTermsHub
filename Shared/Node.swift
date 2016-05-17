@@ -28,7 +28,14 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     
     // typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity)
 
-    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool
+    
+}
+
+extension Node {
+    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
+        // assert(false, "this is the most generic implementation of \(#function).")
+        return false
+    }
 }
 
 

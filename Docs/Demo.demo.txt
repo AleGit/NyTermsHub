@@ -1,11 +1,4 @@
 ========================= 2016-05-17 09:50:22 +0000 =========================
-benchmark: 0.00623297691345215
-NyTermsCL @ mml14.local: x86_64, 4 cores, 16 GiB, 3.0 GHz (mark:0.00623297691345215)
-yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
-Key '-tptp_root' is not set or its value was missing.
-Key 'TPTP_ROOT' is not set or its value was missing.
-Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly.
-tptp root path: /Users/Shared/TPTP
 ========================= ========================= =========================
 /Users/Shared/TPTP/Problems/HWV/HWV124-1.p
 555949 clauses parsed in 5s 757ms.
@@ -14,13 +7,12 @@ tptp root path: /Users/Shared/TPTP
 616492 yices clauses asserted in 96ms 580µs.
 yices check context in 96µs 23ns.
 yices get model in 29µs 27ns.
-===================================================================================================
-555949 clauses parsed in 5s 757ms.
-555949 yices clauses constructed in 38s 215ms.
-60543 yices equality axioms in 10s 533ms.
-616492 yices clauses asserted in 96ms 580µs.
-yices check context in 96µs 23ns.
-yices get model in 29µs 27ns.
 ========================= ========================= =========================
-========================= 2016-05-17 09:51:17 +0000 =========================
-Program ended with exit code: 0
+/Users/Shared/TPTP/Problems/HWV/HWV124-1.p
+555949 clauses parsed in 5s 779ms.
+555949 yices clauses constructed in 38s 607ms.
+60543 yices equality axioms in 2s 956ms.
+616492 yices clauses asserted in 86ms 982µs.
+yices check context in 141µs 978ns.
+yices get model in 28µs 14ns.
+

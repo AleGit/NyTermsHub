@@ -84,7 +84,7 @@ class YicesIndexingTests: XCTestCase {
     
     func testTrue() {
         let clauses : [TptpNode] = [
-            "X = Y",
+            TptpNode(connective:"|", nodes: ["X = Y"]),
             "p | X = Y",
             "~p | X = Y",
             "X != Y | p | ~p",

@@ -20,7 +20,7 @@ struct Demo {
     
     static func construct(clauses:[TptpNode]) -> [YicesClause] {
         let (yiClauses, clauseTime) = measure {
-            clauses.map { (node:$0, selected:-1,triple:Yices.clause($0.nodes!)) }
+            clauses.enumerate().map { (node:$1 ** $0, selected:-1,triple:Yices.clause($1.nodes!)) }
         }
         print("\(yiClauses.count) yices clauses constructed in \(clauseTime.prettyTimeIntervalDescription).")
         return yiClauses
@@ -28,6 +28,7 @@ struct Demo {
     
     static func axiomize(inout yiClauses:[YicesClause], functors:[(String, SymbolQuadruple)]) {
         let count = yiClauses.count
+        var counter = count
         
         let (_,axiomTime) = measure {
             
@@ -35,9 +36,12 @@ struct Demo {
             let symmetry = "X!=Y | Y=X" as TptpNode
             let transitivity = "X!=Y | Y!=Z | X=Z" as TptpNode
             
-            yiClauses.append((reflexivity,-1,Yices.clause(reflexivity)))
-            yiClauses.append((symmetry,-1,Yices.clause(symmetry)))
-            yiClauses.append((transitivity,-1,Yices.clause(transitivity)))
+            yiClauses.append((reflexivity ** counter,-1,Yices.clause(reflexivity)))
+            counter += 1
+            yiClauses.append((symmetry ** counter ,-1,Yices.clause(symmetry)))
+            counter += 1
+            yiClauses.append((transitivity ** counter,-1,Yices.clause(transitivity)))
+            counter += 1
             
             let maxArity = 20
             let variables = (1...maxArity).map {
@@ -98,7 +102,8 @@ struct Demo {
                 }
                 
                 let congruence = TptpNode(connective:"|", nodes:literals)
-                yiClauses.append((congruence,-1,Yices.clause(congruence)))
+                yiClauses.append((congruence ** counter,-1,Yices.clause(congruence)))
+                counter += 1
                 
             }
         }
@@ -144,7 +149,7 @@ struct Demo {
     
     static func demo() {
         for name in [// "PUZ001-1",
-                     "PUZ001-2", // "HWV124-1"
+            "PUZ001-2", // "HWV124-1"
             ] {
                 let file = name.p!
                 let clauses = parse(file)
@@ -155,7 +160,7 @@ struct Demo {
                 
                 if hasEquations { axiomize(&yiClauses,functors:functors) }
                 print("\(file)", hasEquations ? "has equations" : "(has no equations)")
-
+                
                 
                 let ctx = yices_new_context(nil)
                 defer { yices_free_context(ctx) }
@@ -195,12 +200,22 @@ struct Demo {
                                     // find complementaries
                                     
                                     if let candidates = candidateComplementaries(indexTrie,term: literal) {
-                                    for candidate in candidates {
-                                        let node = yiClauses[candidate].node
-                                        let idx = yiClauses[candidate].selected
-                                    
-                                        print(" > \(candidate).\(idx) \t'\(node.nodes![idx])' of '\(node)')")
-                                        
+                                        for candidate in candidates {
+                                            let theNode = yiClauses[candidate].node
+                                            let idx = yiClauses[candidate].selected
+                                            let theliteral = theNode.nodes![idx]
+                                            
+                                            let sigma = literal ~?= theliteral
+                                            
+                                            print(" > \(candidate).\(idx) \t'\(theliteral))' of '\(node)') ")
+                                            
+                                            if let mgu = sigma {
+                                                print("\t>>\t",mgu)
+                                                print("\t>>\t",node * mgu)
+                                                print("\t>>\t",theNode * mgu)
+                                                
+                                            }
+                                            
                                         }
                                     }
                                     

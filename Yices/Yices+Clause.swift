@@ -31,7 +31,10 @@ extension Yices {
                
                 // unit clause
             case .Predicate, .Negation, .Equation, .Inequation:
-                print("\(#function)(\(clause)) Argument node was not a clause, but a literal.")
+                let message = "\(#function)(\(clause)) Argument node was not a clause, but a literal."
+                print(message)
+                assert(false, message)
+                
                 let yicesLiteral = literal(clause)
                 return (yicesLiteral,[yicesLiteral],[yicesLiteral])
                 
@@ -96,19 +99,24 @@ extension Yices {
         switch type {
         case .Negation:
             assert(nodes.count == 1, "A negation must have exactly one child.")
+            // literal.register(.Negation, category: .Functor, notation:.Prefix, arity:.Fixed(1))
             return yices_not( Yices.literal(nodes.first! ))
             
         case .Inequation:
             assert(nodes.count == 2, "An inequation must have exactly two children.")
+            // literal.register(.Inequation, category: .Equational, notation:.Infix, arity:.Fixed(2))
+            
             let args = nodes.map { Yices.term($0) }
             return yices_neq(args.first!, args.last!)
             
         case .Equation:
             assert(nodes.count == 2, "An equation must have exactly two children.")
+            // literal.register(.Equation, category: .Equational, notation:.Infix, arity:.Fixed(2))
             let args = nodes.map { Yices.term($0) }
             return yices_eq(args.first!, args.last!)
             
         case .Predicate:
+            literal.register(.Predicate, category:.Functor, notation:.Prefix, arity:.Fixed(nodes.count))
             // proposition or predicate term (an application of Boolean type)
             return Yices.application(literal.symbolString(), nodes:nodes, term_tau: Yices.bool_tau)
             
@@ -125,6 +133,8 @@ extension Yices {
         guard let nodes = term.nodes else {
             return Yices.🚧 // substitute all variables with global constant '⊥'
         }
+        
+        term.register(.Function, category:.Functor, notation:.Prefix, arity:.Fixed(nodes.count))
         
         // function or constant term (an application of uninterpreted type)
         return Yices.application(term.symbolString(), nodes:nodes, term_tau:Yices.free_tau)

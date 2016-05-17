@@ -264,6 +264,18 @@ enum SymbolArity : Equatable {
             return range.contains(value)
         }
     }
+    func contains(value:SymbolArity) -> Bool {
+        switch (self,value) {
+        case (.None,.None):
+            return true
+        case (_, .Fixed(let arity)):
+            return self.contains(arity)
+        case (.Variadic(let outer), .Variadic(let inner)):
+            return outer.startIndex <= inner.startIndex && inner.endIndex <= outer.endIndex
+        default:
+            return false
+        }
+    }
 }
 
 func ==(lhs:SymbolArity, rhs:SymbolArity) -> Bool {

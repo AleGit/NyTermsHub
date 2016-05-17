@@ -25,6 +25,10 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     var symbolQuadruple : () -> SymbolQuadruple? { get }
     
     static func symbol(type:SymbolType) -> Symbol
+    
+    // typealias SymbolQuadruple = (type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity)
+
+    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool
 }
 
 

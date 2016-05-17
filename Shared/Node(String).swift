@@ -11,15 +11,23 @@ import Foundation
 extension Node where Symbol == String {
     
     var symbolString : () -> String {
-        return { self.symbol }
+        return {
+            self.symbol
+        }
     }
     
     var symbolQuadruple : () -> SymbolQuadruple? {
-        return { Self.quadruple(self.symbol) }
+        return {
+            Self.quadruple(self.symbol)
+        }
     }
     
     static func quadruple(symbol:Symbol) -> SymbolQuadruple? {
-        
+        return defaultQuadruple(symbol)
+    }
+    
+    static func defaultQuadruple(symbol:Symbol) -> SymbolQuadruple? {
+    
         switch symbol {
             
         case "" : return  (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arity: .None)

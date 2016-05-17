@@ -61,6 +61,46 @@ final class TptpNode: NSObject, Node {
         if self.nodes == nil { self.nodes = [term] }
         else { self.nodes!.append(term) }
     }
+    
+    static var symbols = [String:SymbolQuadruple]()
+    
+    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
+        if let quadruple = self.symbolQuadruple() {
+            assert(quadruple.type==type)
+            assert(quadruple.category == category)
+            assert(quadruple.notation == notation)
+            
+            assert(quadruple.arity.contains(arity))
+            
+            
+            
+            return quadruple.type==type
+                && quadruple.category == category
+                // && quadruple.notation == notation
+                && quadruple.arity.contains(arity)
+            
+            
+            
+        }
+        else {
+            TptpNode.symbols[self.symbol] = (type,category,notation,arity)
+            return true
+        }
+    }
+    
+    var symbolQuadruple : () -> SymbolQuadruple? {
+//        return {
+//            if let quadruple = TptpNode.defaultQuadruple(self.symbol) {
+//                assert(TptpNode.symbols[self.symbol] == nil )
+//                return quadruple
+//            }
+//            else {
+//                return TptpNode.symbols[self.symbol] // could be nil
+//            }
+//        }
+        
+        return { TptpNode.symbols[self.symbol] }
+    }
 }
 
 

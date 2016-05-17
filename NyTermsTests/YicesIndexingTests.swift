@@ -60,16 +60,16 @@ class YicesIndexingTests: XCTestCase {
         XCTAssertEqual(ls[3].0, nls[0].0)
     }
     
-//    func testSimpleClauses() {
-//        let clauses = ["p|~p" as TptpNode, "~p|p", "p|p|p|~p" ]
-//        let y = clauses.map {
-//            
-//            ($0, Yices.clause($0).1, Yices.clause($0).2) }
-//        print(y)
-//    }
-//    
-//    
-//    
+    func testSimpleClauses() {
+        let clauses = ["p|~p" as TptpNode, "~p|p", "p|p|p|~p" ]
+        let y = clauses.map {
+            
+            ($0, Yices.clause($0).1, Yices.clause($0).2) }
+        print(y)
+    }
+    
+    
+    
     func testClauses() {
         let clauses = [
             TptpNode(stringLiteral: "\(p)|\(ne)"),

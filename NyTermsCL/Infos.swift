@@ -31,17 +31,17 @@ extension Infos {
                 let (yc, yls, ylbs) = Yices.clause(clause)
                 
                 let yicesLiteralsSet = Set(yls)
-                let yicesLiteralsBeforeSet = Set(ylbs)
+                let alignedYicesLiteralsSet = Set(ylbs)
                 
-                //            if yicesLiterals.elementCounts != yicesLiteralsBefore.elementCounts {
-                //                assert(yicesLiteralsSet.isSupersetOf(yicesLiteralsBeforeSet))
-                //                print("\(yicesLiterals) <- \(yicesLiteralsBefore)")
+                //            if yicesLiterals.elementCounts != alignedYicesLiterals.elementCounts {
+                //                assert(yicesLiteralsSet.isSupersetOf(alignedYicesLiteralsSet))
+                //                print("\(yicesLiterals) <- \(alignedYicesLiterals)")
                 //            }
-                let added = yicesLiteralsSet.subtract(yicesLiteralsBeforeSet    )
+                let added = yicesLiteralsSet.subtract(alignedYicesLiteralsSet    )
                 if added.count > 0 {
                     print("added:",added,"\(yls) <- \(ylbs)")
                 }
-                let removed = yicesLiteralsBeforeSet.subtract(yicesLiteralsSet)
+                let removed = alignedYicesLiteralsSet.subtract(yicesLiteralsSet)
                 if removed.count > 0 {
                     let removedLiterals = ylbs.enumerate().filter {
                         removed.contains($0.1)

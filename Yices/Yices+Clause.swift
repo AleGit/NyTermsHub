@@ -13,7 +13,7 @@ extension Yices {
     typealias Triple = (
         yicesClause: type_t,
         yicesLiterals: [type_t],
-        yicesLiteralsBefore: [type_t]
+        alignedYicesLiterals: [type_t]
     )
     
     /// Return a yices clause and yices literals from a node clause.
@@ -21,7 +21,7 @@ extension Yices {
     static func clause<N:Node>(clause:N) -> Triple /* (
         yicesClause: term_t,
         yicesLiterals:[type_t],
-        yicesLiteralsBefore:[type_t]) */ {
+        alignedYicesLiterals:[type_t]) */ {
         
             // assert(clause.isClause,"'\(#function)(\(clause))' Argument must be a clause, but it is not.")
             
@@ -66,10 +66,10 @@ extension Yices {
     static func clause<N:Node>(literals:[N]) -> Triple /* (
         yicesClause: type_t,
         yicesLiterals:[type_t],
-        yicesLiteralsBefore:[type_t]) */ {
+        alignedYicesLiterals:[type_t]) */ {
             
-            let yicesLiteralsBefore = literals.map { self.literal($0) }
-            var yicesLiterals = yicesLiteralsBefore
+            let alignedYicesLiterals = literals.map { self.literal($0) }
+            var yicesLiterals = alignedYicesLiterals
             
             // `yices_or` might change the order and content of the array
             
@@ -78,7 +78,7 @@ extension Yices {
             return (
                 yicesClause,
                 yicesLiterals,
-                yicesLiteralsBefore
+                alignedYicesLiterals
             )
             
             

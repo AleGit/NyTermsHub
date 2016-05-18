@@ -26,9 +26,9 @@ struct DemoClauseIndex {
         
         for (index,clause) in clauses.enumerate() {
             
-            let (yicesClause,yicesLiterals,yicesLiteralsBefore) = Yices.clause(clause)
+            let (yicesClause,yicesLiterals,alignedYicesLiterals) = Yices.clause(clause)
             
-            repository.append((clause,yicesClause,yicesLiterals,yicesLiteralsBefore))
+            repository.append((clause,yicesClause,yicesLiterals,alignedYicesLiterals))
             
             // === find candidates for variants by literal clause indes
             

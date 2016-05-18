@@ -150,15 +150,17 @@ struct Demo {
     
     /// returns true if tptpTripl.selected has changed
     static func yiselect(mdl:COpaquePointer, inout tuple: TptpNode.Tuple) -> Bool {
-        guard tuple.selected < 0 || yices_formula_true_in_model(mdl, tuple.triple.yicesLiteralsBefore[tuple.selected]) == 0 else {
+        guard tuple.selected < 0 || yices_formula_true_in_model(mdl, tuple.triple.alignedYicesLiterals[tuple.selected]) == 0 else {
             return false
         }
         
         var processedYicesLiterals = Set<term_t>()
         
         if tuple.selected >= 0 {
-            processedYicesLiterals.insert(tuple.triple.yicesLiteralsBefore[tuple.selected])
+            processedYicesLiterals.insert(tuple.triple.alignedYicesLiterals[tuple.selected])
         }
+        
+        
         
         
         return true

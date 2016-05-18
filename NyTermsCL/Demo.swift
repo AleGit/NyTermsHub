@@ -8,8 +8,11 @@
 
 import Foundation
 
+extension TptpNode {
+    typealias Tuple = (node:TptpNode,selected:Int,triple:Yices.Triple)
+}
 
-typealias YicesClause = (node:TptpNode,selected:Int,triple:Yices.Triple)
+
 
 struct Demo {
     static func parse(file:TptpPath) -> [TptpNode] {
@@ -18,7 +21,7 @@ struct Demo {
         return clauses
     }
     
-    static func construct(clauses:[TptpNode]) -> [YicesClause] {
+    static func construct(clauses:[TptpNode]) -> [TptpNode.Tuple] {
         let (yiClauses, clauseTime) = measure {
             clauses.enumerate().map { (node:$1 ** $0, selected:-1,triple:Yices.clause($1.nodes!)) }
         }
@@ -26,7 +29,7 @@ struct Demo {
         return yiClauses
     }
     
-    static func axiomize(inout yiClauses:[YicesClause], functors:[(String, SymbolQuadruple)]) {
+    static func axiomize(inout yiClauses:[TptpNode.Tuple], functors:[(String, SymbolQuadruple)]) {
         let count = yiClauses.count
         var counter = count
         
@@ -112,7 +115,7 @@ struct Demo {
     }
     
     
-    static func yiassert(ctx:COpaquePointer, yiClauses:[YicesClause]) {
+    static func yiassert(ctx:COpaquePointer, yiClauses:[TptpNode.Tuple]) {
         let (_,assertTime) = measure {
             for yiClause in yiClauses {
                 let code = yices_assert_formula(ctx,yiClause.2.0)
@@ -145,7 +148,23 @@ struct Demo {
         
     }
     
-    
+    /// returns true if tptpTripl.selected has changed
+    static func yiselect(mdl:COpaquePointer, inout tuple: TptpNode.Tuple) -> Bool {
+        guard tuple.selected < 0 || yices_formula_true_in_model(mdl, tuple.triple.yicesLiteralsBefore[tuple.selected]) == 0 else {
+            return false
+        }
+        
+        var processedYicesLiterals = Set<term_t>()
+        
+        if tuple.selected >= 0 {
+            processedYicesLiterals.insert(tuple.triple.yicesLiteralsBefore[tuple.selected])
+        }
+        
+        
+        return true
+        
+        
+    }
     
     static func demo() {
         for name in [// "PUZ001-1",

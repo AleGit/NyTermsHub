@@ -1,37 +1,19 @@
-========================= 2016-05-17 09:50:22 +0000 =========================
-========================= ========================= =========================
-/Users/Shared/TPTP/Problems/HWV/HWV124-1.p
-555949 clauses parsed in 5s 757ms.
-555949 yices clauses constructed in 38s 215ms.
-60543 yices equality axioms in 10s 533ms.
-616492 yices clauses asserted in 96ms 580µs.
-yices check context in 96µs 23ns.
-yices get model in 29µs 27ns.
-========================= ========================= =========================
-/Users/Shared/TPTP/Problems/HWV/HWV124-1.p
-555949 clauses parsed in 5s 779ms.
-555949 yices clauses constructed in 38s 607ms.
-60543 yices equality axioms in 2s 956ms.
-616492 yices clauses asserted in 86ms 982µs.
-yices check context in 141µs 978ns.
-yices get model in 28µs 14ns.
-
-========================= 2016-05-18 07:12:07 +0000 =========================
-benchmark: 0.00617200136184692
-NyTermsCL @ mml14.local: x86_64, 4 cores, 16 GiB, 3.0 GHz (mark:0.00617200136184692)
+========================= 2016-05-18 07:31:00 +0000 =========================
+benchmark: 0.00883400440216064
+NyTermsCL @ mml14.local: x86_64, 4 cores, 16 GiB, 3.0 GHz (mark:0.00883400440216064)
 yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
 Key '-tptp_root' is not set or its value was missing.
 Key 'TPTP_ROOT' is not set or its value was missing.
 Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly.
 tptp root path: /Users/Shared/TPTP
 ========================= ========================= =========================
-15 clauses parsed in 647µs 8ns.
-15 yices clauses constructed in 970µs 6ns.
-8 yices equality axioms in 16ms 523µs.
+15 clauses parsed in 665µs 9ns.
+15 yices clauses constructed in 831µs 962ns.
+8 yices equality axioms in 2ms 857µs.
 /Users/Shared/TPTP/Problems/PUZ/PUZ001-2.p has equations
-23 yices clauses asserted in 132µs 978ns.
-'yices_check_context(ctx,nil)' in 69µs 22ns.
-'yices_get_model(ctx,1)' in 73µs 16ns.
+23 yices clauses asserted in 74µs 983ns.
+'yices_check_context(ctx,nil)' in 45µs 2ns.
+'yices_get_model(ctx,1)' in 45µs 2ns.
 0.0: 'lives_at_dreadsbury(someone)' was selected from 'lives_at_dreadsbury(someone)'
 1.0: 'killed(someone,aunt_agatha)' was selected from 'killed(someone,aunt_agatha)'
 2.0: 'lives_at_dreadsbury(aunt_agatha)' was selected from 'lives_at_dreadsbury(aunt_agatha)'
@@ -64,7 +46,6 @@ tptp root path: /Users/Shared/TPTP
 >>	 [Killer_7: someone, Victim_7: aunt_agatha]
 >>	 ~(killed(someone,aunt_agatha))|~(richer(someone,aunt_agatha))
 >>	 killed(someone,aunt_agatha)
-7.1: '~(richer(Killer_7,Victim_7))' was selected from '~(killed(Killer_7,Victim_7))|~(richer(Killer_7,Victim_7))'
 8.1: '~(hates(charles,Person_8))' was selected from '~(hates(aunt_agatha,Person_8))|~(hates(charles,Person_8))'
 9.1: 'hates(aunt_agatha,Person_9)' was selected from 'Person_9=butler|hates(aunt_agatha,Person_9)'
 10.1: 'hates(butler,Person_10)' was selected from 'richer(Person_10,aunt_agatha)|hates(butler,Person_10)'
@@ -135,6 +116,5 @@ tptp root path: /Users/Shared/TPTP
 >>	 ~(hates(aunt_agatha,Person_11))|hates(butler,Person_11)
 ^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^
 ========================= ========================= =========================
-========================= 2016-05-18 07:12:08 +0000 =========================
+========================= 2016-05-18 07:31:00 +0000 =========================
 Program ended with exit code: 0
-

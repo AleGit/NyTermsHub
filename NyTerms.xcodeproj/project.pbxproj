@@ -395,6 +395,7 @@
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
 		D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrlcSpeed.txt; sourceTree = "<group>"; };
 		D2B588AC1CE5BEEC0086E780 /* mml14FastestSearch.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mml14FastestSearch.txt; sourceTree = "<group>"; };
+		D2F26C1C1CEC5210003DD50F /* Demo.demo2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo2.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -687,6 +688,7 @@
 				517B23B81CBD28F70049F871 /* changed yices literals.txt */,
 				D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */,
 				D286232D1CEB216C00E42070 /* Demo.demo.txt */,
+				D2F26C1C1CEC5210003DD50F /* Demo.demo2.txt */,
 			);
 			name = results;
 			path = ../Docs;

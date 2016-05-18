@@ -149,21 +149,41 @@ struct Demo {
     }
     
     /// returns true if tptpTripl.selected has changed
-    static func yiselect(mdl:COpaquePointer, inout tuple: TptpNode.Tuple) -> Bool {
+    static func yiselect(mdl:COpaquePointer, tuple: TptpNode.Tuple) -> Int? {
         guard tuple.selected < 0 || yices_formula_true_in_model(mdl, tuple.triple.alignedYicesLiterals[tuple.selected]) == 0 else {
-            return false
+            return tuple.selected
         }
-        
+
         var processedYicesLiterals = Set<term_t>()
         
         if tuple.selected >= 0 {
             processedYicesLiterals.insert(tuple.triple.alignedYicesLiterals[tuple.selected])
         }
         
+        for yicesLiteral in tuple.triple.yicesLiterals {
+            guard !processedYicesLiterals.contains(yicesLiteral) else {
+                continue
+            }
+            
+            let code = yices_formula_true_in_model(mdl, yicesLiteral)
+            assert (code >= 0)
+            
+            guard code == 1 else {
+                processedYicesLiterals.insert(yicesLiteral)
+                continue
+            }
+            
+            // sucess!
+            
+            guard let index = tuple.triple.alignedYicesLiterals.indexOf(yicesLiteral) else {
+                assert(false,"yices literal \(yicesLiteral) is not aligned to '\(tuple)'")
+                continue
+            }
+            return index
+        }
         
-        
-        
-        return true
+        assert(false,"No literal of clause '\(tuple.node)' did hold in model.")
+        return nil
         
         
     }
@@ -195,63 +215,50 @@ struct Demo {
                 
                 var indexTrie = TrieClass<SymHop<String>,Int>()
                 
-                for (clauseIndex,yicesClause) in yiClauses.enumerate() {
+                for (clauseIndex,tuple) in yiClauses.enumerate() {
                     
-                    let (node,selectedLiteralIndex,triple) = yicesClause
-                    let (yiClause,yiLiterals,yiLiteralsBefore) = triple
+                    let (node,selectedLiteralIndex,triple) = tuple
+                    let (yiClause,_,_) = triple
                     
                     assert(yices_formula_true_in_model(mdl, yiClause) == 1)
                     
-                    for (literalIndex, yiLiteral) in yiLiterals.enumerate() {
-                        if yices_formula_true_in_model(mdl, yiLiteral) == 1 {
+                    guard let newSelectedLiteralIndex = yiselect(mdl, tuple: tuple) else {
+                        assert(false)
+                        continue
+                    }
+                    
+                    if (newSelectedLiteralIndex != selectedLiteralIndex) {
+                        indexTrie.delete(selectedLiteralIndex)
+                        yiClauses[clauseIndex].selected = newSelectedLiteralIndex   // update
+                    }
+                    
+                    let literal = node.nodes![newSelectedLiteralIndex]
+                    print("\(clauseIndex).\(newSelectedLiteralIndex): '\(literal)' was selected from '\(node)'")
+                    
+                    // find complementaries
+                    
+                    if let candidates = candidateComplementaries(indexTrie,term: literal) {
+                        for candidate in candidates {
+                            let theNode = yiClauses[candidate].node
+                            let idx = yiClauses[candidate].selected
+                            let theliteral = theNode.nodes![idx]
                             
+                            let sigma = literal ~?= theliteral
                             
-                            if (literalIndex != selectedLiteralIndex) {
-                                if selectedLiteralIndex >= 0 {
-                                    indexTrie.delete(selectedLiteralIndex)
-                                }
+                            print(" > \(candidate).\(idx) \t'\(theliteral))' of '\(node)') ")
+                            
+                            if let mgu = sigma {
+                                print("\t>>\t",mgu)
+                                print("\t>>\t",node * mgu)
+                                print("\t>>\t",theNode * mgu)
                                 
-                                if let newSelectedIndex = yiLiteralsBefore.indexOf(yiLiteral) {
-                                    yiClauses[clauseIndex].selected = newSelectedIndex
-                                    
-                                    let literal = node.nodes![newSelectedIndex]
-                                    
-                                    print("\(clauseIndex).\(newSelectedIndex): '\(literal)' was selected from '\(node)'")
-                                    
-                                    // find complementaries
-                                    
-                                    if let candidates = candidateComplementaries(indexTrie,term: literal) {
-                                        for candidate in candidates {
-                                            let theNode = yiClauses[candidate].node
-                                            let idx = yiClauses[candidate].selected
-                                            let theliteral = theNode.nodes![idx]
-                                            
-                                            let sigma = literal ~?= theliteral
-                                            
-                                            print(" > \(candidate).\(idx) \t'\(theliteral))' of '\(node)') ")
-                                            
-                                            if let mgu = sigma {
-                                                print("\t>>\t",mgu)
-                                                print("\t>>\t",node * mgu)
-                                                print("\t>>\t",theNode * mgu)
-                                                
-                                            }
-                                            
-                                        }
-                                    }
-                                    
-                                    for path in literal.paths {
-                                        indexTrie.insert(path,value: clauseIndex)
-                                    }
-                                    
-                                }
-                                else {
-                                    assert(yiLiteral == yiClause)
-                                }
                             }
                             
                         }
-                        
+                    }
+                    
+                    for path in literal.paths {
+                        indexTrie.insert(path,value: clauseIndex)
                     }
                     
                 }

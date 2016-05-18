@@ -16,6 +16,14 @@ extension Yices {
         alignedYicesLiterals: [type_t]
     )
     
+
+    
+//    static func clause<N:Node, S:SymbolTable where N.Symbol == S.Symbol>(clause:N, symbolTable:S) {
+//        let type = symbolTable[clause.symbol]?.type ?? SymbolType.Predicate
+//        symbolTable[clause.symbol] = nil
+//        
+//    }
+    
     /// Return a yices clause and yices literals from a node clause.
     /// The children of `yicesClause` are often different from `yicesLiterals`.
     static func clause<N:Node>(clause:N) -> Triple /* (

@@ -115,7 +115,7 @@ class SwiftTests: XCTestCase {
         
     }
     
-    func testCollections() {
+    func testArray() {
         var arrayOfTriples = [
             (a:0, b:"Hello", c:3.4),
             (a:2, b:"World", c:8.76),
@@ -136,6 +136,27 @@ class SwiftTests: XCTestCase {
         
         arrayOfTriples[1] = entry // assign changed copy
         XCTAssertEqual("America", arrayOfTriples[1].b)
+        
+    }
+    
+    func testDictionarySets() {
+        var collection = [String : Set<Int>]()
+        
+    
+        let s = "string"
+        
+        for i in 0...3 {
+            if collection[s] == nil { collection[s] = Set<Int>() }
+            
+            collection[s]?.insert(i)
+            
+            guard var copy = collection[s] else { continue }
+            
+            copy.insert(i*2)
+            print(collection, copy)
+        }
+        
+        XCTAssertEqual(collection[s], Set([0,1,2,3]))
         
     }
     

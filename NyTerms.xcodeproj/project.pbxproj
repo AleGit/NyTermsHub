@@ -182,6 +182,8 @@
 		51FF64051CBBB71600AA26B5 /* YicesNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */; };
 		D24D5D151CE5DB7200E07E8E /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D5D141CE5DB7200E07E8E /* Demo.swift */; };
 		D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286232E1CEB711000E42070 /* YicesTestCase.swift */; };
+		D2F26C1E1CEC6F3E003DD50F /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */; };
+		D2F26C1F1CEC6F3E003DD50F /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -396,6 +398,7 @@
 		D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrlcSpeed.txt; sourceTree = "<group>"; };
 		D2B588AC1CE5BEEC0086E780 /* mml14FastestSearch.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = mml14FastestSearch.txt; sourceTree = "<group>"; };
 		D2F26C1C1CEC5210003DD50F /* Demo.demo2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo2.txt; sourceTree = "<group>"; };
+		D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolTable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -541,6 +544,7 @@
 				515F0F051B6BB0A100B470B4 /* String+Symbols.swift */,
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				5173B5581CC9F7B800A9ABCE /* SharingNode.swift */,
+				D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -1015,6 +1019,7 @@
 				511E958C1B8AEB4D0093F4E8 /* TptpNode.swift in Sources */,
 				5163AE6F1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */,
 				5100656F1C897A6800F2A67B /* MingyProver.swift in Sources */,
+				D2F26C1F1CEC6F3E003DD50F /* SymbolTable.swift in Sources */,
 				51B26B6E1B8DA41200CC59AD /* Yices+Wrapper.swift in Sources */,
 				510811F01C9AA49600E5A439 /* Node(LaTeX).swift in Sources */,
 				511E95811B8AE7B80093F4E8 /* Node.swift in Sources */,
@@ -1096,6 +1101,7 @@
 				515F0F061B6BB0A100B470B4 /* String+Symbols.swift in Sources */,
 				512977371B677E1B003D3E80 /* Node.swift in Sources */,
 				5163AE6E1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */,
+				D2F26C1E1CEC6F3E003DD50F /* SymbolTable.swift in Sources */,
 				5131E8AB1C920648001782C5 /* Auxiliary+Pretty.swift in Sources */,
 				514AD8681C6B7DF900652004 /* TrieType.swift in Sources */,
 				516094311CDA095900B3579D /* PrlcParser.swift in Sources */,

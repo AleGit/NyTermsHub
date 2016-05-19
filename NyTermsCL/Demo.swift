@@ -17,7 +17,7 @@ extension TptpNode {
 struct Demo {
     static func parse(file:TptpPath) -> [TptpNode] {
         let (clauses,parseTime) = measure { TptpNode.roots(file) }
-        print("\(clauses.count) clauses parsed in \(parseTime.prettyTimeIntervalDescription).")
+        print("\(clauses.count) clauses parsed in \(parseTime.prettyTimeIntervalDescription) (\(parseTime)).")
         return clauses
     }
     
@@ -25,7 +25,7 @@ struct Demo {
         let (tptpTuples, clauseTime) = measure {
             clauses.enumerate().map { (node:$1 ** (baseIndex+$0), selected:-1,triple:Yices.clause($1.nodes!)) }
         }
-        print("\(tptpTuples.count) yices clauses constructed in \(clauseTime.prettyTimeIntervalDescription).")
+        // print("\(tptpTuples.count) yices clauses constructed in \(clauseTime.prettyTimeIntervalDescription) (\(clauseTime).")
         return tptpTuples
     }
     
@@ -46,7 +46,7 @@ struct Demo {
             tptpTuples.append((transitivity ** counter,-1,Yices.clause(transitivity)))
             counter += 1
             
-            let maxArity = 20
+            let maxArity = 200
             let variables = (1...maxArity).map {
                 (TptpNode(variable:"X\($0)"),TptpNode(variable:"Y\($0)"))
             }
@@ -110,7 +110,7 @@ struct Demo {
                 
             }
         }
-        print("\(tptpTuples.count-count) yices equality axioms in \(axiomTime.prettyTimeIntervalDescription).")
+        print("\(tptpTuples.count-count) yices equality axioms in \(axiomTime.prettyTimeIntervalDescription) (\(axiomTime)).")
         
     }
     
@@ -122,7 +122,7 @@ struct Demo {
                 assert( code >= 0 )
             }
         }
-        print("\(tptpTuples.count) yices clauses asserted in \(assertTime.prettyTimeIntervalDescription).")
+        print("\(tptpTuples.count) yices clauses asserted in \(assertTime.prettyTimeIntervalDescription) (\(assertTime)).")
     }
     
     static func yistatus(ctx:COpaquePointer, expected: smt_status_t?) -> smt_status_t {
@@ -143,7 +143,7 @@ struct Demo {
             yices_get_model(ctx,1)
         }
         
-        print("'yices_get_model(ctx,1)' in \(modelTime.prettyTimeIntervalDescription).")
+        print("'yices_get_model(ctx,1)' in \(modelTime.prettyTimeIntervalDescription) (\(modelTime)).")
         return mdl
         
     }
@@ -194,8 +194,14 @@ struct Demo {
     }
     
     static func demo() {
-        for name in [// "PUZ001-1",
-            "PUZ001-2", // "HWV124-1"
+        for name in [
+            "PUZ001-1",
+            "PUZ001-2",
+            "HWV074-1",
+            "HWV066-1",
+            "HWV119-1",
+            "HWV105-1",
+            "HWV124-1"
             ] {
                 let file = name.p!
                 let clauses = parse(file)
@@ -204,7 +210,7 @@ struct Demo {
                     process(clauses)
                 }
                 
-                print("\(#function) \(file) runtime = \(runtime)")
+                print("\(#function) \(file) runtime = \(runtime.prettyTimeIntervalDescription) (\(runtime))")
                 print("^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^")
         }
     }
@@ -257,9 +263,17 @@ struct Demo {
         
         var tptpClauseIndexes : ClauseIndices = (byYicesLiterals:[term_t:Set<Int>](), byYicesClauses: [term_t:Set<Int>]())
         
+        let start = CFAbsoluteTimeGetCurrent()
+        let step = max(1,min(5000,tptpTuples.count/3))
+        
         for (clauseIndex, tuple) in tptpTuples.enumerate() {
             let (tptpClause, selectedLiteralIndex, yicesTriple) = tuple
             let (yicesClause, _ , _) = yicesTriple
+            
+            if (clauseIndex % step == 0) {
+                let time = CFAbsoluteTimeGetCurrent() - start
+                print(clauseIndex,tptpClause,time.prettyTimeIntervalDescription)
+            }
             
             addtoindices(&tptpClauseIndexes, clauseIndex: clauseIndex, triple: yicesTriple)
             
@@ -276,7 +290,7 @@ struct Demo {
             }
             
             let literal = tptpClause.nodes![newSelectedLiteralIndex]
-            print("\(clauseIndex).\(newSelectedLiteralIndex): '\(literal)' was selected from '\(tptpClause)'")
+            // print("\(clauseIndex).\(newSelectedLiteralIndex): '\(literal)' was selected from '\(tptpClause)'")
             
             // find complementaries
             
@@ -288,27 +302,29 @@ struct Demo {
                     
                     let sigma = literal ~?= theliteral
                     
-                    print(" > \(candidate).\(idx) \t'\(theliteral)' of '\(otherClause)' ")
+//                    print(" > \(candidate).\(idx) \t'\(theliteral)' of '\(otherClause)' ")
                     
                     if let mgu = sigma {
-                        print("\t>>\t",mgu)
+//                        print("\tµ=\t",mgu)
                         
                         let newtuples = construct([tptpClause * mgu, otherClause * mgu], baseIndex: tptpTuples.count)
                         
                         for newtuple in newtuples {
-                            print("\t>>\t",newtuple)
+ //                           print("\t>>\t",newtuple)
                             
                             let (variantCandidatesByLiterals,variantCandidatesByClause) = variantSubsumptionCandidates(tptpClauseIndexes, newtuple.triple, tptpTuples: tptpTuples)
-                            let vs = variantCandidatesByLiterals.map { (tptpTuples[$0].node, $0) }
+                            
+                            let candidates = (variantCandidatesByClause ?? Set<Int>()).union(variantCandidatesByLiterals).sort()
+                            let vs = candidates.map { (tptpTuples[$0].node, $0) }
 
-                            if variantCandidatesByLiterals.count > 0 || variantCandidatesByClause != nil {
-                                for v in vs { print("\t..\t",v) }
-                                print("\t__\t", variantCandidatesByLiterals ?? "'-'", variantCandidatesByClause ?? "'-'", "\t__")
-                            }
+//                            if vs.count > 0 {
+//                                for v in vs { print("\t..\t",v) }
+//                                print("\t__\t", variantCandidatesByLiterals ?? "'-'", variantCandidatesByClause ?? "'-'", "\t__")
+//                            }
                         }
                     }
                     else {
-                        print("\t..\t are not complementary")
+//                        print("\t..\t are not complementary")
                     }
                 }
             }

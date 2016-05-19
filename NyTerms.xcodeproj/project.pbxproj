@@ -392,6 +392,7 @@
 		51FD00C11C3133E1008C5AD1 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Clause.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
+		D236F8301CEDE93A00BEF2E5 /* Demo.demo.runtimes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.runtimes.txt; sourceTree = "<group>"; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
@@ -693,6 +694,7 @@
 				D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */,
 				D286232D1CEB216C00E42070 /* Demo.demo.txt */,
 				D2F26C1C1CEC5210003DD50F /* Demo.demo2.txt */,
+				D236F8301CEDE93A00BEF2E5 /* Demo.demo.runtimes.txt */,
 			);
 			name = results;
 			path = ../Docs;

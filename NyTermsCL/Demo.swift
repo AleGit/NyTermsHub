@@ -187,149 +187,180 @@ struct Demo {
         
     }
     
+    static func eqfunc(symbols:[String : SymbolQuadruple]) -> (hasEquations:Bool, functors:[(String, SymbolQuadruple)]) {
+        let hasEquations = symbols.reduce(false) { (a:Bool,b:(String,SymbolQuadruple)) in a || b.1.category == .Equational }
+        let functors = symbols.filter { (a:String,q:SymbolQuadruple) in q.category == .Functor }
+        return (hasEquations,functors)
+    }
+    
     static func demo() {
         for name in [// "PUZ001-1",
             "PUZ001-2", // "HWV124-1"
             ] {
                 let file = name.p!
                 let clauses = parse(file)
-                var tptpTuples = construct(clauses)
                 
-                let hasEquations = TptpNode.symbols.reduce(false) { (a:Bool,b:(String,SymbolQuadruple)) in a || b.1.category == .Equational }
-                let functors = TptpNode.symbols.filter { (a:String,q:SymbolQuadruple) in q.category == .Functor }
-                
-                if hasEquations { axiomize(&tptpTuples,functors:functors) }
-                print("\(file)", hasEquations ? "has equations" : "(has no equations)")
-                
-                
-                let ctx = yices_new_context(nil)
-                defer { yices_free_context(ctx) }
-                
-                yiassert(ctx,tptpTuples:tptpTuples)
-                
-                var status = yistatus(ctx, expected: STATUS_SAT)
-                
-                let mdl = yimodel(ctx)
-                defer { yices_free_model(mdl) }
-                
-                var indexTrie = TrieClass<SymHop<String>,Int>()
-                var literalClauses = [term_t:Set<Int>]()
-                var clauseClauses = [term_t:Set<Int>]()
-                
-                for (clauseIndex,tuple) in tptpTuples.enumerate() {
-                    
-                    
-                    
-                    
-                    let (node,selectedLiteralIndex,triple) = tuple
-                    let (yiClause,_,alignedYicesLiterals) = triple
-                    
-                    /// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-                    for yiLiteral in Set(alignedYicesLiterals) {
-                        if literalClauses[yiLiteral] == nil {
-                            literalClauses[yiLiteral] = Set<Int>()
-                        }
-                        
-                        literalClauses[yiLiteral]?.insert(clauseIndex)
-                    }
-                    
-                    if clauseClauses[yiClause] == nil {
-                        clauseClauses[yiClause] = Set<Int>()
-                    }
-                    clauseClauses[yiClause]?.insert(clauseIndex)
-                    
-                    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                    
-                    assert(yices_formula_true_in_model(mdl, yiClause) == 1)
-                    
-                    guard let newSelectedLiteralIndex = yiselect(mdl, tuple: tuple) else {
-                        assert(false)
-                        continue
-                    }
-                    
-                    if (newSelectedLiteralIndex != selectedLiteralIndex) {
-                        indexTrie.delete(selectedLiteralIndex)
-                        tptpTuples[clauseIndex].selected = newSelectedLiteralIndex   // update
-                    }
-                    
-                    let literal = node.nodes![newSelectedLiteralIndex]
-                    print("\(clauseIndex).\(newSelectedLiteralIndex): '\(literal)' was selected from '\(node)'")
-                    
-                    // find complementaries
-                    
-                    if let candidates = candidateComplementaries(indexTrie,term: literal) {
-                        for candidate in candidates {
-                            let theNode = tptpTuples[candidate].node
-                            let idx = tptpTuples[candidate].selected
-                            let theliteral = theNode.nodes![idx]
-                            
-                            let sigma = literal ~?= theliteral
-                            
-                            print(" > \(candidate).\(idx) \t'\(theliteral)' of '\(theNode)' ")
-                            
-                            if let mgu = sigma {
-                                print("\t>>\t",mgu)
-                                
-                                let newtuples = construct([node * mgu, theNode * mgu], baseIndex: tptpTuples.count)
-                                
-                                for newtuple in newtuples {
-                                    print("\t>>\t",newtuple)
-                                    
-                                    var variantCandidates : Set<Int>? = nil
-                                    
-                                    /// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-                                    for yiLiteral in Set(newtuple.triple.yicesLiterals) {
-                                        guard let licl = literalClauses[yiLiteral] else {
-                                            // no clause with this literal exists
-                                            break
-                                        }
-                                        if variantCandidates == nil {
-                                            variantCandidates = licl
-                                        }
-                                        else {
-                                            variantCandidates?.intersectInPlace(licl)
-                                        }
-                                        guard let vc = variantCandidates where vc.count > 0 else {
-                                            break
-                                        }
-                                    }
-                                    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                    
-                                    let ovs = variantCandidates?.map { (tptpTuples[$0].node, $0) }
-                                    
-                                    guard let vs = ovs else {
-                                        continue
-                                    }
-                                    
-                                    for v in vs {
-                                        print("\t..\t",v)
-                                    }
-                                    
-                                    print("\t__\t", variantCandidates ?? "", clauseClauses[newtuple.triple.yicesClause] ?? "", "\t__")
-                                }
-                                
-                            }
-                            else {
-                                print("\t..\t are not complementary")
-                            }
-                            
-                        }
-                    }
-                    
-                    for path in literal.paths {
-                        indexTrie.insert(path,value: clauseIndex)
-                    }
-                    
+                let (_,runtime) = measure {
+                    process(clauses)
                 }
                 
-                
-                
+                print("\(#function) \(file) runtime = \(runtime)")
                 print("^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^")
-                
-                
-                
-                
-                
         }
+    }
+    
+    static func process(clauses:[TptpNode]) {
+        var tptpTuples = construct(clauses)
+        
+        let (hasEquations, functors) = eqfunc(TptpNode.symbols)
+        
+        print(hasEquations ? "has equations" : "(has no equations)")
+
+        
+        if hasEquations { axiomize(&tptpTuples,functors:functors) }
+        
+        
+        
+        let ctx = yices_new_context(nil)
+        defer { yices_free_context(ctx) }
+        
+        yiassert(ctx,tptpTuples:tptpTuples)
+        
+        var status = yistatus(ctx, expected: STATUS_SAT)
+        
+        let mdl = yimodel(ctx)
+        defer { yices_free_model(mdl) }
+        
+        var indexTrie = TrieClass<SymHop<String>,Int>()
+        var literalClauses = [term_t:Set<Int>]()
+        var clauseClauses = [term_t:Set<Int>]()
+        
+        for (clauseIndex, tuple) in tptpTuples.enumerate() {
+            let (tptpClause, selectedLiteralIndex, yicesTriple) = tuple
+            let (yicesClause, _ , alignedYicesLiterals) = yicesTriple
+            
+            // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+            for yicesLiteral in Set(alignedYicesLiterals) {
+                if literalClauses[yicesLiteral] == nil {
+                    literalClauses[yicesLiteral] = Set<Int>()
+                }
+                
+                literalClauses[yicesLiteral]?.insert(clauseIndex)
+            }
+            
+            // ---------------------------------------------------------
+            
+            if clauseClauses[yicesClause] == nil {
+                clauseClauses[yicesClause] = Set<Int>()
+            }
+            clauseClauses[yicesClause]?.insert(clauseIndex)
+            // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            
+            assert(yices_formula_true_in_model(mdl, yicesClause) == 1)
+            
+            guard let newSelectedLiteralIndex = yiselect(mdl, tuple: tuple) else {
+                assert(false)
+                continue
+            }
+            
+            if (newSelectedLiteralIndex != selectedLiteralIndex) {
+                indexTrie.delete(selectedLiteralIndex)
+                tptpTuples[clauseIndex].selected = newSelectedLiteralIndex   // update
+            }
+            
+            let literal = tptpClause.nodes![newSelectedLiteralIndex]
+            print("\(clauseIndex).\(newSelectedLiteralIndex): '\(literal)' was selected from '\(tptpClause)'")
+            
+            // find complementaries
+            
+            if let candidates = candidateComplementaries(indexTrie,term: literal) {
+                for candidate in candidates {
+                    let otherClause = tptpTuples[candidate].node
+                    let idx = tptpTuples[candidate].selected
+                    let theliteral = otherClause.nodes![idx]
+                    
+                    let sigma = literal ~?= theliteral
+                    
+                    print(" > \(candidate).\(idx) \t'\(theliteral)' of '\(otherClause)' ")
+                    
+                    if let mgu = sigma {
+                        print("\t>>\t",mgu)
+                        
+                        let newtuples = construct([tptpClause * mgu, otherClause * mgu], baseIndex: tptpTuples.count)
+                        
+                        for newtuple in newtuples {
+                            print("\t>>\t",newtuple)
+                            
+                            let (variantCandidates,vcByClauses) = varcands(literalClauses, clauseClauses, newtuple.triple)
+                            
+                            // var variantCandidates : Set<Int>? = nil
+                            
+                            /// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+//                            for yiLiteral in Set(newtuple.triple.yicesLiterals) {
+//                                guard let licl = literalClauses[yiLiteral] else {
+//                                    // no clause with this literal exists
+//                                    break
+//                                }
+//                                if variantCandidates == nil {
+//                                    variantCandidates = licl
+//                                }
+//                                else {
+//                                    variantCandidates?.intersectInPlace(licl)
+//                                }
+//                                guard let vc = variantCandidates where vc.count > 0 else {
+//                                    break
+//                                }
+//                            }
+//                            // ------------------------------------------------
+//                            let vcByClauses = clauseClauses[newtuple.triple.yicesClause]
+                            // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            
+                            let ovs = variantCandidates?.map { (tptpTuples[$0].node, $0) }
+                            
+                            if let vs = ovs {
+                                for v in vs {
+                                    print("\t..\t",v)
+                                }
+                            }
+                            
+                            if variantCandidates != nil || vcByClauses != nil {
+                                print("\t__\t", variantCandidates ?? "'-'", vcByClauses ?? "'-'", "\t__")
+                            }
+                        }
+                    }
+                    else {
+                        print("\t..\t are not complementary")
+                    }
+                }
+            }
+            
+            for path in literal.paths {
+                indexTrie.insert(path,value: clauseIndex)
+            }
+        }
+    }
+    
+    static func varcands(literalClauses: [term_t : Set<Int>], _ clauseClauses: [term_t : Set<Int>], _ yicesTriple:Yices.Triple) -> (Set<Int>?, Set<Int>?) {
+        var variantCandidates : Set<Int>? = nil
+
+        for yiLiteral in Set(yicesTriple.yicesLiterals) {
+            guard let licl = literalClauses[yiLiteral] else {
+                // no clause with this literal exists
+                break
+            }
+            if variantCandidates == nil {
+                variantCandidates = licl
+            }
+            else {
+                variantCandidates?.intersectInPlace(licl)
+            }
+            guard let vc = variantCandidates where vc.count > 0 else {
+                break
+            }
+        }
+        // ------------------------------------------------
+        
+        return (variantCandidates, clauseClauses[yicesTriple.yicesClause])
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     }
 }

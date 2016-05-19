@@ -138,3 +138,188 @@ tptp root path: /Users/Shared/TPTP
 ========================= 2016-05-18 07:12:08 +0000 =========================
 Program ended with exit code: 0
 
+========================= 2016-05-19 07:48:21 +0000 =========================
+benchmark: 0.00677800178527832
+NyTermsCL @ mml14.local: x86_64, 4 cores, 16 GiB, 3.0 GHz (mark:0.00677800178527832)
+yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)
+Key '-tptp_root' is not set or its value was missing.
+Key 'TPTP_ROOT' is not set or its value was missing.
+Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly.
+tptp root path: /Users/Shared/TPTP
+========================= ========================= =========================
+15 clauses parsed in 656µs 962ns.
+15 yices clauses constructed in 2ms 12µs.
+has equations
+8 yices equality axioms in 3ms 545µs.
+23 yices clauses asserted in 151µs 38ns.
+'yices_check_context(ctx,nil)' in 93µs 43ns.
+'yices_get_model(ctx,1)' in 93µs 43ns.
+0.0: 'lives_at_dreadsbury(someone)' was selected from 'lives_at_dreadsbury(someone)'
+1.0: 'killed(someone,aunt_agatha)' was selected from 'killed(someone,aunt_agatha)'
+2.0: 'lives_at_dreadsbury(aunt_agatha)' was selected from 'lives_at_dreadsbury(aunt_agatha)'
+3.0: 'lives_at_dreadsbury(butler)' was selected from 'lives_at_dreadsbury(butler)'
+4.0: 'lives_at_dreadsbury(charles)' was selected from 'lives_at_dreadsbury(charles)'
+5.0: '~(lives_at_dreadsbury(Person_5))' was selected from '~(lives_at_dreadsbury(Person_5))|Person_5=aunt_agatha|Person_5=butler|Person_5=charles'
+> 2.0 	'lives_at_dreadsbury(aunt_agatha)' of 'lives_at_dreadsbury(aunt_agatha)'
+>>	 [Person_5: aunt_agatha]
+2 yices clauses constructed in 189µs 6ns.
+>>	 (~(lives_at_dreadsbury(aunt_agatha))|aunt_agatha=aunt_agatha|aunt_agatha=butler|aunt_agatha=charles, -1, (2, [2, 19, 76, 80], [19, 2, 76, 80]))
+>>	 (lives_at_dreadsbury(aunt_agatha), -1, (18, [18], [18]))
+..	 (lives_at_dreadsbury(aunt_agatha), 2)
+__	 [2] [2] 	__
+> 3.0 	'lives_at_dreadsbury(butler)' of 'lives_at_dreadsbury(butler)'
+>>	 [Person_5: butler]
+2 yices clauses constructed in 319µs 4ns.
+>>	 (~(lives_at_dreadsbury(butler))|butler=aunt_agatha|butler=butler|butler=charles, -1, (2, [2, 23, 76, 82], [23, 76, 2, 82]))
+>>	 (lives_at_dreadsbury(butler), -1, (22, [22], [22]))
+..	 (lives_at_dreadsbury(butler), 3)
+__	 [3] [3] 	__
+> 0.0 	'lives_at_dreadsbury(someone)' of 'lives_at_dreadsbury(someone)'
+>>	 [Person_5: someone]
+2 yices clauses constructed in 254µs 989ns.
+>>	 (~(lives_at_dreadsbury(someone))|someone=aunt_agatha|someone=butler|someone=charles, -1, (90, [11, 84, 86, 88], [11, 84, 86, 88]))
+>>	 (lives_at_dreadsbury(someone), -1, (10, [10], [10]))
+..	 (lives_at_dreadsbury(someone), 0)
+__	 [0] [0] 	__
+> 4.0 	'lives_at_dreadsbury(charles)' of 'lives_at_dreadsbury(charles)'
+>>	 [Person_5: charles]
+2 yices clauses constructed in 289µs 977ns.
+>>	 (~(lives_at_dreadsbury(charles))|charles=aunt_agatha|charles=butler|charles=charles, -1, (2, [2, 27, 80, 82], [27, 80, 82, 2]))
+>>	 (lives_at_dreadsbury(charles), -1, (26, [26], [26]))
+..	 (lives_at_dreadsbury(charles), 4)
+__	 [4] [4] 	__
+6.0: '~(killed(Killer_6,Victim_6))' was selected from '~(killed(Killer_6,Victim_6))|hates(Killer_6,Victim_6)'
+> 1.0 	'killed(someone,aunt_agatha)' of 'killed(someone,aunt_agatha)'
+>>	 [Killer_6: someone, Victim_6: aunt_agatha]
+2 yices clauses constructed in 236µs 988ns.
+>>	 (~(killed(someone,aunt_agatha))|hates(someone,aunt_agatha), -1, (94, [17, 92], [17, 92]))
+>>	 (killed(someone,aunt_agatha), -1, (16, [16], [16]))
+..	 (killed(someone,aunt_agatha), 1)
+__	 [1] [1] 	__
+7.0: '~(killed(Killer_7,Victim_7))' was selected from '~(killed(Killer_7,Victim_7))|~(richer(Killer_7,Victim_7))'
+> 1.0 	'killed(someone,aunt_agatha)' of 'killed(someone,aunt_agatha)'
+>>	 [Killer_7: someone, Victim_7: aunt_agatha]
+2 yices clauses constructed in 277µs 42ns.
+>>	 (~(killed(someone,aunt_agatha))|~(richer(someone,aunt_agatha)), -1, (98, [17, 97], [17, 97]))
+>>	 (killed(someone,aunt_agatha), -1, (16, [16], [16]))
+..	 (killed(someone,aunt_agatha), 1)
+__	 [1] [1] 	__
+8.1: '~(hates(charles,Person_8))' was selected from '~(hates(aunt_agatha,Person_8))|~(hates(charles,Person_8))'
+9.1: 'hates(aunt_agatha,Person_9)' was selected from 'Person_9=butler|hates(aunt_agatha,Person_9)'
+10.1: 'hates(butler,Person_10)' was selected from 'richer(Person_10,aunt_agatha)|hates(butler,Person_10)'
+11.1: 'hates(butler,Person_11)' was selected from '~(hates(aunt_agatha,Person_11))|hates(butler,Person_11)'
+12.0: '~(hates(Person_12,every_one_but(Person_12)))' was selected from '~(hates(Person_12,every_one_but(Person_12)))'
+> 9.1 	'hates(aunt_agatha,Person_9)' of 'Person_9=butler|hates(aunt_agatha,Person_9)'
+>>	 [Person_12: aunt_agatha, Person_9: every_one_but(Person_12)]
+2 yices clauses constructed in 196µs 993ns.
+>>	 (~(hates(aunt_agatha,every_one_but(aunt_agatha))), -1, (103, [103], [103]))
+>>	 (every_one_but(Person_12_24)=butler|hates(aunt_agatha,every_one_but(Person_12_24)), -1, (108, [104, 106], [104, 106]))
+> 10.1 	'hates(butler,Person_10)' of 'richer(Person_10,aunt_agatha)|hates(butler,Person_10)'
+>>	 [Person_12: butler, Person_10: every_one_but(Person_12)]
+2 yices clauses constructed in 297µs 10ns.
+>>	 (~(hates(butler,every_one_but(butler))), -1, (113, [113], [113]))
+>>	 (richer(every_one_but(Person_12_24),aunt_agatha)|hates(butler,every_one_but(Person_12_24)), -1, (118, [114, 116], [114, 116]))
+> 11.1 	'hates(butler,Person_11)' of '~(hates(aunt_agatha,Person_11))|hates(butler,Person_11)'
+>>	 [Person_12: butler, Person_11: every_one_but(Person_12)]
+2 yices clauses constructed in 265µs 2ns.
+>>	 (~(hates(butler,every_one_but(butler))), -1, (113, [113], [113]))
+>>	 (~(hates(aunt_agatha,every_one_but(Person_12_24)))|hates(butler,every_one_but(Person_12_24)), -1, (120, [107, 116], [107, 116]))
+13.0: 'aunt_agatha!=butler' was selected from 'aunt_agatha!=butler'
+14.0: '~(killed(aunt_agatha,aunt_agatha))' was selected from '~(killed(aunt_agatha,aunt_agatha))'
+15.0: 'X_15=X_15' was selected from 'X_15=X_15'
+> 13.0 	'aunt_agatha!=butler' of 'aunt_agatha!=butler'
+..	 are not complementary
+16.1: 'Y_16=X_16' was selected from 'X_16!=Y_16|Y_16=X_16'
+> 13.0 	'aunt_agatha!=butler' of 'aunt_agatha!=butler'
+>>	 [X_16: butler, Y_16: aunt_agatha]
+2 yices clauses constructed in 160µs 992ns.
+>>	 (butler!=aunt_agatha|aunt_agatha=butler, -1, (2, [77, 76], [77, 76]))
+..	 (aunt_agatha!=butler, 13)
+__	 [13] [16, 15] 	__
+>>	 (aunt_agatha!=butler, -1, (77, [77], [77]))
+..	 (aunt_agatha!=butler, 13)
+__	 [13] [13] 	__
+17.2: 'X_17=Z_17' was selected from 'X_17!=Y_17|Y_17!=Z_17|X_17=Z_17'
+> 13.0 	'aunt_agatha!=butler' of 'aunt_agatha!=butler'
+>>	 [X_17: aunt_agatha, Z_17: butler]
+2 yices clauses constructed in 172µs 19ns.
+>>	 (aunt_agatha!=Y_17_23|Y_17_23!=butler|aunt_agatha=butler, -1, (122, [33, 35, 76], [33, 35, 76]))
+>>	 (aunt_agatha!=butler, -1, (77, [77], [77]))
+..	 (aunt_agatha!=butler, 13)
+__	 [13] [13] 	__
+18.1: '~(lives_at_dreadsbury(X1_18))' was selected from 'X1_18!=Y1_18|~(lives_at_dreadsbury(X1_18))|lives_at_dreadsbury(Y1_18)'
+> 2.0 	'lives_at_dreadsbury(aunt_agatha)' of 'lives_at_dreadsbury(aunt_agatha)'
+>>	 [X1_18: aunt_agatha]
+2 yices clauses constructed in 135µs 958ns.
+>>	 (aunt_agatha!=Y1_18_23|~(lives_at_dreadsbury(aunt_agatha))|lives_at_dreadsbury(Y1_18_23), -1, (124, [19, 30, 33], [33, 19, 30]))
+..	 (X1_18!=Y1_18|~(lives_at_dreadsbury(X1_18))|lives_at_dreadsbury(Y1_18), 18)
+__	 [18] '-' 	__
+>>	 (lives_at_dreadsbury(aunt_agatha), -1, (18, [18], [18]))
+..	 (lives_at_dreadsbury(aunt_agatha), 2)
+__	 [2] [2] 	__
+> 3.0 	'lives_at_dreadsbury(butler)' of 'lives_at_dreadsbury(butler)'
+>>	 [X1_18: butler]
+2 yices clauses constructed in 173µs 32ns.
+>>	 (butler!=Y1_18_23|~(lives_at_dreadsbury(butler))|lives_at_dreadsbury(Y1_18_23), -1, (126, [23, 30, 35], [35, 23, 30]))
+..	 (X1_18!=Y1_18|~(lives_at_dreadsbury(X1_18))|lives_at_dreadsbury(Y1_18), 18)
+__	 [18] '-' 	__
+>>	 (lives_at_dreadsbury(butler), -1, (22, [22], [22]))
+..	 (lives_at_dreadsbury(butler), 3)
+__	 [3] [3] 	__
+> 0.0 	'lives_at_dreadsbury(someone)' of 'lives_at_dreadsbury(someone)'
+>>	 [X1_18: someone]
+2 yices clauses constructed in 167µs 12ns.
+>>	 (someone!=Y1_18_23|~(lives_at_dreadsbury(someone))|lives_at_dreadsbury(Y1_18_23), -1, (130, [11, 30, 129], [129, 11, 30]))
+..	 (X1_18!=Y1_18|~(lives_at_dreadsbury(X1_18))|lives_at_dreadsbury(Y1_18), 18)
+__	 [18] '-' 	__
+>>	 (lives_at_dreadsbury(someone), -1, (10, [10], [10]))
+..	 (lives_at_dreadsbury(someone), 0)
+__	 [0] [0] 	__
+> 4.0 	'lives_at_dreadsbury(charles)' of 'lives_at_dreadsbury(charles)'
+>>	 [X1_18: charles]
+2 yices clauses constructed in 178µs 993ns.
+>>	 (charles!=Y1_18_23|~(lives_at_dreadsbury(charles))|lives_at_dreadsbury(Y1_18_23), -1, (132, [27, 30, 37], [37, 27, 30]))
+>>	 (lives_at_dreadsbury(charles), -1, (26, [26], [26]))
+..	 (lives_at_dreadsbury(charles), 4)
+__	 [4] [4] 	__
+19.2: '~(killed(X1_19,X2_19))' was selected from 'X1_19!=Y1_19|X2_19!=Y2_19|~(killed(X1_19,X2_19))|killed(Y1_19,Y2_19)'
+> 1.0 	'killed(someone,aunt_agatha)' of 'killed(someone,aunt_agatha)'
+>>	 [X1_19: someone, X2_19: aunt_agatha]
+2 yices clauses constructed in 304µs 997ns.
+>>	 (someone!=Y1_19_23|aunt_agatha!=Y2_19_23|~(killed(someone,aunt_agatha))|killed(Y1_19_23,Y2_19_23), -1, (134, [17, 33, 40, 129], [129, 33, 17, 40]))
+>>	 (killed(someone,aunt_agatha), -1, (16, [16], [16]))
+..	 (killed(someone,aunt_agatha), 1)
+__	 [1] [1] 	__
+20.1: 'every_one_but(X1_20)=every_one_but(Y1_20)' was selected from 'X1_20!=Y1_20|every_one_but(X1_20)=every_one_but(Y1_20)'
+21.2: '~(richer(X1_21,X2_21))' was selected from 'X1_21!=Y1_21|X2_21!=Y2_21|~(richer(X1_21,X2_21))|richer(Y1_21,Y2_21)'
+22.2: '~(hates(X1_22,X2_22))' was selected from 'X1_22!=Y1_22|X2_22!=Y2_22|~(hates(X1_22,X2_22))|hates(Y1_22,Y2_22)'
+> 9.1 	'hates(aunt_agatha,Person_9)' of 'Person_9=butler|hates(aunt_agatha,Person_9)'
+>>	 [X1_22: aunt_agatha, X2_22: Person_9]
+2 yices clauses constructed in 285µs 983ns.
+>>	 (aunt_agatha!=Y1_22_23|Person_9_23!=Y2_22_23|~(hates(aunt_agatha,Person_9_23))|hates(Y1_22_23,Y2_22_23), -1, (136, [33, 44, 55, 55], [33, 3, 55, 44]))
+..	 (~(hates(aunt_agatha,Person_8))|~(hates(charles,Person_8)), 8)
+..	 (~(hates(aunt_agatha,Person_11))|hates(butler,Person_11), 11)
+__	 [8, 11] '-' 	__
+>>	 (Person_9_24=butler|hates(aunt_agatha,Person_9_24), -1, (60, [34, 54], [34, 54]))
+..	 (Person_9=butler|hates(aunt_agatha,Person_9), 9)
+__	 [9] [9] 	__
+> 10.1 	'hates(butler,Person_10)' of 'richer(Person_10,aunt_agatha)|hates(butler,Person_10)'
+>>	 [X1_22: butler, X2_22: Person_10]
+2 yices clauses constructed in 283µs 3ns.
+>>	 (butler!=Y1_22_23|Person_10_23!=Y2_22_23|~(hates(butler,Person_10_23))|hates(Y1_22_23,Y2_22_23), -1, (138, [35, 44, 65, 65], [35, 3, 65, 44]))
+>>	 (richer(Person_10_24,aunt_agatha)|hates(butler,Person_10_24), -1, (66, [62, 64], [62, 64]))
+..	 (richer(Person_10,aunt_agatha)|hates(butler,Person_10), 10)
+__	 [10] [10] 	__
+> 11.1 	'hates(butler,Person_11)' of '~(hates(aunt_agatha,Person_11))|hates(butler,Person_11)'
+>>	 [X1_22: butler, X2_22: Person_11]
+2 yices clauses constructed in 347µs 972ns.
+>>	 (butler!=Y1_22_23|Person_11_23!=Y2_22_23|~(hates(butler,Person_11_23))|hates(Y1_22_23,Y2_22_23), -1, (138, [35, 44, 65, 65], [35, 3, 65, 44]))
+>>	 (~(hates(aunt_agatha,Person_11_24))|hates(butler,Person_11_24), -1, (68, [55, 64], [55, 64]))
+..	 (~(hates(aunt_agatha,Person_11))|hates(butler,Person_11), 11)
+__	 [11] [11] 	__
+^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^
+demo() /Users/Shared/TPTP/Problems/PUZ/PUZ001-2.p runtime = 0.041109025478363
+========================= ========================= =========================
+========================= 2016-05-19 07:48:21 +0000 =========================
+Program ended with exit code: 0
+

@@ -209,13 +209,35 @@ struct Demo {
         }
     }
     
+    typealias ClauseIndices = (byYicesLiterals:[term_t:Set<Int>], byYicesClauses: [term_t:Set<Int>])
+    
+    static func addtoindices(inout clauseIndices:ClauseIndices, clauseIndex:Int, triple:Yices.Triple) {
+        // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+        for yicesLiteral in Set(triple.alignedYicesLiterals) {
+            if clauseIndices.byYicesLiterals[yicesLiteral] == nil {
+                clauseIndices.byYicesLiterals[yicesLiteral] = Set<Int>()
+            }
+            
+            clauseIndices.byYicesLiterals[yicesLiteral]?.insert(clauseIndex)
+        }
+        
+        // ---------------------------------------------------------
+        
+        if clauseIndices.byYicesClauses[triple.yicesClause] == nil {
+            clauseIndices.byYicesClauses[triple.yicesClause] = Set<Int>()
+        }
+        clauseIndices.byYicesClauses[triple.yicesClause]?.insert(clauseIndex)
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        
+    }
+    
     static func process(clauses:[TptpNode]) {
         var tptpTuples = construct(clauses)
         
         let (hasEquations, functors) = eqfunc(TptpNode.symbols)
         
         print(hasEquations ? "has equations" : "(has no equations)")
-
+        
         
         if hasEquations { axiomize(&tptpTuples,functors:functors) }
         
@@ -232,29 +254,14 @@ struct Demo {
         defer { yices_free_model(mdl) }
         
         var indexTrie = TrieClass<SymHop<String>,Int>()
-        var literalClauses = [term_t:Set<Int>]()
-        var clauseClauses = [term_t:Set<Int>]()
+        
+        var tptpClauseIndexes : ClauseIndices = (byYicesLiterals:[term_t:Set<Int>](), byYicesClauses: [term_t:Set<Int>]())
         
         for (clauseIndex, tuple) in tptpTuples.enumerate() {
             let (tptpClause, selectedLiteralIndex, yicesTriple) = tuple
-            let (yicesClause, _ , alignedYicesLiterals) = yicesTriple
+            let (yicesClause, _ , _) = yicesTriple
             
-            // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-            for yicesLiteral in Set(alignedYicesLiterals) {
-                if literalClauses[yicesLiteral] == nil {
-                    literalClauses[yicesLiteral] = Set<Int>()
-                }
-                
-                literalClauses[yicesLiteral]?.insert(clauseIndex)
-            }
-            
-            // ---------------------------------------------------------
-            
-            if clauseClauses[yicesClause] == nil {
-                clauseClauses[yicesClause] = Set<Int>()
-            }
-            clauseClauses[yicesClause]?.insert(clauseIndex)
-            // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            addtoindices(&tptpClauseIndexes, clauseIndex: clauseIndex, triple: yicesTriple)
             
             assert(yices_formula_true_in_model(mdl, yicesClause) == 1)
             
@@ -291,40 +298,12 @@ struct Demo {
                         for newtuple in newtuples {
                             print("\t>>\t",newtuple)
                             
-                            let (variantCandidates,vcByClauses) = varcands(literalClauses, clauseClauses, newtuple.triple)
-                            
-                            // var variantCandidates : Set<Int>? = nil
-                            
-                            /// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-//                            for yiLiteral in Set(newtuple.triple.yicesLiterals) {
-//                                guard let licl = literalClauses[yiLiteral] else {
-//                                    // no clause with this literal exists
-//                                    break
-//                                }
-//                                if variantCandidates == nil {
-//                                    variantCandidates = licl
-//                                }
-//                                else {
-//                                    variantCandidates?.intersectInPlace(licl)
-//                                }
-//                                guard let vc = variantCandidates where vc.count > 0 else {
-//                                    break
-//                                }
-//                            }
-//                            // ------------------------------------------------
-//                            let vcByClauses = clauseClauses[newtuple.triple.yicesClause]
-                            // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                            
-                            let ovs = variantCandidates?.map { (tptpTuples[$0].node, $0) }
-                            
-                            if let vs = ovs {
-                                for v in vs {
-                                    print("\t..\t",v)
-                                }
-                            }
-                            
-                            if variantCandidates != nil || vcByClauses != nil {
-                                print("\t__\t", variantCandidates ?? "'-'", vcByClauses ?? "'-'", "\t__")
+                            let (variantCandidatesByLiterals,variantCandidatesByClause) = variantSubsumptionCandidates(tptpClauseIndexes, newtuple.triple, tptpTuples: tptpTuples)
+                            let vs = variantCandidatesByLiterals.map { (tptpTuples[$0].node, $0) }
+
+                            if variantCandidatesByLiterals.count > 0 || variantCandidatesByClause != nil {
+                                for v in vs { print("\t..\t",v) }
+                                print("\t__\t", variantCandidatesByLiterals ?? "'-'", variantCandidatesByClause ?? "'-'", "\t__")
                             }
                         }
                     }
@@ -340,27 +319,31 @@ struct Demo {
         }
     }
     
-    static func varcands(literalClauses: [term_t : Set<Int>], _ clauseClauses: [term_t : Set<Int>], _ yicesTriple:Yices.Triple) -> (Set<Int>?, Set<Int>?) {
-        var variantCandidates : Set<Int>? = nil
-
-        for yiLiteral in Set(yicesTriple.yicesLiterals) {
-            guard let licl = literalClauses[yiLiteral] else {
-                // no clause with this literal exists
-                break
-            }
-            if variantCandidates == nil {
-                variantCandidates = licl
-            }
-            else {
-                variantCandidates?.intersectInPlace(licl)
-            }
-            guard let vc = variantCandidates where vc.count > 0 else {
-                break
-            }
-        }
-        // ------------------------------------------------
+    static func variantSubsumptionCandidates(tptpClauseIndices: ClauseIndices, _ yicesTriple:Yices.Triple, tptpTuples: [TptpNode.Tuple] ) -> ([Int], Set<Int>?) {
         
-        return (variantCandidates, clauseClauses[yicesTriple.yicesClause])
-        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        
+        let newLiteralsSet = Set(yicesTriple.yicesLiterals)
+        let literalSharer = tptpClauseIndices.byYicesLiterals.filter {
+            newLiteralsSet.contains($0.0)
+            }.flatMap { $0.1 }
+        
+        let candidatesByLiterals = Set(literalSharer).filter {
+            candidateIndex in
+            
+            assert(candidateIndex < tptpTuples.count)
+            
+            let candidateLiteralsSet = Set(tptpTuples[candidateIndex].triple.alignedYicesLiterals)
+            
+            // the literals of a candidate must be a subset of the new literals (i.e. literals of a new clause)
+            return candidateLiteralsSet.isSubsetOf(newLiteralsSet)
+            
+        }
+        
+        // ---------------------------------------------------------------------
+        
+        let candidatesByClause = tptpClauseIndices.byYicesClauses[yicesTriple.yicesClause]
+        
+        return (candidatesByLiterals, candidatesByClause)
+        // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     }
 }

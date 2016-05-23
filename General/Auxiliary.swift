@@ -10,6 +10,12 @@ func measure<R>(f:()->R) -> (R, CFAbsoluteTime){
     return (result, end-start)
 }
 
+func doitif(@autoclosure condition: ()->Bool, action:()->Void) {
+    if condition() {
+        action()
+    }
+}
+
 func errorNumberAndDescription() -> (Int32,String) {
     let errorNumber = errno
     let cstring = strerror(errorNumber) // will always return a valid c string.

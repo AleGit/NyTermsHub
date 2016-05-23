@@ -15,9 +15,17 @@ extension TptpNode {
 
 
 struct Demo {
+    static var printall = false
+    static var printruntimes = false
+    static var printcc = false
+    static var printsummary = true
+    
+    
     static func parse(file:TptpPath) -> [TptpNode] {
         let (clauses,parseTime) = measure { TptpNode.roots(file) }
-        print("\(clauses.count) clauses parsed in \(parseTime.prettyTimeIntervalDescription) (\(parseTime)).")
+        doitif( printruntimes||printall ) {
+            print("\(clauses.count) clauses parsed in \(parseTime.prettyTimeIntervalDescription) (\(parseTime) s).")
+        }
         return clauses
     }
     
@@ -25,7 +33,9 @@ struct Demo {
         let (tptpTuples, clauseTime) = measure {
             clauses.enumerate().map { (node:$1 ** (baseIndex+$0), selected:-1,triple:Yices.clause($1.nodes!)) }
         }
-        // print("\(tptpTuples.count) yices clauses constructed in \(clauseTime.prettyTimeIntervalDescription) (\(clauseTime).")
+        doitif( printall || (printruntimes && printcc) ) {
+            print("\(tptpTuples.count) yices clauses constructed in \(clauseTime.prettyTimeIntervalDescription) (\(clauseTime).")
+        }
         return tptpTuples
     }
     
@@ -110,7 +120,9 @@ struct Demo {
                 
             }
         }
-        print("\(tptpTuples.count-count) yices equality axioms in \(axiomTime.prettyTimeIntervalDescription) (\(axiomTime)).")
+        doitif( printruntimes||printall ) {
+            print("\(tptpTuples.count-count) yices equality axioms in \(axiomTime.prettyTimeIntervalDescription) (\(axiomTime) s).")
+        }
         
     }
     
@@ -122,7 +134,9 @@ struct Demo {
                 assert( code >= 0 )
             }
         }
-        print("\(tptpTuples.count) yices clauses asserted in \(assertTime.prettyTimeIntervalDescription) (\(assertTime)).")
+        doitif( printruntimes||printall ) {
+            print("\(tptpTuples.count) yices clauses asserted in \(assertTime.prettyTimeIntervalDescription) (\(assertTime) s).")
+        }
     }
     
     static func yistatus(ctx:COpaquePointer, expected: smt_status_t?) -> smt_status_t {
@@ -133,7 +147,9 @@ struct Demo {
     
     static func yistatus(ctx:COpaquePointer) -> smt_status_t {
         let (status, checkTime) = measure { yices_check_context(ctx,nil) }
-        print("'yices_check_context(ctx,nil)' in \(checkTime.prettyTimeIntervalDescription).")
+        doitif( printruntimes||printall ) {
+            print("'yices_check_context(ctx,nil)' in \(checkTime.prettyTimeIntervalDescription).")
+        }
         return status
     }
     
@@ -143,7 +159,9 @@ struct Demo {
             yices_get_model(ctx,1)
         }
         
-        print("'yices_get_model(ctx,1)' in \(modelTime.prettyTimeIntervalDescription) (\(modelTime)).")
+        doitif( printruntimes||printall ) {
+            print("'yices_get_model(ctx,1)' in \(modelTime.prettyTimeIntervalDescription) (\(modelTime) s).")
+        }
         return mdl
         
     }
@@ -195,29 +213,43 @@ struct Demo {
     
     static func demo() {
         for name in [
-            "PUZ001-1",
-            "PUZ001-2",
-            "HWV074-1",
-            "HWV066-1",
-            "HWV119-1",
-            "HWV105-1",
-            "HWV124-1"
+            // without equality
+            // "PUZ001-1",
+            "TOP019-1",
+            
+            // with equality
+            // "PUZ063-1",
+            // "PUZ063-2",
+            
+            // "PUZ043-1", // satisfiable
+            //"PUZ056-2.030"
+            // "PUZ001-2",
+            // "HWV074-1",
+            // "HWV066-1",
+            // "HWV119-1",
+            // "HWV105-1",
+            // "HWV124-1"
             ] {
-                let file = name.p!
+                guard let file = name.p else {
+                    assert(false,"file '\(name)' was not found within tptp root path '\(TptpPath.tptpRootPath)'.")
+                    continue
+                }
                 let clauses = parse(file)
                 
                 let (_,runtime) = measure {
                     process(clauses)
                 }
                 
-                print("\(#function) \(file) runtime = \(runtime.prettyTimeIntervalDescription) (\(runtime))")
+                doitif( printsummary ) {
+                    print("\(#function) \(file) runtime = \(runtime.prettyTimeIntervalDescription) (\(runtime))")
+                }
                 print("^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^")
         }
     }
     
     typealias ClauseIndices = (byYicesLiterals:[term_t:Set<Int>], byYicesClauses: [term_t:Set<Int>])
     
-    static func addtoindices(inout clauseIndices:ClauseIndices, clauseIndex:Int, triple:Yices.Triple) {
+    static func addtoclauseindices(inout clauseIndices:ClauseIndices, clauseIndex:Int, triple:Yices.Triple) {
         // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         for yicesLiteral in Set(triple.alignedYicesLiterals) {
             if clauseIndices.byYicesLiterals[yicesLiteral] == nil {
@@ -242,7 +274,9 @@ struct Demo {
         
         let (hasEquations, functors) = eqfunc(TptpNode.symbols)
         
-        print(hasEquations ? "has equations" : "(has no equations)")
+        doitif( printall ) {
+            print(hasEquations ? "has equations" : "(has no equations)")
+        }
         
         
         if hasEquations { axiomize(&tptpTuples,functors:functors) }
@@ -256,82 +290,142 @@ struct Demo {
         
         var status = yistatus(ctx, expected: STATUS_SAT)
         
-        let mdl = yimodel(ctx)
-        defer { yices_free_model(mdl) }
-        
         var indexTrie = TrieClass<SymHop<String>,Int>()
         
         var tptpClauseIndexes : ClauseIndices = (byYicesLiterals:[term_t:Set<Int>](), byYicesClauses: [term_t:Set<Int>]())
         
+        var proofTree = [Int : (lcidx:Int,rcidx:Int,mgu:[TptpNode:TptpNode])]()
+        
         let start = CFAbsoluteTimeGetCurrent()
         let step = max(1,min(5000,tptpTuples.count/3))
         
-        for (clauseIndex, tuple) in tptpTuples.enumerate() {
-            let (tptpClause, selectedLiteralIndex, yicesTriple) = tuple
-            let (yicesClause, _ , _) = yicesTriple
+        var processed = -1
+        
+        while status == STATUS_SAT {
             
-            if (clauseIndex % step == 0) {
-                let time = CFAbsoluteTimeGetCurrent() - start
-                print(clauseIndex,tptpClause,time.prettyTimeIntervalDescription)
+            print("***",status,"(begin)", tptpTuples.count)
+            let count = tptpTuples.count
+            let mdl = yimodel(ctx)
+            defer {
+                yices_free_model(mdl)
+                status = yistatus(ctx)
+                print("***",status,"(end)", tptpTuples.count)
             }
             
-            addtoindices(&tptpClauseIndexes, clauseIndex: clauseIndex, triple: yicesTriple)
-            
-            assert(yices_formula_true_in_model(mdl, yicesClause) == 1)
-            
-            guard let newSelectedLiteralIndex = yiselect(mdl, tuple: tuple) else {
-                assert(false)
-                continue
-            }
-            
-            if (newSelectedLiteralIndex != selectedLiteralIndex) {
-                indexTrie.delete(selectedLiteralIndex)
-                tptpTuples[clauseIndex].selected = newSelectedLiteralIndex   // update
-            }
-            
-            let literal = tptpClause.nodes![newSelectedLiteralIndex]
-            // print("\(clauseIndex).\(newSelectedLiteralIndex): '\(literal)' was selected from '\(tptpClause)'")
-            
-            // find complementaries
-            
-            if let candidates = candidateComplementaries(indexTrie,term: literal) {
-                for candidate in candidates {
-                    let otherClause = tptpTuples[candidate].node
-                    let idx = tptpTuples[candidate].selected
-                    let theliteral = otherClause.nodes![idx]
-                    
-                    let sigma = literal ~?= theliteral
-                    
-//                    print(" > \(candidate).\(idx) \t'\(theliteral)' of '\(otherClause)' ")
-                    
-                    if let mgu = sigma {
-//                        print("\tµ=\t",mgu)
+            for (clauseIndex, tuple) in tptpTuples.enumerate() {
+                
+                let (tptpClause, selectedLiteralIndex, yicesTriple) = tuple
+                let (yicesClause, _ , _) = yicesTriple
+                
+                doitif( printall || (clauseIndex % step == 0 && printruntimes) ) {
+                    let time = CFAbsoluteTimeGetCurrent() - start
+                    print(clauseIndex,tptpClause,time.prettyTimeIntervalDescription,"(\(time) s)")
+                }
+                
+                if clauseIndex > processed {
+                    addtoclauseindices(&tptpClauseIndexes, clauseIndex: clauseIndex, triple: yicesTriple)
+                    processed = clauseIndex
+                }
+                
+                assert(yices_formula_true_in_model(mdl, yicesClause) == 1)
+                
+                guard let newSelectedLiteralIndex = yiselect(mdl, tuple: tuple) else {
+                    assert(false)
+                    continue
+                }
+                
+                if (newSelectedLiteralIndex != selectedLiteralIndex) {
+                    indexTrie.delete(selectedLiteralIndex)
+                    tptpTuples[clauseIndex].selected = newSelectedLiteralIndex   // update
+                }
+                
+                let literal = tptpClause.nodes![newSelectedLiteralIndex]
+                doitif( printall ) {
+                    print("\(clauseIndex).\(newSelectedLiteralIndex): '\(literal)' was selected from '\(tptpClause)'")
+                }
+                
+                // find complementaries
+                
+                if let candidates = candidateComplementaries(indexTrie,term: literal) {
+                    for candidate in candidates {
+                        let otherClause = tptpTuples[candidate].node
+                        let idx = tptpTuples[candidate].selected
+                        let theliteral = otherClause.nodes![idx]
                         
-                        let newtuples = construct([tptpClause * mgu, otherClause * mgu], baseIndex: tptpTuples.count)
+                        let sigma = literal ~?= theliteral
                         
-                        for newtuple in newtuples {
- //                           print("\t>>\t",newtuple)
+                        doitif( printall ) {
+                            print(" > \(candidate).\(idx) \t'\(theliteral)' of '\(otherClause)' ")
+                        }
+                        
+                        if let mgu = sigma {
+                            doitif( printall ) {
+                                print("\tµ=\t",mgu)
+                            }
                             
-                            let (variantCandidatesByLiterals,variantCandidatesByClause) = variantSubsumptionCandidates(tptpClauseIndexes, newtuple.triple, tptpTuples: tptpTuples)
-                            
-                            let candidates = (variantCandidatesByClause ?? Set<Int>()).union(variantCandidatesByLiterals).sort()
-                            let vs = candidates.map { (tptpTuples[$0].node, $0) }
-
-//                            if vs.count > 0 {
-//                                for v in vs { print("\t..\t",v) }
-//                                print("\t__\t", variantCandidatesByLiterals ?? "'-'", variantCandidatesByClause ?? "'-'", "\t__")
-//                            }
+                            for possibleNewClause in [tptpClause * mgu, otherClause * mgu] {
+                                guard let µ = possibleNewClause =?= tptpClause where !µ.isRenaming else {
+                                    continue
+                                }
+                                
+                                let newtuples = construct([possibleNewClause], baseIndex: tptpTuples.count)
+                                assert(newtuples.count == 1)
+                                
+                                guard let newtuple = newtuples.first else {
+                                    continue
+                                }
+                                
+                                doitif( printall ) {  print("\t>>\t",newtuple) }
+                                
+                                let (variantCandidatesByLiterals,variantCandidatesByClause) = variantSubsumptionCandidates(tptpClauseIndexes, newtuple.triple, tptpTuples: tptpTuples)
+                                
+                                doitif( printall ) {
+                                    let candidates = (variantCandidatesByClause ?? Set<Int>()).union(variantCandidatesByLiterals).sort()
+                                    let vs = candidates.map { (tptpTuples[$0].node, $0) }
+                                    
+                                    
+                                    if vs.count > 0 {
+                                        for v in vs { print("\t..\t",v) }
+                                        print("\t__\t", variantCandidatesByLiterals ?? "'-'", variantCandidatesByClause ?? "'-'", "\t__")
+                                    }
+                                    
+                                }
+                                
+                                guard variantCandidatesByLiterals.isEmpty else { continue }
+                                
+                                print("\(clauseIndex) addd \(newtuple)")
+                                tptpTuples.append(newtuple)
+                                
+                                yiassert(ctx,tptpTuples:newtuples)
+                                
+                                guard yistatus(ctx, expected: nil) == STATUS_SAT else {
+                                    print("contradiction: \(newtuple)")
+                                    break
+                                }
+                                
+                                if clauseIndex > processed {
+                                    addtoclauseindices(&tptpClauseIndexes, clauseIndex: clauseIndex, triple: newtuple.triple)
+                                    processed = clauseIndex
+                                }
+                                
+                                
+                            }
+                        }
+                        else {
+                            doitif( printall ) {
+                                print("\t..\t are not complementary")
+                            }
                         }
                     }
-                    else {
-//                        print("\t..\t are not complementary")
-                    }
+                }
+                
+                for path in literal.paths {
+                    indexTrie.insert(path,value: clauseIndex)
                 }
             }
             
-            for path in literal.paths {
-                indexTrie.insert(path,value: clauseIndex)
-            }
+            guard count < tptpTuples.count else { break }
+            
         }
     }
     

@@ -4,12 +4,11 @@ A first order theorem prover with equality.
 
 To build and run the this application, 
 the command line tool, or the unit tests 
-some data and libraries have to be installed.
+the following data and libraries have to be installed.
 
-- flex
-- yacc
-- tptp
-- yices
+- flex, yacc (preinstalled)
+- TPTP problem files
+- yices  2
 - z3
 
 ##Flex and Yacc
@@ -29,12 +28,10 @@ and create a symbolic link `TPTP` to the directory in `/Users/Shared/`.
 (Or you edit the xcode scheme to set -tptp_root or TPTP_ROOT 
 to the path where directories 'Axioms' and 'Problems' are residing)
 
-
-
-cd /Users/Shared/
-tar -xzf ~/Downloads/TPTP-v6.3.0.tgz 
-tar -xz ~/Downloads/TPTP-v6.3.0.tar
-ln -s TPTP-v6.3.0 TPTP
+    cd /Users/Shared/
+    tar -xzf ~/Downloads/TPTP-v6.3.0.tgz 
+    tar -xz ~/Downloads/TPTP-v6.3.0.tar
+    ln -s TPTP-v6.3.0 TPTP
 
 The tptp root path default is `/Users/Shared/TPTP`.
 
@@ -46,18 +43,27 @@ cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/AxiomB.ax
 mkdir /Users/Shared/Axioms
 cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomsC.ax
 
-## Yices
+## Yices 2, Z3 (SMT Prover)
 =====
 
-Download and install yices 2 for Mac OS X (64 bits) from [yices.csl.sri.com](http://yices.csl.sri.com).
+Download and install yices 2 for Mac OS X (64 bits) from [yices.csl.sri.com](http://yices.csl.sri.com). This project uses the precompiled binary.
+Follow the instructions from the website. Check for the following files on your system:
 
-See `Docs/Yices` in this project for configuration details .
+    /usr/local/include/yices.h
+    /usr/local/lib/libz3.dylib
 
-## Z3
-====
+Download, build and install z3 (by Microsoft) from [Github](https://github.com/Z3Prover/z3). This project uses the build from source version.
+Follow the instructions from the website. Check for the following files on your system:
 
-Download, build and install z3 (by Microsoft) from [Github](https://github.com/Z3Prover/z3)
+    /usr/local/include/z3.h
+    /usr/local/lib/libyices.dylib
 
-See `Docs/z3` in this project for configuration details.
+### project linker flags
+
+    -lyices -lz3 -L/usr/local/lib
+
+See also `Docs/Yices` and `Docs/z3` in this project for configuration details.
+
+
 
 

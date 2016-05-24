@@ -1,0 +1,823 @@
+MML14:z3 aXm$ ls -l
+total 184
+-rw-r--r--   1 aXm  staff  17455 24 Mai 10:45 CMakeLists.txt
+-rw-r--r--   1 aXm  staff   1096 24 Mai 10:45 LICENSE.txt
+-rw-r--r--   1 aXm  staff  17884 24 Mai 10:45 README-CMake.md
+-rw-r--r--   1 aXm  staff   4719 24 Mai 10:45 README.md
+-rw-r--r--   1 aXm  staff  34895 24 Mai 10:45 RELEASE_NOTES
+-rwxr-xr-x   1 aXm  staff    416 24 Mai 10:45 configure
+drwxr-xr-x   3 aXm  staff    102 24 Mai 10:45 contrib
+drwxr-xr-x   9 aXm  staff    306 24 Mai 10:45 doc
+drwxr-xr-x  11 aXm  staff    374 24 Mai 10:45 examples
+drwxr-xr-x  21 aXm  staff    714 24 Mai 10:45 scripts
+drwxr-xr-x  22 aXm  staff    748 24 Mai 10:45 src
+MML14:z3 aXm$ python scripts/mk_make.py 
+New component: 'util'
+New component: 'polynomial'
+New component: 'sat'
+New component: 'nlsat'
+New component: 'hilbert'
+New component: 'simplex'
+New component: 'automata'
+New component: 'interval'
+New component: 'realclosure'
+New component: 'subpaving'
+New component: 'ast'
+New component: 'rewriter'
+New component: 'normal_forms'
+New component: 'model'
+New component: 'tactic'
+New component: 'substitution'
+New component: 'parser_util'
+New component: 'grobner'
+New component: 'euclid'
+New component: 'core_tactics'
+New component: 'sat_tactic'
+New component: 'arith_tactics'
+New component: 'nlsat_tactic'
+New component: 'subpaving_tactic'
+New component: 'aig_tactic'
+New component: 'solver'
+New component: 'ackermannization'
+New component: 'interp'
+New component: 'cmd_context'
+New component: 'extra_cmds'
+New component: 'smt2parser'
+New component: 'proof_checker'
+New component: 'simplifier'
+New component: 'fpa'
+New component: 'macros'
+New component: 'pattern'
+New component: 'bit_blaster'
+New component: 'smt_params'
+New component: 'proto_model'
+New component: 'smt'
+New component: 'bv_tactics'
+New component: 'fuzzing'
+New component: 'smt_tactic'
+New component: 'sls_tactic'
+New component: 'qe'
+New component: 'duality'
+New component: 'muz'
+New component: 'dataflow'
+New component: 'transforms'
+New component: 'rel'
+New component: 'pdr'
+New component: 'clp'
+New component: 'tab'
+New component: 'bmc'
+New component: 'ddnf'
+New component: 'duality_intf'
+New component: 'fp'
+New component: 'nlsat_smt_tactic'
+New component: 'ufbv_tactic'
+New component: 'sat_solver'
+New component: 'smtlogic_tactics'
+New component: 'fpa_tactics'
+New component: 'portfolio'
+New component: 'smtparser'
+New component: 'opt'
+New component: 'api'
+New component: 'shell'
+New component: 'test'
+New component: 'api_dll'
+New component: 'dotnet'
+New component: 'java'
+New component: 'ml'
+New component: 'cpp'
+Python bindings directory was detected.
+New component: 'python_install'
+New component: 'cpp_example'
+New component: 'z3_tptp'
+New component: 'c_example'
+New component: 'maxsat'
+New component: 'dotnet_example'
+New component: 'java_example'
+New component: 'ml_example'
+New component: 'py_example'
+Generating src/util/version.h from src/util/version.h.in
+Generated 'src/util/version.h'
+Generating src/api/dotnet/Properties/AssemblyInfo.cs from src/api/dotnet/Properties/AssemblyInfo.cs.in
+Generated 'src/ackermannization/ackermannization_params.hpp'
+Generated 'src/ackermannization/ackermannize_bv_tactic_params.hpp'
+Generated 'src/ast/pp_params.hpp'
+Generated 'src/ast/fpa/fpa2bv_rewriter_params.hpp'
+Generated 'src/ast/normal_forms/nnf_params.hpp'
+Generated 'src/ast/pattern/pattern_inference_params_helper.hpp'
+Generated 'src/ast/rewriter/arith_rewriter_params.hpp'
+Generated 'src/ast/rewriter/array_rewriter_params.hpp'
+Generated 'src/ast/rewriter/bool_rewriter_params.hpp'
+Generated 'src/ast/rewriter/bv_rewriter_params.hpp'
+Generated 'src/ast/rewriter/fpa_rewriter_params.hpp'
+Generated 'src/ast/rewriter/poly_rewriter_params.hpp'
+Generated 'src/ast/rewriter/rewriter_params.hpp'
+Generated 'src/ast/simplifier/arith_simplifier_params_helper.hpp'
+Generated 'src/ast/simplifier/array_simplifier_params_helper.hpp'
+Generated 'src/ast/simplifier/bv_simplifier_params_helper.hpp'
+Generated 'src/interp/interp_params.hpp'
+Generated 'src/math/polynomial/algebraic_params.hpp'
+Generated 'src/math/realclosure/rcf_params.hpp'
+Generated 'src/model/model_evaluator_params.hpp'
+Generated 'src/model/model_params.hpp'
+Generated 'src/muz/base/fixedpoint_params.hpp'
+Generated 'src/nlsat/nlsat_params.hpp'
+Generated 'src/opt/opt_params.hpp'
+Generated 'src/parsers/util/parser_params.hpp'
+Generated 'src/sat/sat_asymm_branch_params.hpp'
+Generated 'src/sat/sat_params.hpp'
+Generated 'src/sat/sat_scc_params.hpp'
+Generated 'src/sat/sat_simplifier_params.hpp'
+Generated 'src/smt/params/smt_params_helper.hpp'
+Generated 'src/solver/combined_solver_params.hpp'
+Generated 'src/tactic/sls/sls_params.hpp'
+Generated 'src/tactic/smtlogics/qfufbv_tactic_params.hpp'
+Generated 'src/ast/pattern/database.h'
+Generated 'src/shell/install_tactic.cpp'
+Generated 'src/test/install_tactic.cpp'
+Generated 'src/api/dll/install_tactic.cpp'
+Generated 'src/shell/mem_initializer.cpp'
+Generated 'src/test/mem_initializer.cpp'
+Generated 'src/api/dll/mem_initializer.cpp'
+Generated 'src/shell/gparams_register_modules.cpp'
+Generated 'src/test/gparams_register_modules.cpp'
+Generated 'src/api/dll/gparams_register_modules.cpp'
+Generated 'src/api/python/z3consts.py
+Generated 'src/api/api_log_macros.h'
+Generated 'src/api/api_log_macros.cpp'
+Generated 'src/api/api_commands.cpp'
+Generated 'src/api/python/z3core.py'
+Listing src/api/python ...
+Compiling src/api/python/z3.py ...
+Compiling src/api/python/z3consts.py ...
+Compiling src/api/python/z3core.py ...
+Compiling src/api/python/z3num.py ...
+Compiling src/api/python/z3poly.py ...
+Compiling src/api/python/z3printer.py ...
+Compiling src/api/python/z3rcf.py ...
+Compiling src/api/python/z3test.py ...
+Compiling src/api/python/z3types.py ...
+Compiling src/api/python/z3util.py ...
+Copied 'z3.py'
+Copied 'z3consts.py'
+Copied 'z3core.py'
+Copied 'z3num.py'
+Copied 'z3poly.py'
+Copied 'z3printer.py'
+Copied 'z3rcf.py'
+Copied 'z3test.py'
+Copied 'z3types.py'
+Copied 'z3util.py'
+Generated 'z3.pyc'
+Generated 'z3consts.pyc'
+Generated 'z3core.pyc'
+Generated 'z3num.pyc'
+Generated 'z3poly.pyc'
+Generated 'z3printer.pyc'
+Generated 'z3rcf.pyc'
+Generated 'z3test.pyc'
+Generated 'z3types.pyc'
+Generated 'z3util.pyc'
+Testing ar...
+Testing g++...
+Testing gcc...
+Testing floating point support...
+Testing OpenMP...
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
+Host platform:  Darwin
+C++ Compiler:   g++
+C Compiler  :   gcc
+Archive Tool:   ar
+Arithmetic:     internal
+OpenMP:         False
+Prefix:         /usr/local
+64-bit:         True
+FP math:        SSE2-GCC
+Python pkg dir: /Library/Python/2.7/site-packages
+Python version: 2.7
+Writing build/Makefile
+Copied Z3Py example 'example.py' to 'build'
+Copied Z3Py example 'visitor.py' to 'build'
+Makefile was successfully generated.
+  compilation mode: Release
+Type 'cd build; make' to build Z3
+MML14:z3 aXm$ cd build
+MML14:build aXm$ make
+src/shell/datalog_frontend.cpp
+src/shell/dimacs_frontend.cpp
+src/shell/gparams_register_modules.cpp
+src/shell/install_tactic.cpp
+src/shell/main.cpp
+src/shell/mem_initializer.cpp
+src/shell/opt_frontend.cpp
+src/shell/smtlib_frontend.cpp
+src/shell/z3_log_frontend.cpp
+src/api/api_algebraic.cpp
+src/api/api_arith.cpp
+src/api/api_array.cpp
+src/api/api_ast.cpp
+src/api/api_ast_map.cpp
+src/api/api_ast_vector.cpp
+src/api/api_bv.cpp
+src/api/api_commands.cpp
+src/api/api_config_params.cpp
+src/api/api_context.cpp
+src/api/api_datalog.cpp
+src/api/api_datatype.cpp
+src/api/api_fpa.cpp
+src/api/api_goal.cpp
+src/api/api_interp.cpp
+src/api/api_log.cpp
+src/api/api_log_macros.cpp
+src/api/api_model.cpp
+src/api/api_numeral.cpp
+src/api/api_opt.cpp
+src/api/api_params.cpp
+src/api/api_parsers.cpp
+src/api/api_pb.cpp
+src/api/api_polynomial.cpp
+src/api/api_quant.cpp
+src/api/api_rcf.cpp
+src/api/api_seq.cpp
+src/api/api_solver.cpp
+src/api/api_stats.cpp
+src/api/api_tactic.cpp
+src/api/z3_replayer.cpp
+src/opt/bcd2.cpp
+src/opt/fu_malik.cpp
+src/opt/hitting_sets.cpp
+src/opt/maxhs.cpp
+src/opt/maxres.cpp
+src/opt/maxsls.cpp
+src/opt/maxsmt.cpp
+src/opt/mss.cpp
+src/opt/mus.cpp
+src/opt/opt_cmds.cpp
+src/opt/opt_context.cpp
+src/opt/opt_pareto.cpp
+src/opt/opt_solver.cpp
+src/opt/optsmt.cpp
+src/opt/pb_sls.cpp
+src/opt/wmax.cpp
+src/parsers/smt/smtlib.cpp
+src/parsers/smt/smtlib_solver.cpp
+src/parsers/smt/smtparser.cpp
+src/tactic/portfolio/default_tactic.cpp
+src/tactic/portfolio/smt_strategic_solver.cpp
+src/tactic/fpa/fpa2bv_model_converter.cpp
+src/tactic/fpa/fpa2bv_tactic.cpp
+src/tactic/fpa/qffp_tactic.cpp
+src/tactic/smtlogics/nra_tactic.cpp
+src/tactic/smtlogics/qfaufbv_tactic.cpp
+src/tactic/smtlogics/qfauflia_tactic.cpp
+src/tactic/smtlogics/qfbv_tactic.cpp
+src/tactic/smtlogics/qfidl_tactic.cpp
+src/tactic/smtlogics/qflia_tactic.cpp
+src/tactic/smtlogics/qflra_tactic.cpp
+src/tactic/smtlogics/qfnia_tactic.cpp
+src/tactic/smtlogics/qfnra_tactic.cpp
+src/tactic/smtlogics/qfuf_tactic.cpp
+src/tactic/smtlogics/qfufbv_ackr_model_converter.cpp
+src/tactic/smtlogics/qfufbv_tactic.cpp
+src/tactic/smtlogics/qfufnra_tactic.cpp
+src/tactic/smtlogics/quant_tactics.cpp
+src/sat/sat_solver/inc_sat_solver.cpp
+src/tactic/ufbv/macro_finder_tactic.cpp
+src/tactic/ufbv/quasi_macros_tactic.cpp
+src/tactic/ufbv/ufbv_rewriter.cpp
+src/tactic/ufbv/ufbv_rewriter_tactic.cpp
+src/tactic/ufbv/ufbv_tactic.cpp
+src/tactic/nlsat_smt/nl_purify_tactic.cpp
+src/muz/fp/datalog_parser.cpp
+src/muz/fp/dl_cmds.cpp
+src/muz/fp/dl_register_engine.cpp
+src/muz/fp/horn_tactic.cpp
+src/muz/duality/duality_dl_interface.cpp
+src/muz/ddnf/ddnf.cpp
+src/muz/bmc/dl_bmc_engine.cpp
+src/muz/tab/tab_context.cpp
+src/muz/clp/clp_context.cpp
+src/muz/pdr/pdr_closure.cpp
+src/muz/pdr/pdr_context.cpp
+src/muz/pdr/pdr_dl_interface.cpp
+src/muz/pdr/pdr_farkas_learner.cpp
+src/muz/pdr/pdr_generalizers.cpp
+src/muz/pdr/pdr_manager.cpp
+src/muz/pdr/pdr_prop_solver.cpp
+src/muz/pdr/pdr_reachable_cache.cpp
+src/muz/pdr/pdr_smt_context_manager.cpp
+src/muz/pdr/pdr_sym_mux.cpp
+src/muz/pdr/pdr_util.cpp
+src/muz/rel/aig_exporter.cpp
+src/muz/rel/check_relation.cpp
+src/muz/rel/dl_base.cpp
+src/muz/rel/dl_bound_relation.cpp
+src/muz/rel/dl_check_table.cpp
+src/muz/rel/dl_compiler.cpp
+src/muz/rel/dl_external_relation.cpp
+src/muz/rel/dl_finite_product_relation.cpp
+src/muz/rel/dl_instruction.cpp
+src/muz/rel/dl_interval_relation.cpp
+src/muz/rel/dl_lazy_table.cpp
+src/muz/rel/dl_mk_explanations.cpp
+src/muz/rel/dl_mk_partial_equiv.cpp
+src/muz/rel/dl_mk_similarity_compressor.cpp
+src/muz/rel/dl_mk_simple_joins.cpp
+src/muz/rel/dl_product_relation.cpp
+src/muz/rel/dl_relation_manager.cpp
+src/muz/rel/dl_sieve_relation.cpp
+src/muz/rel/dl_sparse_table.cpp
+src/muz/rel/dl_table.cpp
+src/muz/rel/dl_table_relation.cpp
+src/muz/rel/doc.cpp
+src/muz/rel/karr_relation.cpp
+src/muz/rel/rel_context.cpp
+src/muz/rel/tbv.cpp
+src/muz/rel/udoc_relation.cpp
+src/muz/transforms/dl_mk_array_blast.cpp
+src/muz/transforms/dl_mk_backwards.cpp
+src/muz/transforms/dl_mk_bit_blast.cpp
+src/muz/transforms/dl_mk_coalesce.cpp
+src/muz/transforms/dl_mk_coi_filter.cpp
+src/muz/transforms/dl_mk_filter_rules.cpp
+src/muz/transforms/dl_mk_interp_tail_simplifier.cpp
+src/muz/transforms/dl_mk_karr_invariants.cpp
+src/muz/transforms/dl_mk_loop_counter.cpp
+src/muz/transforms/dl_mk_magic_sets.cpp
+src/muz/transforms/dl_mk_magic_symbolic.cpp
+src/muz/transforms/dl_mk_quantifier_abstraction.cpp
+src/muz/transforms/dl_mk_quantifier_instantiation.cpp
+src/muz/transforms/dl_mk_rule_inliner.cpp
+src/muz/transforms/dl_mk_scale.cpp
+src/muz/transforms/dl_mk_separate_negated_tails.cpp
+src/muz/transforms/dl_mk_slice.cpp
+src/muz/transforms/dl_mk_subsumption_checker.cpp
+src/muz/transforms/dl_mk_unbound_compressor.cpp
+src/muz/transforms/dl_mk_unfold.cpp
+src/muz/transforms/dl_transforms.cpp
+src/muz/dataflow/dataflow.cpp
+src/muz/base/bind_variables.cpp
+src/muz/base/dl_boogie_proof.cpp
+src/muz/base/dl_context.cpp
+src/muz/base/dl_costs.cpp
+src/muz/base/dl_rule.cpp
+src/muz/base/dl_rule_set.cpp
+src/muz/base/dl_rule_subsumption_index.cpp
+src/muz/base/dl_rule_transformer.cpp
+src/muz/base/dl_util.cpp
+src/muz/base/hnf.cpp
+src/muz/base/proof_utils.cpp
+src/muz/base/rule_properties.cpp
+src/duality/duality_profiling.cpp
+src/duality/duality_rpfp.cpp
+src/duality/duality_solver.cpp
+src/duality/duality_wrapper.cpp
+src/qe/nlarith_util.cpp
+src/qe/nlqsat.cpp
+src/qe/qe.cpp
+src/qe/qe_arith.cpp
+src/qe/qe_arith_plugin.cpp
+src/qe/qe_array_plugin.cpp
+src/qe/qe_arrays.cpp
+src/qe/qe_bool_plugin.cpp
+src/qe/qe_bv_plugin.cpp
+src/qe/qe_cmd.cpp
+src/qe/qe_datatype_plugin.cpp
+src/qe/qe_datatypes.cpp
+src/qe/qe_dl_plugin.cpp
+src/qe/qe_lite.cpp
+src/qe/qe_mbp.cpp
+src/qe/qe_sat_tactic.cpp
+src/qe/qe_tactic.cpp
+src/qe/qsat.cpp
+src/qe/vsubst_tactic.cpp
+src/tactic/sls/bvsls_opt_engine.cpp
+src/tactic/sls/sls_engine.cpp
+src/tactic/sls/sls_tactic.cpp
+src/smt/tactic/ctx_solver_simplify_tactic.cpp
+src/smt/tactic/smt_tactic.cpp
+src/smt/tactic/unit_subsumption_tactic.cpp
+src/tactic/bv/bit_blaster_model_converter.cpp
+src/tactic/bv/bit_blaster_tactic.cpp
+src/tactic/bv/bv1_blaster_tactic.cpp
+src/tactic/bv/bv_bounds_tactic.cpp
+src/tactic/bv/bv_size_reduction_tactic.cpp
+src/tactic/bv/bvarray2uf_rewriter.cpp
+src/tactic/bv/bvarray2uf_tactic.cpp
+src/tactic/bv/elim_small_bv_tactic.cpp
+src/tactic/bv/max_bv_sharing_tactic.cpp
+src/smt/arith_eq_adapter.cpp
+src/smt/arith_eq_solver.cpp
+src/smt/asserted_formulas.cpp
+src/smt/cached_var_subst.cpp
+src/smt/cost_evaluator.cpp
+src/smt/dyn_ack.cpp
+src/smt/elim_term_ite.cpp
+src/smt/expr_context_simplifier.cpp
+src/smt/fingerprints.cpp
+src/smt/mam.cpp
+src/smt/old_interval.cpp
+src/smt/qi_queue.cpp
+src/smt/smt_almost_cg_table.cpp
+src/smt/smt_case_split_queue.cpp
+src/smt/smt_cg_table.cpp
+src/smt/smt_checker.cpp
+src/smt/smt_clause.cpp
+src/smt/smt_conflict_resolution.cpp
+src/smt/smt_context.cpp
+src/smt/smt_context_inv.cpp
+src/smt/smt_context_pp.cpp
+src/smt/smt_context_stat.cpp
+src/smt/smt_enode.cpp
+src/smt/smt_farkas_util.cpp
+src/smt/smt_for_each_relevant_expr.cpp
+src/smt/smt_implied_equalities.cpp
+src/smt/smt_internalizer.cpp
+src/smt/smt_justification.cpp
+src/smt/smt_kernel.cpp
+src/smt/smt_literal.cpp
+src/smt/smt_model_checker.cpp
+src/smt/smt_model_finder.cpp
+src/smt/smt_model_generator.cpp
+src/smt/smt_quantifier.cpp
+src/smt/smt_quantifier_stat.cpp
+src/smt/smt_quick_checker.cpp
+src/smt/smt_relevancy.cpp
+src/smt/smt_setup.cpp
+src/smt/smt_solver.cpp
+src/smt/smt_statistics.cpp
+src/smt/smt_theory.cpp
+src/smt/smt_value_sort.cpp
+src/smt/theory_arith.cpp
+src/smt/theory_array.cpp
+src/smt/theory_array_base.cpp
+src/smt/theory_array_full.cpp
+src/smt/theory_bv.cpp
+src/smt/theory_datatype.cpp
+src/smt/theory_dense_diff_logic.cpp
+src/smt/theory_diff_logic.cpp
+src/smt/theory_dl.cpp
+src/smt/theory_dummy.cpp
+src/smt/theory_fpa.cpp
+src/smt/theory_opt.cpp
+src/smt/theory_pb.cpp
+src/smt/theory_seq.cpp
+src/smt/theory_utvpi.cpp
+src/smt/theory_wmaxsat.cpp
+src/smt/uses_theory.cpp
+src/smt/watch_list.cpp
+src/smt/proto_model/array_factory.cpp
+src/smt/proto_model/datatype_factory.cpp
+src/smt/proto_model/numeral_factory.cpp
+src/smt/proto_model/proto_model.cpp
+src/smt/proto_model/struct_factory.cpp
+src/smt/proto_model/value_factory.cpp
+src/smt/params/dyn_ack_params.cpp
+src/smt/params/preprocessor_params.cpp
+src/smt/params/qi_params.cpp
+src/smt/params/smt_params.cpp
+src/smt/params/theory_arith_params.cpp
+src/smt/params/theory_array_params.cpp
+src/smt/params/theory_bv_params.cpp
+src/smt/params/theory_pb_params.cpp
+src/ast/rewriter/bit_blaster/bit_blaster.cpp
+src/ast/rewriter/bit_blaster/bit_blaster_rewriter.cpp
+src/ast/pattern/expr_pattern_match.cpp
+src/ast/pattern/pattern_inference.cpp
+src/ast/pattern/pattern_inference_params.cpp
+src/ast/macros/macro_finder.cpp
+src/ast/macros/macro_manager.cpp
+src/ast/macros/macro_util.cpp
+src/ast/macros/quasi_macros.cpp
+src/ast/fpa/fpa2bv_converter.cpp
+src/ast/fpa/fpa2bv_rewriter.cpp
+src/ast/simplifier/arith_simplifier_params.cpp
+src/ast/simplifier/arith_simplifier_plugin.cpp
+src/ast/simplifier/array_simplifier_params.cpp
+src/ast/simplifier/array_simplifier_plugin.cpp
+src/ast/simplifier/basic_simplifier_plugin.cpp
+src/ast/simplifier/bit2int.cpp
+src/ast/simplifier/bv_elim.cpp
+src/ast/simplifier/bv_simplifier_params.cpp
+src/ast/simplifier/bv_simplifier_plugin.cpp
+src/ast/simplifier/datatype_simplifier_plugin.cpp
+src/ast/simplifier/distribute_forall.cpp
+src/ast/simplifier/elim_bounds.cpp
+src/ast/simplifier/fpa_simplifier_plugin.cpp
+src/ast/simplifier/inj_axiom.cpp
+src/ast/simplifier/maximise_ac_sharing.cpp
+src/ast/simplifier/poly_simplifier_plugin.cpp
+src/ast/simplifier/pull_ite_tree.cpp
+src/ast/simplifier/push_app_ite.cpp
+src/ast/simplifier/seq_simplifier_plugin.cpp
+src/ast/simplifier/simplifier.cpp
+src/ast/simplifier/simplifier_plugin.cpp
+src/ast/proof_checker/proof_checker.cpp
+src/parsers/smt2/smt2parser.cpp
+src/parsers/smt2/smt2scanner.cpp
+src/cmd_context/extra_cmds/dbg_cmds.cpp
+src/cmd_context/extra_cmds/polynomial_cmds.cpp
+src/cmd_context/extra_cmds/subpaving_cmds.cpp
+src/cmd_context/basic_cmds.cpp
+src/cmd_context/check_logic.cpp
+src/cmd_context/cmd_context.cpp
+src/cmd_context/cmd_context_to_goal.cpp
+src/cmd_context/cmd_util.cpp
+src/cmd_context/context_params.cpp
+src/cmd_context/echo_tactic.cpp
+src/cmd_context/eval_cmd.cpp
+src/cmd_context/interpolant_cmds.cpp
+src/cmd_context/parametric_cmd.cpp
+src/cmd_context/pdecl.cpp
+src/cmd_context/simplify_cmd.cpp
+src/cmd_context/tactic_cmds.cpp
+src/cmd_context/tactic_manager.cpp
+src/interp/iz3base.cpp
+src/interp/iz3checker.cpp
+src/interp/iz3foci.cpp
+src/interp/iz3interp.cpp
+src/interp/iz3mgr.cpp
+src/interp/iz3pp.cpp
+src/interp/iz3profiling.cpp
+src/interp/iz3proof.cpp
+src/interp/iz3proof_itp.cpp
+src/interp/iz3scopes.cpp
+src/interp/iz3translate.cpp
+src/interp/iz3translate_direct.cpp
+src/ackermannization/ackermannize_bv_model_converter.cpp
+src/ackermannization/ackermannize_bv_tactic.cpp
+src/ackermannization/ackr_bound_probe.cpp
+src/ackermannization/ackr_helper.cpp
+src/ackermannization/ackr_model_converter.cpp
+src/ackermannization/lackr.cpp
+src/ackermannization/lackr_model_constructor.cpp
+src/ackermannization/lackr_model_converter_lazy.cpp
+src/solver/check_sat_result.cpp
+src/solver/combined_solver.cpp
+src/solver/solver.cpp
+src/solver/solver_na2as.cpp
+src/solver/tactic2solver.cpp
+src/tactic/aig/aig.cpp
+src/tactic/aig/aig_tactic.cpp
+src/math/subpaving/tactic/expr2subpaving.cpp
+src/math/subpaving/tactic/subpaving_tactic.cpp
+src/nlsat/tactic/goal2nlsat.cpp
+src/nlsat/tactic/nlsat_tactic.cpp
+src/nlsat/tactic/qfnra_nlsat_tactic.cpp
+src/tactic/arith/add_bounds_tactic.cpp
+src/tactic/arith/arith_bounds_tactic.cpp
+src/tactic/arith/bound_manager.cpp
+src/tactic/arith/bound_propagator.cpp
+src/tactic/arith/bv2int_rewriter.cpp
+src/tactic/arith/bv2real_rewriter.cpp
+src/tactic/arith/card2bv_tactic.cpp
+src/tactic/arith/degree_shift_tactic.cpp
+src/tactic/arith/diff_neq_tactic.cpp
+src/tactic/arith/elim01_tactic.cpp
+src/tactic/arith/eq2bv_tactic.cpp
+src/tactic/arith/factor_tactic.cpp
+src/tactic/arith/fix_dl_var_tactic.cpp
+src/tactic/arith/fm_tactic.cpp
+src/tactic/arith/lia2card_tactic.cpp
+src/tactic/arith/lia2pb_tactic.cpp
+src/tactic/arith/linear_equation.cpp
+src/tactic/arith/nla2bv_tactic.cpp
+src/tactic/arith/normalize_bounds_tactic.cpp
+src/tactic/arith/pb2bv_model_converter.cpp
+src/tactic/arith/pb2bv_tactic.cpp
+src/tactic/arith/probe_arith.cpp
+src/tactic/arith/propagate_ineqs_tactic.cpp
+src/tactic/arith/purify_arith_tactic.cpp
+src/tactic/arith/recover_01_tactic.cpp
+src/sat/tactic/atom2bool_var.cpp
+src/sat/tactic/goal2sat.cpp
+src/sat/tactic/sat_tactic.cpp
+src/tactic/core/blast_term_ite_tactic.cpp
+src/tactic/core/cofactor_elim_term_ite.cpp
+src/tactic/core/cofactor_term_ite_tactic.cpp
+src/tactic/core/collect_occs.cpp
+src/tactic/core/ctx_simplify_tactic.cpp
+src/tactic/core/der_tactic.cpp
+src/tactic/core/distribute_forall_tactic.cpp
+src/tactic/core/elim_term_ite_tactic.cpp
+src/tactic/core/elim_uncnstr_tactic.cpp
+src/tactic/core/nnf_tactic.cpp
+src/tactic/core/occf_tactic.cpp
+src/tactic/core/pb_preprocess_tactic.cpp
+src/tactic/core/propagate_values_tactic.cpp
+src/tactic/core/reduce_args_tactic.cpp
+src/tactic/core/simplify_tactic.cpp
+src/tactic/core/solve_eqs_tactic.cpp
+src/tactic/core/split_clause_tactic.cpp
+src/tactic/core/symmetry_reduce_tactic.cpp
+src/tactic/core/tseitin_cnf_tactic.cpp
+src/math/euclid/euclidean_solver.cpp
+src/math/grobner/grobner.cpp
+src/parsers/util/cost_parser.cpp
+src/parsers/util/pattern_validation.cpp
+src/parsers/util/scanner.cpp
+src/parsers/util/simple_parser.cpp
+src/ast/substitution/matcher.cpp
+src/ast/substitution/substitution.cpp
+src/ast/substitution/substitution_tree.cpp
+src/ast/substitution/unifier.cpp
+src/tactic/equiv_proof_converter.cpp
+src/tactic/extension_model_converter.cpp
+src/tactic/filter_model_converter.cpp
+src/tactic/goal.cpp
+src/tactic/goal_num_occurs.cpp
+src/tactic/goal_shared_occs.cpp
+src/tactic/goal_util.cpp
+src/tactic/horn_subsume_model_converter.cpp
+src/tactic/model_converter.cpp
+src/tactic/probe.cpp
+src/tactic/proof_converter.cpp
+src/tactic/replace_proof_converter.cpp
+src/tactic/tactic.cpp
+src/tactic/tactical.cpp
+src/model/func_interp.cpp
+src/model/model.cpp
+src/model/model2expr.cpp
+src/model/model_core.cpp
+src/model/model_evaluator.cpp
+src/model/model_implicant.cpp
+src/model/model_pp.cpp
+src/model/model_smt2_pp.cpp
+src/model/model_v2_pp.cpp
+src/ast/normal_forms/defined_names.cpp
+src/ast/normal_forms/name_exprs.cpp
+src/ast/normal_forms/nnf.cpp
+src/ast/normal_forms/pull_quant.cpp
+src/ast/rewriter/arith_rewriter.cpp
+src/ast/rewriter/array_rewriter.cpp
+src/ast/rewriter/ast_counter.cpp
+src/ast/rewriter/bool_rewriter.cpp
+src/ast/rewriter/bv_rewriter.cpp
+src/ast/rewriter/bv_trailing.cpp
+src/ast/rewriter/datatype_rewriter.cpp
+src/ast/rewriter/der.cpp
+src/ast/rewriter/dl_rewriter.cpp
+src/ast/rewriter/expr_replacer.cpp
+src/ast/rewriter/expr_safe_replace.cpp
+src/ast/rewriter/factor_rewriter.cpp
+src/ast/rewriter/fpa_rewriter.cpp
+src/ast/rewriter/label_rewriter.cpp
+src/ast/rewriter/mk_extract_proc.cpp
+src/ast/rewriter/mk_simplified_app.cpp
+src/ast/rewriter/pb_rewriter.cpp
+src/ast/rewriter/quant_hoist.cpp
+src/ast/rewriter/rewriter.cpp
+src/ast/rewriter/seq_rewriter.cpp
+src/ast/rewriter/th_rewriter.cpp
+src/ast/rewriter/var_subst.cpp
+src/ast/act_cache.cpp
+src/ast/arith_decl_plugin.cpp
+src/ast/array_decl_plugin.cpp
+src/ast/ast.cpp
+src/ast/ast_ll_pp.cpp
+src/ast/ast_lt.cpp
+src/ast/ast_pp_util.cpp
+src/ast/ast_printer.cpp
+src/ast/ast_smt2_pp.cpp
+src/ast/ast_smt_pp.cpp
+src/ast/ast_translation.cpp
+src/ast/ast_util.cpp
+src/ast/bv_decl_plugin.cpp
+src/ast/datatype_decl_plugin.cpp
+src/ast/decl_collector.cpp
+src/ast/dl_decl_plugin.cpp
+src/ast/expr2polynomial.cpp
+src/ast/expr2var.cpp
+src/ast/expr_abstract.cpp
+src/ast/expr_functors.cpp
+src/ast/expr_map.cpp
+src/ast/expr_stat.cpp
+src/ast/expr_substitution.cpp
+src/ast/for_each_ast.cpp
+src/ast/for_each_expr.cpp
+src/ast/format.cpp
+src/ast/fpa_decl_plugin.cpp
+src/ast/func_decl_dependencies.cpp
+src/ast/has_free_vars.cpp
+src/ast/macro_substitution.cpp
+src/ast/num_occurs.cpp
+src/ast/occurs.cpp
+src/ast/pb_decl_plugin.cpp
+src/ast/pp.cpp
+src/ast/reg_decl_plugins.cpp
+src/ast/seq_decl_plugin.cpp
+src/ast/shared_occs.cpp
+src/ast/static_features.cpp
+src/ast/used_vars.cpp
+src/ast/well_sorted.cpp
+src/math/subpaving/subpaving.cpp
+src/math/subpaving/subpaving_hwf.cpp
+src/math/subpaving/subpaving_mpf.cpp
+src/math/subpaving/subpaving_mpff.cpp
+src/math/subpaving/subpaving_mpfx.cpp
+src/math/subpaving/subpaving_mpq.cpp
+src/math/realclosure/mpz_matrix.cpp
+src/math/realclosure/realclosure.cpp
+src/math/interval/interval_mpq.cpp
+src/math/automata/automaton.cpp
+src/math/simplex/model_based_opt.cpp
+src/math/simplex/simplex.cpp
+src/math/hilbert/hilbert_basis.cpp
+src/nlsat/nlsat_clause.cpp
+src/nlsat/nlsat_evaluator.cpp
+src/nlsat/nlsat_explain.cpp
+src/nlsat/nlsat_interval_set.cpp
+src/nlsat/nlsat_solver.cpp
+src/nlsat/nlsat_types.cpp
+src/sat/dimacs.cpp
+src/sat/sat_asymm_branch.cpp
+src/sat/sat_bceq.cpp
+src/sat/sat_clause.cpp
+src/sat/sat_clause_set.cpp
+src/sat/sat_clause_use_list.cpp
+src/sat/sat_cleaner.cpp
+src/sat/sat_config.cpp
+src/sat/sat_elim_eqs.cpp
+src/sat/sat_iff3_finder.cpp
+src/sat/sat_integrity_checker.cpp
+src/sat/sat_model_converter.cpp
+src/sat/sat_mus.cpp
+src/sat/sat_probing.cpp
+src/sat/sat_scc.cpp
+src/sat/sat_simplifier.cpp
+src/sat/sat_sls.cpp
+src/sat/sat_solver.cpp
+src/sat/sat_watched.cpp
+src/math/polynomial/algebraic_numbers.cpp
+src/math/polynomial/polynomial.cpp
+src/math/polynomial/polynomial_cache.cpp
+src/math/polynomial/polynomial_factorization.cpp
+src/math/polynomial/rpolynomial.cpp
+src/math/polynomial/sexpr2upolynomial.cpp
+src/math/polynomial/upolynomial.cpp
+src/math/polynomial/upolynomial_factorization.cpp
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib: file: math/polynomial/polynomial.a(polynomial_factorization.o) has no symbols
+src/util/approx_nat.cpp
+src/util/approx_set.cpp
+src/util/bit_util.cpp
+src/util/bit_vector.cpp
+src/util/cmd_context_types.cpp
+src/util/common_msgs.cpp
+src/util/cooperate.cpp
+src/util/debug.cpp
+src/util/env_params.cpp
+src/util/fixed_bit_vector.cpp
+src/util/gparams.cpp
+src/util/hash.cpp
+src/util/hwf.cpp
+src/util/inf_int_rational.cpp
+src/util/inf_rational.cpp
+src/util/inf_s_integer.cpp
+src/util/lbool.cpp
+src/util/luby.cpp
+src/util/memory_manager.cpp
+src/util/mpbq.cpp
+src/util/mpf.cpp
+src/util/mpff.cpp
+src/util/mpfx.cpp
+src/util/mpn.cpp
+src/util/mpq.cpp
+src/util/mpq_inf.cpp
+src/util/mpz.cpp
+src/util/page.cpp
+src/util/params.cpp
+src/util/permutation.cpp
+src/util/prime_generator.cpp
+src/util/rational.cpp
+src/util/region.cpp
+src/util/rlimit.cpp
+src/util/s_integer.cpp
+src/util/scoped_ctrl_c.cpp
+src/util/scoped_timer.cpp
+src/util/sexpr.cpp
+src/util/small_object_allocator.cpp
+src/util/smt2_util.cpp
+src/util/stack.cpp
+src/util/statistics.cpp
+src/util/symbol.cpp
+src/util/timeit.cpp
+src/util/timeout.cpp
+src/util/timer.cpp
+src/util/trace.cpp
+src/util/util.cpp
+src/util/warning.cpp
+src/util/z3_exception.cpp
+g++ -o z3  shell/datalog_frontend.o shell/dimacs_frontend.o shell/gparams_register_modules.o shell/install_tactic.o shell/main.o shell/mem_initializer.o shell/opt_frontend.o shell/smtlib_frontend.o shell/z3_log_frontend.o api/api.a opt/opt.a parsers/smt/smtparser.a tactic/portfolio/portfolio.a tactic/fpa/fpa_tactics.a tactic/smtlogics/smtlogic_tactics.a sat/sat_solver/sat_solver.a tactic/ufbv/ufbv_tactic.a tactic/nlsat_smt/nlsat_smt_tactic.a muz/fp/fp.a muz/duality/duality_intf.a muz/ddnf/ddnf.a muz/bmc/bmc.a muz/tab/tab.a muz/clp/clp.a muz/pdr/pdr.a muz/rel/rel.a muz/transforms/transforms.a muz/dataflow/dataflow.a muz/base/muz.a duality/duality.a qe/qe.a tactic/sls/sls_tactic.a smt/tactic/smt_tactic.a tactic/bv/bv_tactics.a smt/smt.a smt/proto_model/proto_model.a smt/params/smt_params.a ast/rewriter/bit_blaster/bit_blaster.a ast/pattern/pattern.a ast/macros/macros.a ast/fpa/fpa.a ast/simplifier/simplifier.a ast/proof_checker/proof_checker.a parsers/smt2/smt2parser.a cmd_context/extra_cmds/extra_cmds.a cmd_context/cmd_context.a interp/interp.a ackermannization/ackermannization.a solver/solver.a tactic/aig/aig_tactic.a math/subpaving/tactic/subpaving_tactic.a nlsat/tactic/nlsat_tactic.a tactic/arith/arith_tactics.a sat/tactic/sat_tactic.a tactic/core/core_tactics.a math/euclid/euclid.a math/grobner/grobner.a parsers/util/parser_util.a ast/substitution/substitution.a tactic/tactic.a model/model.a ast/normal_forms/normal_forms.a ast/rewriter/rewriter.a ast/ast.a math/subpaving/subpaving.a math/realclosure/realclosure.a math/interval/interval.a math/automata/automata.a math/simplex/simplex.a math/hilbert/hilbert.a nlsat/nlsat.a sat/sat.a math/polynomial/polynomial.a util/util.a  -lpthread 
+src/api/dll/dll.cpp
+src/api/dll/gparams_register_modules.cpp
+src/api/dll/install_tactic.cpp
+src/api/dll/mem_initializer.cpp
+g++ -o libz3.dylib -dynamiclib api/dll/dll.o api/dll/gparams_register_modules.o api/dll/install_tactic.o api/dll/mem_initializer.o api/api_algebraic.o api/api_arith.o api/api_array.o api/api_ast.o api/api_ast_map.o api/api_ast_vector.o api/api_bv.o api/api_commands.o api/api_config_params.o api/api_context.o api/api_datalog.o api/api_datatype.o api/api_fpa.o api/api_goal.o api/api_interp.o api/api_log.o api/api_log_macros.o api/api_model.o api/api_numeral.o api/api_opt.o api/api_params.o api/api_parsers.o api/api_pb.o api/api_polynomial.o api/api_quant.o api/api_rcf.o api/api_seq.o api/api_solver.o api/api_stats.o api/api_tactic.o api/z3_replayer.o opt/opt.a parsers/smt/smtparser.a tactic/portfolio/portfolio.a tactic/fpa/fpa_tactics.a tactic/smtlogics/smtlogic_tactics.a sat/sat_solver/sat_solver.a tactic/ufbv/ufbv_tactic.a tactic/nlsat_smt/nlsat_smt_tactic.a muz/fp/fp.a muz/duality/duality_intf.a muz/ddnf/ddnf.a muz/bmc/bmc.a muz/tab/tab.a muz/clp/clp.a muz/pdr/pdr.a muz/rel/rel.a muz/transforms/transforms.a muz/dataflow/dataflow.a muz/base/muz.a duality/duality.a qe/qe.a tactic/sls/sls_tactic.a smt/tactic/smt_tactic.a tactic/bv/bv_tactics.a smt/smt.a smt/proto_model/proto_model.a smt/params/smt_params.a ast/rewriter/bit_blaster/bit_blaster.a ast/pattern/pattern.a ast/macros/macros.a ast/fpa/fpa.a ast/simplifier/simplifier.a ast/proof_checker/proof_checker.a parsers/smt2/smt2parser.a cmd_context/extra_cmds/extra_cmds.a cmd_context/cmd_context.a interp/interp.a ackermannization/ackermannization.a solver/solver.a tactic/aig/aig_tactic.a math/subpaving/tactic/subpaving_tactic.a nlsat/tactic/nlsat_tactic.a tactic/arith/arith_tactics.a sat/tactic/sat_tactic.a tactic/core/core_tactics.a math/euclid/euclid.a math/grobner/grobner.a parsers/util/parser_util.a ast/substitution/substitution.a tactic/tactic.a model/model.a ast/normal_forms/normal_forms.a ast/rewriter/rewriter.a ast/ast.a math/subpaving/subpaving.a math/realclosure/realclosure.a math/interval/interval.a math/automata/automata.a math/simplex/simplex.a math/hilbert/hilbert.a nlsat/nlsat.a sat/sat.a math/polynomial/polynomial.a util/util.a  
+Z3 was successfully built.
+Z3Py scripts can already be executed in the 'build' directory.
+Z3Py scripts stored in arbitrary directories can be executed if the 'build' directory is added to the PYTHONPATH environment variable.
+Use the following command to install Z3 at prefix /usr/local.
+    sudo make install
+MML14:build aXm$ sudo make install
+Password:
+Z3 was successfully installed.
+MML14:build aXm$ 

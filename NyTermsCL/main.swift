@@ -3,12 +3,16 @@
 
 import Foundation
 
+var major:UInt32=0,minor:UInt32=0,build:UInt32=0,revision:UInt32=0
+Z3_get_version(&major, &minor, &build, &revision)
+
 let line = "========================="
 
 // print header
 print(line,NSDate(),line)
 print(Process.info)
 print(Yices.info)
+print("Z3 \(major).\(minor).\(build).\(revision)")
 print("tptp root path:",TptpPath.tptpRootPath)
 print(line,line,line)
 yices_init()
@@ -49,8 +53,7 @@ defer {
 
 // Proofing.demo()
 
+// z3_main()
+
 Demo.demo()
-
-
-
 

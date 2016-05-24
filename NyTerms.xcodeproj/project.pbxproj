@@ -180,6 +180,9 @@
 		51FF64011CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64051CBBB71600AA26B5 /* YicesNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */; };
+		D23B0D451CF44F3A00B7BE7F /* z3-install.txt in Resources */ = {isa = PBXBuildFile; fileRef = D23B0D441CF44F3A00B7BE7F /* z3-install.txt */; };
+		D23B0D511CF45ACE00B7BE7F /* z3_capi.c in Sources */ = {isa = PBXBuildFile; fileRef = D23B0D501CF45ACE00B7BE7F /* z3_capi.c */; };
+		D23B0D541CF45BF200B7BE7F /* Z3CapiTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */; };
 		D24D5D151CE5DB7200E07E8E /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D5D141CE5DB7200E07E8E /* Demo.swift */; };
 		D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286232E1CEB711000E42070 /* YicesTestCase.swift */; };
 		D2F26C1E1CEC6F3E003DD50F /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */; };
@@ -393,6 +396,11 @@
 		51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Clause.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
 		D236F8301CEDE93A00BEF2E5 /* Demo.demo.runtimes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.runtimes.txt; sourceTree = "<group>"; };
+		D23B0D441CF44F3A00B7BE7F /* z3-install.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "z3-install.txt"; sourceTree = "<group>"; };
+		D23B0D461CF4501E00B7BE7F /* z3-paths */ = {isa = PBXFileReference; lastKnownFileType = text; path = "z3-paths"; sourceTree = "<group>"; };
+		D23B0D4D1CF4587500B7BE7F /* z3 linker flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "z3 linker flag.png"; sourceTree = "<group>"; };
+		D23B0D501CF45ACE00B7BE7F /* z3_capi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z3_capi.c; sourceTree = "<group>"; };
+		D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Z3CapiTest.swift; sourceTree = "<group>"; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
@@ -508,6 +516,7 @@
 		512977291B677CAB003D3E80 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				D23B0D4F1CF45AAF00B7BE7F /* Z3 */,
 				5173B55B1CCA07FD00A9ABCE /* ShareNode */,
 				514AD8611C6B4CB700652004 /* General */,
 				26EBF5861B99C251006E5FF4 /* MaxCompTests */,
@@ -785,6 +794,7 @@
 		51B26B5E1B8D9F9E00CC59AD /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				D23B0D431CF44F2B00B7BE7F /* z3 */,
 				513F24021C04BD170026A081 /* optimization */,
 				8789DBF91B9B642300D2B903 /* yacc */,
 				8789DBF71B9B63EA00D2B903 /* SMT */,
@@ -859,6 +869,25 @@
 				51B26B5F1B8DA14F00CC59AD /* NyTermsCL-Headers.jpg */,
 			);
 			name = yacc;
+			sourceTree = "<group>";
+		};
+		D23B0D431CF44F2B00B7BE7F /* z3 */ = {
+			isa = PBXGroup;
+			children = (
+				D23B0D4D1CF4587500B7BE7F /* z3 linker flag.png */,
+				D23B0D441CF44F3A00B7BE7F /* z3-install.txt */,
+				D23B0D461CF4501E00B7BE7F /* z3-paths */,
+			);
+			name = z3;
+			sourceTree = "<group>";
+		};
+		D23B0D4F1CF45AAF00B7BE7F /* Z3 */ = {
+			isa = PBXGroup;
+			children = (
+				D23B0D501CF45ACE00B7BE7F /* z3_capi.c */,
+				D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */,
+			);
+			name = Z3;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -971,6 +1000,7 @@
 				515F2B461C918016004F93E9 /* sizeDemo.txt in Resources */,
 				51B26B681B8DA23F00CC59AD /* Yices Bridging.png in Resources */,
 				51B26B6A1B8DA23F00CC59AD /* Yices Linker Flags.jpg in Resources */,
+				D23B0D451CF44F3A00B7BE7F /* z3-install.txt in Resources */,
 				51B26B641B8DA14F00CC59AD /* NyTerms-Yacc.jpg in Resources */,
 				51B26B631B8DA14F00CC59AD /* NyTerms-Flags.jpg in Resources */,
 				51B26B621B8DA14F00CC59AD /* NyTermsCL-Headers.jpg in Resources */,
@@ -1134,6 +1164,8 @@
 				51EDC9EB1CDC83E100BF311B /* PrlcParserBasicTests.swift in Sources */,
 				51A4D09C1B70EE0500672898 /* ParseBasicSyntaxTests.swift in Sources */,
 				51B883F51B8E3DAC008D7F22 /* test_pp.c in Sources */,
+				D23B0D541CF45BF200B7BE7F /* Z3CapiTest.swift in Sources */,
+				D23B0D511CF45ACE00B7BE7F /* z3_capi.c in Sources */,
 				51553EBA1CC79AF100FF616A /* Yices+LPOTests.swift in Sources */,
 				5146F4311C7B1B5200A19EC1 /* BuildTrieClassPerformanceTests.swift in Sources */,
 				515F0F0C1B6BB50200B470B4 /* PositonTests.swift in Sources */,
@@ -1207,6 +1239,7 @@
 				LLVM_LTO = YES;
 				OTHER_LDFLAGS = (
 					"-lyices",
+					"-lz3",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "";
@@ -1229,6 +1262,7 @@
 				LLVM_LTO = YES;
 				OTHER_LDFLAGS = (
 					"-lyices",
+					"-lz3",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "";
@@ -1337,6 +1371,7 @@
 				LLVM_LTO = NO;
 				OTHER_LDFLAGS = (
 					"-lyices",
+					"-lz3",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "${inherited}";
@@ -1358,6 +1393,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-lyices",
+					"-lz3",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "${inherited}";
@@ -1378,6 +1414,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-lyices",
+					"-lz3",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "${inherited}";
@@ -1400,6 +1437,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-lyices",
+					"-lz3",
 					"-L/usr/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "${inherited}";

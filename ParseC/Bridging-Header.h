@@ -3,6 +3,7 @@
 //
 
 #import "/usr/local/include/yices.h"
+#import "/usr/local/include/z3.h"
 
 #import <sys/sysctl.h>
 

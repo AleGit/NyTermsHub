@@ -1,0 +1,33 @@
+
+swift bridging header entry
+===========================
+
+#import "/usr/local/include/z3.h"
+
+
+z3 paths
+========
+
+/usr/local/bin/
+/usr/local/include/
+/usr/local/lib
+
+z3 files
+========
+
+> find /usr -name "*z3*"
+/usr/local/bin/z3
+/usr/local/include/z3++.h
+/usr/local/include/z3.h
+/usr/local/include/z3_algebraic.h
+/usr/local/include/z3_api.h
+/usr/local/include/z3_ast_containers.h
+/usr/local/include/z3_fixedpoint.h
+/usr/local/include/z3_fpa.h
+/usr/local/include/z3_interp.h
+/usr/local/include/z3_macros.h
+/usr/local/include/z3_optimization.h
+/usr/local/include/z3_polynomial.h
+/usr/local/include/z3_rcf.h
+/usr/local/include/z3_v1.h
+/usr/local/lib/libz3.dylib

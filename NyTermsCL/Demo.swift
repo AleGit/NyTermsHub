@@ -214,8 +214,8 @@ struct Demo {
     static func demo() {
         for name in [
             // without equality
-            // "PUZ001-1",
-            "TOP019-1",
+            "PUZ001-1",
+           //  "TOP019-1",
             
             // with equality
             // "PUZ063-1",

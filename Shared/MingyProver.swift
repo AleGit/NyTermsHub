@@ -34,9 +34,6 @@ private func ==(lhs:SubtermInfo, rhs:SubtermInfo) -> Bool {
     return lhs.index == rhs.index && lhs.position == rhs.position
 }
 
-
-
-
 final class MingyProver<N:Node where N.Symbol == String> {
     
     private let ctx : COpaquePointer
@@ -47,7 +44,7 @@ final class MingyProver<N:Node where N.Symbol == String> {
     typealias Entry = (N, literalIndex:Int, yices:Yices.Tuple)
     
     private var repository = [Entry]()
-    private var literalClauseMapping = [term_t: Set<Int>]()
+    // private var literalClauseMapping = [term_t: Set<Int>]()
     
     // literalsIndex
     private var literalsTrie = TrieClass<SymHop<String>,Int>()
@@ -89,54 +86,56 @@ final class MingyProver<N:Node where N.Symbol == String> {
     }
 }
 
+// MARK: literal clause mapping extension
 extension MingyProver {
     
-    func insert(literal:term_t, clause:Int) {
-        if literalClauseMapping[literal] == nil {
-            literalClauseMapping[literal] = Set(arrayLiteral:clause)
-        }
-        else {
-            literalClauseMapping[literal]?.insert(clause)
-        }
+//    func insert(literal:term_t, clause:Int) {
+//        if literalClauseMapping[literal] == nil {
+//            literalClauseMapping[literal] = Set(arrayLiteral:clause)
+//        }
+//        else {
+//            literalClauseMapping[literal]?.insert(clause)
+//        }
+//    }
+//    
+//    func insert<S:SequenceType where S.Generator.Element == term_t>(literals:S, clause:Int) {
+//        for literal in literals {
+//            insert(literal, clause: clause)
+//        }
+//    }
+//    
+//    func remove(literal:term_t, clause:Int) {
+//        literalClauseMapping[literal]?.remove(clause)
+//    }
+//    
+//    func remove<S:SequenceType where S.Generator.Element == term_t>(literals:S, clause:Int) {
+//        for literal in literals {
+//            remove(literal, clause:clause)
+//        }
+//    }
+    
+    func searchVariantsLinearly(literals:Set<term_t>) -> [Int] {
+        let matches = repository.enumerate().filter {
+            processedClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals == literals
+            }.map { $0.0 }
+        return matches
     }
     
-    func insert<S:SequenceType where S.Generator.Element == term_t>(literals:S, clause:Int) {
-        for literal in literals {
-            insert(literal, clause: clause)
-        }
-    }
-    
-    func remove(literal:term_t, clause:Int) {
-        literalClauseMapping[literal]?.remove(clause)
-    }
-    
-    func remove<S:SequenceType where S.Generator.Element == term_t>(literals:S, clause:Int) {
-        for literal in literals {
-            remove(literal, clause:clause)
-        }
-    }
-    
-    func possibleVariants<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> Set<Int>? {
-        var vs : Set<Int>? = nil
+    func searchVariantsLinearly(clauseIndex:Int) -> [Int] {
+        return searchVariantsLinearly( repository[clauseIndex].yices.yicesLiterals )
         
-        for literal in literals {
-            guard let clauses = literalClauseMapping[literal] where clauses.count > 0 else {
-                return nil
-            }
-            
-            if vs == nil { vs = clauses }
-            else {
-                vs!.intersectInPlace(clauses)
-                
-                guard vs!.count > 0 else { return nil  }
-                
-            }
-        }
+    }
+    
+    func searchSubsumptionerLinearly<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> [Int] {
+        let matches = repository.enumerate().filter {
+            processedClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals.isSubsetOf(literals)
+            }.map { $0.0 }
+        return matches
         
-        return vs
     }
 }
 
+// MARK: incompleted
 extension MingyProver {
     func select(clauseIndex:Int) -> Int {
         return -1

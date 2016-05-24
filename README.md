@@ -6,12 +6,18 @@ To build and run the this application,
 the command line tool, or the unit tests 
 some data and libraries have to be installed.
 
-Flex and Yacc
+- flex
+- yacc
+- tptp
+- yices
+- z3
+
+##Flex and Yacc
 ====
 
 … are preinstalled on Macs. See `Docs/yacc` in this project for configuration details.
 
-TPTP
+##TPTP problem files
 ====
 
 Download the current release of the TPTP 
@@ -40,14 +46,14 @@ cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/AxiomB.ax
 mkdir /Users/Shared/Axioms
 cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomsC.ax
 
-Yices
+## Yices
 =====
 
 Download and install yices 2 for Mac OS X (64 bits) from [yices.csl.sri.com](http://yices.csl.sri.com).
 
 See `Docs/Yices` in this project for configuration details .
 
-Z3
+## Z3
 ====
 
 Download, build and install z3 (by Microsoft) from [Github](https://github.com/Z3Prover/z3)

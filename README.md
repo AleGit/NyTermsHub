@@ -13,12 +13,10 @@ the following data and libraries have to be installed.
 
 ##Flex and Yacc
 ====
-
 … are preinstalled on Macs. See `Docs/yacc` in this project for configuration details.
 
 ##TPTP problem files
 ====
-
 Download the current release of the TPTP 
 (*Thousands of Problems for Theorem Provers*) Library from [www.cs.miami.edu/~tptp/](http://www.cs.miami.edu/~tptp/) 
 that contains problems, axiom sets, documents, and utilities. 
@@ -38,14 +36,13 @@ The tptp root path default is `/Users/Shared/TPTP`.
 For `TptpPathTests` to succeed copy these files:
 
 
-cp /Users/Shared/TPTP/Problems/SYN/SYN000-2.p /Users/Shared/SampleA.p
-cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/AxiomB.ax
-mkdir /Users/Shared/Axioms
-cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomsC.ax
+    cp /Users/Shared/TPTP/Problems/SYN/SYN000-2.p /Users/Shared/SampleA.p
+    cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/AxiomB.ax
+    mkdir /Users/Shared/Axioms
+    cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomsC.ax
 
-## Yices 2, Z3 (SMT Prover)
+## Yices 2, Z3 SMT Provers
 =====
-
 Download and install yices 2 for Mac OS X (64 bits) from [yices.csl.sri.com](http://yices.csl.sri.com). This project uses the precompiled binary.
 Follow the instructions from the website. Check for the following files on your system:
 

@@ -144,6 +144,7 @@ class SwiftTests: XCTestCase {
         
     
         let s = "string"
+        let t = "missing"
         
         for i in 0...3 {
             if collection[s] == nil { collection[s] = Set<Int>() }
@@ -157,6 +158,19 @@ class SwiftTests: XCTestCase {
         }
         
         XCTAssertEqual(collection[s], Set([0,1,2,3]))
+        
+        
+        XCTAssertNil(collection[s]?.remove(8))
+        XCTAssertEqual(collection[s], Set([0,1,2,3]))
+        
+        XCTAssertEqual(2, collection[s]?.remove(2))
+        XCTAssertEqual(collection[s], Set([0,1,3]))
+        
+        XCTAssertNil(collection[t]?.remove(8))
+        XCTAssertEqual(collection[s], Set([0,1,3]))
+        XCTAssertNil(collection[t])
+        
+        
         
     }
     

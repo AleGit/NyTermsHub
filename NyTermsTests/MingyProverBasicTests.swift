@@ -5,33 +5,33 @@
 ////  Created by Alexander Maringele on 04.03.16.
 ////  Copyright © 2016 Alexander Maringele. All rights reserved.
 ////
-//
-//import XCTest
-//@testable import NyTerms
-//
-//class MingyProverBasicTests: XCTestCase {
-//    
-//    override func setUp() {
-//        super.setUp()
-//        yices_init()
-//        // Put setup code here. This method is called before the invocation of each test method in the class.
-//    }
-//    
-//    override func tearDown() {
-//        yices_exit()
-//        // Put teardown code here. This method is called after the invocation of each test method in the class.
-//        super.tearDown()
-//    }
-//    
-//    func testPropositionalTrue() {
-//        let wahr = "p|~p" as TestNode
-//        
-//        let prover = MingyProver(clauses: [wahr])
+
+import XCTest
+@testable import NyTerms
+
+class MingyProverBasicTests: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        yices_init()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        yices_exit()
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+
+    func testPropositionalTrue() {
+        let wahr = "p|~p" as TestNode
+        
+        let prover = MingyProver(clauses: [wahr])
 //        let (status,runtime) = measure { prover.run() }
 //        print("runtime",runtime)
 //        XCTAssertEqual(STATUS_SAT, status)
-//    }
-//    
+    }
+//
 //    func testEmptyClause() {
 //        let empty = TestNode(connective:"|",nodes: [TestNode]())
 //        
@@ -107,5 +107,5 @@
 //        XCTAssertEqual(STATUS_SAT, status)
 //        
 //    }
-//
-//}
+
+}

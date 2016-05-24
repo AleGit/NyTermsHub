@@ -245,7 +245,7 @@ class YicesSatTrials : YicesTestCase {
         var tptpClauses = tptpFormulae.map { $0.root }
         
         let yicesClauses = tptpClauses.map {
-            (tptpClause) -> (TptpNode,clause:term_t,after:[term_t],before:[term_t]) in
+            (tptpClause) -> (TptpNode,clause:term_t,after:Set<term_t>,before:[term_t]) in
             let triple = Yices.clause(tptpClause)
             
             XCTAssertEqual(0, yices_term_is_atomic(triple.0), "\n\(tptpClause) \(triple)")

@@ -10,9 +10,9 @@ import Foundation
 
 extension Yices {
     
-    typealias Triple = (
+    typealias Tuple = (
         yicesClause: type_t,
-        yicesLiterals: [type_t],
+        yicesLiterals: Set<type_t>,
         alignedYicesLiterals: [type_t]
     )
     
@@ -26,7 +26,7 @@ extension Yices {
     
     /// Return a yices clause and yices literals from a node clause.
     /// The children of `yicesClause` are often different from `yicesLiterals`.
-    static func clause<N:Node>(clause:N) -> Triple /* (
+    static func clause<N:Node>(clause:N) -> Tuple /* (
         yicesClause: term_t,
         yicesLiterals:[type_t],
         alignedYicesLiterals:[type_t]) */ {
@@ -38,7 +38,7 @@ extension Yices {
             switch type {
             case .Disjunction:
                 guard let literals = clause.nodes where literals.count > 0 else {
-                    return (Yices.bot, [term_t](), [term_t]())
+                    return (Yices.bot, Set<term_t>(), [term_t]())
                 }
                 
                 return Yices.clause(literals)
@@ -55,7 +55,7 @@ extension Yices {
                 // not a clause at all
             default:
                 assert(false,"\(#function)(\(clause)) Argument is of type \(type)")
-                return (Yices.bot, [term_t](), [term_t]())
+                return (Yices.bot, Set<term_t>(), [term_t]())
             }
             
             
@@ -71,7 +71,7 @@ extension Yices {
     /// * `p ≡ [ p, p ]`
     /// * `p ≡ [ ⊥ ~= ⊥, p ]`
     /// * `[p,q,q,q,q] ≡ [ p, q, ⊥ ~= ⊥, p,q ]`
-    static func clause<N:Node>(literals:[N]) -> Triple /* (
+    static func clause<N:Node>(literals:[N]) -> Tuple /* (
         yicesClause: type_t,
         yicesLiterals:[type_t],
         alignedYicesLiterals:[type_t]) */ {
@@ -85,7 +85,7 @@ extension Yices {
             
             return (
                 yicesClause,
-                yicesLiterals,
+                Set(yicesLiterals),
                 alignedYicesLiterals
             )
             

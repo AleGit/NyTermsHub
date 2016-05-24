@@ -9,7 +9,7 @@
 import Foundation
 
 extension TptpNode {
-    typealias Tuple = (node:TptpNode,selected:Int,triple:Yices.Triple)
+    typealias Tuple = (node:TptpNode,selected:Int,triple:Yices.Tuple)
 }
 
 
@@ -249,7 +249,7 @@ struct Demo {
     
     typealias ClauseIndices = (byYicesLiterals:[term_t:Set<Int>], byYicesClauses: [term_t:Set<Int>])
     
-    static func addtoclauseindices(inout clauseIndices:ClauseIndices, clauseIndex:Int, triple:Yices.Triple) {
+    static func addtoclauseindices(inout clauseIndices:ClauseIndices, clauseIndex:Int, triple:Yices.Tuple) {
         // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         for yicesLiteral in Set(triple.alignedYicesLiterals) {
             if clauseIndices.byYicesLiterals[yicesLiteral] == nil {
@@ -429,7 +429,7 @@ struct Demo {
         }
     }
     
-    static func variantSubsumptionCandidates(tptpClauseIndices: ClauseIndices, _ yicesTriple:Yices.Triple, tptpTuples: [TptpNode.Tuple] ) -> ([Int], Set<Int>?) {
+    static func variantSubsumptionCandidates(tptpClauseIndices: ClauseIndices, _ yicesTriple:Yices.Tuple, tptpTuples: [TptpNode.Tuple] ) -> ([Int], Set<Int>?) {
         
         
         let newLiteralsSet = Set(yicesTriple.yicesLiterals)

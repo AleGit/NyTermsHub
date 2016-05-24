@@ -40,3 +40,10 @@ Yices
 Download and install yices 2 for Mac OS X (64 bits) from [yices.csl.sri.com](http://yices.csl.sri.com).
 
 See `Docs/Yices` in this project for configuration details .
+
+Z3
+==
+
+Download, build and install z3 (by Microsoft) from [Github](https://github.com/Z3Prover/z3)
+
+See `Docs/z3` in this project for configuration details.

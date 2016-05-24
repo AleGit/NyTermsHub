@@ -9,7 +9,7 @@ Copyright (c) 2015 Microsoft Corporation
 #include<stdarg.h>
 #include<memory.h>
 #include<setjmp.h>
-#include</usr/local/include/z3.h>
+#include"z3.h"
 
 #define LOG_Z3_CALLS
 

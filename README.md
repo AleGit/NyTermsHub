@@ -6,14 +6,19 @@ To build and run the this application,
 the command line tool, or the unit tests 
 the following data and libraries have to be installed.
 
-- flex, yacc (preinstalled)
-- TPTP problem files
-- yices  2
+- flex
+- yacc
+- tptp problem files
+- yices 2
 - z3
 
-##Flex and Yacc
+##Flex and Yacc 
 ====
-… are preinstalled on Macs. See `Docs/yacc` in this project for configuration details.
+… are preinstalled on Macs. See also `Docs/yacc` in this project for configuration details.
+
+The yacc compiler flag `-p tptp_` for yacc source files (*.ym, *.y) changes the function prefix from `yy_` to `tptp_`. 
+The yacc build option `input file stem` uses the yacc source file names for the generated parser source files.
+
 
 ##TPTP problem files
 ====

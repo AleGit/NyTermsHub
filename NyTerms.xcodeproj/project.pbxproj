@@ -325,7 +325,6 @@
 		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
 		51844E151C8439C400DCAA32 /* Infos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Infos.swift; sourceTree = "<group>"; };
 		51844E171C8448A200DCAA32 /* UnificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnificationTests.swift; sourceTree = "<group>"; };
-		518D60A81C0C58B900831FE8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		519801A21B84E11F0030A61A /* NodeStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeStructTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A41B84E1780030A61A /* NodeClassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeClassTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A61B84E18C0030A61A /* NodeEnumTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeEnumTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -401,6 +400,7 @@
 		D23B0D4D1CF4587500B7BE7F /* z3 linker flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "z3 linker flag.png"; sourceTree = "<group>"; };
 		D23B0D501CF45ACE00B7BE7F /* z3_capi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = z3_capi.c; sourceTree = "<group>"; };
 		D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Z3CapiTest.swift; sourceTree = "<group>"; };
+		D23B0D551CF45F6100B7BE7F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
@@ -794,12 +794,12 @@
 		51B26B5E1B8D9F9E00CC59AD /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				D23B0D551CF45F6100B7BE7F /* README.md */,
 				D23B0D431CF44F2B00B7BE7F /* z3 */,
 				513F24021C04BD170026A081 /* optimization */,
 				8789DBF91B9B642300D2B903 /* yacc */,
 				8789DBF71B9B63EA00D2B903 /* SMT */,
 				8789DBF61B9B63C700D2B903 /* Yices */,
-				518D60A81C0C58B900831FE8 /* README.md */,
 				51581E0C1C74684D00075A74 /* Arguments.md */,
 			);
 			path = Docs;

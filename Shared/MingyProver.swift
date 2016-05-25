@@ -20,13 +20,12 @@ private class SubtermInfo : UnitArrayPair {
         self.array = subTermPosition
     }
 }
-
+/// - Create a prover with initial set of clauses. T
+/// The repository will be filled, but no clauses are active at this point.
+/// - Start the prover with run(timeout). It will activate one clauses one by one.
 final class MingyProver<N:Node where N.Symbol == String> {
     
     private let ctx : COpaquePointer
-    let free_tau = Yices.int_tau
-    let bool_tau = Yices.bool_tau
-    let 🚧 : term_t
     
     // typealias ClauseTriple = (N, literalIndex:Int?, yices:(clause:term_t,literals:[term_t]))
     typealias Entry = (N, literalIndex:Int, yices:Yices.Tuple)
@@ -36,6 +35,7 @@ final class MingyProver<N:Node where N.Symbol == String> {
     
     /// keeps track of acitve, i.e. completly processed clauses
     var activeClauseIndices = Set<Int>()
+    var unitClauseIndices = Set<Int>()
     
     /// stores paths of (semantically) selected literals to active clause indices
     private var literalsTrie = TrieClass<SymHop<String>,Int>()
@@ -52,6 +52,9 @@ final class MingyProver<N:Node where N.Symbol == String> {
     // private var unprocessedClauseLiteralSet = Set<Int>()
     
     private lazy var startTime : CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
+    private var endTime : CFAbsoluteTime = 0.0
+    
+    var expired : Bool { return endTime < CFAbsoluteTimeGetCurrent() }
     var runtime : CFTimeInterval { return CFAbsoluteTimeGetCurrent() - startTime }
     
     init<S:SequenceType where S.Generator.Element == N> (clauses:S) {
@@ -59,18 +62,13 @@ final class MingyProver<N:Node where N.Symbol == String> {
         
         self.ctx = yices_new_context(nil)
         
-        self.🚧 = yices_new_uninterpreted_term(free_tau)
-        yices_set_term_name(self.🚧, "⊥")
-        
         repository += clauses.enumerate().map {
-            ($1 ** $0, -1, Yices.clause($1))
-            
-            // clause ** index : append clause index to variable names to make clauses variable distinct
+            ($1 ** $0, // make clauses variable distinct by appending clause index
+                -1, // no literal is semantically selected so far
+                Yices.clause($1) // construct yices clause
+            )
         }
     }
-    
-    
-    
     
     deinit {
         yices_free_context(self.ctx)
@@ -78,52 +76,167 @@ final class MingyProver<N:Node where N.Symbol == String> {
     }
 }
 
+extension MingyProver {
+    private func yicesassert(clauseIndex:Int) -> Int? {
+        let entry = repository[clauseIndex]
+        let code = yices_assert_formula(ctx,entry.yices.yicesClause)
+        assert(code >= 0)
+        
+        if entry.yices.alignedYicesLiterals.count == 1 {
+            unitClauseIndices.insert(clauseIndex)
+            // it is a unit clause, hence the first (and only) literal is selected            
+            return 0
+        }
+        else if entry.yices.yicesLiterals.count == 1 {
+            // the relevant literals are variants of each other : x ≥ y | y ≥ x
+            // or the clause is trivially true ~p(x) | p(x)
+            
+            if let lid = entry.yices.yicesLiterals.first,
+                let lidx = entry.yices.alignedYicesLiterals.indexOf(lid) {
+                return lidx
+            }
+        }
+        return nil
+    }
+    
+    private func yicesreselect(clauseIndex:Int, mdl:COpaquePointer) {
+        let entry = repository[clauseIndex]
+        let literalIndex = entry.literalIndex
+        guard literalIndex < 0
+            || yices_formula_true_in_model(mdl, entry.yices.alignedYicesLiterals[literalIndex]) != 1
+            else {
+            // literalIndex >= 0 && yices_formula_true_in_model(mdl, lid) == 1 (true)
+            return
+        }
+        
+        deindicateClause(clauseIndex, literalIndex:literalIndex)
+        
+        for lid in entry.yices.yicesLiterals {
+            guard yices_formula_true_in_model(mdl, lid) == 0 else {
+                repository[clauseIndex].literalIndex = entry.yices.alignedYicesLiterals.indexOf(lid) ?? -1
+                
+                assert(repository[clauseIndex].literalIndex != -1)
+                return
+            }
+        }
+        
+        assert(false)
+        
+    }
+    
+    func preprocess() -> smt_status_t {
+        for clauseIndex in 0..<repository.count {
+            if let lidx = yicesassert(clauseIndex) {
+                repository[clauseIndex].literalIndex = lidx
+                indicateClause(clauseIndex, literalIndex: lidx)
+            }
+        }
+        
+        return yices_check_context(ctx,nil)
+    }
+    
+    
+    func run(timeout:CFTimeInterval) -> (smt_status_t,Bool, CFTimeInterval) {
+        self.endTime = self.startTime + timeout
+        guard !self.expired else { return (STATUS_INTERRUPTED,true,self.runtime) }
+        
+        var status = preprocess()
+        var expired = self.expired
+        
+        while expired && status == STATUS_SAT {
+            let mdl = yices_get_model(self.ctx,1)
+            defer { yices_free_model(mdl) }
+            
+            
+            
+            for clauseIndex in 0..<repository.count {
+                yicesreselect(clauseIndex, mdl:mdl)
+            }
+            
+            status = yices_check_context(ctx,nil)
+            expired = self.expired
+        }
+        
+
+        
+        
+        
+        return (status,expired,self.runtime)
+    }
+}
+
+extension MingyProver {
+    private func indicateClause(clauseIndex:Int, literalIndex:Int) {
+        guard literalIndex >= 0 else { return }
+        
+        for path in repository[clauseIndex].0.nodes![literalIndex].paths {
+            literalsTrie.insert(path, value: clauseIndex)
+        }
+    }
+    
+    private func deindicateClause(clauseIndex:Int, literalIndex:Int) {
+        guard literalIndex >= 0 else { return }
+        
+        for path in repository[clauseIndex].0.nodes![literalIndex].paths {
+            literalsTrie.delete(path, value: clauseIndex)
+        }
+    }
+    
+    func indicateClause(clauseIndex:Int) {
+        indicateClause(clauseIndex, literalIndex:repository[clauseIndex].literalIndex)
+    }
+    
+    func complementaryCandidateIndices(clauseIndex:Int) -> Set<Int>? {
+        let literal = repository[clauseIndex].0
+        
+        return candidateComplementaries(literalsTrie, term:literal)
+        
+    }
+    
+    
+    
+}
+
 // MARK: literal clause mapping extension
 extension MingyProver {
     
-//    func insert(literal:term_t, clause:Int) {
-//        if literalClauseMapping[literal] == nil {
-//            literalClauseMapping[literal] = Set(arrayLiteral:clause)
-//        }
-//        else {
-//            literalClauseMapping[literal]?.insert(clause)
-//        }
-//    }
-//    
-//    func insert<S:SequenceType where S.Generator.Element == term_t>(literals:S, clause:Int) {
-//        for literal in literals {
-//            insert(literal, clause: clause)
-//        }
-//    }
-//    
-//    func remove(literal:term_t, clause:Int) {
-//        literalClauseMapping[literal]?.remove(clause)
-//    }
-//    
-//    func remove<S:SequenceType where S.Generator.Element == term_t>(literals:S, clause:Int) {
-//        for literal in literals {
-//            remove(literal, clause:clause)
-//        }
-//    }
-    
-    func searchVariantsLinearly(literals:Set<term_t>) -> [Int] {
+    /// Variable-renamed sets of literals are variants of each other.
+    func searchPotentialVariantsLinearly(literals:Set<term_t>) -> [Int] {
         let matches = repository.enumerate().filter {
             activeClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals == literals
             }.map { $0.0 }
         return matches
     }
     
-    func searchVariantsLinearly(clauseIndex:Int) -> [Int] {
-        return searchVariantsLinearly( repository[clauseIndex].yices.yicesLiterals )
-        
+    /// A first clause is a variant of a second clause, if there is a renaming such that
+    /// the first set of literals is equal to the second set of literals.
+    ///
+    /// Notes:
+    /// - f(X)|f(X)|g(X,Y) is variant of f(Y)|g(Y,Z) in this definition.
+    /// - Usually clauses are defined as multi-sets of literals and
+    /// f(X)|f(X)|g(X,Y) would not be a variant of f(Y)|g(Y,Z)
+    /// - since all variables are substituted with the same constant
+    /// this function can return clauses, which are actually not variants:
+    ///     - f(X) | g(X,X) is actually not a variant of f(X) | g(X,Z)
+    ///     - f(X) | f(Y) | g(X,Y) vs. f(X) | g(X,Y)?
+    func searchPotentialVariantsLinearly(clauseIndex:Int) -> [Int] {
+        return searchPotentialVariantsLinearly( repository[clauseIndex].yices.yicesLiterals )
     }
     
-    func searchSubsumersLinearly<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> [Int] {
+    /// Each set of literals subsumes its variable-renamed supersets.
+    func searchPotentialSubsumersLineary<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> [Int] {
         let matches = repository.enumerate().filter {
             activeClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals.isSubsetOf(literals)
             }.map { $0.0 }
         return matches
-        
+    }
+    
+    /// A clause subsumes a given clause if there is variable-renamed literals are a subset of the given set of literals.
+    /// Note: Variants subsume each other.
+    /// candidates, which do not subssume:
+    /// -
+    func searchPotentialSubsumersLineary(clauseIndex:Int) -> [Int] {
+        return searchPotentialSubsumersLineary( repository[clauseIndex].yices.yicesLiterals )
     }
 }
 
@@ -131,10 +244,6 @@ extension MingyProver {
 extension MingyProver {
     func select(clauseIndex:Int) -> Int {
         return -1
-    }
-    
-    func searchSubsumptionCandidates(clauseIndex:Int) {
-        
     }
     
     func process(clauseIndex:Int) {

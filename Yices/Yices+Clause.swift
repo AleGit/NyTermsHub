@@ -11,9 +11,9 @@ import Foundation
 extension Yices {
     
     typealias Tuple = (
-        yicesClause: type_t,
-        yicesLiterals: Set<type_t>,
-        alignedYicesLiterals: [type_t]
+        yicesClause: term_t,
+        yicesLiterals: Set<term_t>,
+        alignedYicesLiterals: [term_t]
     )
     
 

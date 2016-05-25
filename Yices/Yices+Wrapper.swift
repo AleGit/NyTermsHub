@@ -44,7 +44,8 @@ extension Yices {
             yices_set_term_name(c, symbol)
         }
         else {
-            assert (term_tau == yices_type_of_term(c))
+            assert (term_tau == yices_type_of_term(c),
+                    "\(String(tau:term_tau),term_tau) != \(String(tau:yices_type_of_term(c)), yices_type_of_term(c)) \(String(term:c))for '\(symbol)'")
         }
         return c
     }

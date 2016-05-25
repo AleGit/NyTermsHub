@@ -41,20 +41,25 @@ final class MingyProver<N:Node where N.Symbol == String> {
     let bool_tau = Yices.bool_tau
     let 🚧 : term_t
     
+    // typealias ClauseTriple = (N, literalIndex:Int?, yices:(clause:term_t,literals:[term_t]))
     typealias Entry = (N, literalIndex:Int, yices:Yices.Tuple)
     
+    /// stores all (!) clauses and their variable free yices counterparts
     private var repository = [Entry]()
-    // private var literalClauseMapping = [term_t: Set<Int>]()
     
-    // literalsIndex
+    /// keeps track of acitve, i.e. completly processed clauses
+    var activeClauseIndices = Set<Int>()
+    
+    /// stores paths of (semantically) selected literals to active clause indices
     private var literalsTrie = TrieClass<SymHop<String>,Int>()
     
+    /// stores paths of subterms of (semantically) selected literals to active clause indices
     private var subtermsTrie = TrieClass<SymHop<String>,SubtermInfo>()
     
     // clause Index
     private var clauseIndex = [Int : Set<Int>]()
     
-    typealias ClauseTriple = (N, literalIndex:Int?, yices:(clause:term_t,literals:[term_t]))
+    
     
     // private var repository = [ClauseTriple]()
     // private var unprocessedClauseLiteralSet = Set<Int>()
@@ -77,7 +82,7 @@ final class MingyProver<N:Node where N.Symbol == String> {
         }
     }
     
-    var processedClauseIndices = Set<Int>()
+    
     
     
     deinit {
@@ -116,7 +121,7 @@ extension MingyProver {
     
     func searchVariantsLinearly(literals:Set<term_t>) -> [Int] {
         let matches = repository.enumerate().filter {
-            processedClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals == literals
+            activeClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals == literals
             }.map { $0.0 }
         return matches
     }
@@ -126,9 +131,9 @@ extension MingyProver {
         
     }
     
-    func searchSubsumptionerLinearly<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> [Int] {
+    func searchSubsumersLinearly<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> [Int] {
         let matches = repository.enumerate().filter {
-            processedClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals.isSubsetOf(literals)
+            activeClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals.isSubsetOf(literals)
             }.map { $0.0 }
         return matches
         
@@ -146,12 +151,12 @@ extension MingyProver {
     }
     
     func process(clauseIndex:Int) {
-        assert(!processedClauseIndices.contains(clauseIndex))
+        assert(!activeClauseIndices.contains(clauseIndex))
         
         // check if strengthend clause is allready in index
         
         
-        processedClauseIndices.insert(clauseIndex)
+        activeClauseIndices.insert(clauseIndex)
     }
     
 }

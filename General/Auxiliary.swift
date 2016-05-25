@@ -28,6 +28,65 @@ func errorNumberAndDescription() -> (Int32,String) {
 
 // MARK: -
 
+extension Array where Element : Hashable {
+    var hashValue: Int {
+        return self.reduce(5381) {
+            ($0 << 5) &+ $0 &+ $1.hashValue
+        }
+    }
+}
+
+
+extension Array {
+    
+    
+    func permuter<T:Hashable>() -> (
+        (before:[T]) -> ( (after:[T]) -> [Element])
+        )
+    {
+        return {
+            (before) in return {
+                (after) in return
+                self.permute(before,after:after)
+            }
+            
+        }
+        
+    }
+    
+    func permute<T:Hashable>(before:[T], after:[T]) -> [Element] {
+        assert(Set(before) == Set(after))
+        assert(before.count == after.count)
+        assert(self.count == before.count)
+        
+        let beforeIndices = before.elementPlaces
+        let afterIndices = after.elementPlaces
+        
+        var target = self
+        
+        for (key,sourceIndices) in beforeIndices {
+            guard let targetIndices = afterIndices[key] else {
+                assert(false)
+                break
+            }
+            // assert(sourceIndices.count == targetIndices.count)
+            if sourceIndices.count != targetIndices.count {
+                //                print(before, after)
+                //                print(beforeIndices, afterIndices)
+                //                print(sourceIndices, targetIndices)
+            }
+            
+            for (sourceIndex, targetIndex) in zip(sourceIndices, targetIndices) {
+                target[targetIndex] = self[sourceIndex]
+            }
+        }
+        
+        return target
+    }
+}
+
+// MARK: -
+
 extension Range where Element : Comparable {
     /// expands range if value is not in range
     /// - successor `struct Range<Element : ForwardIndexType>`
@@ -132,8 +191,6 @@ extension SequenceType {
     }
 }
 
-// MARK: -
-
 
 
 extension SequenceType where Generator.Element : Hashable {
@@ -161,52 +218,10 @@ extension SequenceType where Generator.Element : Hashable {
     }
 }
 
-extension Array {
-    
-    func permuter<T:Hashable>() -> (
-        (before:[T]) -> ( (after:[T]) -> [Element])
-    )
-    {
-        return {
-            (before) in return {
-                (after) in return
-                self.permute(before,after:after)
-            }
-            
-        }
-        
-    }
-    
-    func permute<T:Hashable>(before:[T], after:[T]) -> [Element] {
-        assert(Set(before) == Set(after))
-        assert(before.count == after.count)
-        assert(self.count == before.count)
-        
-        let beforeIndices = before.elementPlaces
-        let afterIndices = after.elementPlaces
-        
-        var target = self
-        
-        for (key,sourceIndices) in beforeIndices {
-            guard let targetIndices = afterIndices[key] else {
-                assert(false)
-                break
-            }
-            // assert(sourceIndices.count == targetIndices.count)
-            if sourceIndices.count != targetIndices.count {
-//                print(before, after)
-//                print(beforeIndices, afterIndices)
-//                print(sourceIndices, targetIndices)
-            }
-            
-            for (sourceIndex, targetIndex) in zip(sourceIndices, targetIndices) {
-                target[targetIndex] = self[sourceIndex]
-            }
-        }
-        
-        return target
-    }
-}
+
+
+// MARK: -
+
 
 extension Set {
     mutating func uniqueify(inout member: Element) {

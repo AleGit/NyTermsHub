@@ -8,30 +8,17 @@
 
 import Foundation
 
-extension Array where Element : Hashable {
-    var hashValue: Int {
-        return self.reduce(5381) {
-            ($0 << 5) &+ $0 &+ $1.hashValue
-        }
-    }
-}
-
-private class SubtermInfo : Hashable {
-    let index:Int
-    let position:[Int]
+private class SubtermInfo : UnitArrayPair {
+    let unit:Int
+    let array:[Int]
     
-    init(index:Int,position:[Int]) {
-        self.index = index
-        self.position = position
-    }
+    var clauseIndex : Int { return unit }
+    var subTermPosition : [Int] { return array }
     
-    var hashValue: Int {
-        return self.index &* position.hashValue
+    init(clauseIndex:Int,subTermPosition:[Int]) {
+        self.unit = clauseIndex
+        self.array = subTermPosition
     }
-}
-
-private func ==(lhs:SubtermInfo, rhs:SubtermInfo) -> Bool {
-    return lhs.index == rhs.index && lhs.position == rhs.position
 }
 
 final class MingyProver<N:Node where N.Symbol == String> {
@@ -57,7 +44,7 @@ final class MingyProver<N:Node where N.Symbol == String> {
     private var subtermsTrie = TrieClass<SymHop<String>,SubtermInfo>()
     
     // clause Index
-    private var clauseIndex = [Int : Set<Int>]()
+    // private var clauseIndex = [Int : Set<Int>]()
     
     
     

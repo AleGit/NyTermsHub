@@ -180,6 +180,8 @@
 		51FF64011CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64051CBBB71600AA26B5 /* YicesNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */; };
+		D23635561CF594AE00978B2D /* UnitArrayPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23635551CF594AE00978B2D /* UnitArrayPair.swift */; };
+		D23635571CF594AE00978B2D /* UnitArrayPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23635551CF594AE00978B2D /* UnitArrayPair.swift */; };
 		D23B0D451CF44F3A00B7BE7F /* z3-install.txt in Resources */ = {isa = PBXBuildFile; fileRef = D23B0D441CF44F3A00B7BE7F /* z3-install.txt */; };
 		D23B0D511CF45ACE00B7BE7F /* z3_capi.c in Sources */ = {isa = PBXBuildFile; fileRef = D23B0D501CF45ACE00B7BE7F /* z3_capi.c */; };
 		D23B0D541CF45BF200B7BE7F /* Z3CapiTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */; };
@@ -395,6 +397,7 @@
 		51FD00C11C3133E1008C5AD1 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Clause.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
+		D23635551CF594AE00978B2D /* UnitArrayPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitArrayPair.swift; sourceTree = "<group>"; };
 		D236F8301CEDE93A00BEF2E5 /* Demo.demo.runtimes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.runtimes.txt; sourceTree = "<group>"; };
 		D23B0D441CF44F3A00B7BE7F /* z3-install.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "z3-install.txt"; sourceTree = "<group>"; };
 		D23B0D461CF4501E00B7BE7F /* z3-paths */ = {isa = PBXFileReference; lastKnownFileType = text; path = "z3-paths"; sourceTree = "<group>"; };
@@ -638,6 +641,7 @@
 				5146F42B1C7B061F00A19EC1 /* TrieClass.swift */,
 				51FD00B71C3132F8008C5AD1 /* TrieStruct.swift */,
 				514AD8671C6B7DF900652004 /* TrieType.swift */,
+				D23635551CF594AE00978B2D /* UnitArrayPair.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -1050,6 +1054,7 @@
 				511E958A1B8AEB4D0093F4E8 /* TptpFormula.swift in Sources */,
 				5146F42D1C7B061F00A19EC1 /* TrieClass.swift in Sources */,
 				51342AB91B92CA3A0052A72F /* DemoFileParsing.swift in Sources */,
+				D23635571CF594AE00978B2D /* UnitArrayPair.swift in Sources */,
 				511E958B1B8AEB4D0093F4E8 /* TptpInclude.swift in Sources */,
 				510F5CDA1CC4FCB40012B9CC /* Yices+KBO.swift in Sources */,
 				511E958C1B8AEB4D0093F4E8 /* TptpNode.swift in Sources */,
@@ -1120,6 +1125,7 @@
 				51FD00C21C3133E1008C5AD1 /* Operators.swift in Sources */,
 				5146F42C1C7B061F00A19EC1 /* TrieClass.swift in Sources */,
 				51FD00BA1C3132F8008C5AD1 /* BinarySearchTree.swift in Sources */,
+				D23635561CF594AE00978B2D /* UnitArrayPair.swift in Sources */,
 				516094331CDA095900B3579D /* PrlcParser.y in Sources */,
 				5173B5591CC9F7B800A9ABCE /* SharingNode.swift in Sources */,
 				515F0EF31B6B740900B470B4 /* TptpLexer.lm in Sources */,

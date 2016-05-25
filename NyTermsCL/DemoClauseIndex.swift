@@ -18,7 +18,7 @@ struct DemoClauseIndex {
         
         print(path)
         
-        var repository = [(N, term_t, [term_t], [term_t])]()
+        var repository = [(N, term_t, Set<term_t>, [term_t])]()
         var literalsClauseIndex = [ term_t : Set<Int>]() // yices literal : set of claus indices
         var clauseIndex = [ term_t : Set<Int>]()
         
@@ -32,11 +32,10 @@ struct DemoClauseIndex {
             
             // === find candidates for variants by literal clause indes
             
-            let keys = Set(yicesLiterals)
             
             var candis = Set<Int>(0..<index) // all clause so far are candidates
             
-            for value in keys {
+            for value in yicesLiterals {
                 guard let entry = literalsClauseIndex[value] else {
                     candis.removeAll()
                     break
@@ -72,7 +71,8 @@ struct DemoClauseIndex {
             
             
             // insert into literal clause index
-            for value in keys {
+            for value in yicesLiterals
+            {
                 guard var entry = literalsClauseIndex[value] else {
                     literalsClauseIndex[value] = Set(arrayLiteral:index)
                     continue

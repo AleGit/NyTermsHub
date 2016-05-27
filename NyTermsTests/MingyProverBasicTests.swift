@@ -14,10 +14,12 @@ class MingyProverBasicTests: XCTestCase {
     override func setUp() {
         super.setUp()
         yices_init()
+        Nylog.reset()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
+        Nylog.printit()
         yices_exit()
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
@@ -27,7 +29,7 @@ class MingyProverBasicTests: XCTestCase {
         let wahr = "p|~p" as TestNode
         
         let prover = MingyProver(clauses: [wahr])
-        let (result,runtime) = measure { prover.run(1.0) }
+        let (result,runtime) = measure { prover.run(0.1) }
         print("runtime",result,runtime)
 
         XCTAssertEqual(STATUS_SAT, result.0)
@@ -80,7 +82,7 @@ class MingyProverBasicTests: XCTestCase {
         
         let prover = MingyProver(clauses: clauses)
         let (result,runtime) = measure { prover.run(1.0) }
-        print("runtime",result,runtime)
+        print("+++ total runtime",result,runtime)
         
         XCTAssertEqual(STATUS_UNSAT, result.0)
         XCTAssertEqual(false, result.1)

@@ -35,6 +35,7 @@ final class MingyProver<N:Node where N.Symbol == String> {
     
     /// keeps track of acitve, i.e. completly processed clauses
     var activeClauseIndices = Set<Int>()
+    var inactiveClauseIndices = Set<Int>()
     var unitClauseIndices = Set<Int>()
     
     /// stores paths of (semantically) selected literals to active clause indices
@@ -135,26 +136,92 @@ extension MingyProver {
         return yices_check_context(ctx,nil)
     }
     
+    func selectclause() -> Int? {
+        // the simplest implementation
+        // return inactiveClauseIndices.first
+        
+        // first try to select a inactive unit clause, otherwise try to select a inactive clause
+        return unitClauseIndices.intersect(inactiveClauseIndices).first ?? inactiveClauseIndices.first
+    }
     
-    func run(timeout:CFTimeInterval) -> (smt_status_t,Bool, CFTimeInterval) {
+    func activate(clauseIndex:Int) {
+        // print("\(#function)(\(clauseIndex)) = \(repository[clauseIndex]).")
+        
+        defer {
+            self.inactiveClauseIndices.remove(clauseIndex)
+            self.activeClauseIndices.insert(clauseIndex)
+        }
+        
+        let entry = repository[clauseIndex]
+        
+        guard let literal = entry.0.nodes?[entry.literalIndex],
+            let candidates = candidateComplementaries(self.literalsTrie, term: literal) else {
+            return
+        }
+    
+        for candidateIndex in candidates {
+            let candidateEntry = repository[candidateIndex]
+            guard let candidateLiteral = candidateEntry.0.nodes?[candidateEntry.literalIndex] else {
+                continue
+            }
+            print (clauseIndex, candidateIndex, literal ~?= candidateLiteral)
+            
+        }
+        
+        
+        
+    }
+    
+    func deactivate(clauseIndex:Int) {
+        self.activeClauseIndices.remove(clauseIndex)
+        self.inactiveClauseIndices.insert(clauseIndex)
+        
+    }
+    
+    
+    func run(timeout:CFTimeInterval = 1.0) -> (smt_status_t,Bool, CFTimeInterval) {
         self.endTime = self.startTime + timeout
         guard !self.expired else { return (STATUS_INTERRUPTED,true,self.runtime) }
         
-        var status = preprocess()
+        var (status,_) = Nylog.measure("Preprocess \(repository.count) clauses.", f:self.preprocess)
         var expired = self.expired
+        var count = 0
         
-        while expired && status == STATUS_SAT {
+        
+        while !expired && status == STATUS_SAT && count < repository.count {
             let mdl = yices_get_model(self.ctx,1)
-            defer { yices_free_model(mdl) }
-            
-            
-            
-            for clauseIndex in 0..<repository.count {
-                yicesreselect(clauseIndex, mdl:mdl)
+            defer {
+                // update status
+                (status,_) = Nylog.measure("yices_check_context.") { yices_check_context(self.ctx,nil) }
+                expired = self.expired
+                count = repository.count
+                
+                // release model
+                yices_free_model(mdl)
             }
             
-            status = yices_check_context(ctx,nil)
-            expired = self.expired
+            
+            
+            
+            Nylog.measure("(Re)select literals from \(repository.count) clauses.") {
+                for clauseIndex in 0..<self.repository.count {
+                    self.yicesreselect(clauseIndex, mdl:mdl)
+                }
+            }
+            
+            // get inactive clause and activate it
+            
+            guard let inactiveClauseIndex = selectclause() else {
+                print("inactive clauses: \(inactiveClauseIndices.count)")
+                break;
+            }
+            
+            Nylog.measure("Activate(\(inactiveClauseIndex))"
+                ) {
+                    self.activate(inactiveClauseIndex)
+            }
+            
+            
         }
         
 
@@ -175,15 +242,22 @@ extension MingyProver {
     }
     
     private func deindicateClause(clauseIndex:Int, literalIndex:Int) {
+        // if a clause is not in the index then the clause is not active.
+        deactivate(clauseIndex)
+        
         guard literalIndex >= 0 else { return }
         
         for path in repository[clauseIndex].0.nodes![literalIndex].paths {
             literalsTrie.delete(path, value: clauseIndex)
         }
+        
+        
     }
     
     func indicateClause(clauseIndex:Int) {
         indicateClause(clauseIndex, literalIndex:repository[clauseIndex].literalIndex)
+        
+        // when a clause is in the index it can be active or inactive.
     }
     
     func complementaryCandidateIndices(clauseIndex:Int) -> Set<Int>? {

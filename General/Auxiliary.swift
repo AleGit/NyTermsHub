@@ -2,6 +2,33 @@
 
 import Foundation
 
+struct Nylog {
+    
+    private static var log = [(String, CFTimeInterval, CFAbsoluteTime)]()
+    
+    static func reset() {
+        log.removeAll()
+    }
+    
+    static func printit() {
+        for (key,start,end) in log {
+            let text = ">>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
+            print(text)
+        }
+    }
+    
+    
+    static func measure<R>(key:String, f:()->R) -> (R,CFTimeInterval) {
+        let start = CFAbsoluteTimeGetCurrent()
+        let result = f()
+        let end = CFAbsoluteTimeGetCurrent()
+        
+        log.append(key,start,end)
+        
+        return (result,end-start)
+    }
+}
+
 func measure<R>(f:()->R) -> (R, CFAbsoluteTime){
     let start = CFAbsoluteTimeGetCurrent()
     let result = f()

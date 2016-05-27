@@ -151,10 +151,10 @@ extension MingyProver {
     
     func selectclause() -> Int? {
         // the simplest implementation
-        return inactiveClauseIndices.sort().first
+        // return inactiveClauseIndices.sort().first
         
         // first try to select a inactive unit clause, otherwise try to select a inactive clause
-        // return unitClauseIndices.intersect(inactiveClauseIndices).first ?? inactiveClauseIndices.first
+        return unitClauseIndices.intersect(inactiveClauseIndices).first ?? inactiveClauseIndices.first
     }
     
     func activate(clauseIndex:Int) -> Set<Int> {
@@ -252,29 +252,18 @@ extension MingyProver {
                 break;
             }
             
-            Nylog.measure("Activate(\(inactiveClauseIndex))" ) {
+            // Nylog.measure("Activate(\(inactiveClauseIndex))" )            {
+
                 for newClauseIndex in self.activate(inactiveClauseIndex) {
                     self.yicesassert(newClauseIndex)
                     self.inactiveClauseIndices.insert(newClauseIndex)
                 }
-            }
+            // 
             
-            
+//            if count == repository.count {
+//                break // nothing was added
+//            }
         }
-        
-        
-        
-        for entry in repository.enumerate() {
-            print(entry)
-        }
-        
-
-        // print("active",self.activeClauseIndices.sort())
-        print("inactive",self.inactiveClauseIndices.sort())
-        print("units",self.unitClauseIndices.sort())
-        print("totale",self.repository.count, self.inactiveClauseIndices.count)
-        
-        
         return (status,expired,self.runtime)
     }
 }

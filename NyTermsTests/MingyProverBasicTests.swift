@@ -87,23 +87,42 @@ class MingyProverBasicTests: XCTestCase {
         XCTAssertEqual(STATUS_UNSAT, result.0)
         XCTAssertEqual(false, result.1)
     }
-//
-//    func testPUZ003() {
-//        let path = "PUZ001-3".p!
-//        print(path)
-//        
-//        let (result,tptpFormulae,_) = parse(path:path)
-//        XCTAssertEqual(1, result.count)
-//        XCTAssertEqual(0, result[0])
-//        XCTAssertEqual(12, tptpFormulae.count)
-//        
-//        let clauses = tptpFormulae.map { TestNode($0.root) }
-//        
-//        let prover = MingyProver(clauses: clauses)
-//        let (status,runtime) = measure { prover.run() }
-//        print("runtime",runtime)
-//        XCTAssertEqual(STATUS_SAT, status)
-//    }
+    
+    func testPUZ002() {
+        let path = "PUZ002-1".p!
+        
+        let (parseResult,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, parseResult.count)
+        XCTAssertEqual(0, parseResult[0])
+        XCTAssertEqual(12, tptpFormulae.count)
+        
+        let clauses = tptpFormulae.map { TestNode($0.root) }
+        
+        let prover = MingyProver(clauses: clauses)
+        let (result,runtime) = measure { prover.run(30.0) }
+        print("+++ total runtime",result,runtime)
+        
+        XCTAssertEqual(STATUS_UNSAT, result.0)
+        XCTAssertEqual(false, result.1)
+    }
+    
+    func testPUZ003() {
+        let path = "PUZ003-1".p!
+        
+        let (parseResult,tptpFormulae,_) = parse(path:path)
+        XCTAssertEqual(1, parseResult.count)
+        XCTAssertEqual(0, parseResult[0])
+        XCTAssertEqual(8, tptpFormulae.count)
+        
+        let clauses = tptpFormulae.map { TestNode($0.root) }
+        
+        let prover = MingyProver(clauses: clauses)
+        let (result,runtime) = measure { prover.run(30.0) }
+        print("+++ total runtime",result,runtime)
+        
+        XCTAssertEqual(STATUS_UNSAT, result.0)
+        XCTAssertEqual(false, result.1)
+    }
 //    
 //    /// see **Example 3.7** in [AlM2014SR]
 //    func testInfiniteDomain() {

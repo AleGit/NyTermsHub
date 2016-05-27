@@ -70,73 +70,49 @@ class MingyProverBasicTests: XCTestCase {
         XCTAssertEqual(false, result.1)
     }
 
-    func testPUZ001() {
-        let path = "PUZ001-1".p!
+    func testEasyPuzzles() {
+        for (name,count) in [
+            ("PUZ001-1",12),
+            ("PUZ002-1",12),
+            ("PUZ003-1",8),
+            ("PUZ004-1",12),
+            ] {
+        
+        guard let path = name.p else {
+            XCTFail("\(name) was not found.")
+            continue
+        }
         
         let (parseResult,tptpFormulae,_) = parse(path:path)
         XCTAssertEqual(1, parseResult.count)
         XCTAssertEqual(0, parseResult[0])
-        XCTAssertEqual(12, tptpFormulae.count)
+        XCTAssertEqual(count, tptpFormulae.count)
         
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
         let prover = MingyProver(clauses: clauses)
         let (result,runtime) = measure { prover.run(30.0) }
-        print("+++ total runtime",result,runtime)
+        print("+++ \(path) +++ total runtime",result,runtime)
         
         XCTAssertEqual(STATUS_UNSAT, result.0)
-        XCTAssertEqual(false, result.1)
+        XCTAssertFalse(result.1) // no timeout!
+        }
     }
     
-    func testPUZ002() {
-        let path = "PUZ002-1".p!
-        
-        let (parseResult,tptpFormulae,_) = parse(path:path)
-        XCTAssertEqual(1, parseResult.count)
-        XCTAssertEqual(0, parseResult[0])
-        XCTAssertEqual(12, tptpFormulae.count)
-        
-        let clauses = tptpFormulae.map { TestNode($0.root) }
+    /// see **Example 3.7** in [AlM2014SR]
+    func testInfiniteDomain() {
+        let clauses : [TestNode] = [
+            TestNode(connective:"|", nodes: ["~(p(X,X))"]),
+            TestNode(connective:"|", nodes: ["p(X,f(X))"]),
+            "~(p(X,Y))|~(p(Y,Z))|p(X,Z)"
+        ]
         
         let prover = MingyProver(clauses: clauses)
-        let (result,runtime) = measure { prover.run(30.0) }
-        print("+++ total runtime",result,runtime)
+        let (result,runtime) = measure { prover.run(0.1) }
+        print("runtime",runtime)
+        XCTAssertEqual(STATUS_SAT, result.0)
+        XCTAssertTrue(result.1) // timeout!
         
-        XCTAssertEqual(STATUS_UNSAT, result.0)
-        XCTAssertEqual(false, result.1)
     }
-    
-    func testPUZ003() {
-        let path = "PUZ003-1".p!
-        
-        let (parseResult,tptpFormulae,_) = parse(path:path)
-        XCTAssertEqual(1, parseResult.count)
-        XCTAssertEqual(0, parseResult[0])
-        XCTAssertEqual(8, tptpFormulae.count)
-        
-        let clauses = tptpFormulae.map { TestNode($0.root) }
-        
-        let prover = MingyProver(clauses: clauses)
-        let (result,runtime) = measure { prover.run(30.0) }
-        print("+++ total runtime",result,runtime)
-        
-        XCTAssertEqual(STATUS_UNSAT, result.0)
-        XCTAssertEqual(false, result.1)
-    }
-//    
-//    /// see **Example 3.7** in [AlM2014SR]
-//    func testInfiniteDomain() {
-//        let clauses : [TestNode] = [
-//            TestNode(connective:"|", nodes: ["~(p(X,X))"]),
-//            TestNode(connective:"|", nodes: ["p(X,f(X))"]),
-//            "~(p(X,Y))|~(p(Y,Z))|p(X,Z)"
-//        ]
-//        
-//        let prover = MingyProver(clauses: clauses)
-//        let (status,runtime) = measure { prover.run() }
-//        print("runtime",runtime)
-//        XCTAssertEqual(STATUS_SAT, status)
-//        
-//    }
 
 }

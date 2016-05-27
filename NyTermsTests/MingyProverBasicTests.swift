@@ -81,7 +81,7 @@ class MingyProverBasicTests: XCTestCase {
         let clauses = tptpFormulae.map { TestNode($0.root) }
         
         let prover = MingyProver(clauses: clauses)
-        let (result,runtime) = measure { prover.run(1.0) }
+        let (result,runtime) = measure { prover.run(30.0) }
         print("+++ total runtime",result,runtime)
         
         XCTAssertEqual(STATUS_UNSAT, result.0)

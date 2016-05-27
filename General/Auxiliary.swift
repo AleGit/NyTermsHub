@@ -4,7 +4,7 @@ import Foundation
 
 struct Nylog {
     
-    private static var log = [(String, CFTimeInterval, CFAbsoluteTime)]()
+    private static var log = [(String, CFAbsoluteTime, CFAbsoluteTime)]()
     
     static func reset() {
         log.removeAll()
@@ -26,6 +26,11 @@ struct Nylog {
         log.append(key,start,end)
         
         return (result,end-start)
+    }
+    
+    static func log(msg:String) {
+        
+        log.append(msg,CFAbsoluteTimeGetCurrent(),CFAbsoluteTimeGetCurrent())
     }
 }
 

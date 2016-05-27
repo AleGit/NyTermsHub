@@ -34,7 +34,7 @@ final class MingyProver<N:Node where N.Symbol == String> {
     private var repository = [Entry]()
     
     /// keeps track of acitve, i.e. completly processed clauses
-    var activeClauseIndices = Set<Int>()
+    // var activeClauseIndices = Set<Int>()
     var inactiveClauseIndices = Set<Int>()
     var unitClauseIndices = Set<Int>()
     
@@ -85,7 +85,9 @@ extension MingyProver {
         
         if entry.yices.alignedYicesLiterals.count == 1 {
             unitClauseIndices.insert(clauseIndex)
-            // it is a unit clause, hence the first (and only) literal is selected            
+
+            // it is a unit clause, hence the first (and only) literal is selected
+
             return 0
         }
         else if entry.yices.yicesLiterals.count == 1 {
@@ -97,12 +99,16 @@ extension MingyProver {
                 return lidx
             }
         }
+        
+        // at this point we do not know which literal will be selected
         return nil
     }
     
     private func yicesreselect(clauseIndex:Int, mdl:COpaquePointer) {
+        
         let entry = repository[clauseIndex]
         let literalIndex = entry.literalIndex
+        
         guard literalIndex < 0
             || yices_formula_true_in_model(mdl, entry.yices.alignedYicesLiterals[literalIndex]) != 1
             else {
@@ -110,6 +116,7 @@ extension MingyProver {
             return
         }
         
+        // no literal was selected or the literal does not hold anymore
         deindicateClause(clauseIndex, literalIndex:literalIndex)
         
         for lid in entry.yices.yicesLiterals {
@@ -130,50 +137,81 @@ extension MingyProver {
             if let lidx = yicesassert(clauseIndex) {
                 repository[clauseIndex].literalIndex = lidx
                 indicateClause(clauseIndex, literalIndex: lidx)
+                inactiveClauseIndices.insert(clauseIndex)
             }
         }
         
         return yices_check_context(ctx,nil)
     }
     
+    
+    
+
+
+    
     func selectclause() -> Int? {
         // the simplest implementation
-        // return inactiveClauseIndices.first
+        return inactiveClauseIndices.sort().first
         
         // first try to select a inactive unit clause, otherwise try to select a inactive clause
-        return unitClauseIndices.intersect(inactiveClauseIndices).first ?? inactiveClauseIndices.first
+        // return unitClauseIndices.intersect(inactiveClauseIndices).first ?? inactiveClauseIndices.first
     }
     
-    func activate(clauseIndex:Int) {
-        // print("\(#function)(\(clauseIndex)) = \(repository[clauseIndex]).")
+    func activate(clauseIndex:Int) -> Set<Int> {
+        
+        var newClauseIndices = Set<Int>()
         
         defer {
             self.inactiveClauseIndices.remove(clauseIndex)
-            self.activeClauseIndices.insert(clauseIndex)
+            indicateClause(clauseIndex)
+            // self.activeClauseIndices.insert(clauseIndex)
         }
         
         let entry = repository[clauseIndex]
         
         guard let literal = entry.0.nodes?[entry.literalIndex],
             let candidates = candidateComplementaries(self.literalsTrie, term: literal) else {
-            return
+            return newClauseIndices
         }
     
         for candidateIndex in candidates {
             let candidateEntry = repository[candidateIndex]
-            guard let candidateLiteral = candidateEntry.0.nodes?[candidateEntry.literalIndex] else {
+            guard
+                let candidateLiteral = candidateEntry.0.nodes?[candidateEntry.literalIndex],
+                let unifier = literal ~?= candidateLiteral
+                // where !unifier.isRenaming
+            else {
                 continue
             }
-            print (clauseIndex, candidateIndex, literal ~?= candidateLiteral)
             
+            for newClause in [ entry.0 * unifier, candidateEntry.0 * unifier] {
+                print(newClause)
+                let tuple = Yices.clause(newClause)
+                
+                let subsumers = searchPotentialSubsumersLineary(tuple.yicesLiterals)
+                
+                guard subsumers.count == 0 else {
+                    continue
+                }
+                
+                let newClauseIndex = repository.count
+                
+                let addClause = newClause ** newClauseIndex
+                
+                Nylog.log("\(newClauseIndex) - \(addClause) \(tuple) added")
+                
+                repository.append((addClause,-1,tuple))
+                newClauseIndices.insert(newClauseIndex)
+                
+            }
         }
         
-        
+        return newClauseIndices
         
     }
     
     func deactivate(clauseIndex:Int) {
-        self.activeClauseIndices.remove(clauseIndex)
+        // self.activeClauseIndices.remove(clauseIndex)
         self.inactiveClauseIndices.insert(clauseIndex)
         
     }
@@ -188,8 +226,9 @@ extension MingyProver {
         var count = 0
         
         
-        while !expired && status == STATUS_SAT && count < repository.count {
+        while !expired && status == STATUS_SAT {
             let mdl = yices_get_model(self.ctx,1)
+
             defer {
                 // update status
                 (status,_) = Nylog.measure("yices_check_context.") { yices_check_context(self.ctx,nil) }
@@ -200,9 +239,6 @@ extension MingyProver {
                 yices_free_model(mdl)
             }
             
-            
-            
-            
             Nylog.measure("(Re)select literals from \(repository.count) clauses.") {
                 for clauseIndex in 0..<self.repository.count {
                     self.yicesreselect(clauseIndex, mdl:mdl)
@@ -212,20 +248,31 @@ extension MingyProver {
             // get inactive clause and activate it
             
             guard let inactiveClauseIndex = selectclause() else {
-                print("inactive clauses: \(inactiveClauseIndices.count)")
+                assert(inactiveClauseIndices.count==0)
                 break;
             }
             
-            Nylog.measure("Activate(\(inactiveClauseIndex))"
-                ) {
-                    self.activate(inactiveClauseIndex)
+            Nylog.measure("Activate(\(inactiveClauseIndex))" ) {
+                for newClauseIndex in self.activate(inactiveClauseIndex) {
+                    self.yicesassert(newClauseIndex)
+                    self.inactiveClauseIndices.insert(newClauseIndex)
+                }
             }
             
             
         }
         
-
         
+        
+        for entry in repository.enumerate() {
+            print(entry)
+        }
+        
+
+        // print("active",self.activeClauseIndices.sort())
+        print("inactive",self.inactiveClauseIndices.sort())
+        print("units",self.unitClauseIndices.sort())
+        print("totale",self.repository.count, self.inactiveClauseIndices.count)
         
         
         return (status,expired,self.runtime)
@@ -261,9 +308,18 @@ extension MingyProver {
     }
     
     func complementaryCandidateIndices(clauseIndex:Int) -> Set<Int>? {
-        let literal = repository[clauseIndex].0
         
-        return candidateComplementaries(literalsTrie, term:literal)
+        let entry = repository[clauseIndex]
+        
+        guard let literal = entry.0.nodes?[entry.literalIndex] else {
+            return nil
+        }
+        
+        let candidates = candidateComplementaries(literalsTrie, term:literal)
+        
+        Nylog.log("\(#function)(\(clauseIndex) \(entry.0) \(literal) \(candidates)")
+        
+        return candidates
         
     }
     
@@ -277,7 +333,8 @@ extension MingyProver {
     /// Variable-renamed sets of literals are variants of each other.
     func searchPotentialVariantsLinearly(literals:Set<term_t>) -> [Int] {
         let matches = repository.enumerate().filter {
-            activeClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals == literals
+            // activeClauseIndices.contains($0.index) && 
+            $0.element.yices.yicesLiterals == literals
             }.map { $0.0 }
         return matches
     }
@@ -300,7 +357,8 @@ extension MingyProver {
     /// Each set of literals subsumes its variable-renamed supersets.
     func searchPotentialSubsumersLineary<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> [Int] {
         let matches = repository.enumerate().filter {
-            activeClauseIndices.contains($0.index) && $0.element.yices.yicesLiterals.isSubsetOf(literals)
+            // activeClauseIndices.contains($0.index) &&
+                $0.element.yices.yicesLiterals.isSubsetOf(literals)
             }.map { $0.0 }
         return matches
     }
@@ -320,14 +378,7 @@ extension MingyProver {
         return -1
     }
     
-    func process(clauseIndex:Int) {
-        assert(!activeClauseIndices.contains(clauseIndex))
-        
-        // check if strengthend clause is allready in index
-        
-        
-        activeClauseIndices.insert(clauseIndex)
-    }
+
     
 }
 

@@ -76,7 +76,7 @@ extension TptpPath {
         let path = axiom.isEmpty ? (root as NSString).stringByAppendingPathComponent(last)
             : ((root as NSString).stringByAppendingPathComponent(axiom) as NSString).stringByAppendingPathComponent(last)
         
-        print(self,"tptpPathTo(file:",file,") ->",path)
+        Nylog.log("\(self) \(#function)(\(file) -> \(path)")
         
         if path.isAccessibleFile { return path }
         

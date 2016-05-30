@@ -4,15 +4,23 @@ import Foundation
 
 struct Nylog {
     
+    private static var zero = CFAbsoluteTimeGetCurrent()
     private static var log = [(String, CFAbsoluteTime, CFAbsoluteTime)]()
     
     static func reset() {
         log.removeAll()
+        zero = CFAbsoluteTimeGetCurrent()
     }
     
     static func printit() {
         for (key,start,end) in log {
-            let text = ">>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
+            var text : String
+            if (start < end) {
+                text = ">>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
+            }
+            else {
+                text = ">>> \(key) ••• at \((end-zero).prettyTimeIntervalDescription) <<<"
+            }
             print(text)
         }
     }

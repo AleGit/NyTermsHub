@@ -188,6 +188,9 @@
 		D23B0D571CF471FF00B7BE7F /* Z3_System.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D23B0D561CF471FF00B7BE7F /* Z3_System.pdf */; };
 		D248F47E1CFC388A00D087AB /* LaTeX+Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */; };
 		D248F47F1CFC388A00D087AB /* LaTeX+Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */; };
+		D248F4871CFC5CF400D087AB /* TptpProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F4861CFC5CF400D087AB /* TptpProver.swift */; };
+		D248F4881CFC5CF400D087AB /* TptpProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F4861CFC5CF400D087AB /* TptpProver.swift */; };
+		D248F48D1CFC639C00D087AB /* TptpParserBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F48C1CFC639C00D087AB /* TptpParserBasicTests.swift */; };
 		D24D5D151CE5DB7200E07E8E /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D5D141CE5DB7200E07E8E /* Demo.swift */; };
 		D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286232E1CEB711000E42070 /* YicesTestCase.swift */; };
 		D2F26C1E1CEC6F3E003DD50F /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */; };
@@ -409,6 +412,8 @@
 		D23B0D551CF45F6100B7BE7F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		D23B0D561CF471FF00B7BE7F /* Z3_System.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Z3_System.pdf; sourceTree = "<group>"; };
 		D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LaTeX+Symbols.swift"; sourceTree = "<group>"; };
+		D248F4861CFC5CF400D087AB /* TptpProver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpProver.swift; sourceTree = "<group>"; };
+		D248F48C1CFC639C00D087AB /* TptpParserBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpParserBasicTests.swift; sourceTree = "<group>"; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
@@ -476,6 +481,7 @@
 			children = (
 				51CD82A51C32D090009166BB /* NodeTrieTests.swift */,
 				510065701C897F0500F2A67B /* MingyProverBasicTests.swift */,
+				D248F48C1CFC639C00D087AB /* TptpParserBasicTests.swift */,
 			);
 			name = ProverTests;
 			sourceTree = "<group>";
@@ -564,6 +570,7 @@
 				5173B5581CC9F7B800A9ABCE /* SharingNode.swift */,
 				D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */,
 				D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */,
+				D248F4861CFC5CF400D087AB /* TptpProver.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -1046,6 +1053,7 @@
 				51E5F9AF1C87179900040B19 /* DemoProofing.swift in Sources */,
 				51E038171C92B864005BFD42 /* Node+Dimensions.swift in Sources */,
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
+				D248F4881CFC5CF400D087AB /* TptpProver.swift in Sources */,
 				516094321CDA095900B3579D /* PrlcParser.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
 				516094301CDA095900B3579D /* PrlcParser.c in Sources */,
@@ -1138,6 +1146,7 @@
 				51192D1B1B67B059008C03B2 /* Position.swift in Sources */,
 				D248F47E1CFC388A00D087AB /* LaTeX+Symbols.swift in Sources */,
 				5160942D1CDA095900B3579D /* PrlcLexer.l in Sources */,
+				D248F4871CFC5CF400D087AB /* TptpProver.swift in Sources */,
 				515F0EF51B6B741500B470B4 /* TptpParser.ym in Sources */,
 				516D1A431C32C3A0000E152A /* Node+Trie.swift in Sources */,
 				515D91B71B6CFEF0000EDB3B /* TptpParser.m in Sources */,
@@ -1200,6 +1209,7 @@
 				51B26B791B8DB46500CC59AD /* example2.c in Sources */,
 				51B883F41B8E3DAC008D7F22 /* minimal.c in Sources */,
 				510065711C897F0500F2A67B /* MingyProverBasicTests.swift in Sources */,
+				D248F48D1CFC639C00D087AB /* TptpParserBasicTests.swift in Sources */,
 				512117641B81D26E00E1803C /* TptpFormulaLiteralsTests.swift in Sources */,
 				519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */,
 				51CD82A61C32D090009166BB /* NodeTrieTests.swift in Sources */,

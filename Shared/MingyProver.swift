@@ -196,7 +196,8 @@ extension MingyProver {
                 
                 let newClauseIndex = repository.count
                 
-                let addClause = newClause ** newClauseIndex
+                let addClause = newClause.normalize(newClauseIndex)
+                // let addClause = newClause ** newClauseIndex
                 
                 Nylog.log("\(newClauseIndex) - \(addClause) \(tuple) added")
                 

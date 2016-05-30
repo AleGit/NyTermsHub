@@ -153,4 +153,29 @@ extension Node where Symbol == String {
      }
 }
 
+extension Node where Symbol == String {
+    func normalize<C:CustomStringConvertible>(suffix:C) -> Self {
+        var varnames = [String:String]()
+        return self.normalize(&varnames, suffix:suffix)
+        
+    }
+    
+    
+    private func normalize<C:CustomStringConvertible>(inout varnames : [String:String], suffix:C) -> Self {
+        guard let nodes = self.nodes else {
+            guard varnames.count > 0 else {
+                let varname = varnames[self.symbol] ?? "Z_\(suffix)"
+                varnames[self.symbol] = varname
+                return Self(variable:varname)
+            }
+            
+            let varname = varnames[self.symbol] ?? "Z\(varnames.count)_\(suffix)"
+            if varnames[self.symbol] == nil { varnames[self.symbol] = varname }
+            return Self(variable:varname)
+        }
+        return Self(symbol:self.symbol, nodes: nodes.map { $0.normalize(&varnames, suffix:suffix) })
+        
+    }
+}
+
 

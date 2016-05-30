@@ -100,67 +100,6 @@ final class TptpNode: NSObject, Node {
     }
 }
 
-extension String {
-    static func tptpSymbols() -> [String:SymbolQuadruple] {
-        return [
-            
-            // 'universal' symbols
-            
-            "" : (type:SymbolType.Invalid,category:SymbolCategory.Invalid, notation:SymbolNotation.Invalid, arity: .None),
-            "(" : (type:SymbolType.LeftParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: .None),
-            ")" : (type:SymbolType.RightParenthesis,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: .None),
-            "⟨" : (type:SymbolType.LeftAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: .None),
-            "⟩" : (type:SymbolType.RightAngleBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: .None),
-            "{" : (type:SymbolType.LeftCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: .None),
-            "}" : (type:SymbolType.RightCurlyBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: .None),
-            "[" : (type:SymbolType.LeftSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Prefix, arity: .None),
-            "]" : (type:SymbolType.RightSquareBracket,category:SymbolCategory.Auxiliary, notation:SymbolNotation.Postfix, arity: .None),
-            
-            // + − × ÷ (mathematical symbols)
-            "+" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: .Variadic(0..<Int.max)),      //  X, X+Y, X+...+Z
-            "−" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arity: .Variadic(1...2)),            // -X, X-Y
-            "×" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: .Variadic(0..<Int.max)),      // X, X*Y, X*...*X
-            "÷" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Infix, arity: .Fixed(2)),
-            
-            // - (keyboard symbol)
-            "-" : (type:SymbolType.Function,category:SymbolCategory.Functor, notation:SymbolNotation.Minus, arity: .Variadic(1...2)),          // -X, X-Y
-            
-            "=" : (type:SymbolType.Equation,category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity: .Fixed(2)),
-            
-            // tptp symbols
-            
-            // ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
-            "&" : (type:SymbolType.Conjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Variadic(0..<Int.max)),  // true; A; A & B; A & ... & Z
-            "|" : (type:SymbolType.Disjunction, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Variadic(0..<Int.max)),  // false; A; A | B; A | ... & Z
-            // ⟨unary_connective⟩ ::= ~
-            "~" : (type:SymbolType.Negation, category:SymbolCategory.Connective, notation:SymbolNotation.Prefix, arity:.Fixed(1)),          // ~A
-            // ⟨binary_connective⟩  ::= <=> | => | <= | <~> | ~<vline> | ~&
-            "=>" : (type:SymbolType.Implication, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Fixed(2)),       // A => B
-            "<=" : (type:SymbolType.Converse, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Fixed(2)),          // A <= B
-            "<=>" : (type:SymbolType.IFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Fixed(2)),              // A <=> B
-            "~&" : (type:SymbolType.NAND, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Fixed(2)),              // A ~& B
-            "~|" : (type:SymbolType.NOR, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Fixed(2)),               // A ~| B
-            "<~>" : (type:SymbolType.NIFF, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Fixed(2)),             // A <~> B
-            // ⟨fol_quantifier⟩ ::= ! | ?
-            "!" : (type:SymbolType.Existential, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arity:.Fixed(2)),     // ! [X] : A
-            "?" : (type:SymbolType.Universal, category:SymbolCategory.Connective, notation:SymbolNotation.TptpSpecific, arity:.Fixed(2)),       // ? [X] : A
-            // ⟨gentzen_arrow⟩      ::= -->
-            "-->" : (type:SymbolType.Sequent, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Fixed(2)),          // A --> B
-            // ⟨defined_infix_formula⟩  ::= ⟨term⟩ ⟨defined_infix_pred⟩ ⟨term⟩
-            // ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩
-            // ⟨infix_equality⟩     ::= =
-            //         "=" : (type:SymbolType.Equation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:.Fixed(2)),        // s = t
-            // ⟨fol_infix_unary⟩    ::= ⟨term⟩ ⟨infix_inequality⟩ ⟨term⟩
-            // ⟨infix_inequality⟩   ::= !=
-            "!=" : (type:SymbolType.Inequation, category:SymbolCategory.Equational, notation:SymbolNotation.Infix, arity:.Fixed(2)),        // s != t
-            
-            "," : (type:SymbolType.Tuple, category:SymbolCategory.Connective, notation:SymbolNotation.Infix, arity:.Variadic(1..<Int.max)) // s; s,t; ...
-        ]
-    }
-}
-
-
-
 extension TptpNode {
     
     convenience init(symbol:StringSymbol) {

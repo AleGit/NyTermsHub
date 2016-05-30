@@ -186,6 +186,8 @@
 		D23B0D511CF45ACE00B7BE7F /* z3_capi.c in Sources */ = {isa = PBXBuildFile; fileRef = D23B0D501CF45ACE00B7BE7F /* z3_capi.c */; };
 		D23B0D541CF45BF200B7BE7F /* Z3CapiTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */; };
 		D23B0D571CF471FF00B7BE7F /* Z3_System.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D23B0D561CF471FF00B7BE7F /* Z3_System.pdf */; };
+		D248F47E1CFC388A00D087AB /* LaTeX+Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */; };
+		D248F47F1CFC388A00D087AB /* LaTeX+Symbols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */; };
 		D24D5D151CE5DB7200E07E8E /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D5D141CE5DB7200E07E8E /* Demo.swift */; };
 		D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286232E1CEB711000E42070 /* YicesTestCase.swift */; };
 		D2F26C1E1CEC6F3E003DD50F /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */; };
@@ -406,6 +408,7 @@
 		D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Z3CapiTest.swift; sourceTree = "<group>"; };
 		D23B0D551CF45F6100B7BE7F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		D23B0D561CF471FF00B7BE7F /* Z3_System.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Z3_System.pdf; sourceTree = "<group>"; };
+		D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LaTeX+Symbols.swift"; sourceTree = "<group>"; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
@@ -560,6 +563,7 @@
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				5173B5581CC9F7B800A9ABCE /* SharingNode.swift */,
 				D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */,
+				D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -1075,6 +1079,7 @@
 				516063281CD1D8780096A3E2 /* calm.c in Sources */,
 				511E95841B8AE7B80093F4E8 /* Rule.swift in Sources */,
 				512B24D61CDE1B7B006496F3 /* NySequence.swift in Sources */,
+				D248F47F1CFC388A00D087AB /* LaTeX+Symbols.swift in Sources */,
 				515D462F1C999A7100A7111E /* Node(String).swift in Sources */,
 				516D1A441C32C3A0000E152A /* Node+Trie.swift in Sources */,
 				516094341CDA095900B3579D /* PrlcParser.y in Sources */,
@@ -1131,6 +1136,7 @@
 				515F0EF31B6B740900B470B4 /* TptpLexer.lm in Sources */,
 				51226E791B6D3AB70077E34D /* TptpInclude.swift in Sources */,
 				51192D1B1B67B059008C03B2 /* Position.swift in Sources */,
+				D248F47E1CFC388A00D087AB /* LaTeX+Symbols.swift in Sources */,
 				5160942D1CDA095900B3579D /* PrlcLexer.l in Sources */,
 				515F0EF51B6B741500B470B4 /* TptpParser.ym in Sources */,
 				516D1A431C32C3A0000E152A /* Node+Trie.swift in Sources */,

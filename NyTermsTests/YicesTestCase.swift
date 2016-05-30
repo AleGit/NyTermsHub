@@ -15,7 +15,7 @@ class YicesTestCase : XCTestCase {
     override func setUp() {
         super.setUp()
         yices_init()
-        TptpNode.resetSymbols()
+        resetGlobalStringSymbols()
     }
     
     override func tearDown() {

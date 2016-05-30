@@ -218,5 +218,11 @@ extension String {
     }
 }
 
+var globalStringSymbols = String.tptpSymbols()
+
+func resetGlobalStringSymbols() {
+    globalStringSymbols = String.tptpSymbols()
+}
+
 
 

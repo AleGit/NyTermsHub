@@ -62,14 +62,6 @@ final class TptpNode: NSObject, Node {
         else { self.nodes!.append(term) }
     }
     
-    private static var symbols = String.tptpSymbols()
-    
-    static func resetSymbols() {
-        
-        symbols = String.tptpSymbols()
-    
-    }
-    
     func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
         if let quadruple = self.symbolQuadruple() {
             assert(quadruple.type==type)
@@ -88,14 +80,14 @@ final class TptpNode: NSObject, Node {
             
         }
         else {
-            TptpNode.symbols[self.symbol] = (type,category,notation,arity)
+            globalStringSymbols[self.symbol] = (type,category,notation,arity)
             return true
         }
     }
     
     var symbolQuadruple : () -> SymbolQuadruple? {
         return {
-            return TptpNode.symbols[self.symbol] // could be nil
+            return globalStringSymbols[self.symbol] // could be nil
         }
     }
 }

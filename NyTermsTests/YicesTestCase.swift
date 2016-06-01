@@ -71,9 +71,27 @@ class YicesTestCase : XCTestCase {
             
             guard let (name,type,children) = Yices.info(term:t) else { continue }
             
-            let s = children.count > 0 ? "\t children = \(children)" : ""
-            print("[\(t)] \t \(name):\(type.name) \(type.infos)\(s)")
+            print("[\(t)] \t \(name):\(type.name), \(type.infos), \(children)")
         }
+        print("*************************************************************")
+        
+        let ctx = yices_new_context(nil)
+        defer { yices_free_context(ctx) }
+        
+        for f in [yp, ynp, nyp, nynp] {
+            yices_assert_formula(ctx, f)
+            if yices_check_context(ctx, nil) == STATUS_SAT {
+                let mdl = yices_get_model(ctx, 1)
+                defer { yices_free_model(mdl) }
+                
+                print (String(model:mdl))
+            }
+        }
+        
+        let status = yices_check_context(ctx, nil)
+        XCTAssertEqual(STATUS_UNSAT, status)
+        
+        
         
         
     }

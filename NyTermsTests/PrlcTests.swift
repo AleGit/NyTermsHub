@@ -43,7 +43,7 @@ class PrlcTests: XCTestCase {
             prlcParse(path)
         }
         
-        XCTAssertTrue(time < 0.01)
+        XCTAssertTrue(time < 0.01,"\(time.prettyTimeIntervalDescription) is too slow.")
         XCTAssertEqual(106, result.1?.treeStoreSize)
         XCTAssertEqual(0,result.0);
         

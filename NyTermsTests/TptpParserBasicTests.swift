@@ -24,6 +24,20 @@ class TptpParserBasicTests: XCTestCase {
         
         yices_exit()
     }
+    
+    func testParserNotAProblemName() {
+        for notAProblemName in [ "PUZ0001"] {
+            let parser = TptpProver(problem:notAProblemName)
+            XCTAssertNil(parser,notAProblemName)
+        }
+    }
+    
+    func testParserNotAProblemPath() {
+        for notAProblemPath in [ "PUZ0001-1.p" , "/PUZ001-1.p", "/Users/Shared/TPTP/PUZ001-1.p"] {
+            let parser = TptpProver(file:notAProblemPath)
+            XCTAssertNil(parser,notAProblemPath)
+        }
+    }
 
     func testParserInitPUZ006_1() {
         let (prover,b) = measure {

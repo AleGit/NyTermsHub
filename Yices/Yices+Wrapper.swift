@@ -82,6 +82,12 @@ extension Yices {
     static func children(term:term_t) -> [term_t] {
         return (0..<yices_term_num_children(term)).map { yices_term_child(term, $0) }
     }
+    
+    static func subterms(term:term_t) -> Set<term_t> {
+        var terms = Set(children(term).flatMap { subterms($0) })
+        terms.insert(term)
+        return terms
+    }
 }
 
 /// MARK: - Boolean terms
@@ -189,6 +195,35 @@ extension Yices {
         else {
             return nil
         }
+    }
+}
+
+extension Yices {
+    static func info(tau tau:type_t) -> (name:String,infos:[String])? {
+        guard let name = String(tau:tau) else { return nil }
+        
+        var infos = [String]()
+        
+        if yices_type_is_bool(tau)==1 { infos.append("is_bool") }
+        if yices_type_is_int(tau)==1 { infos.append("is_int") }
+        if yices_type_is_real(tau)==1 { infos.append("is_real") }
+        if yices_type_is_arithmetic(tau)==1 { infos.append("is_arithmetic") }
+        if yices_type_is_bitvector(tau)==1 { infos.append("is_bitvector") }
+        if yices_type_is_tuple(tau)==1 { infos.append("is_tuple") }
+        if yices_type_is_function(tau)==1 { infos.append("is_function") }
+        if yices_type_is_scalar(tau)==1 { infos.append("is_scalar") }
+        if yices_type_is_uninterpreted(tau)==1 { infos.append("is_uninterpreted") }
+        
+        return (name,infos)
+        
+    }
+    static func info(term term:term_t) -> (term:String,type:(name:String,infos:[String]),children:[term_t])? {
+        let tau = yices_type_of_term(term)
+        guard let name = String(term:term), let type = Yices.info(tau:tau)
+        else { return nil }
+        
+        return (name,type,Yices.children(term))
+        
     }
 }
 

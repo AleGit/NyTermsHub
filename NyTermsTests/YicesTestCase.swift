@@ -23,6 +23,23 @@ class YicesTestCase : XCTestCase {
         super.tearDown()
     }
     
+    private func typeInfo(tau:type_t) -> [String] {
+        var typeinfos = [String]()
+        
+        if yices_type_is_bool(tau)==1 { typeinfos.append("is_bool") }
+        if yices_type_is_int(tau)==1 { typeinfos.append("is_int") }
+        if yices_type_is_real(tau)==1 { typeinfos.append("is_real") }
+        if yices_type_is_arithmetic(tau)==1 { typeinfos.append("is_arithmetic") }
+        if yices_type_is_bitvector(tau)==1 { typeinfos.append("is_bitvector") }
+        if yices_type_is_tuple(tau)==1 { typeinfos.append("is_tuple") }
+        if yices_type_is_function(tau)==1 { typeinfos.append("is_function") }
+        if yices_type_is_scalar(tau)==1 { typeinfos.append("is_scalar") }
+        if yices_type_is_uninterpreted(tau)==1 { typeinfos.append("is_uninterpreted") }
+        
+        return typeinfos
+        
+    }
+    
     func testNegations() {
         
         let p = "p(f(X,Y))" as TptpNode
@@ -34,18 +51,29 @@ class YicesTestCase : XCTestCase {
         let yp = Yices.clause(p).yicesClause    // p
         let ynp = Yices.clause(np).yicesClause   // ~p
         
-        let ypt = yices_type_of_term(yp)
-        let ynpt = yices_type_of_term(ynp)
-        
-        print(yp,  ypt, String(tau:ypt)!)
-        print(ynp, ynpt, String(tau:ynpt)!)
-        
         let nyp = yices_not(yp) // ~p
         let nynp = yices_not(ynp) // ~~p
         
         XCTAssertEqual(yp, nynp)    // p = ~~p
         XCTAssertEqual(ynp, nyp)    // ~p = ~p
         XCTAssertEqual(yices_not(nynp), nyp)
+        
+        //        for t in [yp, ynp, nyp, nynp] {
+        //
+        //            print(t,Yices.children(t).sort(), Yices.subterms(t).sort())
+        //            printInfo(t)
+        //        }
+        
+        print("*************************************************************")
+        
+        for t : term_t in 0..<100 {
+            // printInfo(t, recursive: false)
+            
+            guard let (name,type,children) = Yices.info(term:t) else { continue }
+            
+            let s = children.count > 0 ? "\t children = \(children)" : ""
+            print("[\(t)] \t \(name):\(type.name) \(type.infos)\(s)")
+        }
         
         
     }

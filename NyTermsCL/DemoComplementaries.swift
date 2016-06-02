@@ -72,7 +72,7 @@ struct DemoComplementaries {
                         expected = actual
                     }
                     else if actual != expected {
-                        print("\(file): \(actual) coplemenatary literals found. \(expected) expected.")
+                        print("\(file): \(actual) coplemenatary literals found in \(runtime.prettyTimeIntervalDescription). \(expected) expected.")
                     }
                     else {
                         print("\(file): \(actual) coplemenatary literals found in \(runtime.prettyTimeIntervalDescription).")

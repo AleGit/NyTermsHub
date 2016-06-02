@@ -79,11 +79,21 @@ class YicesTestCase : XCTestCase {
         
         for f in [yp, ynp, nyp, nynp] {
             yices_assert_formula(ctx, f)
-            if yices_check_context(ctx, nil) == STATUS_SAT {
+            
+            let status = yices_check_context(ctx, nil)
+            
+            switch status {
+            case STATUS_SAT:
                 let mdl = yices_get_model(ctx, 1)
                 defer { yices_free_model(mdl) }
                 
                 print (String(model:mdl))
+            case STATUS_UNSAT:
+                /* Yices does not support the other optional commands: get-assertions, get-proof, and get-unsat-core. */
+                print(status)
+                
+            default:
+                print(status)
             }
             print(Yices.infos(term:f).map { "\($0)" }.joinWithSeparator("\n\t") )
         }

@@ -181,6 +181,8 @@
 		51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64051CBBB71600AA26B5 /* YicesNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */; };
 		D23628841D00144A009C1D33 /* AuxiliaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23628831D00144A009C1D33 /* AuxiliaryTests.swift */; };
+		D23628861D005E21009C1D33 /* ClauseProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23628851D005E21009C1D33 /* ClauseProver.swift */; };
+		D23628871D005E21009C1D33 /* ClauseProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23628851D005E21009C1D33 /* ClauseProver.swift */; };
 		D23635561CF594AE00978B2D /* UnitArrayPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23635551CF594AE00978B2D /* UnitArrayPair.swift */; };
 		D23635571CF594AE00978B2D /* UnitArrayPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23635551CF594AE00978B2D /* UnitArrayPair.swift */; };
 		D23B0D451CF44F3A00B7BE7F /* z3-install.txt in Resources */ = {isa = PBXBuildFile; fileRef = D23B0D441CF44F3A00B7BE7F /* z3-install.txt */; };
@@ -404,6 +406,7 @@
 		51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Clause.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
 		D23628831D00144A009C1D33 /* AuxiliaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuxiliaryTests.swift; sourceTree = "<group>"; };
+		D23628851D005E21009C1D33 /* ClauseProver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseProver.swift; sourceTree = "<group>"; };
 		D23635551CF594AE00978B2D /* UnitArrayPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitArrayPair.swift; sourceTree = "<group>"; };
 		D236F8301CEDE93A00BEF2E5 /* Demo.demo.runtimes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.runtimes.txt; sourceTree = "<group>"; };
 		D23B0D441CF44F3A00B7BE7F /* z3-install.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "z3-install.txt"; sourceTree = "<group>"; };
@@ -574,6 +577,7 @@
 				5129773E1B679177003D3E80 /* Substitution.swift */,
 				D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */,
 				D248F4861CFC5CF400D087AB /* TptpProver.swift */,
+				D23628851D005E21009C1D33 /* ClauseProver.swift */,
 			);
 			name = Core;
 			path = Shared;
@@ -1059,6 +1063,7 @@
 				D248F4881CFC5CF400D087AB /* TptpProver.swift in Sources */,
 				516094321CDA095900B3579D /* PrlcParser.swift in Sources */,
 				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
+				D23628871D005E21009C1D33 /* ClauseProver.swift in Sources */,
 				516094301CDA095900B3579D /* PrlcParser.c in Sources */,
 				51C0ACB41C4A385800447594 /* DemoComplementaries.swift in Sources */,
 				514AD8661C6B7D7400652004 /* TailTrie.swift in Sources */,
@@ -1119,6 +1124,7 @@
 				516094231CD9C0E300B3579D /* prlc.c in Sources */,
 				51226E771B6D3A0B0077E34D /* TptpFormula.swift in Sources */,
 				51FF64011CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */,
+				D23628861D005E21009C1D33 /* ClauseProver.swift in Sources */,
 				5129771B1B677CAA003D3E80 /* ViewController.swift in Sources */,
 				516D251F1C3EB26C0075D362 /* Nodal.swift in Sources */,
 				51E038161C92B864005BFD42 /* Node+Dimensions.swift in Sources */,

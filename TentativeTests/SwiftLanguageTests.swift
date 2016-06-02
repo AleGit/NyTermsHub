@@ -200,6 +200,34 @@ class SwiftTests: XCTestCase {
         
     
     }
+    
+    func testAProtocol() {
+        let a = AStruct()
+        print(a.x(3), a.y(a)(3))
+        
+    }
+    
+    
+}
+
+protocol AProtocol {
+    var predecessor: Int -> Int { get }
+    var successor: Int -> Int { get }
+}
+
+struct AStruct : AProtocol {
+    
+    static func pred(input:Int) -> Int { return input-1 }
+    func succ(input:Int) -> Int { return input+1 }
+    
+    var x = AStruct.pred
+    var y = { succ($0) }
+    
+    var predecessor = { (input:Int) -> Int in input-1 }
+    
+    var successor = {
+        (input:Int) -> Int in input+1 }
+    
 }
 
 

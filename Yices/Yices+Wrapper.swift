@@ -217,13 +217,22 @@ extension Yices {
         return (name,infos)
         
     }
-    static func info(term term:term_t) -> (term:String,type:(name:String,infos:[String]),children:[term_t])? {
+    
+    typealias TermInfo = (term_t,term:String,type:(name:String,infos:[String]),children:[term_t])
+    
+    static func info(term term:term_t) -> TermInfo? {
         let tau = yices_type_of_term(term)
         guard let name = String(term:term), let type = Yices.info(tau:tau)
         else { return nil }
         
-        return (name,type,Yices.children(term))
+        return (term,name,type,Yices.children(term))
         
+    }
+    
+    static func infos(term term:term_t) -> [TermInfo] {
+        // return Yices.subterms(term).map { Yices.info(term:$0) }.filter { $0 != nil }.map { $0! }
+        
+        return [Yices.info(term:term)!] + Yices.children(term).flatMap { Yices.infos(term:$0) }
     }
 }
 

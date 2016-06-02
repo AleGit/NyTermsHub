@@ -67,11 +67,10 @@ class YicesTestCase : XCTestCase {
         print("*************************************************************")
         
         for t : term_t in 0..<100 {
-            // printInfo(t, recursive: false)
             
-            guard let (name,type,children) = Yices.info(term:t) else { continue }
+            guard let (term,name,type,children) = Yices.info(term:t) else { continue }
             
-            print("[\(t)] \t \(name):\(type.name), \(type.infos), \(children)")
+            print("[\(term)] \t \(name):\(type.name), \(type.infos), \(children)")
         }
         print("*************************************************************")
         
@@ -86,6 +85,7 @@ class YicesTestCase : XCTestCase {
                 
                 print (String(model:mdl))
             }
+            print(Yices.infos(term:f).map { "\($0)" }.joinWithSeparator("\n\t") )
         }
         
         let status = yices_check_context(ctx, nil)

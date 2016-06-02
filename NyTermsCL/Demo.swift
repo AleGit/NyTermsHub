@@ -272,7 +272,7 @@ struct Demo {
     static func process(clauses:[TptpNode]) {
         var tptpTuples = construct(clauses)
         
-        let (hasEquations, functors) = eqfunc(TptpNode.symbols)
+        let (hasEquations, functors) = eqfunc(globalStringSymbols)
         
         doitif( printall ) {
             print(hasEquations ? "has equations" : "(has no equations)")

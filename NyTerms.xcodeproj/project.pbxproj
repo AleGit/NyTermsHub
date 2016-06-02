@@ -122,7 +122,7 @@
 		5173B55D1CCA081200A9ABCE /* ShareNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5173B55C1CCA081200A9ABCE /* ShareNodeTests.swift */; };
 		517B23B71CBCD6C90049F871 /* YicesIndexingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */; };
 		517D86381C44F94100930B61 /* DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517D86371C44F94100930B61 /* DescriptionTests.swift */; };
-		517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */; };
+		517E6B591C37BB5F004E8AE1 /* SwiftLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E6B581C37BB5F004E8AE1 /* SwiftLanguageTests.swift */; };
 		51844E161C8439C400DCAA32 /* Infos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E151C8439C400DCAA32 /* Infos.swift */; };
 		51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E171C8448A200DCAA32 /* UnificationTests.swift */; };
 		519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A21B84E11F0030A61A /* NodeStructTests.swift */; };
@@ -180,6 +180,7 @@
 		51FF64011CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64051CBBB71600AA26B5 /* YicesNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */; };
+		D23628841D00144A009C1D33 /* AuxiliaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23628831D00144A009C1D33 /* AuxiliaryTests.swift */; };
 		D23635561CF594AE00978B2D /* UnitArrayPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23635551CF594AE00978B2D /* UnitArrayPair.swift */; };
 		D23635571CF594AE00978B2D /* UnitArrayPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23635551CF594AE00978B2D /* UnitArrayPair.swift */; };
 		D23B0D451CF44F3A00B7BE7F /* z3-install.txt in Resources */ = {isa = PBXBuildFile; fileRef = D23B0D441CF44F3A00B7BE7F /* z3-install.txt */; };
@@ -329,7 +330,7 @@
 		517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesIndexingTests.swift; sourceTree = "<group>"; };
 		517B23B81CBD28F70049F871 /* changed yices literals.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "changed yices literals.txt"; sourceTree = "<group>"; };
 		517D86371C44F94100930B61 /* DescriptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTests.swift; sourceTree = "<group>"; };
-		517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTests.swift; sourceTree = "<group>"; };
+		517E6B581C37BB5F004E8AE1 /* SwiftLanguageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLanguageTests.swift; sourceTree = "<group>"; };
 		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
 		51844E151C8439C400DCAA32 /* Infos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Infos.swift; sourceTree = "<group>"; };
 		51844E171C8448A200DCAA32 /* UnificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnificationTests.swift; sourceTree = "<group>"; };
@@ -402,6 +403,7 @@
 		51FD00C11C3133E1008C5AD1 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Clause.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
+		D23628831D00144A009C1D33 /* AuxiliaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuxiliaryTests.swift; sourceTree = "<group>"; };
 		D23635551CF594AE00978B2D /* UnitArrayPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitArrayPair.swift; sourceTree = "<group>"; };
 		D236F8301CEDE93A00BEF2E5 /* Demo.demo.runtimes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.runtimes.txt; sourceTree = "<group>"; };
 		D23B0D441CF44F3A00B7BE7F /* z3-install.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "z3-install.txt"; sourceTree = "<group>"; };
@@ -544,6 +546,7 @@
 				51303EB41B9C377B003011A9 /* TptpTests */,
 				51FF64031CBBB6FC00AA26B5 /* Yices */,
 				51303EB51B9C3790003011A9 /* YicesExamples */,
+				D23628831D00144A009C1D33 /* AuxiliaryTests.swift */,
 			);
 			name = Tests;
 			path = NyTermsTests;
@@ -695,7 +698,7 @@
 			children = (
 				5150F39B1BD62F4C003D69A3 /* PolyTryTests.swift */,
 				5150F39D1BD6769C003D69A3 /* YicesSatTrials.swift */,
-				517E6B581C37BB5F004E8AE1 /* SwiftTests.swift */,
+				517E6B581C37BB5F004E8AE1 /* SwiftLanguageTests.swift */,
 				514E938A1C9FBE5C00787661 /* SharingTests.swift */,
 				512EE0D91CE0A75200D528A1 /* YicesMaxTrials.swift */,
 			);
@@ -1222,9 +1225,10 @@
 				51DF43041B73E2ED008C1F13 /* TptpTermTests.swift in Sources */,
 				510F5CD51CC4B94C0012B9CC /* MaxCompletionSamples.swift in Sources */,
 				265666B51B98432C001BF9BD /* ExampleTests.swift in Sources */,
-				517E6B591C37BB5F004E8AE1 /* SwiftTests.swift in Sources */,
+				517E6B591C37BB5F004E8AE1 /* SwiftLanguageTests.swift in Sources */,
 				5103EB091C6A27D60079E0A0 /* ParsePerformanceTests.swift in Sources */,
 				D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */,
+				D23628841D00144A009C1D33 /* AuxiliaryTests.swift in Sources */,
 				514AD8631C6B4CDD00652004 /* BasicTailTrieTests.swift in Sources */,
 				516094261CD9D06F00B3579D /* PrlcTests.swift in Sources */,
 				51D8476A1C8069FB003EC848 /* TptpPathTests.swift in Sources */,

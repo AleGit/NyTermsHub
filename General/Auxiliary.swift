@@ -258,7 +258,17 @@ extension SequenceType where Generator.Element : Hashable {
     }
 }
 
-
+/// cartesic product of two sequences
+func *<L,R,LS:SequenceType,RS:SequenceType where LS.Generator.Element==L, RS.Generator.Element == R>(lhs:LS,rhs:RS) -> [(L,R)] {
+    var a  = [(L,R)]()
+    for l in lhs {
+        for r in rhs {
+            a.append((l,r))
+            
+        }
+    }
+    return a
+}
 
 // MARK: -
 
@@ -296,6 +306,27 @@ extension Set {
 func percent(dividend:Int, divisor:Int) -> Int {
     let result = 0.5 + 100.0 * (Double(dividend) / Double(divisor))
     return Int(result)
+}
+
+extension Int {
+    /// decode first component
+    var first: Int {
+        return self >> 32
+    }
+    
+    /// decode second component
+    var second: Int {
+        return (self << 32) >> 32
+    }
+    
+    /// encode two ints into one (this can overflow)
+    init(first:Int,second:Int) {
+        
+        assert(Int(Int32.min) <= first && first <= Int(Int32.max), "Clause index \(first) is not in range \((Int32.min,Int32.max))")
+        assert(Int(Int32.min) <= second && second <= Int(Int32.max), "Literal index \(second) is not in range \((Int32.min,Int32.max))")
+        
+        self = (first << 32) ^ (second & 0x0000_0000_FFFF_FFFF)
+    }
 }
 
 

@@ -126,22 +126,24 @@ extension TptpProver {
 }
 
 
-
 extension TptpProver {
+    private func register(clause index:Int, for role:TptpRole) {
+        if clauseIndicesByRole[role] == nil {
+            clauseIndicesByRole[role] = Set<Int>()
+        }
+        clauseIndicesByRole[role]?.insert(index)
+    }
+    
     func preprocess<S:SequenceType where S.Generator.Element == TptpFormula>(formulae:S) {
         for formula in formulae {
             let index = clauses.count
             
-            var clauseIndices = clauseIndicesByRole[formula.role] ?? Set<Int>()
-            clauseIndices.insert(index)
-            clauseIndicesByRole[formula.role] = clauseIndices
+            clauseNames.append(formula.name)
+            register(clause:index, for:formula.role)
+            
             
             var clause = TptpProver.clauseFromFormula(formula)
             clause.0 = clause.0 ** index
-            
-            
-            
-            clauseNames.append(formula.name)
             clauses.append(clause)
         }
     }

@@ -50,7 +50,12 @@ class SwiftTests: XCTestCase {
 
     func testSizes() {
         
+        XCTAssertEqual(sizeof(Int8),1)
+        XCTAssertEqual(sizeof(Int16),2)
+        XCTAssertEqual(sizeof(Int32),4)
         XCTAssertEqual(sizeof(Int),8)
+        XCTAssertEqual(sizeof(Int64),8)
+        
         XCTAssertEqual(sizeof(Double),8)
         XCTAssertEqual(sizeof(String),24)
         
@@ -60,6 +65,7 @@ class SwiftTests: XCTestCase {
         
         XCTAssertEqual(sizeof(Cube<Int8>),3)
         XCTAssertEqual(sizeof(Cube<Int16>),6)
+        // XCTAssertEqual(sizeof(Cube<Int32>),12)
         XCTAssertEqual(sizeof(Cube<Int64>),24)
         
         XCTAssertEqual(sizeof(Cube<Int>),24)

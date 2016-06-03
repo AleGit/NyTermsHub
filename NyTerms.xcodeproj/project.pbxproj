@@ -425,6 +425,9 @@
 		D248F4861CFC5CF400D087AB /* TptpProver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpProver.swift; sourceTree = "<group>"; };
 		D248F48C1CFC639C00D087AB /* TptpParserBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpParserBasicTests.swift; sourceTree = "<group>"; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
+		D25BC2991D01AC9500D2178F /* cvc4files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = cvc4files.txt; sourceTree = "<group>"; };
+		D25BC29A1D01ACDD00D2178F /* yices2files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = yices2files.txt; sourceTree = "<group>"; };
+		D25BC29B1D01AD2700D2178F /* z3files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = z3files.txt; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
 		D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrlcSpeed.txt; sourceTree = "<group>"; };
@@ -824,6 +827,7 @@
 			isa = PBXGroup;
 			children = (
 				51581E0C1C74684D00075A74 /* Arguments.md */,
+				D25BC2981D01AC6C00D2178F /* cvc4 */,
 				513F24021C04BD170026A081 /* optimization */,
 				D23B0D551CF45F6100B7BE7F /* README.md */,
 				8789DBF71B9B63EA00D2B903 /* SMT */,
@@ -877,6 +881,7 @@
 				51B26B661B8DA23F00CC59AD /* Yices Compiler Flags.jpg */,
 				51B26B671B8DA23F00CC59AD /* Yices Linker Flags.jpg */,
 				51B883EF1B8DED89008D7F22 /* Yices Search Path.jpg */,
+				D25BC29A1D01ACDD00D2178F /* yices2files.txt */,
 			);
 			name = Yices;
 			sourceTree = "<group>";
@@ -912,10 +917,11 @@
 		D23B0D431CF44F2B00B7BE7F /* z3 */ = {
 			isa = PBXGroup;
 			children = (
-				D23B0D561CF471FF00B7BE7F /* Z3_System.pdf */,
 				D23B0D4D1CF4587500B7BE7F /* z3 linker flag.png */,
+				D23B0D561CF471FF00B7BE7F /* Z3_System.pdf */,
 				D23B0D441CF44F3A00B7BE7F /* z3-install.txt */,
 				D23B0D461CF4501E00B7BE7F /* z3-paths */,
+				D25BC29B1D01AD2700D2178F /* z3files.txt */,
 			);
 			name = z3;
 			sourceTree = "<group>";
@@ -928,6 +934,14 @@
 				D23B0D531CF45BF200B7BE7F /* Z3CapiTest.swift */,
 			);
 			name = Z3;
+			sourceTree = "<group>";
+		};
+		D25BC2981D01AC6C00D2178F /* cvc4 */ = {
+			isa = PBXGroup;
+			children = (
+				D25BC2991D01AC9500D2178F /* cvc4files.txt */,
+			);
+			name = cvc4;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1295,6 +1309,8 @@
 					"-lyices",
 					"-lz3",
 					"-L/usr/local/lib",
+					"-lcvc4",
+					"-L/opt/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1318,6 +1334,8 @@
 					"-lyices",
 					"-lz3",
 					"-L/usr/local/lib",
+					"-lcvc4",
+					"-L/opt/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1427,6 +1445,8 @@
 					"-lyices",
 					"-lz3",
 					"-L/usr/local/lib",
+					"-lcvc4",
+					"-L/opt/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "${inherited}";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;
@@ -1449,6 +1469,8 @@
 					"-lyices",
 					"-lz3",
 					"-L/usr/local/lib",
+					"-lcvc4",
+					"-L/opt/local/lib",
 				);
 				OTHER_SWIFT_FLAGS = "${inherited}";
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;

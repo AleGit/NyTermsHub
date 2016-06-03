@@ -46,7 +46,7 @@ For `TptpPathTests` to succeed copy these files:
     mkdir /Users/Shared/Axioms
     cp /Users/Shared/TPTP/Axioms/SYN000-0.ax /Users/Shared/Axioms/AxiomsC.ax
 
-## Yices 2, Z3 SMT Provers
+## Yices2, Z3, CVC4 (SMT Provers)
 =====
 Download and install yices 2 for Mac OS X (64 bits) from [yices.csl.sri.com](http://yices.csl.sri.com). This project uses the precompiled binary.
 Follow the instructions from the website. Check for the following files on your system:
@@ -60,11 +60,15 @@ Follow the instructions from the website. Check for the following files on your 
     /usr/local/include/z3.h
     /usr/local/lib/libyices.dylib
 
+After installing [MacPorts](https://www.macports.org), [cvc4](http://cvc4.cs.nyu.edu/web/) can be easily installed with
+
+    sudo port install cvc4
+
 ### project linker flags
 
-    -lyices -lz3 -L/usr/local/lib
+    -lyices -lz3 -L/usr/local/lib -lcvc4 -L/opt/local/lib
 
-See also `Docs/Yices` and `Docs/z3` in this project for configuration details.
+See also `Docs/Yices`, `Docs/z3`, and `Docs/cvc4` in this project for configuration details.
 
 
 

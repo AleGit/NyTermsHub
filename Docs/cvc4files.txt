@@ -1,0 +1,44 @@
+> sudo port install cvc4
+> find /opt/local -name "*cvc4*" -ls
+
+2805855      280 -rwxr-xr-x    1 root             admin              142732  4 Feb 03:57 /opt/local/bin/cvc4
+2805859        0 drwxr-xr-x   23 root             admin                 782  3 Jun 14:04 /opt/local/include/cvc4
+2805725        8 -rw-r--r--    1 root             admin                1125  4 Feb 03:57 /opt/local/include/cvc4/cvc4.h
+2805726        8 -rw-r--r--    1 root             admin                1280  4 Feb 03:57 /opt/local/include/cvc4/cvc4_private.h
+2805727        8 -rw-r--r--    1 root             admin                1408  4 Feb 03:57 /opt/local/include/cvc4/cvc4_private_library.h
+2805728        8 -rw-r--r--    1 root             admin                2643  4 Feb 03:57 /opt/local/include/cvc4/cvc4_public.h
+2805729        8 -rw-r--r--    1 root             admin                1304  4 Feb 03:57 /opt/local/include/cvc4/cvc4parser_private.h
+2805730        8 -rw-r--r--    1 root             admin                 880  4 Feb 03:57 /opt/local/include/cvc4/cvc4parser_public.h
+2805712    19344 -rwxr-xr-x    1 root             admin             9902648  4 Feb 03:57 /opt/local/lib/libcvc4.3.dylib
+2805713    64760 -rw-r--r--    1 root             admin            33156376  4 Feb 03:57 /opt/local/lib/libcvc4.a
+2805714        8 lrwxr-xr-x    1 root             admin                  15  4 Feb 03:57 /opt/local/lib/libcvc4.dylib -> libcvc4.3.dylib
+2805715      808 -rwxr-xr-x    1 root             admin              412376  4 Feb 03:57 /opt/local/lib/libcvc4compat.3.dylib
+2805716     1144 -rw-r--r--    1 root             admin              582104  4 Feb 03:57 /opt/local/lib/libcvc4compat.a
+2805717        8 lrwxr-xr-x    1 root             admin                  21  4 Feb 03:57 /opt/local/lib/libcvc4compat.dylib -> libcvc4compat.3.dylib
+2805718     2592 -rwxr-xr-x    1 root             admin             1326792  4 Feb 03:57 /opt/local/lib/libcvc4parser.3.dylib
+2805719     4736 -rw-r--r--    1 root             admin             2423288  4 Feb 03:57 /opt/local/lib/libcvc4parser.a
+2805720        8 lrwxr-xr-x    1 root             admin                  21  4 Feb 03:57 /opt/local/lib/libcvc4parser.dylib -> libcvc4parser.3.dylib
+2805888        0 drwxr-xr-x    4 root             admin                 136  3 Jun 14:04 /opt/local/share/doc/cvc4
+2804616       16 -rw-r--r--    1 root             admin                6111  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4_8h.html
+2804617       16 -rw-r--r--    1 root             admin                7414  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4_8h_source.html
+2804618       16 -rw-r--r--    1 root             admin                5589  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4__private_8h.html
+2804619       16 -rw-r--r--    1 root             admin                7353  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4__private_8h_source.html
+2804620       16 -rw-r--r--    1 root             admin                5657  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4__private__library_8h.html
+2804621       16 -rw-r--r--    1 root             admin                7033  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4__private__library_8h_source.html
+2804622       32 -rw-r--r--    1 root             admin               12403  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4__public_8h.html
+2804623        8 -rw-r--r--    1 root             admin                 757  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4__public_8h.js
+2804624       32 -rw-r--r--    1 root             admin               13930  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4__public_8h_source.html
+2804625       16 -rw-r--r--    1 root             admin                5594  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4parser__private_8h.html
+2804626       16 -rw-r--r--    1 root             admin                7272  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4parser__private_8h_source.html
+2804627       16 -rw-r--r--    1 root             admin                5619  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4parser__public_8h.html
+2804628       16 -rw-r--r--    1 root             admin                5822  4 Feb 03:57 /opt/local/share/doc/cvc4/doxygen/html/cvc4parser__public_8h_source.html
+2804086       24 -r--r--r--    1 root             admin                8982  4 Feb 03:57 /opt/local/share/man/man1/cvc4.1.gz
+2804087       24 -r--r--r--    1 root             admin                8983  4 Feb 03:57 /opt/local/share/man/man1/pcvc4.1.gz
+2804081        8 -r--r--r--    1 root             admin                 788  4 Feb 03:57 /opt/local/share/man/man3/libcvc4.3.gz
+2804082        8 -r--r--r--    1 root             admin                 349  4 Feb 03:57 /opt/local/share/man/man3/libcvc4compat.3.gz
+2804083        8 -r--r--r--    1 root             admin                 340  4 Feb 03:57 /opt/local/share/man/man3/libcvc4parser.3.gz
+2804080        8 -r--r--r--    1 root             admin                 391  4 Feb 03:57 /opt/local/share/man/man5/cvc4.5.gz
+2804059        0 drwxr-xr-x    3 root             admin                 102  3 Jun 14:04 /opt/local/var/macports/registry/portfiles/cvc4-1.4_0
+2804055        0 drwxr-xr-x    3 root             admin                 102  3 Jun 14:04 /opt/local/var/macports/software/cvc4
+2804043    27616 -rw-r--r--    1 macports         admin            14136898  3 Jun 14:04 /opt/local/var/macports/software/cvc4/cvc4-1.4_0.darwin_15.x86_64.tbz2
+2775853        0 drwxr-xr-x    3 root             wheel                 102  3 Jun 14:04 /opt/local/var/macports/sources/rsync.macports.org/release/tarballs/ports/math/cvc4

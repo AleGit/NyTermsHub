@@ -1,0 +1,12 @@
+> find /usr/local -name "*yices*" -ls
+
+1124976     4200 -rwxr-xr-x    1 root             wheel             2148712 11 Mai 18:50 /usr/local/bin/yices
+1124977       88 -rwxr-xr-x    1 root             wheel               42896 11 Mai 18:50 /usr/local/bin/yices-sat
+1124978     3976 -rwxr-xr-x    1 root             wheel             2032928 11 Mai 18:50 /usr/local/bin/yices-smt
+1124979     4096 -rwxr-xr-x    1 root             wheel             2094756 11 Mai 18:50 /usr/local/bin/yices-smt2
+1124972      256 -rw-r--r--    1 root             wheel              127013 11 Mai 18:50 /usr/local/include/yices.h
+1124973        8 -rw-r--r--    1 root             wheel                 887 11 Mai 18:50 /usr/local/include/yices_exit_codes.h
+1124974        8 -rw-r--r--    1 root             wheel                 987 11 Mai 18:50 /usr/local/include/yices_limits.h
+1124975       32 -rw-r--r--    1 root             wheel               15386 11 Mai 18:50 /usr/local/include/yices_types.h
+1124980     3752 -rwxr-xr-x    1 root             wheel             1919176 11 Mai 18:50 /usr/local/lib/libyices.2.dylib
+1124981        8 lrwxr-xr-x    1 root             wheel                  16 11 Mai 18:50 /usr/local/lib/libyices.dylib -> libyices.2.dylib

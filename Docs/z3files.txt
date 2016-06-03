@@ -1,0 +1,16 @@
+> find /usr/local -name "*z3*" -ls
+2336629    38184 -rwxr-xr-x    1 root             wheel            19547372  3 Jun 09:30 /usr/local/bin/z3
+2336631      208 -rw-r--r--    1 root             wheel              105658  3 Jun 09:30 /usr/local/include/z3++.h
+2336617        8 -rw-r--r--    1 root             wheel                 485  3 Jun 09:30 /usr/local/include/z3.h
+2336622       16 -rw-r--r--    1 root             wheel                6723  3 Jun 09:30 /usr/local/include/z3_algebraic.h
+2336620      416 -rw-r--r--    1 root             wheel              211119  3 Jun 09:30 /usr/local/include/z3_api.h
+2336621       16 -rw-r--r--    1 root             wheel                5783  3 Jun 09:30 /usr/local/include/z3_ast_containers.h
+2336625       32 -rw-r--r--    1 root             wheel               13684  3 Jun 09:30 /usr/local/include/z3_fixedpoint.h
+2336628       64 -rw-r--r--    1 root             wheel               30530  3 Jun 09:30 /usr/local/include/z3_fpa.h
+2336627       24 -rw-r--r--    1 root             wheel               11864  3 Jun 09:30 /usr/local/include/z3_interp.h
+2336619        8 -rw-r--r--    1 root             wheel                 382  3 Jun 09:30 /usr/local/include/z3_macros.h
+2336626       16 -rw-r--r--    1 root             wheel                6802  3 Jun 09:30 /usr/local/include/z3_optimization.h
+2336623        8 -rw-r--r--    1 root             wheel                1080  3 Jun 09:30 /usr/local/include/z3_polynomial.h
+2336624       16 -rw-r--r--    1 root             wheel                5900  3 Jun 09:30 /usr/local/include/z3_rcf.h
+2336618        8 -rw-r--r--    1 root             wheel                2243  3 Jun 09:30 /usr/local/include/z3_v1.h
+2336630    37960 -rwxr-xr-x    1 root             wheel            19432792  3 Jun 09:30 /usr/local/lib/libz3.dylib

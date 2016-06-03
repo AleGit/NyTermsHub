@@ -22,6 +22,10 @@ class Z3BasicTests: XCTestCase {
         XCTAssertTrue(info.containsString("Z3"))
         XCTAssertTrue(info.containsString("4.4."))
         
-        XCTAssertEqual("Z3 v4.4.2.0", info) // 2016-06-03
+        XCTAssertEqual("Z3 4.4.2.0", info) // 2016-06-03
+    }
+    
+    func testZ3Terms() {
+        
     }
 }

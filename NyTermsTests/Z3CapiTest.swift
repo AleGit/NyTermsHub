@@ -10,21 +10,6 @@ import XCTest
 
 class Z3CapiTest: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testInfo() {
-        var major:UInt32=0,minor:UInt32=0,build:UInt32=0,revision:UInt32=0
-        Z3_get_version(&major, &minor, &build, &revision)
-    }
-
     func testZ3CapiMain() {
         z3_main()
     }

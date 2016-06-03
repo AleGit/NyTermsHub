@@ -21,6 +21,6 @@ class YicesBasicTests: XCTestCase {
         XCTAssertTrue(info.containsString("Yices"))
         XCTAssertTrue(info.containsString("2.4."))
         
-        XCTAssertEqual("Yices v2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)", info)
+        XCTAssertEqual("Yices 2.4.2 (x86_64-apple-darwin15.2.0,release,2015-12-11)", info)
     }
 }

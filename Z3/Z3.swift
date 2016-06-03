@@ -13,7 +13,7 @@ struct Z3 {
     static var info : String {
         var major:UInt32=0,minor:UInt32=0,build:UInt32=0,revision:UInt32=0
         Z3_get_version(&major, &minor, &build, &revision)
-        return "Z3 v\(major).\(minor).\(build).\(revision)"
+        return "Z3 \(major).\(minor).\(build).\(revision)"
     }  
     
 }

@@ -19,6 +19,11 @@ class Z3CapiTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+    
+    func testInfo() {
+        var major:UInt32=0,minor:UInt32=0,build:UInt32=0,revision:UInt32=0
+        Z3_get_version(&major, &minor, &build, &revision)
+    }
 
     func testZ3CapiMain() {
         z3_main()

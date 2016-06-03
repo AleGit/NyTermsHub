@@ -177,14 +177,14 @@ extension Dictionary {
 
 // MARK: -
 extension String  {
-    func contains(string:StringSymbol) -> Bool {
-        return self.rangeOfString(string) != nil
-    }
+//    func contains(string:StringSymbol) -> Bool {
+//        return self.rangeOfString(string) != nil
+//    }
     func containsOne<S:SequenceType where S.Generator.Element == StringSymbol>(strings:S) -> Bool {
-        return strings.reduce(false) { $0 || self.contains($1) }
+        return strings.reduce(false) { $0 || self.containsString($1) }
     }
     func containsAll<S:SequenceType where S.Generator.Element == StringSymbol>(strings:S) -> Bool {
-        return strings.reduce(true) { $0 && self.contains($1) }
+        return strings.reduce(true) { $0 && self.containsString($1) }
     }
 }
 

@@ -15,7 +15,7 @@ struct Yices {
     static let buildMode = String.fromCString(yices_build_mode) ?? "yices_build_mode: n/a"
     static let buildDate = String.fromCString(yices_build_date) ?? "yices_build_date: n/a"
     
-    static let info = "yices \(version) (\(buildArch),\(buildMode),\(buildDate))"
+    static let info = "Yices v\(version) (\(buildArch),\(buildMode),\(buildDate))"
 }
 
 extension Yices {

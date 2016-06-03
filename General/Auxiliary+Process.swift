@@ -105,7 +105,6 @@ extension Process {
             assert(v1 / 1.01 < v2)
             assert(v1 * 1.01 > v2)
         }
-        print("benchmark: \(runtime)")
         return runtime
         
         // return Double(size) / runtime / 2_345_678.901

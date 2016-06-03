@@ -9,8 +9,9 @@ the following data and libraries have to be installed.
 - flex
 - yacc
 - tptp problem files
-- yices 2
-- z3
+- yices 2 (c api, used)
+- z3 (c api, unused, optimization, unsatisfiable core)
+- cvc4 (c++ api, unused)
 
 ##Flex and Yacc 
 ====
@@ -63,6 +64,10 @@ Follow the instructions from the website. Check for the following files on your 
 After installing [MacPorts](https://www.macports.org), [cvc4](http://cvc4.cs.nyu.edu/web/) can be easily installed with
 
     sudo port install cvc4
+    /opt/local/include/cvc4/cvc4.h 
+    /opt/local/lib/libcvc4.dylib
+
+Since cvc4 provides a C++ API it can not be used directly and a C or Obj-C wrapper has to be provided (not done yet).
 
 ### project linker flags
 

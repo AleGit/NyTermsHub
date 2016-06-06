@@ -30,7 +30,7 @@ extension Dictionary where Key:Node, Value:Node { // , Key == Value does not wor
     
     /// A substitution maps variables to terms.
     ///
-    /// see **Definition 2.1.23.** in 
+    /// see **Definition 2.1.23.** in
     var isSubstitution : Bool {
         assert(self.isHomogenous)
         return allKeysAreVariables
@@ -52,33 +52,71 @@ extension Dictionary where Key:Node, Value:Node { // , Key == Value does not wor
 /// 'lhs =?= rhs' constructs most common unifier mgu(lhs,rhs)
 /// iff terms lhs and rhs are unifiable.
 /// Otherwise it returns *nil*.
+/// The functions assumes variable distinct terms.
 func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
+    
+    //    if lhs == rhs {
+    //        return [T:T]() // trivially unifiable
+    //    }
+    //   assert(lhs != rhs, "terms are variable distinct, hence they cannot be equal")
     
     switch(lhs.isVariable,rhs.isVariable) {
     case (true, true):
-        assert(lhs != rhs, "\(lhs) \(rhs)")
+        assert(lhs != rhs, "Terms are variable distinct, hence variables cannot be equal")
         return [lhs:rhs]
     case (true,_):
+        guard !rhs.allVariables.contains(lhs) else { return nil }
         assert(!rhs.allVariables.contains(lhs),"\(lhs) \(rhs)") // occur check
         return [lhs:rhs]
     case (_,true):
+        guard !lhs.allVariables.contains(rhs) else { return nil }
         assert(!lhs.allVariables.contains(rhs),"\(lhs) \(rhs)") // occur check
         return [rhs:lhs]
-    case (_, _) where lhs.symbol == rhs.symbol && lhs.nodes!.count == rhs.nodes!.count:
+    case (_, _) where lhs.symbol == rhs.symbol:
         
-        var result = [T:T]()
+        // f(s1,s2,s3) =?= f(t1,t2,t3)
         
-        for (s,t) in zip(lhs.nodes!, rhs.nodes!) {
-            guard let mappings = s =?= t else { return nil }
-            for (variable, term) in mappings {
-                let value = result[variable]
-                if value == nil { result[variable] = term }
-                else if value != term { return nil }
+        var mgu = [T:T]()
+        
+        guard var lnodes = lhs.nodes, var rnodes = rhs.nodes
+            where lnodes.count == rnodes.count
+            else { return nil }
+        
+        while lnodes.count > 0 {
+            guard let unifier = lnodes[0] =?= rnodes[0] else { return nil }
+            
+            lnodes.removeFirst()
+            rnodes.removeFirst()
+            
+            lnodes = lnodes.map { $0 * unifier }
+            rnodes = rnodes.map { $0 * unifier }
+            
+            mgu *= unifier
+            
+            for (key,value) in unifier {
+                if let term = mgu[key] where term != value  { return nil }
+                mgu[key] = value
+                
             }
+            
         }
-        return result
+        
+        var decomposition = zip(lhs.nodes!, rhs.nodes!)
+        
+        for (s,t) in decomposition {
+            guard let unifier = s =?= t else { return nil }
+            
+            mgu *= unifier
+            
+            
+            
+        }
+        
+        
+        return mgu
+        
     case (_,_) where lhs.symbol == rhs.symbol:
-//        assert(lhs.symbol == "|", "\(lhs.symbol) must not be variadic (\(lhs.nodes!.count),\(rhs.nodes!.count)")
+        //        assert(lhs.symbol == "|", "\(lhs.symbol) must not be variadic (\(lhs.nodes!.count),\(rhs.nodes!.count)")
         return nil
     default:
         return nil
@@ -113,7 +151,7 @@ extension Node {
         guard let nodes = self.nodes else { return self } // a variable is not negatable
         
         let type = self.symbolType ?? SymbolType.Predicate // assume that unregisterd symbols are predicates
-         
+        
         
         switch type {
         case SymbolType.Negation:
@@ -196,6 +234,13 @@ func *<T:Node> (lhs:[T:T], rhs:[T:T]) -> [T:T] {
         }
     }
     return concat
+}
+
+
+func *=<T:Node>(inout lhs:[T:T], rhs:[T:T]) {
+    for (key,value) in lhs {
+        lhs[key] = value * rhs
+    }
 }
 
 

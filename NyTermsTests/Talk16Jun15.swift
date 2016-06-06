@@ -74,19 +74,23 @@ class Talk16Jun15: XCTestCase {
         
     }
     
-    func testInfiniteDomain() {
-        let clauses : [TestNode] = [
-            TestNode(connective:"|", nodes: ["~(p(X,X))"]),
-            TestNode(connective:"|", nodes: ["p(X,f(X))"]),
-            "~(p(X,Y))|~(p(Y,Z))|p(X,Z)"
-        ]
+    func testUnifier() {
         
-        let prover = MingyProver(clauses: clauses)
-        let (result,_) = measure { prover.run(0.1) }
-        Nylog.printit()
-        XCTAssertEqual(STATUS_SAT, result.0)
-        XCTAssertTrue(result.1) // timeout!
+        let l1 = "p(X,X)" as TptpNode
+        let l2 = "p(Y,f(Y))" as TptpNode
+        let l3 = "p(Z1,Z2)" as TptpNode
+
         
+        XCTAssertNil(l1 =?= l2, "\n\(l1) =?= \(l2) = \(l1 =?= l2)")
+        XCTAssertNil(l2 =?= l1, "\n\(l2) =?= \(l1) = \(l2 =?= l1)")
+        
+        let mgu23 = (l2 =?= l3)!
+        XCTAssertEqual(l2 * mgu23, l3*mgu23, "\n\(l2) =?= \(l3) = \(mgu23)")
+        
+        let mgu32 = (l3 =?= l2)!
+        XCTAssertEqual(l2 * mgu32, l3*mgu32, "\n\(l3) =?= \(l2) = \(mgu32)")
+        
+
     }
 
 }

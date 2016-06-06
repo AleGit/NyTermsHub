@@ -184,6 +184,8 @@ extension MingyProver {
                 continue
             }
             
+            Nylog.log("unifier = \(unifier)")
+            
             for newClause in [ entry.0 * unifier, candidateEntry.0 * unifier] {
                 let tuple = Yices.clause(newClause)
                 
@@ -208,6 +210,8 @@ extension MingyProver {
                 
             }
         }
+        
+        Nylog.log("PROCESSED clause#\(clauseIndex):\(entry.0)")
         
         return newClauseIndices
         

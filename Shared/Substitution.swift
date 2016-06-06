@@ -61,9 +61,10 @@ func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
     //   assert(lhs != rhs, "terms are variable distinct, hence they cannot be equal")
     
     switch(lhs.isVariable,rhs.isVariable) {
+    case (true, true) where lhs.symbol == rhs.symbol:
+        return [T:T]() // empty substitution
     case (true, true):
-        assert(lhs != rhs, "Terms are variable distinct, hence variables cannot be equal")
-        return [lhs:rhs]
+        return [lhs:rhs] // variable renaming
     case (true,_):
         guard !rhs.allVariables.contains(lhs) else { return nil }
         assert(!rhs.allVariables.contains(lhs),"\(lhs) \(rhs)") // occur check

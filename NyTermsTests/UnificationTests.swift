@@ -11,6 +11,51 @@ import XCTest
 
 class UnificationTests: XCTestCase {
     
+    func test_X_X() {
+        
+        let list : [(TptpNode,TptpNode, [TptpNode:TptpNode]?)] = [
+        ("X"        ,"X"        , [TptpNode:TptpNode]()),
+        ("f(X)"     ,"f(X)"        , [TptpNode:TptpNode]()),
+        ("p(X,Y)"   ,"p(X,Y)"        , [TptpNode:TptpNode]()),
+        ("p(f(X),Y)"   ,"p(f(X),Y)"        , [TptpNode:TptpNode]()),
+        ("X"        ,"f(X)"     , nil),
+        ("f(X)"     ,"X"     , nil),
+        ("X"        ,"f(Y)"     , ["X":"f(Y)"]),
+        ("(p(X,X))" ,"p(Y,f(Y))" , nil),
+        ("(p(X,Z))" ,"p(Y,f(Y))" , ["X":"Y","Z":"f(Y)"]),
+        ("p(Y,f(Y))" , "(p(X,Z))" ,["Y":"X","Z":"f(X)"])
+        ]
+        
+        for (a,b,mgu) in list {
+            
+            
+                let result = a =?= b
+                
+                guard let expected = mgu, let actual = result else {
+                    // Both must be nil
+                    XCTAssertNil(mgu)
+                    XCTAssertNil(result)
+                    
+                    
+                    continue
+                }
+                
+                XCTAssertEqual(expected,actual,"\(a) =?= \(b) = \(expected) <\(actual)>")
+                
+                
+                
+
+            
+
+        }
+        
+        
+        let mgu = x =?= x
+        
+        XCTAssertNotNil(mgu)
+        
+            }
+    
     func testComplementaries() {
         let name = "PUZ001-1"
         guard let path = name.p else {

@@ -15,11 +15,11 @@ struct Nylog {
     static func printit() {
         for (key,start,end) in log {
             var text : String
-            if (start < end) {
-                text = ">>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
+            if (start == 0.0) {
+                text = ">>> \(key) ••• at \((end-zero).prettyTimeIntervalDescription) <<<"
             }
             else {
-                text = ">>> \(key) ••• at \((end-zero).prettyTimeIntervalDescription) <<<"
+                text = ">>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
             }
             print(text)
         }
@@ -37,8 +37,7 @@ struct Nylog {
     }
     
     static func log(msg:String) {
-        
-        log.append(msg,CFAbsoluteTimeGetCurrent(),CFAbsoluteTimeGetCurrent())
+        log.append((msg, 0.0, CFAbsoluteTimeGetCurrent()))
     }
 }
 

@@ -185,14 +185,16 @@ extension MingyProver {
             }
             
             for newClause in [ entry.0 * unifier, candidateEntry.0 * unifier] {
-                print(newClause)
                 let tuple = Yices.clause(newClause)
                 
                 let subsumers = searchPotentialSubsumersLineary(tuple.yicesLiterals)
                 
                 guard subsumers.count == 0 else {
+                    Nylog.log("IGN: \(newClause).")
                     continue
                 }
+                
+                Nylog.log("ADD \(newClause).")
                 
                 let newClauseIndex = repository.count
                 
@@ -265,6 +267,9 @@ extension MingyProver {
 //                break // nothing was added
 //            }
         }
+        
+        Nylog.log("EXIT \(#function)(\(runtime)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)")
+        
         return (status,expired,self.runtime)
     }
 }

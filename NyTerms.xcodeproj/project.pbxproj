@@ -198,6 +198,7 @@
 		D248F4881CFC5CF400D087AB /* TptpProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F4861CFC5CF400D087AB /* TptpProver.swift */; };
 		D248F48D1CFC639C00D087AB /* TptpParserBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F48C1CFC639C00D087AB /* TptpParserBasicTests.swift */; };
 		D24D5D151CE5DB7200E07E8E /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D5D141CE5DB7200E07E8E /* Demo.swift */; };
+		D27B78571D058E2C0023F44F /* Talk16Jun15.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B78561D058E2C0023F44F /* Talk16Jun15.swift */; };
 		D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286232E1CEB711000E42070 /* YicesTestCase.swift */; };
 		D2F26C1E1CEC6F3E003DD50F /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */; };
 		D2F26C1F1CEC6F3E003DD50F /* SymbolTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F26C1D1CEC6F3E003DD50F /* SymbolTable.swift */; };
@@ -428,6 +429,7 @@
 		D25BC2991D01AC9500D2178F /* cvc4files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = cvc4files.txt; sourceTree = "<group>"; };
 		D25BC29A1D01ACDD00D2178F /* yices2files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = yices2files.txt; sourceTree = "<group>"; };
 		D25BC29B1D01AD2700D2178F /* z3files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = z3files.txt; sourceTree = "<group>"; };
+		D27B78561D058E2C0023F44F /* Talk16Jun15.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Talk16Jun15.swift; sourceTree = "<group>"; };
 		D286232D1CEB216C00E42070 /* Demo.demo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Demo.demo.txt; sourceTree = "<group>"; };
 		D286232E1CEB711000E42070 /* YicesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesTestCase.swift; sourceTree = "<group>"; };
 		D2B588AB1CE5B9250086E780 /* PrlcSpeed.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PrlcSpeed.txt; sourceTree = "<group>"; };
@@ -544,6 +546,7 @@
 		512977291B677CAB003D3E80 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				D27B78551D058DE30023F44F /* Talks */,
 				D23B0D4F1CF45AAF00B7BE7F /* Z3 */,
 				5173B55B1CCA07FD00A9ABCE /* ShareNode */,
 				514AD8611C6B4CB700652004 /* General */,
@@ -944,6 +947,14 @@
 			name = cvc4;
 			sourceTree = "<group>";
 		};
+		D27B78551D058DE30023F44F /* Talks */ = {
+			isa = PBXGroup;
+			children = (
+				D27B78561D058E2C0023F44F /* Talk16Jun15.swift */,
+			);
+			name = Talks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1255,6 +1266,7 @@
 				512117641B81D26E00E1803C /* TptpFormulaLiteralsTests.swift in Sources */,
 				519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */,
 				51CD82A61C32D090009166BB /* NodeTrieTests.swift in Sources */,
+				D27B78571D058E2C0023F44F /* Talk16Jun15.swift in Sources */,
 				519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */,
 				5150F39E1BD6769C003D69A3 /* YicesSatTrials.swift in Sources */,
 				514E938B1C9FBE5C00787661 /* SharingTests.swift in Sources */,

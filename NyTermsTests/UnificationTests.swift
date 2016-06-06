@@ -18,15 +18,23 @@ class UnificationTests: XCTestCase {
         ("f(X)"     ,"f(X)"        , [TptpNode:TptpNode]()),
         ("p(X,Y)"   ,"p(X,Y)"        , [TptpNode:TptpNode]()),
         ("p(f(X),Y)"   ,"p(f(X),Y)"        , [TptpNode:TptpNode]()),
+        ("p(f(X),g(X))", "p(f(Y),f(Y))", nil),
         ("X"        ,"f(X)"     , nil),
         ("f(X)"     ,"X"     , nil),
         ("X"        ,"f(Y)"     , ["X":"f(Y)"]),
         ("(p(X,X))" ,"p(Y,f(Y))" , nil),
         ("(p(X,Z))" ,"p(Y,f(Y))" , ["X":"Y","Z":"f(Y)"]),
-        ("p(Y,f(Y))" , "(p(X,Z))" ,["Y":"X","Z":"f(X)"])
+        ("p(Y,f(Y))" , "(p(X,Z))" ,["Y":"X","Z":"f(X)"]),
+        ("p(f(a,b,c))", "p(f(X,Y,Z))", ["X":"a", "Y":"b", "Z":"c"] ),
+        ("X=f(X)","Y=Z",["X":"Y","Z":"f(Y)"]),
+        ("Y=Z","X=f(X)",["Y":"X","Z":"f(X)"]),
         ]
         
         for (a,b,mgu) in list {
+            
+            if let u = mgu {
+                XCTAssertEqual(a*u, b*u, "\(a), \(b) \(u)")
+            }
             
             
                 let result = a =?= b
@@ -41,6 +49,8 @@ class UnificationTests: XCTestCase {
                 }
                 
                 XCTAssertEqual(expected,actual,"\(a) =?= \(b) = \(expected) <\(actual)>")
+            
+            
                 
                 
                 

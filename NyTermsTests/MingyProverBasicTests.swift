@@ -100,11 +100,14 @@ class MingyProverBasicTests: XCTestCase {
     }
     
     /// see **Example 3.7** in [AlM2014SR]
-    func _testInfiniteDomain() {
+    func testInfiniteDomain() {
         let clauses : [TestNode] = [
-            TestNode(connective:"|", nodes: ["~(p(X,X))"]),
-            TestNode(connective:"|", nodes: ["p(X,f(X))"]),
-            "~(p(X,Y))|~(p(Y,Z))|p(X,Z)"
+            // TestNode(connective:"|", nodes: ["p(X,X)"]),
+            //TestNode(connective:"|", nodes: ["~(p(X,f(X)))"]),
+            // "p(X,Y)|~p(f(X),f(Y))"
+            TestNode(connective:"|", nodes: ["X!=f(X)"]),
+            "X=Y|f(X)!=f(Y)"
+            
         ]
         
         let prover = MingyProver(clauses: clauses)

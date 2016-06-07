@@ -31,6 +31,11 @@ extension Process {
         #endif
     }
     
+    /// Get value for key from environment variables
+    /// or command line arguments.
+    /// - if key starts with '-' try to get value from command line arguments.
+    /// - if key is uppercase try to get value from environment.
+    /// - otherwise return nil
     static func valueOf(key:String) -> String? {
         if key.hasPrefix("-") {
             return Process.argumentValueOf(key)

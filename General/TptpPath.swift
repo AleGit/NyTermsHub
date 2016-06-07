@@ -140,13 +140,20 @@ extension TptpPath {
         
         return result
     }()
-    
-    /// construct absolute path from problem file name (without local path or extension)
+
+    /// Check if `self` is an accessible file. If not treat `self` as problem name 
+    /// (without local path or extension) and construct absolute path from it
     /// with tptp root path and the convention of three uppercase letter directory names.
     var p:TptpPath? {
+        if self.isAccessibleFile { return self }
+        
+        // check if problem name is just a name without path or extension
+        
         assert(self.rangeOfString("/") == nil,"\(self)")    // assert file name only
         assert(!self.hasSuffix(".p"),"\(self)")    // assert without extension p
         assert(!self.hasSuffix(".ax"),"\(self)")    // assert without extension ax
+        
+        // extract first thre uppercase letters of problem name
         
         let ABC = self[self.startIndex..<self.startIndex.advancedBy(3)]
         assert(ABC.uppercaseString == ABC,"\(ABC)")
@@ -176,7 +183,7 @@ extension TptpPath {
         return true
     }
     
-    private var isAccessibleFile : Bool {
+     var isAccessibleFile : Bool {
         let f = fopen(self,"r")
         guard f != nil else {
             return false

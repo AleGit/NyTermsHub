@@ -73,24 +73,5 @@ class Talk16Jun15: XCTestCase {
         XCTAssertEqual(status, STATUS_UNSAT)
         
     }
-    
-    func testUnifier() {
-        
-        let l1 = "p(X,X)" as TptpNode
-        let l2 = "p(Y,f(Y))" as TptpNode
-        let l3 = "p(Z1,Z2)" as TptpNode
-
-        
-        XCTAssertNil(l1 =?= l2, "\n\(l1) =?= \(l2) = \(l1 =?= l2)")
-        XCTAssertNil(l2 =?= l1, "\n\(l2) =?= \(l1) = \(l2 =?= l1)")
-        
-        let mgu23 = (l2 =?= l3)!
-        XCTAssertEqual(l2 * mgu23, l3*mgu23, "\n\(l2) =?= \(l3) = \(mgu23)")
-        
-        let mgu32 = (l3 =?= l2)!
-        XCTAssertEqual(l2 * mgu32, l3*mgu32, "\n\(l3) =?= \(l2) = \(mgu32)")
-        
-
-    }
 
 }

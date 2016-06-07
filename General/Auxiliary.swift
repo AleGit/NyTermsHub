@@ -4,16 +4,38 @@ import Foundation
 
 struct Nylog {
     
+    private static var index = 0
+    
     private static var zero = CFAbsoluteTimeGetCurrent()
+    private static var lastprint = zero
     private static var log = [(String, CFAbsoluteTime, CFAbsoluteTime)]()
     
-    static func reset() {
-        log.removeAll()
-        zero = CFAbsoluteTimeGetCurrent()
+    private static var printintervall : CFTimeInterval = 0.0 // no partial print
+    
+    private static func printconditional() {
+        guard printintervall > 0 && (CFAbsoluteTimeGetCurrent() - lastprint) > printintervall
+            else { return }
+        
+    
+        printparts()
+        lastprint = CFAbsoluteTimeGetCurrent()
+        
     }
     
-    static func printit() {
-        for (key,start,end) in log {
+    static func reset(interval:CFTimeInterval) {
+        log.removeAll()
+        index = 0
+        zero = CFAbsoluteTimeGetCurrent()
+        lastprint = zero
+        
+        let count = Process.arguments.count
+        log("\(Process.arguments[0])")
+        log("\(Process.arguments[1..<count])")
+    }
+    
+    
+    private static func printit(range:Range<Int>) {
+        for (key,start,end) in log[range] {
             var text : String
             if (start == 0.0) {
                 text = ">>> \(key) ••• at \((end-zero).prettyTimeIntervalDescription) <<<"
@@ -25,6 +47,18 @@ struct Nylog {
         }
     }
     
+    private static func printit() {
+        printit(0..<log.count)
+    }
+    
+    static func printparts() {
+        let range = index..<log.count
+        index = range.endIndex
+        printit(range)
+        
+    }
+    
+    
     
     static func measure<R>(key:String, f:()->R) -> (R,CFTimeInterval) {
         let start = CFAbsoluteTimeGetCurrent()
@@ -33,11 +67,15 @@ struct Nylog {
         
         log.append(key,start,end)
         
+        printconditional()
+        
         return (result,end-start)
     }
     
     static func log(msg:String) {
         log.append((msg, 0.0, CFAbsoluteTimeGetCurrent()))
+        
+        printconditional()
     }
 }
 

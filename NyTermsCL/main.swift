@@ -3,24 +3,19 @@
 
 import Foundation
 
-let line = "========================="
+setup()
+defer { teardown() }
 
-// print header
-print(line,NSDate(),line)
-print(Process.info)
-print(Yices.info)
-print(Z3.info)
-print("tptp root path:",TptpPath.tptpRootPath)
-print(line,line,line)
-yices_init()
+prove()
 
-// print footer (at end of program)
-defer {
-    yices_exit()
-    print(line,line,line)
-    print(line,NSDate(),line)
-}
 
+
+
+
+
+
+
+/*
 let files = Infos.files.filter {
     $0.1.0 == 12 //17783
     // $0.0.contains("134")
@@ -29,7 +24,7 @@ let files = Infos.files.filter {
 
 DemoComplementaries.demo(files, searches: [fastestSearch,yicesSearch,])
 
-
+*/
 
 
 // DemoClauseIndex.demo("PUZ001-1")

@@ -179,6 +179,7 @@
 		51FF64011CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */; };
 		51FF64051CBBB71600AA26B5 /* YicesNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */; };
+		D20126E81D06A22700B52A50 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20126E71D06A22700B52A50 /* Core.swift */; };
 		D23628841D00144A009C1D33 /* AuxiliaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23628831D00144A009C1D33 /* AuxiliaryTests.swift */; };
 		D23628861D005E21009C1D33 /* ClauseProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23628851D005E21009C1D33 /* ClauseProver.swift */; };
 		D23628871D005E21009C1D33 /* ClauseProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23628851D005E21009C1D33 /* ClauseProver.swift */; };
@@ -408,6 +409,7 @@
 		51FD00C11C3133E1008C5AD1 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		51FF64001CBBB0AD00AA26B5 /* Yices+Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Clause.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesNodeTests.swift; sourceTree = "<group>"; };
+		D20126E71D06A22700B52A50 /* Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		D23628831D00144A009C1D33 /* AuxiliaryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuxiliaryTests.swift; sourceTree = "<group>"; };
 		D23628851D005E21009C1D33 /* ClauseProver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseProver.swift; sourceTree = "<group>"; };
 		D23635551CF594AE00978B2D /* UnitArrayPair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitArrayPair.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				51E5F9AE1C87179900040B19 /* DemoProofing.swift */,
 				51CD27AD1CBBE6FE00851E89 /* DemoClauseIndex.swift */,
 				D24D5D141CE5DB7200E07E8E /* Demo.swift */,
+				D20126E71D06A22700B52A50 /* Core.swift */,
 			);
 			name = _CLI_;
 			path = NyTermsCL;
@@ -1087,6 +1090,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D20126E81D06A22700B52A50 /* Core.swift in Sources */,
 				511301351C3ACF4F0071D632 /* PolyTry.swift in Sources */,
 				51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */,
 				51D8476D1C8084DC003EC848 /* TptpPath.swift in Sources */,

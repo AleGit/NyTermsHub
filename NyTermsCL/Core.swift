@@ -20,7 +20,7 @@ func setup() {
     
     yices_init()
     
-    Nylog.reset(1.0)
+    
     
     
     print(line,line,line)
@@ -53,6 +53,23 @@ func prove() {
     var timeout = CFTimeInterval(Process.valueOf("-timeout") ?? "1.0") ?? 0.1
     if timeout < 0.01 { timeout = 0.01 }                // 10 ms
     else if timeout > 60 * 60 { timeout = 60 * 60 }     // 1 h
+    
+    var loglevel = Nylog.LogLevel.Normal
+    if let llstring = Process.valueOf("-loglevel") {
+        switch llstring {
+        case "0", "1", "Error", "error":
+            loglevel = .Error
+        case "2", "3", "4", "Normal", "normal":
+            loglevel = .Normal
+        case "5", "6", "7", "8", "9", "Verbose", "verbose":
+            loglevel = .Verbose
+        
+        default:
+            loglevel = .Normal
+        }
+    }
+    
+    Nylog.reset(1.0, loglevel: loglevel)
     
     Nylog.log("Process file '\(path)' with timeout \(timeout.prettyTimeIntervalDescription)")
     

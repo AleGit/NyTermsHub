@@ -2,7 +2,13 @@
 
 import Foundation
 
+
 struct Nylog {
+    enum LogLevel : Int {
+        case Error = 1
+        case Normal = 4
+        case Verbose = 7
+    }
     
     private static var index = 0
     
@@ -10,10 +16,11 @@ struct Nylog {
     private static var lastprint = zero
     private static var log = [(String, CFAbsoluteTime, CFAbsoluteTime)]()
     
-    private static var printintervall : CFTimeInterval = 0.0 // no partial print
+    private static var logprintinterval : CFTimeInterval = 0.0
+    private static var logloglevel:LogLevel = .Normal
     
     private static func printconditional() {
-        guard printintervall > 0 && (CFAbsoluteTimeGetCurrent() - lastprint) > printintervall
+        guard logprintinterval > 0 && (CFAbsoluteTimeGetCurrent() - lastprint) > logprintinterval
             else { return }
         
     
@@ -22,11 +29,14 @@ struct Nylog {
         
     }
     
-    static func reset(interval:CFTimeInterval) {
+    static func reset(printinterval:CFTimeInterval = 0.0, loglevel:LogLevel = .Normal) {
         log.removeAll()
         index = 0
         zero = CFAbsoluteTimeGetCurrent()
+        
         lastprint = zero
+        logprintinterval = printinterval
+        logloglevel = loglevel
         
         let count = Process.arguments.count
         log("\(Process.arguments[0])")
@@ -58,24 +68,27 @@ struct Nylog {
         
     }
     
+    static func logappend(msg:String, loglevel:LogLevel, start:CFAbsoluteTime, end:CFAbsoluteTime) {
+        // check if the log level of the application is higher than the log level of the message
+        if logloglevel.rawValue >= loglevel.rawValue {
+            log.append(msg,start,end)
+            printconditional()
+        }
+    }
     
-    
-    static func measure<R>(key:String, f:()->R) -> (R,CFTimeInterval) {
+    static func measure<R>(key:String, loglevel:LogLevel = .Verbose, f:()->R) -> (R,CFTimeInterval) {
         let start = CFAbsoluteTimeGetCurrent()
         let result = f()
         let end = CFAbsoluteTimeGetCurrent()
         
-        log.append(key,start,end)
+        logappend(key,loglevel:loglevel,start:start,end:end)
         
-        printconditional()
         
         return (result,end-start)
     }
     
-    static func log(msg:String) {
-        log.append((msg, 0.0, CFAbsoluteTimeGetCurrent()))
-        
-        printconditional()
+    static func log(msg:String, loglevel:LogLevel = .Verbose) {
+        logappend(msg, loglevel:loglevel, start:0.0, end: CFAbsoluteTimeGetCurrent())
     }
 }
 

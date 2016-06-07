@@ -11,62 +11,142 @@ import XCTest
 
 class UnificationTests: XCTestCase {
     
-    func test_X_X() {
+    func testNotUnifiable() {
+        let list : [(TptpNode,TptpNode)] =
+            [
+                ("p(f(X),g(X))", "p(f(Y),f(Y))"),
+                ("X"        ,"f(X)"     ),
+                ("f(X)"     ,"X"   ),
+                ("(p(X,X))" ,"p(Y,f(Y))" ),
+                ("X", "f(g(h(f(g(h(X))))))"),
+                
+                // syntactical unification does not work in the following example
+                // because of different notations for NOT EQUAL.
+                ("Y!=Z"          ,"~(X=f(X))")
+                ]
         
-        let list : [(TptpNode,TptpNode, [TptpNode:TptpNode]?)] = [
-        ("X"        ,"X"        , [TptpNode:TptpNode]()),
-        ("f(X)"     ,"f(X)"        , [TptpNode:TptpNode]()),
-        ("p(X,Y)"   ,"p(X,Y)"        , [TptpNode:TptpNode]()),
-        ("p(f(X),Y)"   ,"p(f(X),Y)"        , [TptpNode:TptpNode]()),
-        ("p(f(X),g(X))", "p(f(Y),f(Y))", nil),
-        ("X"        ,"f(X)"     , nil),
-        ("f(X)"     ,"X"     , nil),
-        ("X"        ,"f(Y)"     , ["X":"f(Y)"]),
-        ("(p(X,X))" ,"p(Y,f(Y))" , nil),
-        ("(p(X,Z))" ,"p(Y,f(Y))" , ["X":"Y","Z":"f(Y)"]),
-        ("p(Y,f(Y))" , "(p(X,Z))" ,["Y":"X","Z":"f(X)"]),
-        ("p(f(a,b,c))", "p(f(X,Y,Z))", ["X":"a", "Y":"b", "Z":"c"] ),
-        ("X=f(X)","Y=Z",["X":"Y","Z":"f(Y)"]),
-        ("Y=Z","X=f(X)",["Y":"X","Z":"f(X)"]),
-        ]
+        for (a,b) in list {
+            guard let unifier = a =?= b else {
+                continue
+            }
+            XCTFail("\(a) =?= \(b) had yield a unifier \(unifier)")
+            
+            XCTAssertEqual(a * unifier, b * unifier,"(\(a) ≠ \(b)) * \(unifier)")
+        }
+    }
+    
+    func testUnifiable() {
+        let e = [TptpNode:TptpNode]()
+        
+        let list : [(TptpNode,TptpNode, [TptpNode:TptpNode])] = [
+            ("X"        ,"X"        , e),
+            ("f(X)"     ,"f(X)"        , e),
+            ("p(X,Y)"   ,"p(X,Y)"        , e),
+            ("p(f(X),Y)"   ,"p(f(X),Y)"        , e),
+            
+            ("X"            ,"f(Y)"                 , ["X":"f(Y)"]),
+            ("(p(X,Z))"     ,"p(Y,f(Y))"            , ["X":"Y","Z":"f(Y)"]),
+            ("p(Y,f(Y))"    , "(p(X,Z))"            , ["Y":"X","Z":"f(X)"]),
+            ("p(f(a,b,c))"  , "p(f(X,Y,Z))"         , ["X":"a", "Y":"b", "Z":"c"] ),
+            
+            ("X=f(X)"       ,"Y=Z"                  , ["X":"Y","Z":"f(Y)"]),
+            ("Y=Z"          ,"X=f(X)"               , ["Y":"X","Z":"f(X)"]),
+            ("~(X=f(X))"       ,"~(Y=Z)"                  , ["X":"Y","Z":"f(Y)"]),
+            ("~(Y=Z)"          ,"~(X=f(X))"               , ["Y":"X","Z":"f(X)"]),
+            ("X!=f(X)"       ,"Y!=Z"                  , ["X":"Y","Z":"f(Y)"]),
+            ("Y!=Z"          ,"X!=f(X)"               , ["Y":"X","Z":"f(X)"]),
+            // ("Y!=Z"          ,"~(X=f(X))"               , ["Y":"X","Z":"f(X)"]), // consitent notation is essential
+
+            ("p(X,Y)"       ,"p(a,Z)"               , ["X":"a","Y":"Z"]),
+            ("p(X,Y)"       ,"p(a,X)"               , ["X":"a","Y":"a"]),
+            ("p(X,X)"       ,"p(Y,Z)"               , ["X":"Z","Y":"Z"]),
+            ("p(X,Y)"       ,"p(Z,Z)"               , ["X":"Z","Y":"Z"]),
+            ("f(g(h(f(g(h(Y))))))","X"              , ["X":"f(g(h(f(g(h(Y))))))"]),
+            ]
         
         for (a,b,mgu) in list {
+            XCTAssertEqual(a * mgu, b * mgu,"(\(a) ≠ \(b)) * \(mgu)")
             
-            if let u = mgu {
-                XCTAssertEqual(a*u, b*u, "\(a), \(b) \(u)")
+            guard let unifier = a =?= b else {
+                XCTFail("\(a) =?= \(b) did not yield a unifier")
+                continue
             }
             
-            
-                let result = a =?= b
-                
-                guard let expected = mgu, let actual = result else {
-                    // Both must be nil
-                    XCTAssertNil(mgu)
-                    XCTAssertNil(result)
-                    
-                    
-                    continue
-                }
-                
-                XCTAssertEqual(expected,actual,"\(a) =?= \(b) = \(expected) <\(actual)>")
-            
-            
-                
-                
-                
-
-            
-
+            XCTAssertEqual(a * unifier, b * unifier,"(\(a) ≠ \(b)) * \(unifier)")
+            XCTAssertEqual(mgu, unifier,"\(mgu) ≠ \(unifier)")
         }
-        
-        
-        let mgu = x =?= x
-        
-        XCTAssertNotNil(mgu)
-        
-            }
+    }
+    
+    
     
     func testComplementaries() {
+        let e = [TptpNode:TptpNode]()
+        
+        let list : [(TptpNode,TptpNode, [TptpNode:TptpNode])] = [
+            ("~p(X,Y)"   ,"p(X,Y)"        , e),
+            ("p(X,Y)"   ,"~p(X,Y)"        , e),
+            ("~p(f(X),Y)"   ,"p(f(X),Y)"        , e),
+            ("p(f(X),Y)"   ,"~p(f(X),Y)"        , e),
+            
+            ("~(p(X,Z))"     ,"p(Y,f(Y))"            , ["X":"Y","Z":"f(Y)"]),
+            ("(p(X,Z))"     ,"~p(Y,f(Y))"            , ["X":"Y","Z":"f(Y)"]),
+            
+            ("~p(Y,f(Y))"    , "(p(X,Z))"            , ["Y":"X","Z":"f(X)"]),
+            ("p(Y,f(Y))"    , "~(p(X,Z))"            , ["Y":"X","Z":"f(X)"]),
+            
+            ("~p(f(a,b,c))"  , "p(f(X,Y,Z))"         , ["X":"a", "Y":"b", "Z":"c"] ),
+            ("p(f(a,b,c))"  , "~p(f(X,Y,Z))"         , ["X":"a", "Y":"b", "Z":"c"] ),
+            
+            ("X!=f(X)"       ,"Y=Z"                  , ["X":"Y","Z":"f(Y)"]),
+            ("Y!=Z"          ,"X=f(X)"               , ["Y":"X","Z":"f(X)"]),
+            ("X=f(X)"       ,"Y!=Z"                  , ["X":"Y","Z":"f(Y)"]),
+            ("Y=Z"          ,"X!=f(X)"               , ["Y":"X","Z":"f(X)"]),
+            
+            ("~(X=f(X))"       ,"Y=Z"                  , ["X":"Y","Z":"f(Y)"]),
+            ("~(Y=Z)"          ,"X=f(X)"               , ["Y":"X","Z":"f(X)"]),
+            ("X=f(X)"       ,"~(Y=Z)"                  , ["X":"Y","Z":"f(Y)"]),
+            ("Y=Z"          ,"~(X=f(X))"               , ["Y":"X","Z":"f(X)"]),
+            
+            ("~p(X,Y)"       ,"p(a,Z)"               , ["X":"a","Y":"Z"]),
+            ("p(X,Y)"       ,"~p(a,Z)"               , ["X":"a","Y":"Z"]),
+            
+            ("~p(X,Y)"       ,"p(a,X)"               , ["X":"a","Y":"a"]),
+            ("p(X,Y)"       ,"~p(a,X)"               , ["X":"a","Y":"a"]),
+            
+            ("~p(X,X)"       ,"p(Y,Z)"               , ["X":"Z","Y":"Z"]),
+            ("p(X,X)"       ,"~p(Y,Z)"               , ["X":"Z","Y":"Z"]),
+            
+            ("~p(X,Y)"       ,"p(Z,Z)"               , ["X":"Z","Y":"Z"]),
+            ("p(X,Y)"       ,"~p(Z,Z)"               , ["X":"Z","Y":"Z"]),
+            
+            ("~p(f(g(h(f(g(h(Y)))))))","p(X)"              , ["X":"f(g(h(f(g(h(Y))))))"]),
+            ("p(f(g(h(f(g(h(Y)))))))","~p(X)"              , ["X":"f(g(h(f(g(h(Y))))))"]),
+            ]
+        
+        for (a,b,mgu) in list {
+            // XCTAssertEqual(a * mgu, b * mgu,"(\(a) ≠ \(b)) * \(mgu)")
+            
+            guard let unifier = a ~?= b else {
+                XCTFail("\(a) ~?= \(b) did not yield a unifier")
+                continue
+            }
+            
+            if let absa = a.unnegatedNode {
+                XCTAssertEqual(absa * unifier, b * unifier,"(\(absa) ≠ \(b)) * \(unifier)")
+            }
+            else if let absb = b.unnegatedNode {
+                XCTAssertEqual(a * unifier, absb * unifier,"(\(a) ≠ \(absb)) * \(unifier)")
+            }
+            else {
+                XCTFail("(\(a) ≠ \(b)) * \(unifier)")
+            }
+            
+            // XCTAssertEqual(a * unifier, b * unifier,"(\(a) ≠ \(b)) * \(unifier)")
+            XCTAssertEqual(mgu, unifier,"\(mgu) ≠ \(unifier)")
+        }
+    }
+    
+    func testPUZ001() {
         let name = "PUZ001-1"
         guard let path = name.p else {
             XCTFail("\(name) is not accessible")

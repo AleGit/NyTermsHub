@@ -163,7 +163,7 @@ extension MingyProver {
         
         defer {
             self.inactiveClauseIndices.remove(clauseIndex)
-            Nylog.log("ACTIVATED clause#\(clauseIndex):\(entry.0)")
+            Nylog.log("ACTIVATED clause # \(clauseIndex)") // :\(entry.0)
 
             indicateClause(clauseIndex)
             // self.activeClauseIndices.insert(clauseIndex)
@@ -186,7 +186,7 @@ extension MingyProver {
                 continue
             }
             
-            Nylog.log("unifier = \(unifier)")
+            // Nylog.log("unifier = \(unifier)")
             
             for newClause in [ entry.0 * unifier, candidateEntry.0 * unifier] {
                 let tuple = Yices.clause(newClause)
@@ -194,18 +194,19 @@ extension MingyProver {
                 let subsumers = searchPotentialSubsumersLineary(tuple.yicesLiterals)
                 
                 guard subsumers.count == 0 else {
-                    Nylog.log("IGN: \(newClause).")
+                    // Nylog.log("IGN: \(newClause).")
+                    Nylog.log("IGNORE not so new clause.")
                     continue
                 }
                 
-                Nylog.log("ADD \(newClause).")
-                
                 let newClauseIndex = repository.count
+                
+                Nylog.log("ADD new clause # \(newClauseIndex).")
                 
                 let addClause = newClause.normalize(newClauseIndex)
                 // let addClause = newClause ** newClauseIndex
                 
-                Nylog.log("\(newClauseIndex) - \(addClause) \(tuple) added")
+                // Nylog.log("\(newClauseIndex) - \(addClause) \(tuple) added")
                 
                 repository.append((addClause,-1,tuple))
                 newClauseIndices.insert(newClauseIndex)
@@ -279,7 +280,7 @@ extension MingyProver {
 //            }
         }
         
-        Nylog.log("EXIT \(#function)(\(timeout)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)")
+        Nylog.log("EXIT \(#function)(\(timeout)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)", loglevel: .Normal)
         
         return (status,expired,self.runtime)
     }

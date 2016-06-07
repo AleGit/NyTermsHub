@@ -19,7 +19,7 @@ class MingyProverBasicTests: XCTestCase {
     }
     
     override func tearDown() {
-        Nylog.printit()
+        Nylog.printparts()
         yices_exit()
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()

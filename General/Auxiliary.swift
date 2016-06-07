@@ -8,13 +8,14 @@ struct Nylog {
         case Error = 1
         case Normal = 4
         case Verbose = 7
+        case Trace = 9
     }
     
     private static var index = 0
     
     private static var zero = CFAbsoluteTimeGetCurrent()
     private static var lastprint = zero
-    private static var log = [(String, CFAbsoluteTime, CFAbsoluteTime)]()
+    private static var log = [(LogLevel,String, CFAbsoluteTime, CFAbsoluteTime)]()
     
     private static var logprintinterval : CFTimeInterval = 0.0
     private static var logloglevel:LogLevel = .Normal
@@ -45,13 +46,13 @@ struct Nylog {
     
     
     private static func printit(range:Range<Int>) {
-        for (key,start,end) in log[range] {
+        for (level,key,start,end) in log[range] {
             var text : String
             if (start == 0.0) {
-                text = ">>> \(key) ••• at \((end-zero).prettyTimeIntervalDescription) <<<"
+                text = "*\(level)>>> \(key) ••• at \((end-zero).prettyTimeIntervalDescription) <<<"
             }
             else {
-                text = ">>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
+                text = "*\(level)>>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
             }
             print(text)
         }
@@ -68,26 +69,26 @@ struct Nylog {
         
     }
     
-    static func logappend(msg:String, loglevel:LogLevel, start:CFAbsoluteTime, end:CFAbsoluteTime) {
+    private static func logappend(@autoclosure msg:()->String, loglevel:LogLevel, start:CFAbsoluteTime, end:CFAbsoluteTime) {
         // check if the log level of the application is higher than the log level of the message
         if logloglevel.rawValue >= loglevel.rawValue {
-            log.append(msg,start,end)
+            log.append(loglevel,msg(),start,end)
             printconditional()
         }
     }
     
-    static func measure<R>(key:String, loglevel:LogLevel = .Verbose, f:()->R) -> (R,CFTimeInterval) {
+    static func measure<R>(@autoclosure msg:()->String, loglevel:LogLevel = .Verbose, f:()->R) -> (R,CFTimeInterval) {
         let start = CFAbsoluteTimeGetCurrent()
         let result = f()
         let end = CFAbsoluteTimeGetCurrent()
         
-        logappend(key,loglevel:loglevel,start:start,end:end)
+        logappend(msg,loglevel:loglevel,start:start,end:end)
         
         
         return (result,end-start)
     }
     
-    static func log(msg:String, loglevel:LogLevel = .Verbose) {
+    static func log(@autoclosure msg:()->String, loglevel:LogLevel = .Verbose) {
         logappend(msg, loglevel:loglevel, start:0.0, end: CFAbsoluteTimeGetCurrent())
     }
 }

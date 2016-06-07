@@ -121,6 +121,7 @@ class UnificationTests: XCTestCase {
             
             ("~p(f(g(h(f(g(h(Y)))))))","p(X)"              , ["X":"f(g(h(f(g(h(Y))))))"]),
             ("p(f(g(h(f(g(h(Y)))))))","~p(X)"              , ["X":"f(g(h(f(g(h(Y))))))"]),
+            ("~(p(f(a,e)))" , "p(X)"                , ["X":"f(a,e)"])
             ]
         
         for (a,b,mgu) in list {

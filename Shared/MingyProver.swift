@@ -85,9 +85,9 @@ extension MingyProver {
         
         if entry.yices.alignedYicesLiterals.count == 1 {
             unitClauseIndices.insert(clauseIndex)
-
+            
             // it is a unit clause, hence the first (and only) literal is selected
-
+            
             return 0
         }
         else if entry.yices.yicesLiterals.count == 1 {
@@ -112,8 +112,8 @@ extension MingyProver {
         guard literalIndex < 0
             || yices_formula_true_in_model(mdl, entry.yices.alignedYicesLiterals[literalIndex]) != 1
             else {
-            // literalIndex >= 0 && yices_formula_true_in_model(mdl, lid) == 1 (true)
-            return
+                // literalIndex >= 0 && yices_formula_true_in_model(mdl, lid) == 1 (true)
+                return
         }
         
         // no literal was selected or the literal does not hold anymore
@@ -146,8 +146,8 @@ extension MingyProver {
     
     
     
-
-
+    
+    
     
     func selectclause() -> Int? {
         // the simplest implementation
@@ -164,7 +164,7 @@ extension MingyProver {
         defer {
             self.inactiveClauseIndices.remove(clauseIndex)
             Nylog.log("ACTIVATED clause # \(clauseIndex)") // :\(entry.0)
-
+            
             indicateClause(clauseIndex)
             // self.activeClauseIndices.insert(clauseIndex)
         }
@@ -173,20 +173,20 @@ extension MingyProver {
         
         guard let literal = entry.0.nodes?[entry.literalIndex],
             let candidates = candidateComplementaries(self.literalsTrie, term: literal) else {
-            return newClauseIndices
+                return newClauseIndices
         }
-    
+        
         for candidateIndex in candidates {
             let candidateEntry = repository[candidateIndex]
             guard
                 let candidateLiteral = candidateEntry.0.nodes?[candidateEntry.literalIndex],
                 let unifier = literal ~?= candidateLiteral
                 // where !unifier.isRenaming
-            else {
-                continue
+                else {
+                    continue
             }
             
-            // Nylog.log("unifier = \(unifier)")
+            Nylog.log("unifier = \(unifier)")
             
             for newClause in [ entry.0 * unifier, candidateEntry.0 * unifier] {
                 let tuple = Yices.clause(newClause)
@@ -238,7 +238,7 @@ extension MingyProver {
         
         while !expired && status == STATUS_SAT {
             let mdl = yices_get_model(self.ctx,1)
-
+            
             defer {
                 // update status
                 (status,_) = Nylog.measure("yices_check_context.") { yices_check_context(self.ctx,nil) }
@@ -255,7 +255,7 @@ extension MingyProver {
                         self.yicesreselect(clauseIndex, mdl:mdl)
                     }
                 }
-                selectable = false
+                // selectable = false
             }
             
             
@@ -266,18 +266,18 @@ extension MingyProver {
                 break;
             }
             
-            // Nylog.measure("Activate(\(inactiveClauseIndex))" )            {
-
+            Nylog.measure("Activate(\(inactiveClauseIndex))" )            {
+                
                 for newClauseIndex in self.activate(inactiveClauseIndex) {
                     self.yicesassert(newClauseIndex)
                     self.inactiveClauseIndices.insert(newClauseIndex)
                     selectable = true
                 }
-            // 
-            
-//            if count == repository.count {
-//                break // nothing was added
-//            }
+                
+                //            if count == repository.count {
+                //                break // nothing was added
+                //            }
+            }
         }
         
         Nylog.log("EXIT \(#function)(\(timeout)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)", loglevel: .Normal)
@@ -290,7 +290,18 @@ extension MingyProver {
     private func indicateClause(clauseIndex:Int, literalIndex:Int) {
         guard literalIndex >= 0 else { return }
         
-        for path in repository[clauseIndex].0.nodes![literalIndex].paths {
+        Nylog.log("Indicate \(clauseIndex).\(literalIndex)", loglevel: .Verbose)
+        
+        guard let literal = repository[clauseIndex].0.nodes?[literalIndex] else {
+            Nylog.log("Error",loglevel:.Error)
+            return
+        }
+        
+        Nylog.log("Indicate \(literal)",loglevel:.Trace)
+
+        
+        for path in literal.paths {
+            Nylog.log("Indicate \(literal) \(path) \(clauseIndex)",loglevel:.Trace)
             literalsTrie.insert(path, value: clauseIndex)
         }
     }
@@ -309,22 +320,25 @@ extension MingyProver {
     }
     
     func indicateClause(clauseIndex:Int) {
+        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.Trace)
         indicateClause(clauseIndex, literalIndex:repository[clauseIndex].literalIndex)
         
         // when a clause is in the index it can be active or inactive.
     }
     
     func complementaryCandidateIndices(clauseIndex:Int) -> Set<Int>? {
+        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.Trace)
         
         let entry = repository[clauseIndex]
         
         guard let literal = entry.0.nodes?[entry.literalIndex] else {
+            Nylog.log("clause#\(clauseIndex):\(entry)")
             return nil
         }
         
         let candidates = candidateComplementaries(literalsTrie, term:literal)
         
-        Nylog.log("\(#function)(\(clauseIndex) \(entry.0) \(literal) \(candidates)")
+        Nylog.log("??? \(#function)(\(clauseIndex) \(entry.0) \(literal) \(candidates)")
         
         return candidates
         
@@ -340,7 +354,7 @@ extension MingyProver {
     /// Variable-renamed sets of literals are variants of each other.
     func searchPotentialVariantsLinearly(literals:Set<term_t>) -> [Int] {
         let matches = repository.enumerate().filter {
-            // activeClauseIndices.contains($0.index) && 
+            // activeClauseIndices.contains($0.index) &&
             $0.element.yices.yicesLiterals == literals
             }.map { $0.0 }
         return matches
@@ -365,7 +379,7 @@ extension MingyProver {
     func searchPotentialSubsumersLineary<S:SequenceType where S.Generator.Element == term_t>(literals:S) -> [Int] {
         let matches = repository.enumerate().filter {
             // activeClauseIndices.contains($0.index) &&
-                $0.element.yices.yicesLiterals.isSubsetOf(literals)
+            $0.element.yices.yicesLiterals.isSubsetOf(literals)
             }.map { $0.0 }
         return matches
     }
@@ -385,7 +399,7 @@ extension MingyProver {
         return -1
     }
     
-
+    
     
 }
 

@@ -13,7 +13,7 @@ class Talk16Jun15: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Nylog.reset(loglevel:.Verbose)
+        Nylog.reset(loglevel:.Error)
         resetGlobalStringSymbols()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()
@@ -76,15 +76,15 @@ class Talk16Jun15: XCTestCase {
     
     func testAxioms() {
         let clauses = [
-            TptpNode(connective:"|", nodes:["p(a)"]),
+            // TptpNode(connective:"|", nodes:["p(a)"]),
             TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
-            TptpNode(connective:"|", nodes:["f(X,e)=X"]),
+            // TptpNode(connective:"|", nodes:["f(X,e)=X"]),
             
-            TptpNode(connective:"|", nodes:["X=X"]),    // reflexivity
-            "X!=Y | Y=X",                                 // symmetry
-            "X!=Y | X!=Z | X=Y",                            // transitivity
+            // TptpNode(connective:"|", nodes:["X=X"]),    // reflexivity
+            // "X!=Y | Y=X",                                 // symmetry
+            // "X!=Y | X!=Z | X=Y",                            // transitivity
             
-            "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",          // function congruence
+            // "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",          // function congruence
             "X!=Y|~p(X)|p(Y)"                            // predicate congruence
             
             ]
@@ -97,5 +97,45 @@ class Talk16Jun15: XCTestCase {
         
         XCTAssertEqual(status, STATUS_UNSAT)
     }
+    
+    func testIndex() {
+        var trie = TrieClass<SymHop<String>,Int>()
+        
+//        let l0 = "q(X)" as TptpNode
+//        for path in l0.paths {
+//            trie.insert(path, value: 13)
+//        }
+        
+        
+        
+        let l1 = "p(X)" as TptpNode
+        for path in l1.paths {
+            print("l1",l1,path)
+            trie.insert(path, value: 23)
+        }
+        
+        let l2 = "~p(f(a,e))" as TptpNode
+        for path in l2.paths {
+            print("l2",l2,path)
+            trie.insert(path, value: 33)
+        }
+        
+        XCTAssertNotNil(l1 ~?= l2)
+        
+        print("trie: *****")
+        print(trie)
+        print("************")
+        
+        let cc1 = candidateComplementaries(trie, term: l1)
+        // let cc2 = candidateComplementaries(trie, term: l2)
+        
+        XCTAssertEqual(Set(arrayLiteral:33), cc1)
+        // XCTAssertEqual(Set(arrayLiteral:23), cc2)
+        Nylog.printparts()
+        
+        
+    }
+    
+    
 
 }

@@ -2,7 +2,9 @@ import Foundation
 
 protocol TrieType : Equatable {
     associatedtype Key
-    associatedtype Value
+    associatedtype Value : Hashable
+    
+    var payload : Set<Value> { get }
     
     /// creates empty trie type
     init()

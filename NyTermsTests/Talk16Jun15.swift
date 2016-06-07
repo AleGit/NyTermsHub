@@ -76,15 +76,15 @@ class Talk16Jun15: XCTestCase {
     
     func testAxioms() {
         let clauses = [
-            // TptpNode(connective:"|", nodes:["p(a)"]),
+            TptpNode(connective:"|", nodes:["p(a)"]),
             TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
-            // TptpNode(connective:"|", nodes:["f(X,e)=X"]),
+            TptpNode(connective:"|", nodes:["f(X,e)=X"]),
             
-            // TptpNode(connective:"|", nodes:["X=X"]),    // reflexivity
-            // "X!=Y | Y=X",                                 // symmetry
-            // "X!=Y | X!=Z | X=Y",                            // transitivity
+            TptpNode(connective:"|", nodes:["X=X"]),    // reflexivity
+            "X!=Y | Y=X",                                 // symmetry
+            "X!=Y | X!=Z | X=Y",                            // transitivity
             
-            // "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",          // function congruence
+            "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",          // function congruence
             "X!=Y|~p(X)|p(Y)"                            // predicate congruence
             
             ]
@@ -101,10 +101,10 @@ class Talk16Jun15: XCTestCase {
     func testIndex() {
         var trie = TrieClass<SymHop<String>,Int>()
         
-//        let l0 = "q(X)" as TptpNode
-//        for path in l0.paths {
-//            trie.insert(path, value: 13)
-//        }
+        let l0 = "q(X)" as TptpNode
+        for path in l0.paths {
+            trie.insert(path, value: 13)
+        }
         
         
         
@@ -127,10 +127,10 @@ class Talk16Jun15: XCTestCase {
         print("************")
         
         let cc1 = candidateComplementaries(trie, term: l1)
-        // let cc2 = candidateComplementaries(trie, term: l2)
+        let cc2 = candidateComplementaries(trie, term: l2)
         
         XCTAssertEqual(Set(arrayLiteral:33), cc1)
-        // XCTAssertEqual(Set(arrayLiteral:23), cc2)
+        XCTAssertEqual(Set(arrayLiteral:23), cc2)
         Nylog.printparts()
         
         

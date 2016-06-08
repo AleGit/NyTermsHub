@@ -64,11 +64,19 @@ final class TptpNode: NSObject, Node {
     
     func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
         if let quadruple = self.symbolQuadruple() {
+            // prededifined or allready registered symbol
+            
             assert(quadruple.type==type)
             assert(quadruple.category == category)
             assert(quadruple.notation == notation)
             
             assert(quadruple.arity.contains(arity),"\(self.symbol), \(quadruple), \(arity)")
+            
+            if globalStringSymbols[self.symbol] == nil {
+                Nylog.log("Register predefined symbol \(self.symbol):\(quadruple)", loglevel: .DEBUG)
+                // predefined and not yet registered symbol
+                globalStringSymbols[self.symbol] = quadruple
+            }
 
             
             return quadruple.type==type
@@ -80,7 +88,9 @@ final class TptpNode: NSObject, Node {
             
         }
         else {
-            globalStringSymbols[self.symbol] = (type,category,notation,arity)
+            let quadruple = (type,category,notation,arity)
+            Nylog.log("Register unknown symbol \(self.symbol):\(quadruple)", loglevel: .DEBUG)
+            globalStringSymbols[self.symbol] = quadruple
             return true
         }
     }

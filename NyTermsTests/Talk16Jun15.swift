@@ -13,7 +13,7 @@ class Talk16Jun15: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Nylog.reset(loglevel:.ERROR)
+        Nylog.reset(loglevel:.INFO)
         resetGlobalStringSymbols()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()
@@ -21,6 +21,7 @@ class Talk16Jun15: XCTestCase {
     
     override func tearDown() {
         yices_exit()
+        Nylog.printparts()
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
@@ -36,8 +37,6 @@ class Talk16Jun15: XCTestCase {
         
         let (status,_,_) = prover.run(1.0)
         
-        Nylog.printparts()
-        
         XCTAssertEqual(status, STATUS_UNSAT)
         
     }
@@ -52,8 +51,6 @@ class Talk16Jun15: XCTestCase {
         
         let (status,_,_) = prover.run(1.0)
         
-        Nylog.printparts()
-        
         XCTAssertEqual(status, STATUS_UNSAT)
         
     }
@@ -67,8 +64,6 @@ class Talk16Jun15: XCTestCase {
         let prover = MingyProver(clauses: clauses)
         
         let (status,_,_) = prover.run(1.0)
-        
-        Nylog.printparts()
         
         XCTAssertEqual(status, STATUS_UNSAT)
         
@@ -91,9 +86,13 @@ class Talk16Jun15: XCTestCase {
         
         let prover = MingyProver(clauses: clauses)
         
-        let (status,_,_) = prover.run(10.0)
+        let (equational,functors) = eqfunc(globalStringSymbols)
         
-        Nylog.printparts()
+        print(equational)
+        print(functors)
+        print(axioms(globalStringSymbols))
+        
+        let (status,_,_) = prover.run(10.0)
         
         XCTAssertEqual(status, STATUS_UNSAT)
     }
@@ -116,8 +115,6 @@ class Talk16Jun15: XCTestCase {
         let prover = MingyProver(clauses: clauses)
         
         let (status,_,_) = prover.run(10.0)
-        
-        Nylog.printparts()
         
         XCTAssertEqual(status, STATUS_UNSAT)
     }
@@ -146,16 +143,11 @@ class Talk16Jun15: XCTestCase {
         
         XCTAssertNotNil(l1 ~?= l2)
         
-        print("trie: *****")
-        print(trie)
-        print("************")
-        
         let cc1 = candidateComplementaries(trie, term: l1)
         let cc2 = candidateComplementaries(trie, term: l2)
         
         XCTAssertEqual(Set(arrayLiteral:33), cc1)
         XCTAssertEqual(Set(arrayLiteral:23), cc2)
-        Nylog.printparts()
         
         
     }

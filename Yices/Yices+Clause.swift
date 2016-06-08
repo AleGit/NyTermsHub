@@ -112,11 +112,13 @@ extension Yices {
         switch type {
         case .Negation:
             assert(nodes.count == 1, "A negation must have exactly one child.")
+            // no need to register negations
             // literal.register(.Negation, category: .Functor, notation:.Prefix, arity:.Fixed(1))
             return yices_not( Yices.literal(nodes.first! ))
             
         case .Inequation:
             assert(nodes.count == 2, "An inequation must have exactly two children.")
+            // inequations must be registered to check if equality axioms are needed
             literal.register(.Inequation, category: .Equational, notation:.Infix, arity:.Fixed(2))
             
             let args = nodes.map { Yices.term($0) }
@@ -124,12 +126,15 @@ extension Yices {
             
         case .Equation:
             assert(nodes.count == 2, "An equation must have exactly two children.")
+            // equations must be registered to check if equality axioms are needed
             literal.register(.Equation, category: .Equational, notation:.Infix, arity:.Fixed(2))
             let args = nodes.map { Yices.term($0) }
             return yices_eq(args.first!, args.last!)
             
         case .Predicate:
+            // predicates must be registered to derive congruence axioms
             literal.register(.Predicate, category:.Functor, notation:.Prefix, arity:.Fixed(nodes.count))
+            
             // proposition or predicate term (an application of Boolean type)
             return Yices.application(literal.symbolString(), nodes:nodes, term_tau: Yices.bool_tau)
             
@@ -147,6 +152,7 @@ extension Yices {
             return Yices.🚧 // substitute all variables with global constant '⊥'
         }
         
+        // functions must be registered to derive congruence axioms
         term.register(.Function, category:.Functor, notation:.Prefix, arity:.Fixed(nodes.count))
         
         // function or constant term (an application of uninterpreted type)

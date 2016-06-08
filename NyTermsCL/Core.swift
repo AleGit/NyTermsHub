@@ -40,12 +40,12 @@ func teardown() {
 func prove() {
     
     guard let problem = Process.valueOf("-problem") else {
-        Nylog.log("Argument -problem not set.")
+        Nylog.error("Argument -problem not set.")
         return
     }
     
     guard let path = problem.p else {
-        Nylog.log("\(problem) does not exist or is not accessible.")
+        Nylog.error("\(problem) does not exist or is not accessible.")
         return
         
     }
@@ -54,24 +54,10 @@ func prove() {
     if timeout < 0.01 { timeout = 0.01 }                // 10 ms
     else if timeout > 60 * 60 { timeout = 60 * 60 }     // 1 h
     
-    var loglevel = Nylog.LogLevel.Normal
-    if let llstring = Process.valueOf("-loglevel") {
-        switch llstring {
-        case "0", "1", "Error", "error":
-            loglevel = .Error
-        case "2", "3", "4", "Normal", "normal":
-            loglevel = .Normal
-        case "5", "6", "7", "8", "9", "Verbose", "verbose":
-            loglevel = .Verbose
-        
-        default:
-            loglevel = .Normal
-        }
-    }
-    
+    let loglevel = Nylog.LogLevel(literal: Process.valueOf("-loglevel") ?? "")
     Nylog.reset(1.0, loglevel: loglevel)
     
-    Nylog.log("Process file '\(path)' with timeout \(timeout.prettyTimeIntervalDescription)")
+    Nylog.info("Process file '\(path)' with timeout \(timeout.prettyTimeIntervalDescription)")
     
     let ((_,formulae,_),_) = Nylog.measure("Parse '\(path)'") {
         parse(path:path)

@@ -4,7 +4,7 @@ import Foundation
 
 extension Nylog.LogLevel {
     init(literal:String) {
-        switch literal {
+        switch literal.uppercaseString {
             
         case "0", "OFF":
             self = .OFF
@@ -100,6 +100,7 @@ struct Nylog {
     
     private static func logappend(@autoclosure msg:()->String, loglevel:LogLevel, @autoclosure duration:()->CFTimeInterval?) {
         assert(loglevel != .OFF)
+        assert(loglevel != .ALL)
         
         // check if the log level of the application is higher than the log level of the message
         if logloglevel.rawValue >= loglevel.rawValue {
@@ -119,8 +120,34 @@ struct Nylog {
         return (result,end-start)
     }
     
-    static func log(@autoclosure msg:()->String, loglevel:LogLevel = .INFO) {
+    private static func log(@autoclosure msg:()->String, loglevel:LogLevel = .INFO) {
         logappend(msg, loglevel:loglevel, duration:nil)
+    }
+    
+    
+    
+    static func fatal(@autoclosure msg:()->String) {
+        log(msg, loglevel:.FATAL)
+    }
+    
+    static func error(@autoclosure msg:()->String) {
+        log(msg, loglevel:.ERROR)
+    }
+    
+    static func warn(@autoclosure msg:()->String) {
+        log(msg, loglevel:.WARN)
+    }
+    
+    static func info(@autoclosure msg:()->String) {
+        log(msg, loglevel:.INFO)
+    }
+    
+    static func debug(@autoclosure msg:()->String) {
+        log(msg, loglevel:.DEBUG)
+    }
+    
+    static func trace(@autoclosure msg:()->String) {
+        log(msg, loglevel:.TRACE)
     }
 }
 

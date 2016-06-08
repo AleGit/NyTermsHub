@@ -36,7 +36,7 @@ extension ClauseProver {
     /// When the file path for this problem name can not be found, no prover will be created.
     init?(problem name:String) {
         guard let path = name.p else {
-            Nylog.log("Problem '\(name).p' could not be found.")
+            Nylog.error("Problem '\(name).p' could not be found.")
             return nil
         }
         

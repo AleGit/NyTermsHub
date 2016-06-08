@@ -73,7 +73,7 @@ final class TptpNode: NSObject, Node {
             assert(quadruple.arity.contains(arity),"\(self.symbol), \(quadruple), \(arity)")
             
             if globalStringSymbols[self.symbol] == nil {
-                Nylog.log("Register predefined symbol \(self.symbol):\(quadruple)", loglevel: .DEBUG)
+                Nylog.debug("Register predefined symbol \(self.symbol):\(quadruple)")
                 // predefined and not yet registered symbol
                 globalStringSymbols[self.symbol] = quadruple
             }
@@ -89,7 +89,7 @@ final class TptpNode: NSObject, Node {
         }
         else {
             let quadruple = (type,category,notation,arity)
-            Nylog.log("Register unknown symbol \(self.symbol):\(quadruple)", loglevel: .DEBUG)
+            Nylog.debug("Register unknown symbol \(self.symbol):\(quadruple)")
             globalStringSymbols[self.symbol] = quadruple
             return true
         }

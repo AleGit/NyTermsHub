@@ -163,23 +163,27 @@ extension MingyProver {
     }
     
     private func clauseappend(clause:N) -> Int?{
+        Nylog.trace("\(#function)(\(clause))")
+        
+        
         
         let tuple = Yices.clause(clause)
         let subsumers = searchPotentialSubsumersLineary(tuple.yicesLiterals)
         
         guard subsumers.count == 0 else {
-            Nylog.log("IGNORE not so new clause.")
-            Nylog.log("ignored: \(clause).", loglevel: .TRACE)
+            Nylog.info("Not so new clause ignored.")
+            Nylog.trace("'\(clause)' ignored.")
             return nil
         }
         
         let newClauseIndex = repository.count
+        Nylog.info("NEW CLAUSE # \(newClauseIndex) added.")
+
+        
         let addClause = clause.normalize(newClauseIndex)
-        
-        Nylog.log("ADD new clause # \(newClauseIndex).")
-        Nylog.log("added \(addClause).", loglevel: .TRACE)
-        
         repository.append((addClause,-1,tuple))
+        Nylog.trace("'\(addClause)' added.")
+        
         return newClauseIndex
     }
     
@@ -189,7 +193,7 @@ extension MingyProver {
         
         defer {
             self.inactiveClauseIndices.remove(clauseIndex)
-            Nylog.log("ACTIVATED clause # \(clauseIndex)") // :\(entry.0)
+            Nylog.info("Clause # \(clauseIndex) activated.") // :\(entry.0)
             
             indicateClause(clauseIndex)
             // self.activeClauseIndices.insert(clauseIndex)
@@ -212,7 +216,7 @@ extension MingyProver {
                     continue
             }
             
-            Nylog.log("unifier = \(unifier)",loglevel:.TRACE)
+            Nylog.trace("unifier = \(unifier)")
             
             for newClause in [ entry.0 * unifier, candidateEntry.0 * unifier] {
                 guard let newIndex = clauseappend(newClause) else { continue }
@@ -310,7 +314,7 @@ extension MingyProver {
             }
         }
         
-        Nylog.log("EXIT \(#function)(\(timeout)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)", loglevel: .INFO)
+        Nylog.info("EXIT \(#function)(\(timeout)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)")
         
         return (status,expired,self.runtime)
     }
@@ -318,31 +322,33 @@ extension MingyProver {
 
 extension MingyProver {
     private func indicateClause(clauseIndex:Int, literalIndex:Int) {
+        Nylog.trace("\(#function)(\(clauseIndex),\(literalIndex))")
+        
         guard literalIndex >= 0 else { return }
         
-        Nylog.log("Indicate \(clauseIndex).\(literalIndex)", loglevel: .INFO)
-        
         guard let literal = repository[clauseIndex].0.nodes?[literalIndex] else {
-            Nylog.log("Error",loglevel:.ERROR)
+            Nylog.error("\(clauseIndex).\(literalIndex) selected literal does not exist")
             return
         }
         
-        Nylog.log("Indicate \(literal)",loglevel:.TRACE)
-        
+        Nylog.trace("* literal=\(literal)")
         
         for path in literal.paths {
-            Nylog.log("Indicate \(literal) \(path) \(clauseIndex)",loglevel:.TRACE)
+            Nylog.trace("+ path:\(path) clauseIndex:\(clauseIndex)")
             literalsTrie.insert(path, value: clauseIndex)
         }
     }
     
     private func deindicateClause(clauseIndex:Int, literalIndex:Int) {
+        Nylog.trace("\(#function)(\(clauseIndex),\(literalIndex))")
+        
         // if a clause is not in the index then the clause is not active.
         deactivate(clauseIndex)
         
         guard literalIndex >= 0 else { return }
         
         for path in repository[clauseIndex].0.nodes![literalIndex].paths {
+            Nylog.trace("- path:\(path) clauseIndex:\(clauseIndex)")
             literalsTrie.delete(path, value: clauseIndex)
         }
         
@@ -350,25 +356,25 @@ extension MingyProver {
     }
     
     func indicateClause(clauseIndex:Int) {
-        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.TRACE)
+        Nylog.trace("\(#function) \(#file)\(#line)")
         indicateClause(clauseIndex, literalIndex:repository[clauseIndex].literalIndex)
         
         // when a clause is in the index it can be active or inactive.
     }
     
     func complementaryCandidateIndices(clauseIndex:Int) -> Set<Int>? {
-        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.TRACE)
+        Nylog.trace("\(#function) \(#file)\(#line)")
         
         let entry = repository[clauseIndex]
         
         guard let literal = entry.0.nodes?[entry.literalIndex] else {
-            Nylog.log("clause#\(clauseIndex):\(entry)")
+            Nylog.trace("clause#\(clauseIndex):\(entry)")
             return nil
         }
         
         let candidates = candidateComplementaries(literalsTrie, term:literal)
         
-        Nylog.log("??? \(#function)(\(clauseIndex) \(entry.0) \(literal) \(candidates)")
+        Nylog.trace("??? \(#function)(\(clauseIndex) \(entry.0) \(literal) \(candidates)")
         
         return candidates
         

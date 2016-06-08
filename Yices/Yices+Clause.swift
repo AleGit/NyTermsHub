@@ -46,7 +46,7 @@ extension Yices {
                 // unit clause
             case .Predicate, .Negation, .Equation, .Inequation:
                 let message = "\(#function)(\(clause)) Argument node was not a clause, but a literal."
-                Nylog.log(message)
+                Nylog.info(message)
                 
                 let yicesLiteral = literal(clause)
                 return (yicesLiteral,[yicesLiteral],[yicesLiteral])

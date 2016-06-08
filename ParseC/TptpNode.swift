@@ -87,7 +87,7 @@ final class TptpNode: NSObject, Node {
     
     var symbolQuadruple : () -> SymbolQuadruple? {
         return {
-            return globalStringSymbols[self.symbol] // could be nil
+            return TptpNode.defaultQuadruple(self.symbol) ?? globalStringSymbols[self.symbol] // could be nil
         }
     }
 }

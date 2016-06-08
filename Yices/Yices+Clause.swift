@@ -33,7 +33,7 @@ extension Yices {
         
             // assert(clause.isClause,"'\(#function)(\(clause))' Argument must be a clause, but it is not.")
             
-            let type = clause.symbolType ?? SymbolType.Predicate
+            let type = clause.symbolType ?? SymbolType.Predicate  // unknown symbols are predicate symbols
             
             switch type {
             case .Disjunction:

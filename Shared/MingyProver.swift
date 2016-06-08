@@ -20,6 +20,7 @@ private class SubtermInfo : UnitArrayPair {
         self.array = subTermPosition
     }
 }
+
 /// - Create a prover with initial set of clauses. T
 /// The repository will be filled, but no clauses are active at this point.
 /// - Start the prover with run(timeout). It will activate one clauses one by one.
@@ -132,6 +133,8 @@ extension MingyProver {
         
     }
     
+    
+    
     func preprocess() -> smt_status_t {
         for clauseIndex in 0..<repository.count {
             if let lidx = yicesassert(clauseIndex) {
@@ -149,12 +152,35 @@ extension MingyProver {
     
     
     
+    
+    
     func selectclause() -> Int? {
         // the simplest implementation
         // return inactiveClauseIndices.sort().first
         
         // first try to select a inactive unit clause, otherwise try to select a inactive clause
         return unitClauseIndices.intersect(inactiveClauseIndices).first ?? inactiveClauseIndices.first
+    }
+    
+    private func clauseappend(clause:N) -> Int?{
+        
+        let tuple = Yices.clause(clause)
+        let subsumers = searchPotentialSubsumersLineary(tuple.yicesLiterals)
+        
+        guard subsumers.count == 0 else {
+            Nylog.log("IGNORE not so new clause.")
+            Nylog.log("ignored: \(clause).", loglevel: .TRACE)
+            return nil
+        }
+        
+        let newClauseIndex = repository.count
+        let addClause = clause.normalize(newClauseIndex)
+        
+        Nylog.log("ADD new clause # \(newClauseIndex).")
+        Nylog.log("added \(addClause).", loglevel: .TRACE)
+        
+        repository.append((addClause,-1,tuple))
+        return newClauseIndex
     }
     
     func activate(clauseIndex:Int) -> Set<Int> {
@@ -186,31 +212,11 @@ extension MingyProver {
                     continue
             }
             
-            Nylog.log("unifier = \(unifier)")
+            Nylog.log("unifier = \(unifier)",loglevel:.TRACE)
             
             for newClause in [ entry.0 * unifier, candidateEntry.0 * unifier] {
-                let tuple = Yices.clause(newClause)
-                
-                let subsumers = searchPotentialSubsumersLineary(tuple.yicesLiterals)
-                
-                guard subsumers.count == 0 else {
-                    // Nylog.log("IGN: \(newClause).")
-                    Nylog.log("IGNORE not so new clause.")
-                    continue
-                }
-                
-                let newClauseIndex = repository.count
-                
-                Nylog.log("ADD new clause # \(newClauseIndex).")
-                
-                let addClause = newClause.normalize(newClauseIndex)
-                // let addClause = newClause ** newClauseIndex
-                
-                // Nylog.log("\(newClauseIndex) - \(addClause) \(tuple) added")
-                
-                repository.append((addClause,-1,tuple))
-                newClauseIndices.insert(newClauseIndex)
-                
+                guard let newIndex = clauseappend(newClause) else { continue }
+                newClauseIndices.insert(newIndex)
             }
         }
         
@@ -224,8 +230,31 @@ extension MingyProver {
         
     }
     
+    private func axiomize() {
+        
+        
+        guard let theAxioms = axioms(globalStringSymbols) else { return }
+        
+        for anAxiom in theAxioms {
+            print(anAxiom)
+        }
+        
+//        for anAxiom in theAxioms {
+//            let newClause = N(anAxiom)
+//            guard let index = clauseappend(newClause) else { continue }
+//            
+//            self.yicesassert(index)
+//            self.inactiveClauseIndices.insert(index)
+//            
+//            
+//        }
+        
+        
+    }
+    
     
     func run(timeout:CFTimeInterval = 1.0) -> (smt_status_t,Bool, CFTimeInterval) {
+        
         self.endTime = self.startTime + timeout
         guard !self.expired else { return (STATUS_INTERRUPTED,true,self.runtime) }
         
@@ -235,6 +264,7 @@ extension MingyProver {
         
         var selectable = true
         
+        axiomize()
         
         while !expired && status == STATUS_SAT {
             let mdl = yices_get_model(self.ctx,1)
@@ -280,7 +310,7 @@ extension MingyProver {
             }
         }
         
-        Nylog.log("EXIT \(#function)(\(timeout)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)", loglevel: .Normal)
+        Nylog.log("EXIT \(#function)(\(timeout)) with status=\(status) expired=\(expired) \(self.runtime.prettyTimeIntervalDescription)", loglevel: .INFO)
         
         return (status,expired,self.runtime)
     }
@@ -290,18 +320,18 @@ extension MingyProver {
     private func indicateClause(clauseIndex:Int, literalIndex:Int) {
         guard literalIndex >= 0 else { return }
         
-        Nylog.log("Indicate \(clauseIndex).\(literalIndex)", loglevel: .Verbose)
+        Nylog.log("Indicate \(clauseIndex).\(literalIndex)", loglevel: .INFO)
         
         guard let literal = repository[clauseIndex].0.nodes?[literalIndex] else {
-            Nylog.log("Error",loglevel:.Error)
+            Nylog.log("Error",loglevel:.ERROR)
             return
         }
         
-        Nylog.log("Indicate \(literal)",loglevel:.Trace)
-
+        Nylog.log("Indicate \(literal)",loglevel:.TRACE)
+        
         
         for path in literal.paths {
-            Nylog.log("Indicate \(literal) \(path) \(clauseIndex)",loglevel:.Trace)
+            Nylog.log("Indicate \(literal) \(path) \(clauseIndex)",loglevel:.TRACE)
             literalsTrie.insert(path, value: clauseIndex)
         }
     }
@@ -320,14 +350,14 @@ extension MingyProver {
     }
     
     func indicateClause(clauseIndex:Int) {
-        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.Trace)
+        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.TRACE)
         indicateClause(clauseIndex, literalIndex:repository[clauseIndex].literalIndex)
         
         // when a clause is in the index it can be active or inactive.
     }
     
     func complementaryCandidateIndices(clauseIndex:Int) -> Set<Int>? {
-        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.Trace)
+        Nylog.log("\(#function) \(#file)\(#line)", loglevel:.TRACE)
         
         let entry = repository[clauseIndex]
         

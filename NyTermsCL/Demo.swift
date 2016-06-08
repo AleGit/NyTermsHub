@@ -205,12 +205,6 @@ struct Demo {
         
     }
     
-    static func eqfunc(symbols:[String : SymbolQuadruple]) -> (hasEquations:Bool, functors:[(String, SymbolQuadruple)]) {
-        let hasEquations = symbols.reduce(false) { (a:Bool,b:(String,SymbolQuadruple)) in a || b.1.category == .Equational }
-        let functors = symbols.filter { (a:String,q:SymbolQuadruple) in q.category == .Functor }
-        return (hasEquations,functors)
-    }
-    
     static func demo() {
         for name in [
             // without equality

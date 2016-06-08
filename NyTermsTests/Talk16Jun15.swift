@@ -13,7 +13,7 @@ class Talk16Jun15: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Nylog.reset(loglevel:.Error)
+        Nylog.reset(loglevel:.ERROR)
         resetGlobalStringSymbols()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()
@@ -74,20 +74,44 @@ class Talk16Jun15: XCTestCase {
         
     }
     
+    func testAxiomsManually() {
+        let clauses = [
+            TptpNode(connective:"|", nodes:["p(a)"]),
+            TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
+            TptpNode(connective:"|", nodes:["f(X,e)=X"]),
+            
+            // TptpNode(connective:"|", nodes:["X=X"]),         // reflexivity
+            "X!=Y | Y=X",                                       // symmetry
+            "X!=Y | X!=Z | X=Y",                                // transitivity
+            
+            "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",              // function congruence
+            "X!=Y|~p(X)|p(Y)"                                   // predicate congruence
+            
+            ]
+        
+        let prover = MingyProver(clauses: clauses)
+        
+        let (status,_,_) = prover.run(10.0)
+        
+        Nylog.printparts()
+        
+        XCTAssertEqual(status, STATUS_UNSAT)
+    }
+    
     func testAxioms() {
         let clauses = [
             TptpNode(connective:"|", nodes:["p(a)"]),
             TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
             TptpNode(connective:"|", nodes:["f(X,e)=X"]),
             
-            TptpNode(connective:"|", nodes:["X=X"]),    // reflexivity
-            "X!=Y | Y=X",                                 // symmetry
-            "X!=Y | X!=Z | X=Y",                            // transitivity
+            // TptpNode(connective:"|", nodes:["X=X"]),    // reflexivity
+            // "X!=Y | Y=X",                                 // symmetry
+            // "X!=Y | X!=Z | X=Y",                            // transitivity
             
-            "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",          // function congruence
-            "X!=Y|~p(X)|p(Y)"                            // predicate congruence
+            // "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",          // function congruence
+            // "X!=Y|~p(X)|p(Y)"                            // predicate congruence
             
-            ]
+        ]
         
         let prover = MingyProver(clauses: clauses)
         

@@ -2,36 +2,65 @@
 
 import Foundation
 
+extension Nylog.LogLevel {
+    init(literal:String) {
+        switch literal {
+            
+        case "0", "OFF":
+            self = .OFF
+        case "1", "FATAL":
+            self = .FATAL
+        case "2", "ERROR":
+            self = .ERROR
+        case "3", "WARN":
+            self = .WARN
+        case "4", "INFO":
+            self = .INFO
+        case "5", "DEBUG":
+            self = .DEBUG
+        case "6", "TRACE":
+            self = .TRACE
+        case "7", "ALL":
+            self = .ALL
+        default:
+            self = .ERROR
+        }
+    }
+}
 
 struct Nylog {
     enum LogLevel : Int {
-        case Error = 1
-        case Normal = 4
-        case Verbose = 7
-        case Trace = 9
+        case OFF = 0
+        case FATAL = 1
+        case ERROR = 2
+        case WARN = 3
+        case INFO = 4
+        case DEBUG = 5
+        case TRACE = 6
+        case ALL = 7
     }
     
     private static var index = 0
     
     private static var zero = CFAbsoluteTimeGetCurrent()
     private static var lastprint = zero
-    private static var log = [(LogLevel,String, CFAbsoluteTime, CFAbsoluteTime)]()
+    private static var logentries = [(LogLevel, String, CFTimeInterval?, CFAbsoluteTime)]()
     
     private static var logprintinterval : CFTimeInterval = 0.0
-    private static var logloglevel:LogLevel = .Normal
+    private static var logloglevel:LogLevel = .INFO
     
     private static func printconditional() {
         guard logprintinterval > 0 && (CFAbsoluteTimeGetCurrent() - lastprint) > logprintinterval
             else { return }
         
-    
+        
         printparts()
         lastprint = CFAbsoluteTimeGetCurrent()
         
     }
     
-    static func reset(printinterval:CFTimeInterval = 0.0, loglevel:LogLevel = .Normal) {
-        log.removeAll()
+    static func reset(printinterval:CFTimeInterval = 0.0, loglevel:LogLevel = .INFO) {
+        logentries.removeAll()
         index = 0
         zero = CFAbsoluteTimeGetCurrent()
         
@@ -46,50 +75,52 @@ struct Nylog {
     
     
     private static func printit(range:Range<Int>) {
-        for (level,key,start,end) in log[range] {
-            var text : String
-            if (start == 0.0) {
-                text = "*\(level)>>> \(key) ••• at \((end-zero).prettyTimeIntervalDescription) <<<"
+        for (level,key,duration,moment) in logentries[range] {
+            let prefix : String = "*\(level)>>> \(key) •••"
+            let suffix : String = "at \(moment.prettyTimeIntervalDescription)"
+            
+            if let runtime = duration {
+                print(prefix,"runtime = \(runtime.prettyTimeIntervalDescription)",suffix)
+            } else {
+                print(prefix,suffix)
             }
-            else {
-                text = "*\(level)>>> \(key) ••• runtime = \((end-start).prettyTimeIntervalDescription) <<<"
-            }
-            print(text)
         }
     }
     
     private static func printit() {
-        printit(0..<log.count)
+        printit(0..<logentries.count)
     }
     
     static func printparts() {
-        let range = index..<log.count
+        let range = index..<logentries.count
         index = range.endIndex
         printit(range)
         
     }
     
-    private static func logappend(@autoclosure msg:()->String, loglevel:LogLevel, start:CFAbsoluteTime, end:CFAbsoluteTime) {
+    private static func logappend(@autoclosure msg:()->String, loglevel:LogLevel, @autoclosure duration:()->CFTimeInterval?) {
+        assert(loglevel != .OFF)
+        
         // check if the log level of the application is higher than the log level of the message
         if logloglevel.rawValue >= loglevel.rawValue {
-            log.append(loglevel,msg(),start,end)
+            logentries.append((loglevel, msg(), duration() , CFAbsoluteTimeGetCurrent()-zero))
             printconditional()
         }
     }
     
-    static func measure<R>(@autoclosure msg:()->String, loglevel:LogLevel = .Verbose, f:()->R) -> (R,CFTimeInterval) {
+    static func measure<R>(@autoclosure msg:()->String, loglevel:LogLevel = .INFO, f:()->R) -> (R,CFTimeInterval) {
         let start = CFAbsoluteTimeGetCurrent()
         let result = f()
         let end = CFAbsoluteTimeGetCurrent()
         
-        logappend(msg,loglevel:loglevel,start:start,end:end)
+        logappend(msg, loglevel:loglevel,duration:end-start)
         
         
         return (result,end-start)
     }
     
-    static func log(@autoclosure msg:()->String, loglevel:LogLevel = .Verbose) {
-        logappend(msg, loglevel:loglevel, start:0.0, end: CFAbsoluteTimeGetCurrent())
+    static func log(@autoclosure msg:()->String, loglevel:LogLevel = .INFO) {
+        logappend(msg, loglevel:loglevel, duration:nil)
     }
 }
 
@@ -228,9 +259,9 @@ extension Dictionary {
 
 // MARK: -
 extension String  {
-//    func contains(string:StringSymbol) -> Bool {
-//        return self.rangeOfString(string) != nil
-//    }
+    //    func contains(string:StringSymbol) -> Bool {
+    //        return self.rangeOfString(string) != nil
+    //    }
     func containsOne<S:SequenceType where S.Generator.Element == StringSymbol>(strings:S) -> Bool {
         return strings.reduce(false) { $0 || self.containsString($1) }
     }
@@ -378,6 +409,108 @@ extension Int {
         
         self = (first << 32) ^ (second & 0x0000_0000_FFFF_FFFF)
     }
+}
+
+// MARK: - mingy helpers
+
+
+
+func eqfunc(symbols:[String : SymbolQuadruple]) -> (hasEquations:Bool, functors:[(String, SymbolQuadruple)]) {
+    let hasEquations = symbols.reduce(false) { (a:Bool,b:(String,SymbolQuadruple)) in a || b.1.category == .Equational }
+    let functors = symbols.filter { (a:String,q:SymbolQuadruple) in q.category == .Functor }
+    return (hasEquations,functors)
+}
+
+func maxarity(functors:[(String , SymbolQuadruple)]) -> Int {
+    return 200
+    
+    // return functors.reduce(0) { max($0,$1.1.arity.max) }
+}
+
+func axioms(symbols:[String : SymbolQuadruple]) -> [TptpNode]? {
+    Nylog.log("\(#function) \(#line) \(#file)", loglevel:.TRACE)
+    
+    let (hasEquations, functors) = eqfunc(globalStringSymbols)
+    
+    Nylog.log(hasEquations ? "problem is equational" : "problem is not equational", loglevel: .INFO)
+    
+    guard hasEquations else {
+        return nil
+    }
+    
+    var axioms = [TptpNode]()
+    
+    let reflexivity = TptpNode(connective:"|",nodes: ["X=X"])
+    let symmetry = "X!=Y|Y=X" as TptpNode
+    let transitivity = "X!=Y | Y!=Z | X=Z" as TptpNode
+    
+    axioms.append(reflexivity)
+    axioms.append(symmetry)
+    axioms.append(transitivity)
+    
+    let maxArity = maxarity(functors)
+    let tptpVariables = (1...maxArity).map {
+        (TptpNode(variable:"X\($0)"), TptpNode(variable:"Y\($0)"))
+    }
+    
+    for (symbol,quadruple) in functors {
+        print(symbol,quadruple)
+        var arity = -1
+        switch quadruple.arity {
+        case .None:
+            assert(false)
+            break
+        case .Fixed(let v):
+            arity = v
+            break
+        case .Variadic(_):
+            assert(false)
+            break
+        }
+        
+        assert(arity < maxArity)
+        
+        guard arity > 0 else {
+            // c == c
+            // ~p | p
+            continue
+        }
+        
+        var literals = [TptpNode]()
+        var xargs = [TptpNode]()
+        var yargs = [TptpNode]()
+        
+        literals.reserveCapacity(arity)
+        
+        for i in 0..<arity {
+            let (X,Y) = tptpVariables[i]
+            let literal = TptpNode(equational:"!=", nodes:[X,Y])
+            literals.append(literal)
+            xargs.append(X)
+            yargs.append(Y)
+        }
+        switch quadruple.type {
+        case .Predicate:
+            let npx = TptpNode(connective:"~", nodes:[TptpNode(predicate:symbol, nodes:xargs)])
+            let py = TptpNode(predicate:symbol, nodes:yargs)
+            literals.append(npx)
+            literals.append(py)
+        case .Function:
+            let fx = TptpNode(function:symbol, nodes:xargs)
+            let fy = TptpNode(function:symbol, nodes:yargs)
+            let fx_eq_fy = TptpNode(equational:"=", nodes:[fx,fy])
+            literals.append(fx_eq_fy)
+        default:
+            assert(false)
+            break
+        }
+        
+        let congruence = TptpNode(connective:"|", nodes:literals)
+        axioms.append(congruence)
+        
+    }
+    
+    return axioms
 }
 
 

@@ -449,17 +449,15 @@ func eqfunc(symbols:[String : SymbolQuadruple]) -> (hasEquations:Bool, functors:
 }
 
 func maxarity(functors:[(String , SymbolQuadruple)]) -> Int {
-    return 200
-    
-    // return functors.reduce(0) { max($0,$1.1.arity.max) }
+    return functors.reduce(0) { max($0,$1.1.arity.max) }
 }
 
 func axioms(symbols:[String : SymbolQuadruple]) -> [TptpNode]? {
-    Nylog.log("\(#function) \(#line) \(#file)", loglevel:.TRACE)
+    Nylog.trace("\(#function) \(#line) \(#file)")
     
     let (hasEquations, functors) = eqfunc(globalStringSymbols)
     
-    Nylog.log(hasEquations ? "problem is equational" : "problem is not equational", loglevel: .INFO)
+    Nylog.info(hasEquations ? "Problem is equational" : "problem is not equational")
     
     guard hasEquations else {
         return nil
@@ -476,12 +474,18 @@ func axioms(symbols:[String : SymbolQuadruple]) -> [TptpNode]? {
     axioms.append(transitivity)
     
     let maxArity = maxarity(functors)
+    
+    if maxArity > 3 {
+        Nylog.warn("The maximum arity \(maxarity) of symbols is too big.")
+    }
+    
+    
     let tptpVariables = (1...maxArity).map {
         (TptpNode(variable:"X\($0)"), TptpNode(variable:"Y\($0)"))
     }
     
     for (symbol,quadruple) in functors {
-        print(symbol,quadruple)
+        Nylog.debug("\(symbol) \(quadruple)")
         var arity = -1
         switch quadruple.arity {
         case .None:

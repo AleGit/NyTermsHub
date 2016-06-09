@@ -59,13 +59,13 @@ extension Process {
             !( $0.hasSuffix("uibk.ac.at") || $0 == "localhost" )
         }
         
-        return "\(info.processName) @ " +
-            "\(names.first! ?? info.hostName): " +
-            "\(platform), " +
-            "\(info.processorCount) cores, " +
-            "\(info.physicalMemory.prettyByteDescription), " +
-            "\(self.cpuFrequency.prettyHzDescription)" +
-        " (mark:\(benchmark))"
+        return "\(info.processName) @ "
+            + "\(names.first! ?? info.hostName): "
+            + "\(platform), "
+            + "\(info.processorCount) cores, "
+            + "\(info.physicalMemory.prettyByteDescription), "
+            + "\(self.cpuFrequency.prettyHzDescription)"
+            // + " (mark:\(benchmark))"
     }
     #endif
     

@@ -99,14 +99,12 @@ extension TptpPath {
     
     private static func accessibleDirectory(path:TptpPath?, label : String = "no label") -> TptpPath? {
         guard let path = path else {
-            let message = "Key '\(label)' is not set or its value was missing."
-            print(message)
+            Nylog.warn("Key '\(label)' is not set or its value was missing.")
             return nil
         }
         
         guard path.isAccessibleDirectory else {
-            let message = "Key '\(label)' was set but directory '\(path)' is not an accessible."
-            print(message)
+            Nylog.warn("Key '\(label)' was set but directory '\(path)' is not an accessible.")
             return nil
         }
         
@@ -132,8 +130,7 @@ extension TptpPath {
     /// e.g. does not exists or current process has not permissions.
     static let tptpRootPath : TptpPath = {
         guard let result = TptpPath.tptpRootPathArgument ?? TptpPath.tptpRootPathEnvironement else {
-            let message = "Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly."
-            print(message)
+            Nylog.info("Neither argument -tptp_root nor environment variable TPTP_ROOT were set correctly.")
             assert(tptpRootPathDefault.isAccessibleDirectory,"neither a configured nor the default tptp root path are accessible.")
             return tptpRootPathDefault
         }
@@ -167,7 +164,7 @@ extension TptpPath {
         
         guard full.isAccessibleFile else {
             let (errorNumber,errorString) = errorNumberAndDescription()
-            print(self, errorNumber,errorString, full)
+            Nylog.warn("\(self) \(errorNumber) \(errorString) \(full)")
             return nil
         }
         
@@ -200,7 +197,7 @@ extension TptpPath {
         case (0,S_IFREG):
             return Int(status.st_size)
         default:
-            print("\(code,status.st_mode) ")
+            Nylog.warn("\(code) \(status.st_mode)")
             return nil
         }
         

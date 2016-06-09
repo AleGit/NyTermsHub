@@ -113,6 +113,11 @@ class Talk16Jun15: XCTestCase {
         ]
         
         let prover = MingyProver(clauses: clauses)
+    
+        
+        if let axs = axioms(globalStringSymbols) {
+            prover.append(axs)
+        }
         
         let (status,_,_) = prover.run(10.0)
         

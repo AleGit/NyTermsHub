@@ -64,12 +64,30 @@ final class MingyProver<N:Node where N.Symbol == String> {
         
         self.ctx = yices_new_context(nil)
         
-        repository += clauses.enumerate().map {
-            ($1 ** $0, // make clauses variable distinct by appending clause index
+//        repository += clauses.enumerate().map {
+//            ($1 ** $0, // make clauses variable distinct by appending clause index
+//                -1, // no literal is semantically selected so far
+//                Yices.clause($1) // construct yices clause
+//            )
+//        }
+        repository += clauses2entries(clauses, offset:repository.count)
+    }
+    
+    private func clauses2entries<S:SequenceType where S.Generator.Element == N>(clauses:S, offset:Int) -> [Entry] {
+        let entries : [Entry] = clauses.enumerate().map {
+            ($1 ** ($0+offset), // make clauses variable distinct by appending clause index
                 -1, // no literal is semantically selected so far
                 Yices.clause($1) // construct yices clause
             )
         }
+        Nylog.info("\(entries.count) entries constructed.")
+        return entries
+        
+    }
+    
+    func append<S:SequenceType where S.Generator.Element == N> (clauses:S) {
+        
+        repository += clauses2entries(clauses, offset: repository.count)
     }
     
     deinit {

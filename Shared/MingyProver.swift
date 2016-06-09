@@ -252,28 +252,6 @@ extension MingyProver {
         
     }
     
-    private func axiomize() {
-        
-        
-        guard let theAxioms = axioms(globalStringSymbols) else { return }
-        
-        for anAxiom in theAxioms {
-            print(anAxiom)
-        }
-        
-//        for anAxiom in theAxioms {
-//            let newClause = N(anAxiom)
-//            guard let index = clauseappend(newClause) else { continue }
-//            
-//            self.yicesassert(index)
-//            self.inactiveClauseIndices.insert(index)
-//            
-//            
-//        }
-        
-        
-    }
-    
     
     func run(timeout:CFTimeInterval = 1.0) -> (smt_status_t,Bool, CFTimeInterval) {
         
@@ -285,8 +263,6 @@ extension MingyProver {
         var count = 0
         
         var selectable = true
-        
-        axiomize()
         
         while !expired && status == STATUS_SAT {
             let mdl = yices_get_model(self.ctx,1)

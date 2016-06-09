@@ -449,7 +449,7 @@ func eqfunc(symbols:[String : SymbolQuadruple]) -> (hasEquations:Bool, functors:
 }
 
 func maxarity(functors:[(String , SymbolQuadruple)]) -> Int {
-    return functors.reduce(0) { max($0,$1.1.arity.max) }
+    return max(functors.reduce(0) { max($0,$1.1.arity.max) },10)
 }
 
 func axioms(symbols:[String : SymbolQuadruple]) -> [TptpNode]? {

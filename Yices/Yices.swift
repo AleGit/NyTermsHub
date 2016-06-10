@@ -21,21 +21,21 @@ struct Yices {
 extension Yices {
     static func check(code : Int32, label: String) -> Bool {
         if code < 0 {
-            print(label, errorString!)
+            Nylog.error("\(label) \(code) \(errorString)")
             return false
         }
         
         return true
     }
     
-    static var errorString : String? {
+    static var errorString : String {
         let cstring = yices_error_string()
         guard cstring != nil else {
-            return nil
+            return "yices_error_string() n/a"
         }
         
         guard let string = String.fromCString(cstring) else {
-            return nil
+            return "yices_error_string() n/c"
         }
         
         return string

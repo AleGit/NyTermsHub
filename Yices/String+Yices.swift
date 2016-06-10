@@ -10,7 +10,7 @@ extension String {
     init?(tau: type_t, width:UInt32, height:UInt32, offset:UInt32) {
         let cstring = yices_type_to_string(tau, width, height, offset)
         guard cstring != nil else {
-            yices_print_error(stdout);
+            Nylog.error("yices_type_to_string(\(tau)) \(Yices.errorString)")
             return nil
         }
         defer {
@@ -29,7 +29,7 @@ extension String {
     init?(term: term_t, width:UInt32, height:UInt32, offset:UInt32) {
         let cstring = yices_term_to_string(term, width, height, offset)
         guard cstring != nil else {
-            // yices_print_error(stdout);
+            Nylog.error("yices_model_to_string() \(Yices.errorString)")
             return nil
         }
         defer {
@@ -49,7 +49,7 @@ extension String {
     init?(model: COpaquePointer, width:UInt32, height:UInt32, offset:UInt32) {
         let cstring = yices_model_to_string(model, width, height, offset)
         guard cstring != nil else {
-            yices_print_error(stdout);
+            Nylog.error("yices_model_to_string() \(Yices.errorString)")
             return nil
         }
         defer {

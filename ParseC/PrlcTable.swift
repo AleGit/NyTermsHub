@@ -20,10 +20,10 @@ class PrlcTable {
     deinit {
         let symbol = String.fromCString(root.memory.symbol) ?? "(symbol n/a)"
         
-        print("\(#function) '\(symbol)'")
-        print("symbols:    \(symbolStoreSize) @ \(symbolStoreFillLevel) %")
-        print("prefixes:   \(prefixStoreSize) @ \(prefixStoreFillLevel) %")
-        print("term nodes: \(treeStoreSize) @ \(treeStoreFillLevel) %")
+        Nylog.info("\(#function) '\(symbol)'")
+        Nylog.info("symbols: \(symbolStoreSize) @ \(symbolStoreFillLevel) %")
+        Nylog.info("prefixes: \(prefixStoreSize) @ \(prefixStoreFillLevel) %")
+        Nylog.info("term nodes: \(treeStoreSize) @ \(treeStoreFillLevel) %")
         
         var copy = store
         prlcDestroyStore(&copy)

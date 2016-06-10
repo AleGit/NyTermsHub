@@ -65,7 +65,7 @@ struct PrlcParser {
                 continue
             }
             
-            print(name,inclPath)
+            Nylog.info("\(name) \(inclPath)")
             
             let code = parseIt(inclPath)
             
@@ -87,17 +87,17 @@ func prlcParse(path:TptpPath) -> (Int32, PrlcTable?) {
     let text = "\(#function)('\(path)')"
     
     guard file != nil else {
-        print("<<< !!! >>> \(text) file could not be opened. <<< !!! >>>")
+        Nylog.error("\(text) file could not be opened. <<< !!! >>>")
         return (-1,nil)
     }
     // file was opened so it must be closed eventually.
     defer {
         fclose(file)
-        print(text,"\(#function) file closed.")
+        Nylog.error("text \(#function) file closed.")
     }
     
     guard let size = path.fileSize where size > 0 else {
-        print("<<< !!! >>> \(text) file is empty. <<< !!!! >>>")
+        Nylog.error("\(text) file is empty. <<< !!!! >>>")
         return (-1,nil)
     }
     
@@ -110,7 +110,7 @@ func prlcParse(path:TptpPath) -> (Int32, PrlcTable?) {
     defer {
         prlcParsingStore = nil
         prlcParsingRoot = nil
-        print(text,"\(#function) store=nil.")
+        Nylog.error("text \(#function) store=nil.")
     }
     
     prlc_in = file
@@ -120,7 +120,7 @@ func prlcParse(path:TptpPath) -> (Int32, PrlcTable?) {
     let code = prlc_parse()
     
     if code != 0 {
-        print("<<< !!! >>> \(text) parsing failed (\(code)). <<< !!!! >>>")
+        Nylog.error("\(text) parsing failed (\(code)). <<< !!!! >>>")
         return (code,table)
     }
     

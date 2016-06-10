@@ -249,7 +249,7 @@ extension Yices {
         
         // If code is negative, something went wrong
         if code < 0 {
-            print("Error \(code) in \(#function).")
+            Nylog.error("Error \(code) in \(#function).")
             yices_print_error(stdout)
             fflush(stdout)
             term = nil
@@ -271,7 +271,7 @@ extension Yices {
         
         // If code is negative, something went wrong
         if code < 0 {
-            print("Error \(code) in \(#function)\n")
+            Nylog.error("Error \(code) in \(#function)\n")
             yices_print_error(stdout)
             fflush(stdout)
             term = nil

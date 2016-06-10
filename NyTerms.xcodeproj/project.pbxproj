@@ -108,7 +108,7 @@
 		516094321CDA095900B3579D /* PrlcParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5160942B1CDA095900B3579D /* PrlcParser.swift */; };
 		516094331CDA095900B3579D /* PrlcParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 5160942C1CDA095900B3579D /* PrlcParser.y */; settings = {COMPILER_FLAGS = "-p prlc_"; }; };
 		516094341CDA095900B3579D /* PrlcParser.y in Sources */ = {isa = PBXBuildFile; fileRef = 5160942C1CDA095900B3579D /* PrlcParser.y */; settings = {COMPILER_FLAGS = "-p prlc_"; }; };
-		516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516107AD1C5A53E100FD3637 /* LinearSearch.swift */; };
+		516107AE1C5A53E100FD3637 /* DemoLinearSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516107AD1C5A53E100FD3637 /* DemoLinearSearch.swift */; };
 		5163AE6C1CB6839300C7CD5A /* SimpleClauseIndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6B1CB6839300C7CD5A /* SimpleClauseIndexTests.swift */; };
 		5163AE6E1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */; };
 		5163AE6F1CB683A900C7CD5A /* DiscriminationTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5163AE6D1CB683A900C7CD5A /* DiscriminationTree.swift */; };
@@ -122,7 +122,7 @@
 		517B23B71CBCD6C90049F871 /* YicesIndexingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */; };
 		517D86381C44F94100930B61 /* DescriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517D86371C44F94100930B61 /* DescriptionTests.swift */; };
 		517E6B591C37BB5F004E8AE1 /* SwiftLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517E6B581C37BB5F004E8AE1 /* SwiftLanguageTests.swift */; };
-		51844E161C8439C400DCAA32 /* Infos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E151C8439C400DCAA32 /* Infos.swift */; };
+		51844E161C8439C400DCAA32 /* DemoInfos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E151C8439C400DCAA32 /* DemoInfos.swift */; };
 		51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51844E171C8448A200DCAA32 /* UnificationTests.swift */; };
 		519801A31B84E11F0030A61A /* NodeStructTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A21B84E11F0030A61A /* NodeStructTests.swift */; };
 		519801A51B84E1780030A61A /* NodeClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 519801A41B84E1780030A61A /* NodeClassTests.swift */; };
@@ -160,7 +160,7 @@
 		51E038161C92B864005BFD42 /* Node+Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E038151C92B864005BFD42 /* Node+Dimensions.swift */; };
 		51E038171C92B864005BFD42 /* Node+Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E038151C92B864005BFD42 /* Node+Dimensions.swift */; };
 		51E038191C92DAA3005BFD42 /* DimensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E038181C92DAA3005BFD42 /* DimensionTests.swift */; };
-		51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E28CDE1C81780100404842 /* IndexSearch.swift */; };
+		51E28CDF1C81780100404842 /* DemoIndexSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E28CDE1C81780100404842 /* DemoIndexSearch.swift */; };
 		51E32B921CD1EC8300E1AF1E /* CalmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E32B911CD1EC8300E1AF1E /* CalmTests.swift */; };
 		51E5F9AF1C87179900040B19 /* DemoProofing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E5F9AE1C87179900040B19 /* DemoProofing.swift */; };
 		51EDC9EB1CDC83E100BF311B /* PrlcParserBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EDC9EA1CDC83E100BF311B /* PrlcParserBasicTests.swift */; };
@@ -322,7 +322,7 @@
 		5160942B1CDA095900B3579D /* PrlcParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrlcParser.swift; sourceTree = "<group>"; };
 		5160942C1CDA095900B3579D /* PrlcParser.y */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.yacc; path = PrlcParser.y; sourceTree = "<group>"; };
 		516107A81C5A18E000FD3637 /* ParsingConversion.txt */ = {isa = PBXFileReference; lastKnownFileType = text; lineEnding = 0; name = ParsingConversion.txt; path = Docs/ParsingConversion.txt; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = "<none>"; };
-		516107AD1C5A53E100FD3637 /* LinearSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearSearch.swift; sourceTree = "<group>"; };
+		516107AD1C5A53E100FD3637 /* DemoLinearSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoLinearSearch.swift; sourceTree = "<group>"; };
 		516107B11C5A605800FD3637 /* HWV119-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV119-iMac.txt"; path = "Docs/HWV119-iMac.txt"; sourceTree = SOURCE_ROOT; };
 		516107B21C5A611800FD3637 /* HWV066-iMac.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV066-iMac.txt"; path = "Docs/HWV066-iMac.txt"; sourceTree = SOURCE_ROOT; };
 		5163AE6B1CB6839300C7CD5A /* SimpleClauseIndexTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleClauseIndexTests.swift; sourceTree = "<group>"; };
@@ -338,7 +338,7 @@
 		517D86371C44F94100930B61 /* DescriptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionTests.swift; sourceTree = "<group>"; };
 		517E6B581C37BB5F004E8AE1 /* SwiftLanguageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLanguageTests.swift; sourceTree = "<group>"; };
 		5180F6A01C4F70620069E3F2 /* HWV066.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = HWV066.md; path = Docs/HWV066.md; sourceTree = SOURCE_ROOT; };
-		51844E151C8439C400DCAA32 /* Infos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Infos.swift; sourceTree = "<group>"; };
+		51844E151C8439C400DCAA32 /* DemoInfos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoInfos.swift; sourceTree = "<group>"; };
 		51844E171C8448A200DCAA32 /* UnificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnificationTests.swift; sourceTree = "<group>"; };
 		519801A21B84E11F0030A61A /* NodeStructTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeStructTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		519801A41B84E1780030A61A /* NodeClassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NodeClassTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -378,7 +378,7 @@
 		51E038121C92A596005BFD42 /* Auxiliary+Process.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Auxiliary+Process.swift"; sourceTree = "<group>"; };
 		51E038151C92B864005BFD42 /* Node+Dimensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Node+Dimensions.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		51E038181C92DAA3005BFD42 /* DimensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DimensionTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		51E28CDE1C81780100404842 /* IndexSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexSearch.swift; sourceTree = "<group>"; };
+		51E28CDE1C81780100404842 /* DemoIndexSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoIndexSearch.swift; sourceTree = "<group>"; };
 		51E28CE01C819F2600404842 /* Complementaries v0.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v0.txt"; path = "../Docs/Complementaries v0.txt"; sourceTree = "<group>"; };
 		51E28CE11C81A02D00404842 /* Complementaries v1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Complementaries v1.txt"; path = "../Docs/Complementaries v1.txt"; sourceTree = "<group>"; };
 		51E28CE21C81AE4E00404842 /* HWV134 G C @ MacMini.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "HWV134 G C @ MacMini.txt"; path = "Docs/HWV134 G C @ MacMini.txt"; sourceTree = SOURCE_ROOT; };
@@ -478,9 +478,9 @@
 			children = (
 				5150CD3F1C6CC1FD00372F04 /* DemoTrieBuild.swift */,
 				51C0ACB31C4A385800447594 /* DemoComplementaries.swift */,
-				51E28CDE1C81780100404842 /* IndexSearch.swift */,
-				51844E151C8439C400DCAA32 /* Infos.swift */,
-				516107AD1C5A53E100FD3637 /* LinearSearch.swift */,
+				51E28CDE1C81780100404842 /* DemoIndexSearch.swift */,
+				51844E151C8439C400DCAA32 /* DemoInfos.swift */,
+				516107AD1C5A53E100FD3637 /* DemoLinearSearch.swift */,
 				511E95741B8AE4070093F4E8 /* main.swift */,
 				51844E191C84814100DCAA32 /* old results */,
 				51342AB81B92CA3A0052A72F /* DemoFileParsing.swift */,
@@ -1095,7 +1095,7 @@
 				51FF64021CBBB0AD00AA26B5 /* Yices+Clause.swift in Sources */,
 				51D8476D1C8084DC003EC848 /* TptpPath.swift in Sources */,
 				511E958F1B8AEB9C0093F4E8 /* TptpLexer.lm in Sources */,
-				51E28CDF1C81780100404842 /* IndexSearch.swift in Sources */,
+				51E28CDF1C81780100404842 /* DemoIndexSearch.swift in Sources */,
 				51CD27AE1CBBE6FE00851E89 /* DemoClauseIndex.swift in Sources */,
 				5173B55A1CC9F7B800A9ABCE /* SharingNode.swift in Sources */,
 				51E038141C92A596005BFD42 /* Auxiliary+Process.swift in Sources */,
@@ -1106,7 +1106,7 @@
 				511E958E1B8AEB900093F4E8 /* TptpPrintable.swift in Sources */,
 				D248F4881CFC5CF400D087AB /* TptpProver.swift in Sources */,
 				516094321CDA095900B3579D /* PrlcParser.swift in Sources */,
-				51844E161C8439C400DCAA32 /* Infos.swift in Sources */,
+				51844E161C8439C400DCAA32 /* DemoInfos.swift in Sources */,
 				D23628871D005E21009C1D33 /* ClauseProver.swift in Sources */,
 				516094301CDA095900B3579D /* PrlcParser.c in Sources */,
 				51C0ACB41C4A385800447594 /* DemoComplementaries.swift in Sources */,
@@ -1152,7 +1152,7 @@
 				5151BDC11C3161AF006EFCE0 /* Pair.swift in Sources */,
 				514E55971CE05D1A00C8B40E /* PrlcTable.swift in Sources */,
 				510811ED1C9AA00C00E5A439 /* Node+CustomStringConvertible.swift in Sources */,
-				516107AE1C5A53E100FD3637 /* LinearSearch.swift in Sources */,
+				516107AE1C5A53E100FD3637 /* DemoLinearSearch.swift in Sources */,
 				51553EBD1CC7B85C00FF616A /* Yices+LPO.swift in Sources */,
 				51553EC01CC7B9EF00FF616A /* Yices.swift in Sources */,
 				511E95751B8AE4070093F4E8 /* main.swift in Sources */,

@@ -220,9 +220,6 @@ extension Array {
             }
             // assert(sourceIndices.count == targetIndices.count)
             if sourceIndices.count != targetIndices.count {
-                //                print(before, after)
-                //                print(beforeIndices, afterIndices)
-                //                print(sourceIndices, targetIndices)
             }
             
             for (sourceIndex, targetIndex) in zip(sourceIndices, targetIndices) {

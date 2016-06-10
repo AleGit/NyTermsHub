@@ -32,12 +32,12 @@ class CalmTests: XCTestCase {
                 return (calm_sid, String.fromCString(cstring)!, strlen(cstring))
             }
             
-            print(mapping);
+            Nylog.info("\(mapping)")
             
             var sid = calmNextSymbol(parsingTable, 0);
             while sid != 0 {
                 let string = String.fromCString( calmGetSymbol(parsingTable, sid) )
-                print(sid,string)
+                Nylog.info("\(sid),\(string)")
                 
                 sid = calmNextSymbol(parsingTable, sid);
             }

@@ -92,7 +92,39 @@ class Talk16Jun15: XCTestCase {
         print(functors)
         print(axioms(globalStringSymbols))
         
-        let (status,_,_) = prover.run(10.0)
+        let (status,_,_) = prover.run(50.0)
+        
+        XCTAssertEqual(status, STATUS_UNSAT)
+    }
+    
+    
+    
+    func testSymmetryTransitivityLess() {
+        let clauses = [
+            TptpNode(connective:"|", nodes:["p(a)"]),
+            TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
+            TptpNode(connective:"|", nodes:["f(X,e)=X"]),
+            
+            // TptpNode(connective:"|", nodes:["X=X"]),         // reflexivity
+            // "X!=Y | Y=X",                                       // symmetry
+            // "X!=Y | X!=Z | X=Y",                                // transitivity
+            
+            "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",              // function congruence
+            "X!=Y|~p(X)|p(Y)",                                   // predicate congruence
+            "X1!=Y1 | X2!=Y2 | X1!=X2 | Y1=Y2"                 // = congruence
+            
+            
+        ]
+        
+        let prover = MingyProver(clauses: clauses)
+        
+        let (equational,functors) = eqfunc(globalStringSymbols)
+        
+        print(equational)
+        print(functors)
+        print(axioms(globalStringSymbols))
+        
+        let (status,_,_) = prover.run(50.0)
         
         XCTAssertEqual(status, STATUS_UNSAT)
     }

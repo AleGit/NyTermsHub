@@ -13,16 +13,13 @@ class Talk16Jun15: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Nylog.reset(loglevel:.INFO)
+        Nylog.reset(loglevel:.ERROR)
         resetGlobalStringSymbols()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
         yices_init()
     }
     
     override func tearDown() {
         yices_exit()
-        Nylog.printparts()
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
@@ -34,9 +31,7 @@ class Talk16Jun15: XCTestCase {
         ]
         
         let prover = MingyProver(clauses: clauses)
-        
         let (status,_,_) = prover.run(1.0)
-        
         XCTAssertEqual(status, STATUS_UNSAT)
         
     }
@@ -75,25 +70,20 @@ class Talk16Jun15: XCTestCase {
             TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
             TptpNode(connective:"|", nodes:["f(X,e)=X"]),
             
-            // TptpNode(connective:"|", nodes:["X=X"]),         // reflexivity
-            "X!=Y | Y=X",                                       // symmetry
-            "X!=Y | X!=Z | X=Y",                                // transitivity
-            
-            "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",              // function congruence
-            "X!=Y|~p(X)|p(Y)"                                   // predicate congruence
-            
+            // reflexivity
+            // TptpNode(connective:"|", nodes:["X=X"]),
+            // symmetry
+            "X!=Y | Y=X",
+            // transitivity
+            "X!=Y | X!=Z | X=Y",
+            // function congruence
+            "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",
+            // predicate congruence
+            "X!=Y|~p(X)|p(Y)"
             ]
         
         let prover = MingyProver(clauses: clauses)
-        
-        let (equational,functors) = eqfunc(globalStringSymbols)
-        
-        print(equational)
-        print(functors)
-        print(axioms(globalStringSymbols))
-        
-        let (status,_,_) = prover.run(50.0)
-        
+        let (status,_,_) = prover.run(1.0)
         XCTAssertEqual(status, STATUS_UNSAT)
     }
     
@@ -105,27 +95,13 @@ class Talk16Jun15: XCTestCase {
             TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
             TptpNode(connective:"|", nodes:["f(X,e)=X"]),
             
-            // TptpNode(connective:"|", nodes:["X=X"]),         // reflexivity
-            // "X!=Y | Y=X",                                       // symmetry
-            // "X!=Y | X!=Z | X=Y",                                // transitivity
-            
             "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",              // function congruence
             "X!=Y|~p(X)|p(Y)",                                   // predicate congruence
             "X1!=Y1 | X2!=Y2 | X1!=X2 | Y1=Y2"                 // = congruence
-            
-            
         ]
         
         let prover = MingyProver(clauses: clauses)
-        
-        let (equational,functors) = eqfunc(globalStringSymbols)
-        
-        print(equational)
-        print(functors)
-        print(axioms(globalStringSymbols))
-        
         let (status,_,_) = prover.run(50.0)
-        
         XCTAssertEqual(status, STATUS_UNSAT)
     }
     
@@ -134,25 +110,13 @@ class Talk16Jun15: XCTestCase {
             TptpNode(connective:"|", nodes:["p(a)"]),
             TptpNode(connective:"|", nodes:["~p(f(a,e))"]),
             TptpNode(connective:"|", nodes:["f(X,e)=X"]),
-            
-            // TptpNode(connective:"|", nodes:["X=X"]),    // reflexivity
-            // "X!=Y | Y=X",                                 // symmetry
-            // "X!=Y | X!=Z | X=Y",                            // transitivity
-            
-            // "X1!=Y1 | X2!=Y2 | f(X1,X2)=f(Y1,Y2)",          // function congruence
-            // "X!=Y|~p(X)|p(Y)"                            // predicate congruence
-            
         ]
         
         let prover = MingyProver(clauses: clauses)
-    
-        
         if let axs = axioms(globalStringSymbols) {
             prover.append(axs)
         }
-        
         let (status,_,_) = prover.run(10.0)
-        
         XCTAssertEqual(status, STATUS_UNSAT)
     }
     

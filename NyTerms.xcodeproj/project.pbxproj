@@ -136,7 +136,7 @@
 		51B26B6A1B8DA23F00CC59AD /* Yices Linker Flags.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51B26B671B8DA23F00CC59AD /* Yices Linker Flags.jpg */; };
 		51B26B6D1B8DA41200CC59AD /* Yices+Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6C1B8DA41200CC59AD /* Yices+Wrapper.swift */; };
 		51B26B6E1B8DA41200CC59AD /* Yices+Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6C1B8DA41200CC59AD /* Yices+Wrapper.swift */; };
-		51B26B701B8DA75D00CC59AD /* YicesBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6F1B8DA75D00CC59AD /* YicesBasicTests.swift */; };
+		51B26B701B8DA75D00CC59AD /* SmtApiInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B6F1B8DA75D00CC59AD /* SmtApiInfoTests.swift */; };
 		51B26B781B8DB46500CC59AD /* example1.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B761B8DB46500CC59AD /* example1.c */; };
 		51B26B791B8DB46500CC59AD /* example2.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B26B771B8DB46500CC59AD /* example2.c */; };
 		51B883F11B8E3D5B008D7F22 /* names.c in Sources */ = {isa = PBXBuildFile; fileRef = 51B883F01B8E3D5B008D7F22 /* names.c */; };
@@ -351,7 +351,7 @@
 		51B26B661B8DA23F00CC59AD /* Yices Compiler Flags.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Yices Compiler Flags.jpg"; sourceTree = "<group>"; };
 		51B26B671B8DA23F00CC59AD /* Yices Linker Flags.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Yices Linker Flags.jpg"; sourceTree = "<group>"; };
 		51B26B6C1B8DA41200CC59AD /* Yices+Wrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Yices+Wrapper.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		51B26B6F1B8DA75D00CC59AD /* YicesBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YicesBasicTests.swift; sourceTree = "<group>"; };
+		51B26B6F1B8DA75D00CC59AD /* SmtApiInfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtApiInfoTests.swift; sourceTree = "<group>"; };
 		51B26B711B8DAC3300CC59AD /* manual2.4.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = manual2.4.pdf; sourceTree = "<group>"; };
 		51B26B721B8DAC3300CC59AD /* smt-lib-v2.0.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "smt-lib-v2.0.pdf"; sourceTree = "<group>"; };
 		51B26B731B8DAC3300CC59AD /* SMTLIBTutorial.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SMTLIBTutorial.pdf; sourceTree = "<group>"; };
@@ -549,6 +549,7 @@
 		512977291B677CAB003D3E80 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				D25BE5EE1D2535600041B08F /* SmtApiTests */,
 				D27B78551D058DE30023F44F /* Talks */,
 				D23B0D4F1CF45AAF00B7BE7F /* Z3 */,
 				5173B55B1CCA07FD00A9ABCE /* ShareNode */,
@@ -869,7 +870,6 @@
 		51FF64031CBBB6FC00AA26B5 /* Yices */ = {
 			isa = PBXGroup;
 			children = (
-				51B26B6F1B8DA75D00CC59AD /* YicesBasicTests.swift */,
 				51FF64041CBBB71600AA26B5 /* YicesNodeTests.swift */,
 				517B23B61CBCD6C90049F871 /* YicesIndexingTests.swift */,
 				51374D3E1CC635F000BD82BF /* Yices+KBOTests.swift */,
@@ -948,6 +948,14 @@
 				D25BC2991D01AC9500D2178F /* cvc4files.txt */,
 			);
 			name = cvc4;
+			sourceTree = "<group>";
+		};
+		D25BE5EE1D2535600041B08F /* SmtApiTests */ = {
+			isa = PBXGroup;
+			children = (
+				51B26B6F1B8DA75D00CC59AD /* SmtApiInfoTests.swift */,
+			);
+			name = SmtApiTests;
 			sourceTree = "<group>";
 		};
 		D27B78551D058DE30023F44F /* Talks */ = {
@@ -1255,7 +1263,7 @@
 				51374D3F1CC635F000BD82BF /* Yices+KBOTests.swift in Sources */,
 				51B883F11B8E3D5B008D7F22 /* names.c in Sources */,
 				51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */,
-				51B26B701B8DA75D00CC59AD /* YicesBasicTests.swift in Sources */,
+				51B26B701B8DA75D00CC59AD /* SmtApiInfoTests.swift in Sources */,
 				51844E181C8448A200DCAA32 /* UnificationTests.swift in Sources */,
 				5173B55D1CCA081200A9ABCE /* ShareNodeTests.swift in Sources */,
 				512EE0DA1CE0A75200D528A1 /* YicesMaxTrials.swift in Sources */,

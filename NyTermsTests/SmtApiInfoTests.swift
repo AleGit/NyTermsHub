@@ -33,11 +33,11 @@ class SmtApiInfoTests: XCTestCase {
         XCTAssertTrue(info.containsString("Z3 "))
         XCTAssertTrue(info.containsString(" 4.4."))
         
-        for previous in ["4.4.1.0"] {
+        for previous in ["4.4.2.0"] {
             XCTAssertNil(info.rangeOfString(previous))
         }
         
-        XCTAssertEqual("Z3 4.4.2.0", info)
+        XCTAssertEqual("Z3 4.4.2.1", info)
 
         
     }

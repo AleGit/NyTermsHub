@@ -197,6 +197,7 @@
 		D248F4871CFC5CF400D087AB /* TptpProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F4861CFC5CF400D087AB /* TptpProver.swift */; };
 		D248F4881CFC5CF400D087AB /* TptpProver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F4861CFC5CF400D087AB /* TptpProver.swift */; };
 		D248F48D1CFC639C00D087AB /* TptpParserBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248F48C1CFC639C00D087AB /* TptpParserBasicTests.swift */; };
+		D24D57CC1D2A374F0011CF65 /* Example1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D57CB1D2A374F0011CF65 /* Example1.swift */; };
 		D24D5D151CE5DB7200E07E8E /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24D5D141CE5DB7200E07E8E /* Demo.swift */; };
 		D27B78571D058E2C0023F44F /* Talk16Jun15.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B78561D058E2C0023F44F /* Talk16Jun15.swift */; };
 		D286232F1CEB711000E42070 /* YicesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D286232E1CEB711000E42070 /* YicesTestCase.swift */; };
@@ -425,6 +426,7 @@
 		D248F47D1CFC388A00D087AB /* LaTeX+Symbols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LaTeX+Symbols.swift"; sourceTree = "<group>"; };
 		D248F4861CFC5CF400D087AB /* TptpProver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpProver.swift; sourceTree = "<group>"; };
 		D248F48C1CFC639C00D087AB /* TptpParserBasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TptpParserBasicTests.swift; sourceTree = "<group>"; };
+		D24D57CB1D2A374F0011CF65 /* Example1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Example1.swift; sourceTree = "<group>"; };
 		D24D5D141CE5DB7200E07E8E /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		D25BC2991D01AC9500D2178F /* cvc4files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = cvc4files.txt; sourceTree = "<group>"; };
 		D25BC29A1D01ACDD00D2178F /* yices2files.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = yices2files.txt; sourceTree = "<group>"; };
@@ -617,6 +619,7 @@
 				51B883F01B8E3D5B008D7F22 /* names.c */,
 				51B883F31B8E3DAC008D7F22 /* test_pp.c */,
 				D2394AAF1D01707D0027A186 /* YicesCExamples.swift */,
+				D24D57CB1D2A374F0011CF65 /* Example1.swift */,
 			);
 			name = YicesCExamples;
 			sourceTree = "<group>";
@@ -1256,6 +1259,7 @@
 				5146F4311C7B1B5200A19EC1 /* BuildTrieClassPerformanceTests.swift in Sources */,
 				515F0F0C1B6BB50200B470B4 /* PositonTests.swift in Sources */,
 				515F0F0E1B6BB80000B470B4 /* TestGlobals.swift in Sources */,
+				D24D57CC1D2A374F0011CF65 /* Example1.swift in Sources */,
 				51374D3F1CC635F000BD82BF /* Yices+KBOTests.swift in Sources */,
 				51B883F11B8E3D5B008D7F22 /* names.c in Sources */,
 				51EFBA271B71DB9000A7B16C /* ParsePuzzleFileTests.swift in Sources */,

@@ -47,7 +47,11 @@ class PrlcTests: XCTestCase {
         XCTAssertEqual(106, result.1?.treeStoreSize)
         XCTAssertEqual(0,result.0);
         
-        let sequence = result.1!.tptpSequence {
+        guard let table = result.1 else {
+            XCTFail()
+            return
+        }
+        let sequence = table.tptpSequence {
             ref in
             String.fromCString(ref.memory.symbol) ?? "n/a"
             

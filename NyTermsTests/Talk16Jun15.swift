@@ -13,7 +13,7 @@ class Talk16Jun15: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Nylog.reset(loglevel:.ERROR)
+        Nylog.reset(loglevel:.error)
         resetGlobalStringSymbols()
         yices_init()
     }

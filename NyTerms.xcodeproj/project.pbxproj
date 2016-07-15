@@ -1037,9 +1037,11 @@
 					};
 					512977141B677CAA003D3E80 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 					};
 					512977251B677CAB003D3E80 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = 512977141B677CAA003D3E80;
 					};
 				};
@@ -1477,6 +1479,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				YACC_GENERATED_FILE_STEM = InputFileStem;
 			};
 			name = Debug;
@@ -1500,6 +1503,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTerms;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ParseC/Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				YACC_GENERATED_FILE_STEM = InputFileStem;
 			};
 			name = Release;
@@ -1522,6 +1526,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "NyTermsTests/NyTermsTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NyTerms.app/Contents/MacOS/NyTerms";
 				USER_HEADER_SEARCH_PATHS = /usr/local/include/;
 			};
@@ -1544,6 +1549,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = at.formgeberei.NyTermsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "NyTermsTests/NyTermsTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NyTerms.app/Contents/MacOS/NyTerms";
 				USER_HEADER_SEARCH_PATHS = /usr/local/include/;
 			};

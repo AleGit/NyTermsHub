@@ -6,20 +6,20 @@ import Foundation
 extension TptpRole : CustomStringConvertible, CustomDebugStringConvertible {
     public var description : String {
         switch self {
-        case .Axiom: return "axiom"
-        case .Hypothesis: return "hypothesis"
-        case .Definition: return "definition"
-        case .Assumption: return "assumption"
-        case .Lemma: return "lemma"
-        case .Theorem: return "theorem"
-        case .Conjecture: return "conjecture"
-        case .NegatedConjecture: return "negated_conjecture"
-        case .Plain: return "plain"
-        case .FiDomain: return "fi_domain"
-        case .FiFunctors: return "fi_functors"
-        case .FiPredicates: return "fi_predicates"
-        case .DataType: return "type"
-        case .Unknown: return "unknown"
+        case .axiom: return "axiom"
+        case .hypothesis: return "hypothesis"
+        case .definition: return "definition"
+        case .assumption: return "assumption"
+        case .lemma: return "lemma"
+        case .theorem: return "theorem"
+        case .conjecture: return "conjecture"
+        case .negatedConjecture: return "negated_conjecture"
+        case .plain: return "plain"
+        case .fiDomain: return "fi_domain"
+        case .fiFunctors: return "fi_functors"
+        case .fiPredicates: return "fi_predicates"
+        case .dataType: return "type"
+        case .unknown: return "unknown"
         }
     }
     
@@ -29,20 +29,20 @@ extension TptpRole : CustomStringConvertible, CustomDebugStringConvertible {
     
     init?(string:String) {
         switch string {
-        case "axiom": self = TptpRole.Axiom
-        case "hypothesis": self = TptpRole.Hypothesis
-        case "definition": self = TptpRole.Definition
-        case "assumption": self = TptpRole.Assumption
-        case "lemma": self = TptpRole.Lemma
-        case "theorem": self = TptpRole.Theorem
-        case "conjecture": self = TptpRole.Conjecture
-        case "negated_conjecture": self = TptpRole.NegatedConjecture
-        case "plain": self = TptpRole.Plain
-        case "fi_domain": self = TptpRole.FiDomain
-        case "fi_functors": self = TptpRole.FiFunctors
-        case "fi_predicates": self = TptpRole.FiPredicates
-        case "type": self = TptpRole.DataType
-        case "unknown": self = TptpRole.Unknown
+        case "axiom": self = TptpRole.axiom
+        case "hypothesis": self = TptpRole.hypothesis
+        case "definition": self = TptpRole.definition
+        case "assumption": self = TptpRole.assumption
+        case "lemma": self = TptpRole.lemma
+        case "theorem": self = TptpRole.theorem
+        case "conjecture": self = TptpRole.conjecture
+        case "negated_conjecture": self = TptpRole.negatedConjecture
+        case "plain": self = TptpRole.plain
+        case "fi_domain": self = TptpRole.fiDomain
+        case "fi_functors": self = TptpRole.fiFunctors
+        case "fi_predicates": self = TptpRole.fiPredicates
+        case "type": self = TptpRole.dataType
+        case "unknown": self = TptpRole.unknown
         default: return nil
         }
     }
@@ -51,11 +51,11 @@ extension TptpRole : CustomStringConvertible, CustomDebugStringConvertible {
 extension TptpLanguage : CustomStringConvertible, CustomDebugStringConvertible {
     public var description : String {
         switch self {
-        case .CNF: return "cnf"
-        case .FOF: return "fof"
-        case .TFF: return "tff"
-        case .THF: return "thf"
-        case .TPI: return "tpi"
+        case .cnf: return "cnf"
+        case .fof: return "fof"
+        case .tff: return "tff"
+        case .thf: return "thf"
+        case .tpi: return "tpi"
         }
     }
   
@@ -65,11 +65,11 @@ extension TptpLanguage : CustomStringConvertible, CustomDebugStringConvertible {
     
     init?(string:String) {
         switch string {
-        case "cnf": self = TptpLanguage.CNF
-        case "fof": self = TptpLanguage.FOF
-        case "tff": self = TptpLanguage.TFF
-        case "thf": self = TptpLanguage.THF
-        case "tpi": self = TptpLanguage.TPI
+        case "cnf": self = TptpLanguage.cnf
+        case "fof": self = TptpLanguage.fof
+        case "tff": self = TptpLanguage.tff
+        case "thf": self = TptpLanguage.thf
+        case "tpi": self = TptpLanguage.tpi
         default: return nil
         }
     }

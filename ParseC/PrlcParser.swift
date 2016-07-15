@@ -8,10 +8,10 @@
 
 import Foundation
 
-@available(*, deprecated=1.0, message="in construction")
+@available(*, deprecated: 1.0, message: "in construction")
 struct PrlcParser {
     
-    private static func parseIt(path:TptpPath) -> Int32 {
+    private static func parseIt(_ path:TptpPath) -> Int32 {
         let file = fopen(path,"r")  // open file to read
         guard file != nil else {
             assert(false)
@@ -28,7 +28,7 @@ struct PrlcParser {
         return code
     }
     
-    static func parse(path:TptpPath) -> (table:PrlcTable, files:[(TptpPath,Int32)]) {
+    static func parse(_ path:TptpPath) -> (table:PrlcTable, files:[(TptpPath,Int32)]) {
         
         // reserve 'enough' memory
         let table = PrlcTable(size:200_000_000, path:path)
@@ -47,15 +47,15 @@ struct PrlcParser {
         var array = [(path,code)]
         
         for inclNode in table.includes {
-            guard var name = String.fromCString(inclNode.memory.symbol) else {
+            guard var name = String(validatingUTF8: inclNode.memory.symbol) else {
                 array.append(("",-1))
                 continue
             }
             
             if name.hasPrefix("'") {
                 assert(name.hasSuffix("'"))
-                let start = name.startIndex.advancedBy(1)
-                let end = name.endIndex.advancedBy(-1)
+                let start = name.index(name.startIndex, offsetBy: 1)
+                let end = name.index(name.endIndex, offsetBy: -1)
                 name = name[start..<end]
                 
             }
@@ -81,7 +81,7 @@ struct PrlcParser {
 }
 
 
-func prlcParse(path:TptpPath) -> (Int32, PrlcTable?) {
+func prlcParse(_ path:TptpPath) -> (Int32, PrlcTable?) {
     let file = fopen(path,"r")  // open file to read
     
     let text = "\(#function)('\(path)')"

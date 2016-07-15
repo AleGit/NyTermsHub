@@ -24,7 +24,7 @@ extension Yices {
     }
     
     /// Get or create (uninterpreted) type `name`.
-    static func namedType(name:String) -> type_t {
+    static func namedType(_ name:String) -> type_t {
         assert(!name.isEmpty, "a type name must not be empty")
         var tau = yices_get_type_by_name(name)
         if tau == NULL_TYPE {
@@ -35,7 +35,7 @@ extension Yices {
     }
     
     /// Get or create uninterpreted global `symbol` of type `term_tau`.
-    static func typedSymbol(symbol:String, term_tau:type_t) -> term_t {
+    static func typedSymbol(_ symbol:String, term_tau:type_t) -> term_t {
         assert(!symbol.isEmpty, "a typed symbol must not be empty")
         
         var c = yices_get_term_by_name(symbol)
@@ -50,15 +50,15 @@ extension Yices {
         return c
     }
     
-    static func constant(symbol:String, term_tau:type_t) -> term_t {
+    static func constant(_ symbol:String, term_tau:type_t) -> term_t {
         return typedSymbol(symbol, term_tau: term_tau)
     }
     
-    static func domain(count:Int, tau: type_t) -> [type_t] {
-        return [type_t](count:count, repeatedValue: tau)
+    static func domain(_ count:Int, tau: type_t) -> [type_t] {
+        return [type_t](repeating: tau, count: count)
     }
     
-    static func function(symbol:String, domain: [type_t], range:type_t) -> term_t {
+    static func function(_ symbol:String, domain: [type_t], range:type_t) -> term_t {
         
         let f_tau = yices_function_type(UInt32(domain.count), domain, range)
         
@@ -70,7 +70,7 @@ extension Yices {
     /// and explicit return type `term_tau`:
     /// * `free_tau` - the symbol is a constant/function symbol
     /// * `bool_tau` - the symbol is a proposition/predicate symbol
-    static func application(symbol:String, args:[term_t], term_tau:type_t) -> term_t {
+    static func application(_ symbol:String, args:[term_t], term_tau:type_t) -> term_t {
         
         guard args.count > 0 else { return constant(symbol, term_tau: term_tau) }
         
@@ -79,11 +79,11 @@ extension Yices {
     }
     
     /// Get yices children of a yices term.
-    static func children(term:term_t) -> [term_t] {
+    static func children(_ term:term_t) -> [term_t] {
         return (0..<yices_term_num_children(term)).map { yices_term_child(term, $0) }
     }
     
-    static func subterms(term:term_t) -> Set<term_t> {
+    static func subterms(_ term:term_t) -> Set<term_t> {
         var terms = Set(children(term).flatMap { subterms($0) })
         terms.insert(term)
         return terms
@@ -100,66 +100,66 @@ extension Yices {
         return yices_false()
     }
     
-    static func not(t:term_t) -> term_t  {
+    static func not(_ t:term_t) -> term_t  {
         return yices_not(t)
     }
     
-    static func and(t1:term_t, _ t2:term_t) -> term_t  {
+    static func and(_ t1:term_t, _ t2:term_t) -> term_t  {
         return yices_and2(t1,t2)
     }
     
-    static func and(t1:term_t, _ t2:term_t, _ t3:term_t) -> term_t  {
+    static func and(_ t1:term_t, _ t2:term_t, _ t3:term_t) -> term_t  {
         return yices_and3(t1,t2,t3)
     }
     
-    static func and(ts:[term_t]) -> term_t  {
+    static func and(_ ts:[term_t]) -> term_t  {
         var copy = ts
         // argument array must be mutable, because it will be reordered and optimized
         return yices_and(UInt32(ts.count), &copy)
     }
     
-    static func or(t1:term_t, _ t2:term_t) -> term_t  {
+    static func or(_ t1:term_t, _ t2:term_t) -> term_t  {
         return yices_or2(t1,t2)
     }
     
-    static func or(t1:term_t, _ t2:term_t, _ t3:term_t) -> term_t  {
+    static func or(_ t1:term_t, _ t2:term_t, _ t3:term_t) -> term_t  {
         return yices_or3(t1,t2,t3)
     }
     
-    static func or(ts:[term_t]) -> term_t  {
+    static func or(_ ts:[term_t]) -> term_t  {
         var copy = ts
         // argument array must be mutable, because it will be reordered and optimized
         return yices_or(UInt32(ts.count), &copy)
     }
     
-    static func implies(t1:term_t, _ t2:term_t) -> term_t  {
+    static func implies(_ t1:term_t, _ t2:term_t) -> term_t  {
         return yices_implies(t1,t2)
     }
     
-    static func ite(c:term_t, t:term_t, f:term_t) -> term_t  {
+    static func ite(_ c:term_t, t:term_t, f:term_t) -> term_t  {
         return yices_ite(c,t,f)
     }
     
-    static func gt(t1:term_t, _ t2:term_t) -> term_t  {
+    static func gt(_ t1:term_t, _ t2:term_t) -> term_t  {
         return yices_arith_gt_atom(t1,t2)
     }
     
-    static func ge(t1:term_t, _ t2:term_t) -> term_t  {
+    static func ge(_ t1:term_t, _ t2:term_t) -> term_t  {
         return yices_arith_geq_atom(t1,t2)
     }
     
-    static func eq(t1:term_t, _ t2:term_t) -> term_t {
+    static func eq(_ t1:term_t, _ t2:term_t) -> term_t {
         return yices_eq(t1,t2)
     }
 }
 
 // MARK: - arithmetic terms
 extension Yices {
-    static func add(t1:term_t, _ t2:term_t) -> term_t  {
+    static func add(_ t1:term_t, _ t2:term_t) -> term_t  {
         return yices_add(t1, t2)
     }
     
-    static func sum(ts:[term_t]) -> term_t {
+    static func sum(_ ts:[term_t]) -> term_t {
         var copy = ts
         return yices_sum(UInt32(copy.count), &copy)
     }
@@ -177,7 +177,7 @@ extension Yices {
 
 extension Yices {
     
-    static func getValue(t: term_t, mdl: COpaquePointer) -> Bool? {
+    static func getValue(_ t: term_t, mdl: OpaquePointer) -> Bool? {
         var val : Int32 = 0;
         if Yices.check (yices_get_int32_value(mdl, t, &val), label:"\(#function) : Bool") {
             return val == 0 ? false : true
@@ -187,7 +187,7 @@ extension Yices {
         }
     }
 
-    static func getValue(t: term_t, mdl: COpaquePointer) -> Int32? {
+    static func getValue(_ t: term_t, mdl: OpaquePointer) -> Int32? {
         var val : Int32 = 0;
         if Yices.check (yices_get_int32_value(mdl, t, &val), label:"\(#function) : Int32") {
             return val
@@ -199,7 +199,7 @@ extension Yices {
 }
 
 extension Yices {
-    static func info(tau tau:type_t) -> (name:String,infos:[String])? {
+    static func info(tau:type_t) -> (name:String,infos:[String])? {
         guard let name = String(tau:tau) else { return nil }
         
         var infos = [String]()
@@ -220,7 +220,7 @@ extension Yices {
     
     typealias TermInfo = (term_t,term:String,type:(name:String,infos:[String]),children:[term_t])
     
-    static func info(term term:term_t) -> TermInfo? {
+    static func info(term:term_t) -> TermInfo? {
         let tau = yices_type_of_term(term)
         guard let name = String(term:term), let type = Yices.info(tau:tau)
         else { return nil }
@@ -229,7 +229,7 @@ extension Yices {
         
     }
     
-    static func infos(term term:term_t) -> [TermInfo] {
+    static func infos(term:term_t) -> [TermInfo] {
         // return Yices.subterms(term).map { Yices.info(term:$0) }.filter { $0 != nil }.map { $0! }
         
         return [Yices.info(term:term)!] + Yices.children(term).flatMap { Yices.infos(term:$0) }
@@ -239,8 +239,8 @@ extension Yices {
 // MARK: - deprecated
 
 extension Yices {
-    @available(*, deprecated=1.0, message="unused")
-    static func newIntVar(name:String) -> term_t?  {
+    @available(*, deprecated: 1.0, message: "unused")
+    static func newIntVar(_ name:String) -> term_t?  {
         var term: term_t? = nil
         
         let t_int = Yices.int_tau
@@ -261,8 +261,8 @@ extension Yices {
         return term;
     }
     
-    @available(*, deprecated=1.0, message="unused")
-    static func newBoolVar(name:String) -> term_t?  {
+    @available(*, deprecated: 1.0, message: "unused")
+    static func newBoolVar(_ name:String) -> term_t?  {
         var term: term_t? = nil
         
         let t_int = Yices.bool_tau
@@ -284,13 +284,13 @@ extension Yices {
     
     
     
-    @available(*, deprecated=1.0, message="use `or(ts: [term_t]` instead.")
-    static func big_or(ts : [term_t]) -> term_t {
+    @available(*, deprecated: 1.0, message: "use `or(ts: [term_t]` instead.")
+    static func big_or(_ ts : [term_t]) -> term_t {
         return ts.reduce(bot, combine: or)
     }
     
-    @available(*, deprecated=1.0, message="use `and(ts: [term_t]` instead.")
-    static func big_and(ts : [term_t]) -> term_t {
+    @available(*, deprecated: 1.0, message: "use `and(ts: [term_t]` instead.")
+    static func big_and(_ ts : [term_t]) -> term_t {
         return ts.reduce(top, combine: and)
     }
 }

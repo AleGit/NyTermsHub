@@ -13,16 +13,16 @@ protocol ClauseProver {
     associatedtype Clause
     associatedtype Literal
     
-    init?<S:SequenceType where S.Generator.Element == Formula>(formulae:S)
+    init?<S:Sequence where S.Iterator.Element == Formula>(formulae:S)
     
     var initTime : CFAbsoluteTime { get }
     var startTime : CFAbsoluteTime { get }
     
-    static func formulaeFromPath(path:String) -> [Formula]?
-    static func clauseFromFormula(formula:Formula) -> Clause
+    static func formulaeFromPath(_ path:String) -> [Formula]?
+    static func clauseFromFormula(_ formula:Formula) -> Clause
     
     func choose() -> Int?
-    func select(clauseIndex:Int) -> Int?
+    func select(_ clauseIndex:Int) -> Int?
     
     func indicate(clause index:Int, literal:Int)
     func deindicate(clause index:Int, literal:Int)

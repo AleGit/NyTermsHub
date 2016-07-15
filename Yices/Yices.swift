@@ -10,16 +10,16 @@ import Foundation
 
 struct Yices {
     
-    static let version = String.fromCString(yices_version) ?? "yices_version: n/a"
-    static let buildArch = String.fromCString(yices_build_arch) ?? "yices_build_arch: n/a"
-    static let buildMode = String.fromCString(yices_build_mode) ?? "yices_build_mode: n/a"
-    static let buildDate = String.fromCString(yices_build_date) ?? "yices_build_date: n/a"
+    static let version = String(cString: yices_version) ?? "yices_version: n/a"
+    static let buildArch = String(cString: yices_build_arch) ?? "yices_build_arch: n/a"
+    static let buildMode = String(cString: yices_build_mode) ?? "yices_build_mode: n/a"
+    static let buildDate = String(cString: yices_build_date) ?? "yices_build_date: n/a"
     
     static let info = "Yices \(version) (\(buildArch),\(buildMode),\(buildDate))"
 }
 
 extension Yices {
-    static func check(code : Int32, label: String) -> Bool {
+    static func check(_ code : Int32, label: String) -> Bool {
         if code < 0 {
             Nylog.error("\(label) \(code) \(errorString)")
             return false
@@ -34,7 +34,7 @@ extension Yices {
             return "yices_error_string() n/a"
         }
         
-        guard let string = String.fromCString(cstring) else {
+        guard let string = String(validatingUTF8: cstring!) else {
             return "yices_error_string() n/c"
         }
         

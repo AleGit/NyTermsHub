@@ -29,14 +29,14 @@ class CalmTests: XCTestCase {
             let mapping = sids[0..<strings.count].map {
                 (calm_sid) -> (calm_sid, String, UInt) in
                 let cstring = calmGetSymbol(parsingTable, calm_sid)
-                return (calm_sid, String.fromCString(cstring)!, strlen(cstring))
+                return (calm_sid, String(cString: cstring), strlen(cstring))
             }
             
             Nylog.info("\(mapping)")
             
             var sid = calmNextSymbol(parsingTable, 0);
             while sid != 0 {
-                let string = String.fromCString( calmGetSymbol(parsingTable, sid) )
+                let string = String( cString: calmGetSymbol(parsingTable, sid) )
                 Nylog.info("\(sid),\(string)")
                 
                 sid = calmNextSymbol(parsingTable, sid);

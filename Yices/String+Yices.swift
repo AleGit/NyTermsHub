@@ -16,7 +16,7 @@ extension String {
         defer {
             yices_free_string(cstring)
         }
-        guard let string = String.fromCString(cstring) else { return nil }
+        guard let string = String(validatingUTF8: cstring!) else { return nil }
         self = string
     }
     
@@ -36,7 +36,7 @@ extension String {
             yices_free_string(cstring)
         }
         
-        guard let string = String.fromCString(cstring) else { return nil }
+        guard let string = String(validatingUTF8: cstring!) else { return nil }
         self = string
     }
     
@@ -46,7 +46,7 @@ extension String {
     }
     
     /// Creates a String representaion of yices model
-    init?(model: COpaquePointer, width:UInt32, height:UInt32, offset:UInt32) {
+    init?(model: OpaquePointer, width:UInt32, height:UInt32, offset:UInt32) {
         let cstring = yices_model_to_string(model, width, height, offset)
         guard cstring != nil else {
             Nylog.error("yices_model_to_string() \(Yices.errorString)")
@@ -55,12 +55,12 @@ extension String {
         defer {
             yices_free_string(cstring)
         }
-        guard let string = String.fromCString(cstring) else { return nil }
+        guard let string = String(validatingUTF8: cstring!) else { return nil }
         self = string
     }
     
     /// Creates a String representaion of yices model
-    init?(model: COpaquePointer) {
+    init?(model: OpaquePointer) {
         self.init(model:model, widht:UInt32.max, height:0, offset:0)
     }
     

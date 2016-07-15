@@ -10,47 +10,47 @@ import NyTerms
 /// Enum `NodeEnum` is a sample implementation of protocol `Node` for testing purposes only.
 /// Basically just the data representation has to be defined, but nearly no functions.
 enum NodeEnum : Node {
-    case Variable (symbol:String)
-    case Constant (symbol:String)
-    case Function (symbol:String, nodes:[NodeEnum])
+    case variable (symbol:String)
+    case constant (symbol:String)
+    case function (symbol:String, nodes:[NodeEnum])
     
     var symbol : String {
         switch self {
-        case let .Variable(symbol):
+        case let .variable(symbol):
             return symbol
-        case let .Constant(symbol):
+        case let .constant(symbol):
             return symbol
-        case let .Function(symbol, _):
+        case let .function(symbol, _):
             return symbol
         }
     }
     
     var nodes : [NodeEnum]? {
         switch self {
-        case .Variable:
+        case .variable:
             return nil
-        case .Constant:
+        case .constant:
             return [NodeEnum]()
-        case let .Function(_,nodes:nodes):
+        case let .function(_,nodes:nodes):
             return nodes
         }
     }
     
     init (symbol:String, nodes:[NodeEnum]?) {
         guard let ts = nodes else {
-            self = Variable(symbol: symbol)
+            self = variable(symbol: symbol)
             return
         }
         
         if ts.count == 0 {
-            self = Constant(symbol: symbol)
+            self = constant(symbol: symbol)
         }
         else {
-            self = Function(symbol: symbol, nodes: ts)
+            self = function(symbol: symbol, nodes: ts)
         }
     }
     
-    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
+    func register(_ type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool {
         return false
     }
 }
@@ -156,61 +156,61 @@ class NodeEnumTests: XCTestCase {
     }
     
     func testStringLiteralConvertible() {
-        let variable = LocalTestNode(variable:"X")   // UPPER_WORD
+        let variable = LocalTestNode(stringLiteral:"X")   // UPPER_WORD
         var expected = "X" as LocalTestNode
         XCTAssertEqual(variable, expected)
         
-        let constant = LocalTestNode(constant:"a")   // LOWER_WORD
+        let constant = LocalTestNode(stringLiteral:"a")   // LOWER_WORD
         XCTAssertEqual(constant, "a")
         
-        let function = LocalTestNode(function:"f", nodes: [variable, constant])
+        let function = LocalTestNode(symbol:"f", nodes: [variable, constant])
         XCTAssertEqual(function, "f(X,a)")
         
-        let equation = LocalTestNode(predicate:"=", nodes:[function,constant])
+        let equation = LocalTestNode(symbol:"=", nodes:[function,constant])
         XCTAssertEqual(equation, "f(X,a)=a")
         
-        let inequation = LocalTestNode(predicate:"!=", nodes:[function,constant])
+        let inequation = LocalTestNode(symbol:"!=", nodes:[function,constant])
         XCTAssertEqual(inequation, "f(X,a)!=a")
         
-        let predicate = LocalTestNode(predicate:"p", nodes:[variable,constant])
+        let predicate = LocalTestNode(symbol:"p", nodes:[variable,constant])
         XCTAssertEqual(predicate, "p(X,a)")
         
-        let negation = LocalTestNode(connective:"~", nodes: [predicate])
+        let negation = LocalTestNode(symbol:"~", nodes: [predicate])
         XCTAssertEqual(negation, "~p(X,a)")
         
-        var disjunction = LocalTestNode(connective:"|", nodes:[equation, predicate, negation])
+        var disjunction = LocalTestNode(symbol:"|", nodes:[equation, predicate, negation])
         XCTAssertEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        disjunction = LocalTestNode(connective:"|", nodes:[equation, LocalTestNode(connective:"|", nodes: [predicate,negation])])
+        disjunction = LocalTestNode(symbol:"|", nodes:[equation, LocalTestNode(symbol:"|", nodes: [predicate,negation])])
         XCTAssertNotEqual(disjunction, "f(X,a)=a | p(X,a) | ~p(X,a)")
         XCTAssertNotEqual(disjunction, "( f(X,a)=a | p(X,a) ) | ~p(X,a)")
         XCTAssertEqual(disjunction, "f(X,a)=a | ( p(X,a) | ~p(X,a) )")
         
-        var conjunction = LocalTestNode(connective:"&", nodes:[equation, predicate, negation])
+        var conjunction = LocalTestNode(symbol:"&", nodes:[equation, predicate, negation])
         XCTAssertEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        conjunction = LocalTestNode(connective:"&", nodes:[equation, LocalTestNode(connective:"&", nodes: [predicate,negation])])
+        conjunction = LocalTestNode(symbol:"&", nodes:[equation, LocalTestNode(symbol:"&", nodes: [predicate,negation])])
         XCTAssertNotEqual(conjunction, "f(X,a)=a & p(X,a) & ~p(X,a)")
         XCTAssertNotEqual(conjunction, "( f(X,a)=a & p(X,a) ) & ~p(X,a)")
         XCTAssertEqual(conjunction, "f(X,a)=a & ( p(X,a) & ~p(X,a) )")
         
-        var fof = LocalTestNode(connective:"|", nodes:[equation, LocalTestNode(connective:"&", nodes: [predicate,negation])])
+        var fof = LocalTestNode(symbol:"|", nodes:[equation, LocalTestNode(symbol:"&", nodes: [predicate,negation])])
         expected = "f(X,a)=a | (p(X,a) & ~p(X,a) )"
         XCTAssertEqual(fof, expected)
         
-        fof = LocalTestNode(connective:"&", nodes:[equation, LocalTestNode(connective:"|", nodes: [predicate,negation])])
+        fof = LocalTestNode(symbol:"&", nodes:[equation, LocalTestNode(symbol:"|", nodes: [predicate,negation])])
         expected = "f(X,a)=a & (p(X,a) | ~p(X,a)) "
         XCTAssertEqual(fof, expected)
         
-        let universal = LocalTestNode(connective:"!", nodes: [LocalTestNode(connective:",", nodes:["X"]), disjunction])
+        let universal = LocalTestNode(symbol:"!", nodes: [LocalTestNode(symbol:",", nodes:["X"]), disjunction])
         expected = "![X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(universal, expected)
         
-        let existential = LocalTestNode(connective:"?", nodes: [LocalTestNode(connective:",", nodes:["X"]), disjunction])
+        let existential = LocalTestNode(symbol:"?", nodes: [LocalTestNode(symbol:",", nodes:["X"]), disjunction])
         expected = "?[X]:(f(X,a)=a | ( p(X,a) | ~p(X,a)) )"
         XCTAssertEqual(existential, expected)
     }
@@ -273,7 +273,7 @@ class NodeEnumTests: XCTestCase {
     
     func testConversion() {
         let objcF : TptpNode = "f(g(h(a)),h(X),Y)"
-        let testF = LocalTestNode(function: "f", nodes: ["g(h(a))", "h(X)", "Y"])
+        let testF = LocalTestNode(symbol: "f", nodes: ["g(h(a))", "h(X)", "Y"])
         
         XCTAssertEqual(objcF.description, testF.description)
         XCTAssertEqual(objcF, TptpNode(testF))

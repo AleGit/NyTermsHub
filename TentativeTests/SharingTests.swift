@@ -9,7 +9,7 @@
 import XCTest
 
 private protocol Uniqueness {
-    static func insert(element:Self) -> Self
+    static func insert(_ element:Self) -> Self
     
     init (symbol:String, children: [Self]?)
 }
@@ -31,8 +31,8 @@ extension Uniqueness {
 final class Unique : Uniqueness {
     
     static var repository = Set<Unique>(minimumCapacity: 32000)
-    static func insert(element: Unique) -> Unique {
-        if let index = Unique.repository.indexOf(element) {
+    static func insert(_ element: Unique) -> Unique {
+        if let index = Unique.repository.index(of: element) {
             return Unique.repository[index]
         }
         Unique.repository.insert(element)
@@ -55,7 +55,7 @@ extension Unique : CustomStringConvertible {
         }
         
         let array = childs.map { $0.description }
-        let arguments = array.joinWithSeparator(",")
+        let arguments = array.joined(separator: ",")
         return "\(self.symbol)[\(arguments)]"
     }
 }
@@ -92,7 +92,7 @@ class SharingTests: XCTestCase {
         
         XCTAssertTrue(x1 === x0)
         
-        if let index = repository.indexOf(x1) {
+        if let index = repository.index(of: x1) {
             let x2 = repository[index]
             
             XCTAssertTrue(x0 === x2)

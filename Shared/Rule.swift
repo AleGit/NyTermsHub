@@ -28,7 +28,7 @@ extension Node
         return Set(ts.flatMap { $0.allVariables })
     }
     
-    private func fill(inout census:SymbolCensus) {
+    private func fill(_ census:inout SymbolCensus) {
         var arity = Set<Int>()
         
         if let nodes = self.nodes {
@@ -41,7 +41,7 @@ extension Node
         
         if var entry = census[self.symbol] {
             entry.count += 1
-            entry.arity.unionInPlace(arity)
+            entry.arity.formUnion(arity)
             census[self.symbol] = entry
         }
         else {
@@ -73,13 +73,13 @@ extension Node
     /// A rewrite rule is an equation that satifies the follwong conditions
     /// - the left-hand side is not a variable
     /// - Vars(r) is a subset of Vars(l)
-    static func Rule(lhs:Self, _ rhs:Self) -> Self? {
+    static func Rule(_ lhs:Self, _ rhs:Self) -> Self? {
         
         if lhs.nodes == nil { return nil }  // the left-hand side is a variable, hence the equation is not a rule
         
-        if !(rhs.allVariables.isSubsetOf(lhs.allVariables)) { return nil }  // allVariables(rhs) is not a subset of allVariables(lhs), hence the equation is not a rule
+        if !(rhs.allVariables.isSubset(of: lhs.allVariables)) { return nil }  // allVariables(rhs) is not a subset of allVariables(lhs), hence the equation is not a rule
         
-        return Self(symbol: Self.symbol(.Equation), nodes: [lhs,rhs]) // the equation is a rule
+        return Self(symbol: Self.symbol(.equation), nodes: [lhs,rhs]) // the equation is a rule
     }
     
     
@@ -114,15 +114,15 @@ extension Node {
     /// and return the (possible empty) list of positons.
     ///
     ///     { (p,σ) | self[p].σ = other.σ }
-    func unifiablePositions(other:Self) -> [[Int]] {
-        assert(self.allVariables.intersect(other.allVariables).count == 0)
+    func unifiablePositions(_ other:Self) -> [[Int]] {
+        assert(self.allVariables.intersection(other.allVariables).count == 0)
         
         return self.positionUnifiers([Int](), other: other).map { $0.position }
     }
     
     /// Find all of `self`'s *non-variable* subterms which are unifiable with term `other`
     /// and return a (possible empty) list of pairs with positions and unifiers.
-    private func positionUnifiers(actual:[Int], other:Self) -> [PositionUnifier] {
+    private func positionUnifiers(_ actual:[Int], other:Self) -> [PositionUnifier] {
         
         var positionUnifiers = [ PositionUnifier ]()
         
@@ -132,7 +132,7 @@ extension Node {
             positionUnifiers.append(position: actual, unifier: mgu)
         }
         
-        for (index,term) in nodes.enumerate() {
+        for (index,term) in nodes.enumerated() {
             positionUnifiers += term.positionUnifiers(actual+[index], other: other)
         }
         return positionUnifiers
@@ -141,10 +141,10 @@ extension Node {
     /// Find all critical peaks (l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub>, p, l<sub>2</sub>σ, r<sub>2</sub>σ)
     /// originating in left-hand side of rule `other` = l<sub>2</sub>->r<sub>2</sub>
     /// and induced by left-hand side of rule `self` = l<sub>1</sub>->r<sub>1</sub>.
-    func criticalPeaks(other:Self) -> [CriticalPeak] {
+    func criticalPeaks(_ other:Self) -> [CriticalPeak] {
         assert(other.isRewriteRule,self.description)
         assert(self.isRewriteRule,self.description)
-        assert(self.allVariables.intersect(other.allVariables).isEmpty)
+        assert(self.allVariables.intersection(other.allVariables).isEmpty)
         
         // self is rule l1->r1
         guard let l1 = self.nodes?.first else { return [CriticalPeak]() }
@@ -166,14 +166,14 @@ extension Node {
     
     /// We call the equation l<sub>2</sub>σ[r<sub>1</sub>σ]<sub>p</sub> = r<sub>2</sub>σ a *critical pair*,
     /// obtained from overlap (l<sub>1</sub>→r<sub>1</sub>,p,l<sub>2</sub>→r<sub>2</sub>).
-    func criticalPairs(other:Self) -> [Self] {
+    func criticalPairs(_ other:Self) -> [Self] {
         return self.criticalPeaks(other).map {
-            Self(equational:Self.symbol(.Equation), nodes: [$0.l2r1, $0.r2])
+            Self(equational:Self.symbol(.equation), nodes: [$0.l2r1, $0.r2])
         }
     }
     
     func hasOverlap(at position:[Int], with rule2: Self) -> Bool {
-        assert(self.allVariables.intersect(rule2.allVariables).count == 0)
+        assert(self.allVariables.intersection(rule2.allVariables).count == 0)
         
         guard let l1 = self.nodes?.first else { return false }
         guard let l2p = rule2.nodes?.first?[position] else { return false }        

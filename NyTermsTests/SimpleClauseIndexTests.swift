@@ -27,7 +27,7 @@ class SimpleClauseIndexTests: XCTestCase {
             "p(A)|p(B)"
         ]
         
-        for (clauseIndex,clause) in clauses.enumerate() {
+        for (clauseIndex,clause) in clauses.enumerated() {
             print("\n:::",clauseIndex,clause,":::")
             
             guard let literals = clause.nodes else {
@@ -42,14 +42,14 @@ class SimpleClauseIndexTests: XCTestCase {
             for path in preorderPaths {
                 
                 if let result = sci.retrieve(path) {
-                    candidates.intersectInPlace(result)
+                    candidates.formIntersection(result)
                 }
                 else {
                     candidates.removeAll()
                 }
             }
             
-            print(clauseIndex, Array(candidates).sort())
+            print(clauseIndex, Array(candidates).sorted())
             
             for path in preorderPaths {
                 

@@ -158,7 +158,7 @@ class YicesSatTrials : YicesTestCase {
         XCTAssertTrue(STATUS_UNSAT == yices_check_context(ctx, nil))
     }
     
-    func build_yices_term<N:Node where N.Symbol==String>(term:N, range_tau:type_t) -> term_t {
+    func build_yices_term<N:Node where N.NyTerms.Symbol==String>(_ term:N, range_tau:type_t) -> term_t {
         
         guard let nodes = term.nodes else { return general_constant }   // map variables to constant '⊥'
         
@@ -196,7 +196,7 @@ class YicesSatTrials : YicesTestCase {
                     yices_set_term_name(t, term.symbol)
                 }
                 else {
-                    let domain_taus = [type_t](count:nodes.count, repeatedValue:free_tau)
+                    let domain_taus = [type_t](repeating: free_tau, count: nodes.count)
                     let func_tau = yices_function_type(UInt32(nodes.count), domain_taus, range_tau) // (tau,...,tau) -> range_tau
                     t = yices_new_uninterpreted_term(func_tau)
                     yices_set_term_name(t, term.symbol)
@@ -214,8 +214,8 @@ class YicesSatTrials : YicesTestCase {
     }
     
     func testTryEmptyJunctions() {
-        let emptyDisjunction = NodeStruct(connective:"|", nodes:[NodeStruct]())
-        let emtpyConjunction = NodeStruct(connective:"&", nodes:[NodeStruct]())
+        let emptyDisjunction = NodeStruct(symbol:"|", nodes:[NodeStruct]())
+        let emtpyConjunction = NodeStruct(symbol:"&", nodes:[NodeStruct]())
         XCTAssertEqual(0, emptyDisjunction.nodes?.count)
         XCTAssertEqual(0, emtpyConjunction.nodes?.count)
         

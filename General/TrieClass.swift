@@ -21,8 +21,8 @@ extension TrieClass : CustomStringConvertible {
         return collectPathValues().map {
             (a,b) in
             let ad = a.map { "\($0)" }
-            return "\(ad.joinWithSeparator(".")) \(b)"
-        }.joinWithSeparator("\n")
+            return "\(ad.joined(separator: ".")) \(b)"
+        }.joined(separator: "\n")
         
         
         
@@ -44,11 +44,11 @@ extension TrieClass : CustomStringConvertible {
 
 extension TrieClass : TrieType {
     
-    func insert(value: Value) {
+    func insert(_ value: Value) {
         valueStore.insert(value)
     }
     
-    func delete(value: Value) -> Value? {
+    func delete(_ value: Value) -> Value? {
         return valueStore.remove(value)
     }
     
@@ -67,7 +67,7 @@ extension TrieClass {
     var payload : Set<Value> {
         var collected = valueStore
         for (_,trie) in trieStore {
-            collected.unionInPlace(trie.payload)
+            collected.formUnion(trie.payload)
         }
         return collected
     }

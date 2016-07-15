@@ -49,7 +49,7 @@ class YicesLPOTests: YicesTestCase {
                 return(f,-1)
             }
             
-            }.sort {
+            }.sorted {
                 $0.1 > $1.1
         }
         

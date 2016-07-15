@@ -17,7 +17,7 @@ class YicesKBOTests: YicesTestCase {
     
    
     
-    func printValues(ctx: COpaquePointer, terms: [term_t])  {
+    func printValues(_ ctx: OpaquePointer, terms: [term_t])  {
         XCTAssertEqual(STATUS_SAT, yices_check_context(ctx, nil))
         
         let mdl = yices_get_model(ctx, 1)
@@ -38,7 +38,7 @@ class YicesKBOTests: YicesTestCase {
         
     }
     
-    func printTerms(ctx: COpaquePointer, terms: [(TptpNode,term_t)])  {
+    func printTerms(_ ctx: OpaquePointer, terms: [(TptpNode,term_t)])  {
         XCTAssertEqual(STATUS_SAT, yices_check_context(ctx, nil))
         
         let mdl = yices_get_model(ctx, 1)

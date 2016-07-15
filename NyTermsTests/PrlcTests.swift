@@ -19,20 +19,20 @@ class PrlcTests: XCTestCase {
             XCTAssertTrue(store == nil);
         }
         
-        XCTAssertEqual(1024, store.memory.symbols.capacity);
-        XCTAssertEqual(1024, store.memory.p_nodes.capacity);
-        XCTAssertEqual(1024, store.memory.t_nodes.capacity);
+        XCTAssertEqual(1024, store.pointee.symbols.capacity);
+        XCTAssertEqual(1024, store.pointee.p_nodes.capacity);
+        XCTAssertEqual(1024, store.pointee.t_nodes.capacity);
         
-        XCTAssertEqual(1, store.memory.symbols.unit);
-        XCTAssertEqual(2056, store.memory.p_nodes.unit);
-        XCTAssertEqual(40, store.memory.t_nodes.unit);
+        XCTAssertEqual(1, store.pointee.symbols.unit);
+        XCTAssertEqual(2056, store.pointee.p_nodes.unit);
+        XCTAssertEqual(40, store.pointee.t_nodes.unit);
 
         
-        XCTAssertEqual(42, store.memory.symbols.size);
-        XCTAssertEqual(20, store.memory.p_nodes.size);
-        XCTAssertEqual(0, store.memory.t_nodes.size);
+        XCTAssertEqual(42, store.pointee.symbols.size);
+        XCTAssertEqual(20, store.pointee.p_nodes.size);
+        XCTAssertEqual(0, store.pointee.t_nodes.size);
         
-        XCTAssertEqual("", String.fromCString(prlcFirstSymbol(store))!);
+        XCTAssertEqual("", String(cString: prlcFirstSymbol(store)));
         
     }
     
@@ -53,7 +53,7 @@ class PrlcTests: XCTestCase {
         }
         let sequence = table.tptpSequence {
             ref in
-            String.fromCString(ref.memory.symbol) ?? "n/a"
+            String(cString: ref.pointee.symbol) ?? "n/a"
             
         }
         
@@ -88,10 +88,10 @@ class PrlcTests: XCTestCase {
         
         for ref in nodes {
             let nidx = table.indexOf(ref) ?? 0
-            let name = String.fromCString(ref.memory.symbol) ?? "n/a"
-            let sidx = table.indexOf(ref.memory.sibling) ?? 0
-            let lidx = table.indexOf(ref.memory.lastSibling) ?? 0
-            let cidx = table.indexOf(ref.memory.child) ?? 0
+            let name = String(cString: ref.pointee.symbol) ?? "n/a"
+            let sidx = table.indexOf(ref.pointee.sibling) ?? 0
+            let lidx = table.indexOf(ref.pointee.lastSibling) ?? 0
+            let cidx = table.indexOf(ref.pointee.child) ?? 0
             print("\(nidx) '\(name)' • child:\(cidx) • sibling:\(sidx)(\(lidx)")
         }
     }
@@ -120,8 +120,8 @@ class PrlcTests: XCTestCase {
             XCTAssertTrue(store == nil);
         }
         
-        XCTAssertEqual(42, store.memory.symbols.size);
-        XCTAssertEqual(20, store.memory.p_nodes.size);
+        XCTAssertEqual(42, store.pointee.symbols.size);
+        XCTAssertEqual(20, store.pointee.p_nodes.size);
         
         let string1 = "Hello, World!";
         let string2 = "🍜🍻"
@@ -129,20 +129,20 @@ class PrlcTests: XCTestCase {
         let s1 = prlcStoreSymbol(store,string1);
         let s2 = prlcStoreSymbol(store,string2);
         
-        XCTAssertEqual(65, store.memory.symbols.size);
-        XCTAssertEqual(41, store.memory.p_nodes.size);
+        XCTAssertEqual(65, store.pointee.symbols.size);
+        XCTAssertEqual(41, store.pointee.p_nodes.size);
         
         let s1c = prlcStoreSymbol(store,string1);
         let s2c = prlcStoreSymbol(store,string2);
         
-        XCTAssertEqual(65, store.memory.symbols.size);
-        XCTAssertEqual(41, store.memory.p_nodes.size);
+        XCTAssertEqual(65, store.pointee.symbols.size);
+        XCTAssertEqual(41, store.pointee.p_nodes.size);
         
-        XCTAssertEqual(string1, String.fromCString(s1))
-        XCTAssertEqual(string2, String.fromCString(s2))
+        XCTAssertEqual(string1, String(cString: s1))
+        XCTAssertEqual(string2, String(cString: s2))
         
-        XCTAssertEqual(string1, String.fromCString(s1c))
-        XCTAssertEqual(string2, String.fromCString(s2c))
+        XCTAssertEqual(string1, String(cString: s1c))
+        XCTAssertEqual(string2, String(cString: s2c))
         
         XCTAssertEqual(s1c, s1);
         XCTAssertEqual(s2c, s2);
@@ -150,7 +150,7 @@ class PrlcTests: XCTestCase {
         var symbols = [ String ]();
         var symbol = prlcFirstSymbol(store)
         while (symbol != nil) {
-            symbols.append(String.fromCString(symbol)!)
+            symbols.append(String(cString: symbol))
             symbol = prlcNextSymbol(store, symbol)
         }
         

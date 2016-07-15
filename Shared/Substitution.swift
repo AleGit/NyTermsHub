@@ -102,7 +102,7 @@ func =?=<T:Node>(lhs:T, rhs:T) -> [T:T]? {
             
         }
         
-        var decomposition = zip(lhs.nodes!, rhs.nodes!)
+        let decomposition = zip(lhs.nodes!, rhs.nodes!)
         
         for (s,t) in decomposition {
             guard let unifier = s =?= t else { return nil }
@@ -137,12 +137,12 @@ extension Node {
         guard let type = self.symbolType else { return nil } // workaround
         
         switch type {
-        case SymbolType.Negation:
+        case SymbolType.negation:
             assert (nodes.count == 1, "a negation with \(nodes.count) subnodes!")
             return nodes.first
-        case SymbolType.Inequation:
+        case SymbolType.inequation:
             assert (nodes.count == 2, "an inequation with \(nodes.count) subnodes!")
-            return Self(equational: Self.symbol(.Equation), nodes: nodes)
+            return Self(equational: Self.symbol(.equation), nodes: nodes)
         default:
             return nil
         }
@@ -151,22 +151,22 @@ extension Node {
     var negated : Self? {
         guard let nodes = self.nodes else { return self } // a variable is not negatable
         
-        let type = self.symbolType ?? SymbolType.Predicate // assume that unregisterd symbols are predicates
+        let type = self.symbolType ?? SymbolType.predicate // assume that unregisterd symbols are predicates
         
         
         switch type {
-        case SymbolType.Negation:
+        case SymbolType.negation:
             assert (nodes.count == 1, "a negation with \(nodes.count) subnodes!")
             return nodes.first
-        case SymbolType.Inequation:
+        case SymbolType.inequation:
             assert (nodes.count == 2, "an inequation with \(nodes.count) subnodes!")
-            return Self(equational: Self.symbol(.Equation), nodes: nodes)
-        case SymbolType.Equation:
+            return Self(equational: Self.symbol(.equation), nodes: nodes)
+        case SymbolType.equation:
             assert (nodes.count == 2, "an equation with \(nodes.count) subnodes!")
-            return Self(equational: Self.symbol(.Inequation), nodes: nodes)
+            return Self(equational: Self.symbol(.inequation), nodes: nodes)
             
-        case .Predicate:
-            return Self(connective: Self.symbol(.Negation), nodes:[self])
+        case .predicate:
+            return Self(connective: Self.symbol(.negation), nodes:[self])
             
         default:
             return nil
@@ -238,7 +238,7 @@ func *<T:Node> (lhs:[T:T], rhs:[T:T]) -> [T:T] {
 }
 
 
-func *=<T:Node>(inout lhs:[T:T], rhs:[T:T]) {
+func *=<T:Node>(lhs:inout [T:T], rhs:[T:T]) {
     for (key,value) in lhs {
         lhs[key] = value * rhs
     }

@@ -4,40 +4,40 @@ import Foundation
 
 extension Nylog.LogLevel {
     init(literal:String) {
-        switch literal.uppercaseString {
+        switch literal.uppercased() {
             
         case "0", "OFF":
-            self = .OFF
+            self = .off
         case "1", "FATAL":
-            self = .FATAL
+            self = .fatal
         case "2", "ERROR":
-            self = .ERROR
+            self = .error
         case "3", "WARN":
-            self = .WARN
+            self = .warn
         case "4", "INFO":
-            self = .INFO
+            self = .info
         case "5", "DEBUG":
-            self = .DEBUG
+            self = .debug
         case "6", "TRACE":
-            self = .TRACE
+            self = .trace
         case "7", "ALL":
-            self = .ALL
+            self = .all
         default:
-            self = .ERROR
+            self = .error
         }
     }
 }
 
 struct Nylog {
     enum LogLevel : Int {
-        case OFF = 0
-        case FATAL = 1
-        case ERROR = 2
-        case WARN = 3
-        case INFO = 4
-        case DEBUG = 5
-        case TRACE = 6
-        case ALL = 7
+        case off = 0
+        case fatal = 1
+        case error = 2
+        case warn = 3
+        case info = 4
+        case debug = 5
+        case trace = 6
+        case all = 7
     }
     
     private static var index = 0
@@ -47,7 +47,7 @@ struct Nylog {
     private static var logentries = [(LogLevel, String, CFTimeInterval?, CFAbsoluteTime)]()
     
     private static var logprintinterval : CFTimeInterval = 0.0
-    private static var logloglevel:LogLevel = .INFO
+    private static var logloglevel:LogLevel = .info
     
     private static func printconditional() {
         guard logprintinterval > 0 && (CFAbsoluteTimeGetCurrent() - lastprint) > logprintinterval
@@ -59,7 +59,7 @@ struct Nylog {
         
     }
     
-    static func reset(printinterval:CFTimeInterval = 0.0, loglevel:LogLevel = .INFO) {
+    static func reset(_ printinterval:CFTimeInterval = 0.0, loglevel:LogLevel = .info) {
         logentries.removeAll()
         index = 0
         zero = CFAbsoluteTimeGetCurrent()
@@ -74,7 +74,7 @@ struct Nylog {
     }
     
     
-    private static func printit(range:Range<Int>) {
+    private static func printit(_ range:Range<Int>) {
         for (level,key,duration,moment) in logentries[range] {
             let prefix : String = "*\(level)>>> \(key) •••"
             let suffix : String = "at \(moment.prettyTimeIntervalDescription)"
@@ -98,9 +98,9 @@ struct Nylog {
         
     }
     
-    private static func logappend(@autoclosure msg:()->String, loglevel:LogLevel, @autoclosure duration:()->CFTimeInterval?) {
-        assert(loglevel != .OFF)
-        assert(loglevel != .ALL)
+    private static func logappend(@autoclosure _ msg:()->String, loglevel:LogLevel, @autoclosure duration:()->CFTimeInterval?) {
+        assert(loglevel != .off)
+        assert(loglevel != .all)
         
         // check if the log level of the application is higher than the log level of the message
         if logloglevel.rawValue >= loglevel.rawValue {
@@ -109,7 +109,7 @@ struct Nylog {
         }
     }
     
-    static func measure<R>(@autoclosure msg:()->String, loglevel:LogLevel = .INFO, f:()->R) -> (R,CFTimeInterval) {
+    static func measure<R>(@autoclosure _ msg:()->String, loglevel:LogLevel = .info, f:()->R) -> (R,CFTimeInterval) {
         let start = CFAbsoluteTimeGetCurrent()
         let result = f()
         let end = CFAbsoluteTimeGetCurrent()
@@ -120,38 +120,38 @@ struct Nylog {
         return (result,end-start)
     }
     
-    private static func log(@autoclosure msg:()->String, loglevel:LogLevel = .INFO) {
+    private static func log(@autoclosure _ msg:()->String, loglevel:LogLevel = .info) {
         logappend(msg, loglevel:loglevel, duration:nil)
     }
     
     
     
-    static func fatal(@autoclosure msg:()->String) {
-        log(msg, loglevel:.FATAL)
+    static func fatal(@autoclosure _ msg:()->String) {
+        log(msg, loglevel:.fatal)
     }
     
-    static func error(@autoclosure msg:()->String) {
-        log(msg, loglevel:.ERROR)
+    static func error(@autoclosure _ msg:()->String) {
+        log(msg, loglevel:.error)
     }
     
-    static func warn(@autoclosure msg:()->String) {
-        log(msg, loglevel:.WARN)
+    static func warn(@autoclosure _ msg:()->String) {
+        log(msg, loglevel:.warn)
     }
     
-    static func info(@autoclosure msg:()->String) {
-        log(msg, loglevel:.INFO)
+    static func info(@autoclosure _ msg:()->String) {
+        log(msg, loglevel:.info)
     }
     
-    static func debug(@autoclosure msg:()->String) {
-        log(msg, loglevel:.DEBUG)
+    static func debug(@autoclosure _ msg:()->String) {
+        log(msg, loglevel:.debug)
     }
     
-    static func trace(@autoclosure msg:()->String) {
-        log(msg, loglevel:.TRACE)
+    static func trace(@autoclosure _ msg:()->String) {
+        log(msg, loglevel:.trace)
     }
 }
 
-func measure<R>(f:()->R) -> (R, CFAbsoluteTime){
+func measure<R>(_ f:()->R) -> (R, CFAbsoluteTime){
     let start = CFAbsoluteTimeGetCurrent()
     let result = f()
     let end = CFAbsoluteTimeGetCurrent()
@@ -159,7 +159,7 @@ func measure<R>(f:()->R) -> (R, CFAbsoluteTime){
     return (result, end-start)
 }
 
-func doitif(@autoclosure condition: ()->Bool, action:()->Void) {
+func doitif(@autoclosure _ condition: ()->Bool, action:()->Void) {
     if condition() {
         action()
     }
@@ -168,7 +168,7 @@ func doitif(@autoclosure condition: ()->Bool, action:()->Void) {
 func errorNumberAndDescription() -> (Int32,String) {
     let errorNumber = errno
     let cstring = strerror(errorNumber) // will always return a valid c string.
-    guard let errorString = String.fromCString(cstring) else {
+    guard let errorString = String(validatingUTF8: cstring!) else {
         let message = "Invalid Error Number: \(errorNumber) (this should be impossible)"
         return (errorNumber,message)
     }
@@ -203,7 +203,7 @@ extension Array {
         
     }
     
-    func permute<T:Hashable>(before:[T], after:[T]) -> [Element] {
+    func permute<T:Hashable>(_ before:[T], after:[T]) -> [Element] {
         assert(Set(before) == Set(after))
         assert(before.count == after.count)
         assert(self.count == before.count)
@@ -240,16 +240,16 @@ extension Range where Element : Comparable {
     /// - `func min<T : Comparable>(x: T, _ y: T) -> T`
     ///
     /// - `func max<T : Comparable>(x: T, _ y: T) -> T`
-    mutating func insert(value:Element) {
+    mutating func insert(_ value:Element) {
         guard !self.contains(value) else { return }
         
         self.startIndex = min(self.startIndex, value)
-        self.endIndex = max(self.endIndex, value.successor())
+        self.endIndex = max(self.endIndex, <#T##Collection corresponding to `value`##Collection#>.index(after: value))
     }
 }
 
-extension SequenceType where Generator.Element : Comparable {
-    typealias E = Generator.Element
+extension Sequence where Iterator.Element : Comparable {
+    typealias E = Iterator.Element
     func minMaxElementPair() -> (E,E)? {
         return self.reduce(nil) {
             (pair:(E,E)?, element:E) -> (E,E)? in
@@ -263,7 +263,7 @@ extension SequenceType where Generator.Element : Comparable {
 
 extension Range where Element: Comparable {
     /// create range such that all elements in the sequence are in the range
-    init?<S:SequenceType where S.Generator.Element == Element>(sequence: S) {
+    init?<S:Sequence where S.Iterator.Element == Element>(sequence: S) {
         guard let (minimum,maximum) = sequence.minMaxElementPair()
             else { return nil } // empty sequence has neihter minimum nor maximum.
         assert (minimum <= maximum)
@@ -275,7 +275,7 @@ extension Range where Element: Comparable {
 
 extension Dictionary {
     // get all keys where the values match a predicate
-    func keys(predicate : (Element)->Bool) -> [Key] {
+    func keys(_ predicate : (Element)->Bool) -> [Key] {
         return self.filter { predicate($0) }.map { $0.0 }
     }
 }
@@ -286,20 +286,20 @@ extension String  {
     //    func contains(string:StringSymbol) -> Bool {
     //        return self.rangeOfString(string) != nil
     //    }
-    func containsOne<S:SequenceType where S.Generator.Element == StringSymbol>(strings:S) -> Bool {
-        return strings.reduce(false) { $0 || self.containsString($1) }
+    func containsOne<S:Sequence where S.Iterator.Element == StringSymbol>(_ strings:S) -> Bool {
+        return strings.reduce(false) { $0 || self.contains($1) }
     }
-    func containsAll<S:SequenceType where S.Generator.Element == StringSymbol>(strings:S) -> Bool {
-        return strings.reduce(true) { $0 && self.containsString($1) }
+    func containsAll<S:Sequence where S.Iterator.Element == StringSymbol>(_ strings:S) -> Bool {
+        return strings.reduce(true) { $0 && self.contains($1) }
     }
 }
 
 // MARK: -
 
-extension CollectionType
-where Generator.Element : CustomStringConvertible {
-    func joinWithSeparator(separator:String) -> String {
-        return self.map { $0.description }.joinWithSeparator(separator)
+extension Collection
+where Iterator.Element : CustomStringConvertible {
+    func joinWithSeparator(_ separator:String) -> String {
+        return self.map { $0.description }.joined(separator: separator)
     }
 }
 
@@ -311,9 +311,9 @@ where Generator.Element : CustomStringConvertible {
 //    }
 //}
 
-extension CollectionType
-where Generator.Element == SubSequence.Generator.Element {
-    var decompose: (head: Generator.Element, tail: [Generator.Element])? {
+extension Collection
+where Iterator.Element == SubSequence.Iterator.Element {
+    var decompose: (head: Iterator.Element, tail: [Iterator.Element])? {
         guard let head = first else { return nil }
         return (head, Array(dropFirst()))
     }
@@ -322,29 +322,29 @@ where Generator.Element == SubSequence.Generator.Element {
 
 // MARK: -
 
-extension SequenceType {
+extension Sequence {
     
-    func all(predicate: Generator.Element -> Bool) -> Bool {
+    func all(_ predicate: (Iterator.Element) -> Bool) -> Bool {
         return self.reduce(true) { $0 && predicate($1) }
     }
     
-    func one(predicate: Generator.Element -> Bool) -> Bool {
+    func one(_ predicate: (Iterator.Element) -> Bool) -> Bool {
         return self.reduce(false) { $0 || predicate($1) }
     }
     
-    func count(predicate: Generator.Element -> Bool) -> Int {
+    func count(_ predicate: (Iterator.Element) -> Bool) -> Int {
         return self.reduce(0) { $0 + (predicate($1) ? 1 : 0) }
     }
 }
 
 
 
-extension SequenceType where Generator.Element : Hashable {
-    typealias Element = Generator.Element
+extension Sequence where Iterator.Element : Hashable {
+    typealias Element = Iterator.Element
     
     var elementPlaces : [Element : [Int]] {
         var eo = [Element : [Int]]()
-        for (index,value) in self.enumerate() {
+        for (index,value) in self.enumerated() {
             var array = eo[value] ?? [Int]()
             array.append(index)
             eo[value] = array
@@ -365,7 +365,7 @@ extension SequenceType where Generator.Element : Hashable {
 }
 
 /// cartesic product of two sequences
-func *<L,R,LS:SequenceType,RS:SequenceType where LS.Generator.Element==L, RS.Generator.Element == R>(lhs:LS,rhs:RS) -> [(L,R)] {
+func *<L,R,LS:Sequence,RS:Sequence where LS.Iterator.Element==L, RS.Iterator.Element == R>(lhs:LS,rhs:RS) -> [(L,R)] {
     var a  = [(L,R)]()
     for l in lhs {
         for r in rhs {
@@ -380,8 +380,8 @@ func *<L,R,LS:SequenceType,RS:SequenceType where LS.Generator.Element==L, RS.Gen
 
 
 extension Set {
-    mutating func uniqueify(inout member: Element) {
-        guard let index = self.indexOf(member) else {
+    mutating func uniqueify(_ member: inout Element) {
+        guard let index = self.index(of: member) else {
             self.insert(member)
             return
         }
@@ -409,7 +409,7 @@ extension Set {
 //    return I(result)
 //}
 
-func percent(dividend:Int, divisor:Int) -> Int {
+func percent(_ dividend:Int, divisor:Int) -> Int {
     let result = 0.5 + 100.0 * (Double(dividend) / Double(divisor))
     return Int(result)
 }
@@ -439,17 +439,17 @@ extension Int {
 
 
 
-func eqfunc(symbols:[String : SymbolQuadruple]) -> (hasEquations:Bool, functors:[(String, SymbolQuadruple)]) {
-    let hasEquations = symbols.reduce(false) { (a:Bool,b:(String,SymbolQuadruple)) in a || b.1.category == .Equational }
-    let functors = symbols.filter { (a:String,q:SymbolQuadruple) in q.category == .Functor }
+func eqfunc(_ symbols:[String : SymbolQuadruple]) -> (hasEquations:Bool, functors:[(String, SymbolQuadruple)]) {
+    let hasEquations = symbols.reduce(false) { (a:Bool,b:(String,SymbolQuadruple)) in a || b.1.category == .equational }
+    let functors = symbols.filter { (a:String,q:SymbolQuadruple) in q.category == .functor }
     return (hasEquations,functors)
 }
 
-func maxarity(functors:[(String , SymbolQuadruple)]) -> Int {
+func maxarity(_ functors:[(String , SymbolQuadruple)]) -> Int {
     return max(functors.reduce(0) { max($0,$1.1.arity.max) },10)
 }
 
-func axioms(symbols:[String : SymbolQuadruple]) -> [TptpNode]? {
+func axioms(_ symbols:[String : SymbolQuadruple]) -> [TptpNode]? {
     Nylog.trace("\(#function) \(#line) \(#file)")
     
     let (hasEquations, functors) = eqfunc(globalStringSymbols)
@@ -485,13 +485,13 @@ func axioms(symbols:[String : SymbolQuadruple]) -> [TptpNode]? {
         Nylog.debug("\(symbol) \(quadruple)")
         var arity = -1
         switch quadruple.arity {
-        case .None:
+        case .none:
             assert(false)
             break
-        case .Fixed(let v):
+        case .fixed(let v):
             arity = v
             break
-        case .Variadic(_):
+        case .variadic(_):
             assert(false)
             break
         }
@@ -518,12 +518,12 @@ func axioms(symbols:[String : SymbolQuadruple]) -> [TptpNode]? {
             yargs.append(Y)
         }
         switch quadruple.type {
-        case .Predicate:
+        case .predicate:
             let npx = TptpNode(connective:"~", nodes:[TptpNode(predicate:symbol, nodes:xargs)])
             let py = TptpNode(predicate:symbol, nodes:yargs)
             literals.append(npx)
             literals.append(py)
-        case .Function:
+        case .function:
             let fx = TptpNode(function:symbol, nodes:xargs)
             let fy = TptpNode(function:symbol, nodes:yargs)
             let fx_eq_fy = TptpNode(equational:"=", nodes:[fx,fy])

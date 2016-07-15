@@ -13,7 +13,7 @@ import Foundation
 protocol Order {
     associatedtype N:Node
     
-    func greaterThan(s:N, t:N) -> Bool
+    func greaterThan(_ s:N, t:N) -> Bool
 }
 
 
@@ -41,7 +41,7 @@ struct LexicographicPathOrder<N:Node> : Order {
         self.p = p
     }
     
-    func greaterThan(s:N, t:N) -> Bool {
+    func greaterThan(_ s:N, t:N) -> Bool {
         assert(s.isTerm)
         assert(t.isTerm)
 
@@ -99,14 +99,14 @@ struct LexicographicPathOrder<N:Node> : Order {
 /// (D.4.4.1) A *weight function* for a signature *F* is a pair (*w*,w<sub>0</sub>)
 /// of a mapping *w*: *F* -> **N** and constant w<sub>0</sub> such that
 /// *w*(c) > w<sub>0</sub> for every constant c in *F*.
-typealias weight = (w:StringSymbol -> Int, w0:Int)
+typealias weight = (w:(StringSymbol) -> Int, w0:Int)
 
 /// (D.4.4.2) Let *F* be a signature and (*w*,w<sub>0</sub> a weight function for *F*.
 /// The weight of a term t is defined as follows:
 /// 1. w(x) = w<sub>0</sub>
-typealias weighting = Node -> Int
+typealias weighting = (Node) -> Int
 
-func makeWeighting<T:Node where T.Symbol == String>(w: weight) -> ((T)->Int) {
+func makeWeighting<T:Node where T.Symbol == String>(_ w: weight) -> ((T)->Int) {
     
     var wt: ((T)->Int)? = nil
     
@@ -149,7 +149,7 @@ struct KnuthBendixOrder<N:Node> : Order {
         self.w = w
     }
     
-    func greaterThan(s:N, t:N) -> Bool {
+    func greaterThan(_ s:N, t:N) -> Bool {
         assert(s.isTerm)
         assert(t.isTerm)
         

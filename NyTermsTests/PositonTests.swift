@@ -22,8 +22,8 @@ class PositionTests: XCTestCase {
         
         for p1 in positions {
             for p2 in positions {
-                XCTAssertEqual(p1 <= p2, p2.startsWith(p1))
-                XCTAssertEqual(p1 < p2, p2.startsWith(p1) && p1 != p2)
+                XCTAssertEqual(p1 <= p2, p2.starts(with: p1))
+                XCTAssertEqual(p1 < p2, p2.starts(with: p1) && p1 != p2)
                 
             }
         }

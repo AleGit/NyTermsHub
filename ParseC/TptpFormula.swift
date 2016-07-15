@@ -7,11 +7,11 @@ class TptpParseResult: NSObject {
     var formulae = [TptpFormula] ()
     var includes = [TptpInclude] ()
     
-    func appendFormulae(array:[TptpFormula]) {
+    func appendFormulae(_ array:[TptpFormula]) {
         formulae += array
     }
     
-    func appendIncludes(array:[TptpInclude]) {
+    func appendIncludes(_ array:[TptpInclude]) {
         includes += array
     }
 }
@@ -23,7 +23,7 @@ typealias TptpParseResultTriple = (status:[Int], formulae:[TptpFormula], include
 /// It returns a triple with the list of parse status, 
 /// the list for successfully parsed *annotated formulae*
 /// and the list of all *include* lines.
-func parse(path path:String) -> TptpParseResultTriple {
+func parse(path:String) -> TptpParseResultTriple {
     
     let parseResult = TptpParseResult()
     let status = parse_path(path,parseResult)
@@ -31,7 +31,7 @@ func parse(path path:String) -> TptpParseResultTriple {
     return process(status, path:path, parseResult:parseResult)
 }
 
-private func process(status:Int32, path:String, parseResult:TptpParseResult) -> TptpParseResultTriple {
+private func process(_ status:Int32, path:String, parseResult:TptpParseResult) -> TptpParseResultTriple {
     
     // assert(status == 0, "parse path '\(path)' failed with code = \(status)")
     
@@ -65,7 +65,7 @@ private func process(status:Int32, path:String, parseResult:TptpParseResult) -> 
 
 /// Parses the content of `string` which may contain multiple annotated formulae, but must not contain include lines.
 /// It returns the list of successfully parsed *annotated formulae*.
-func parse(string string:String) -> TptpParseResultTriple {
+func parse(string:String) -> TptpParseResultTriple {
     
     let parseResult = TptpParseResult()
     let status = parse_string(string,parseResult)
@@ -121,24 +121,24 @@ extension TptpFormula : StringLiteralConvertible {
         
         switch formulae.count {
         case 0:
-            self.init(language: TptpLanguage.CNF, name: "parse_error", role: TptpRole.Unknown, root: TptpNode(constant:"parse_error"), annotations:nil)
+            self.init(language: TptpLanguage.cnf, name: "parse_error", role: TptpRole.unknown, root: TptpNode(constant:"parse_error"), annotations:nil)
         default:
             self.init(language: formulae[0].language, name: formulae[0].name, role: formulae[0].role, root: formulae[0].root, annotations: formulae[0].annotations)
         }
     }
     
     convenience init(language:TptpLanguage, stringLiteral value:String) {
-        let literal = "\(language)(anonymous,\(TptpRole.Unknown),\(value))."
+        let literal = "\(language)(anonymous,\(TptpRole.unknown),\(value))."
         self.init(stringLiteral: literal)
     }
     
     /// Convenience factory method to create a cnf root
     static func CNF(stringLiteral value:String) -> TptpFormula {
-        return TptpFormula(language: TptpLanguage.CNF, stringLiteral: value)
+        return TptpFormula(language: TptpLanguage.cnf, stringLiteral: value)
     }
     ///  Convenience factory method to create a fof root
     static func FOF(stringLiteral value:String) -> TptpFormula {
-        return TptpFormula(language: TptpLanguage.FOF, stringLiteral: value)
+        return TptpFormula(language: TptpLanguage.fof, stringLiteral: value)
     }
 }
 

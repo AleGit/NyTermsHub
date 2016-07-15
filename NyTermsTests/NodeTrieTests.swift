@@ -29,9 +29,9 @@ class NodeTrieTests: XCTestCase {
         XCTAssertEqual(3, tPaths.count)
         
         let fxaExpected : [[SymHop<String>]] = [
-            [.Symbol("f"),.Hop(0), .Symbol("*")],
-            [.Symbol("f"),.Hop(1), .Symbol("g"),.Hop(0), .Symbol("a")],
-            [.Symbol("f"),.Hop(1), .Symbol("g"),.Hop(1), .Symbol("b")]
+            [.symbol("f"),.hop(0), .symbol("*")],
+            [.symbol("f"),.hop(1), .symbol("g"),.hop(0), .symbol("a")],
+            [.symbol("f"),.hop(1), .symbol("g"),.hop(1), .symbol("b")]
         ]
         
         XCTAssertEqual(fxaExpected.first!, tPaths.first!)
@@ -59,11 +59,11 @@ class NodeTrieTests: XCTestCase {
                 let subtrie = trie[path]!
                 let values = Set(subtrie.values!)
                 let payload = subtrie.payload
-                XCTAssertTrue(payload.isSupersetOf(values))
+                XCTAssertTrue(payload.isSuperset(of: values))
                 print("values=\(values)")
                 
-                if (payload.isStrictSupersetOf(values)) {
-                    print("payload=\(payload.subtract(values))")
+                if (payload.isStrictSuperset(of: values)) {
+                    print("payload=\(payload.subtracting(values))")
                 }
                 
                 XCTAssertTrue(values.contains(clause))
@@ -81,7 +81,7 @@ class NodeTrieTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }

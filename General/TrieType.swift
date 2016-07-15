@@ -10,30 +10,30 @@ protocol TrieType : Equatable {
     init()
     
     /// creates a trie type with one value at key path
-    init<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value)
+    init<C:Collection where C.Iterator.Element == Key,
+        C.SubSequence.Iterator.Element == Key>(path:C, value:Value)
     
     /// inserts one value at key path
-    mutating func insert<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value)
+    mutating func insert<C:Collection where C.Iterator.Element == Key,
+        C.SubSequence.Iterator.Element == Key>(_ path:C, value:Value)
     
     /// deletes and returns one value at key path,
     /// if path or value do not exist trie stays unchanged and nil is returned
-    mutating func delete<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value) -> Value?
+    mutating func delete<C:Collection where C.Iterator.Element == Key,
+        C.SubSequence.Iterator.Element == Key>(_ path:C, value:Value) -> Value?
     
     /// returns all values at path
-    func retrieve<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C) -> [Value]?
+    func retrieve<C:Collection where C.Iterator.Element == Key,
+        C.SubSequence.Iterator.Element == Key>(_ path:C) -> [Value]?
     
     /// checks if trie type has no values
     var isEmpty : Bool { get }
     
     /// stores one value at trie node
-    mutating func insert(value:Value)
+    mutating func insert(_ value:Value)
     
     /// deletes and returns one value from trie node
-    mutating func delete(value:Value) -> Value?
+    mutating func delete(_ value:Value) -> Value?
     
     /// get values at trie node
     var values : [Value]? { get }
@@ -51,14 +51,14 @@ protocol TrieType : Equatable {
 // MARK: default implementations for init, insert, delete, retrieve
 
 extension TrieType {
-    init<C:CollectionType where C.Generator.Element == Key,
-        C.SubSequence.Generator.Element == Key>(path:C, value:Value) {
+    init<C:Collection where C.Iterator.Element == Key,
+        C.SubSequence.Iterator.Element == Key>(path:C, value:Value) {
             self.init()
             self.insert(path, value:value)
     }
     
-    mutating func insert<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value) {
+    mutating func insert<S:Collection where S.Iterator.Element == Key,
+        S.SubSequence.Iterator.Element == Key>(_ path:S, value:Value) {
             guard let (head,tail) = path.decompose else {
                 self.insert(value)
                 return
@@ -69,8 +69,8 @@ extension TrieType {
             self[head] = trie
     }
     
-    mutating func delete<S:CollectionType where S.Generator.Element == Key,
-        S.SubSequence.Generator.Element == Key>(path:S, value:Value) -> Value? {
+    mutating func delete<S:Collection where S.Iterator.Element == Key,
+        S.SubSequence.Iterator.Element == Key>(_ path:S, value:Value) -> Value? {
             guard let (head,tail) = path.decompose else {
                 return self.delete(value)
             }
@@ -81,8 +81,8 @@ extension TrieType {
             return v
     }
     
-    func retrieve<C:CollectionType where
-        C.Generator.Element == Key, C.SubSequence.Generator.Element == Key>(path:C) -> [Value]? {
+    func retrieve<C:Collection where
+        C.Iterator.Element == Key, C.SubSequence.Iterator.Element == Key>(_ path:C) -> [Value]? {
             guard let (head,tail) = path.decompose else {
                 return values
             }
@@ -106,19 +106,19 @@ extension TrieType {
 extension TrieType where Value==Int {
     typealias KeyPath = [Key]
     
-    mutating func fill<N:Node, R:SequenceType, S:SequenceType where
-        R.Generator.Element == N,
-        S.Generator.Element == KeyPath>(nodes:R, paths:(N) -> S ) {
-            for (index,node) in nodes.enumerate() {
+    mutating func fill<N:Node, R:Sequence, S:Sequence where
+        R.Iterator.Element == N,
+        S.Iterator.Element == KeyPath>(_ nodes:R, paths:(N) -> S ) {
+            for (index,node) in nodes.enumerated() {
                 for path in paths(node) {
                     self.insert(path, value:index)
                 }
             }
     }
     
-    mutating func fill<N:Node, R:SequenceType where
-        R.Generator.Element == N>(nodes:R, path:(N) -> KeyPath) {
-            for (index,node) in nodes.enumerate() {
+    mutating func fill<N:Node, R:Sequence where
+        R.Iterator.Element == N>(_ nodes:R, path:(N) -> KeyPath) {
+            for (index,node) in nodes.enumerated() {
                 self.insert(path(node), value:index)
             }
     }
@@ -132,23 +132,23 @@ extension TrieType where Value:Hashable {
     
 }
 
-func extractUnifiables<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(trie:T, path:[T.Key]) -> Set<T.Value>? {
+func extractUnifiables<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(_ trie:T, path:[T.Key]) -> Set<T.Value>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
     
     switch head {
-    case .Hop(_):
+    case .hop(_):
         guard let subtrie = trie[head] else { return nil }
         return extractUnifiables(subtrie, path:tail)
-    case .Symbol("*"):
+    case .symbol("*"):
         // collect everything
         return Set(trie.tries.flatMap { $0.payload })
         
     default:
         // collect variable and exeact match
         
-        let variables = trie[.Symbol("*")]?.payload
+        let variables = trie[.symbol("*")]?.payload
         
         guard let exactly = trie[head] else {
             return variables
@@ -160,7 +160,7 @@ func extractUnifiables<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>
         
         
         if variables != nil {
-            payload.unionInPlace(variables!)
+            payload.formUnion(variables!)
         }
         return payload
         
@@ -169,7 +169,7 @@ func extractUnifiables<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>
 
 
 /// extract exact path matches
-func extractVariants<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(trie:T, path:[T.Key]) -> Set<T.Value>? {
+func extractVariants<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(_ trie:T, path:[T.Key]) -> Set<T.Value>? {
     guard let (head,tail) = path.decompose else {
         return trie.payload
     }
@@ -180,7 +180,7 @@ func extractVariants<T:TrieType where T.Key==SymHop<String>, T.Value:Hashable>(t
 }
 
 private func candidates<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:Hashable, N.Symbol==String>(
-    indexed:T,
+    _ indexed:T,
     queryTerm:N,
     extract:(T, path:[T.Key]) -> Set<T.Value>?
     
@@ -192,12 +192,12 @@ private func candidates<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:
     
     for path in tail {
         guard let next = extract(indexed, path:path) else { return nil }
-        result.intersectInPlace(next)
+        result.formIntersection(next)
     }
     return result
 }
 
-func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, T.Value:Hashable, N.Symbol==String>(indexed:T, term:N) -> Set<T.Value>? {
+func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, T.Value:Hashable, N.Symbol==String>(_ indexed:T, term:N) -> Set<T.Value>? {
     var queryTerm: N
     switch term.symbol {
     case "~":
@@ -212,7 +212,7 @@ func candidateComplementaries<T:TrieType, N:Node where T.Key==SymHop<N.Symbol>, 
     return candidates(indexed, queryTerm:queryTerm) { a,b in extractUnifiables(a,path:b) }
 }
 
-func candidateVariants<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:Hashable, N.Symbol==String>(indexed:T, term:N) -> Set<T.Value>? {
+func candidateVariants<T:TrieType, N:Node where T.Key==SymHop<String>, T.Value:Hashable, N.Symbol==String>(_ indexed:T, term:N) -> Set<T.Value>? {
     return candidates(indexed, queryTerm:term) { a,b in extractVariants(a,path:b) }
 }
 

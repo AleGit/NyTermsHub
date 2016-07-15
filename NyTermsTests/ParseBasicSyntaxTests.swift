@@ -48,7 +48,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         
         let myformula = tptpFormulae[20_899]
         XCTAssertEqual("u61248", myformula.name)
-        XCTAssertEqual(TptpRole.Axiom, myformula.role)
+        XCTAssertEqual(TptpRole.axiom, myformula.role)
         
         let myterm = MyTestTerm(myformula.root)
         XCTAssertEqual("~(v2339(VarCurr,bitIndex5))|v2338(VarCurr,bitIndex129)", myterm.description)
@@ -79,7 +79,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertNotNil(last.symbolQuadruple())
         let quartuple = last.symbolQuadruple()!
         
-        XCTAssertEqual(SymbolNotation.Infix, quartuple.notation)
+        XCTAssertEqual(SymbolNotation.infix, quartuple.notation)
         let actual = last.description
         
         XCTAssertEqual("true!=false", actual)
@@ -113,7 +113,7 @@ class ParseBasicSyntaxTests: XCTestCase {
         XCTAssertEqual(",", forall2vars.symbol)
         XCTAssertEqual(16448, forall2vars.nodes!.count)
         
-        for (index,term) in forall2vars.nodes!.enumerate() {
+        for (index,term) in forall2vars.nodes!.enumerated() {
             let symbol = "V\(index+1)"
             // if index > 3 { break; }
             XCTAssertEqual(symbol, term.symbol)

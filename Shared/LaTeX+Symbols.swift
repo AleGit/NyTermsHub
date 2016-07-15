@@ -11,41 +11,41 @@ import Foundation
 struct LaTeX {
     struct Symbols {
         
-        private static let typeDecorators : [SymbolType:String->String] = [
+        private static let typeDecorators : [SymbolType:(String)->String] = [
             
-            .LeftParenthesis:{ _ in "(" },
-            .RightParenthesis:{ _ in ")" },
-            .LeftCurlyBracket:{ _ in "\\{" },
-            .RightCurlyBracket:{ _ in "\\}" },
-            .LeftSquareBracket:{ _ in "[" },
-            .RightSquareBracket:{ _ in "]" },
-            .LeftAngleBracket:{ _ in "\\langle" },
-            .RightAngleBracket:{ _ in "\\rangle" },
+            .leftParenthesis:{ _ in "(" },
+            .rightParenthesis:{ _ in ")" },
+            .leftCurlyBracket:{ _ in "\\{" },
+            .rightCurlyBracket:{ _ in "\\}" },
+            .leftSquareBracket:{ _ in "[" },
+            .rightSquareBracket:{ _ in "]" },
+            .leftAngleBracket:{ _ in "\\langle" },
+            .rightAngleBracket:{ _ in "\\rangle" },
             
-            .Negation : { _ in "\\lnot " },
-            .Disjunction : { _ in "\\lor " },
-            .Conjunction : { _ in "\\land " },
-            .Implication : { _ in "\\Rightarrow " },
-            .Converse : { _ in "\\Leftarrow " },
-            .IFF : { _ in "\\Leftrightarrow " },
-            .NIFF: { _ in "\\oplus " },
-            .NAND: { _ in "\\uparrow " },
-            .NOR: { _ in "\\downarrow " },
-            .Sequent: { _ in "\\longrightarrow " },
-            .Tuple : { _ in "," },
+            .negation : { _ in "\\lnot " },
+            .disjunction : { _ in "\\lor " },
+            .conjunction : { _ in "\\land " },
+            .implication : { _ in "\\Rightarrow " },
+            .converse : { _ in "\\Leftarrow " },
+            .iff : { _ in "\\Leftrightarrow " },
+            .niff: { _ in "\\oplus " },
+            .nand: { _ in "\\uparrow " },
+            .nor: { _ in "\\downarrow " },
+            .sequent: { _ in "\\longrightarrow " },
+            .tuple : { _ in "," },
             
-            .Universal : { _ in "\\forall " },
-            .Existential : { _ in "\\exists " },
+            .universal : { _ in "\\forall " },
+            .existential : { _ in "\\exists " },
             
-            .Equation : { _ in "\\approx " },
-            .Inequation : { _ in "\\not\\approx " },
+            .equation : { _ in "\\approx " },
+            .inequation : { _ in "\\not\\approx " },
             
-            .Predicate : { "{\\mathsf \($0.uppercaseString)}" },
-            .Function : { "{\\mathsf \($0)}" },
-            .Variable : { $0.lowercaseString }
+            .predicate : { "{\\mathsf \($0.uppercased())}" },
+            .function : { "{\\mathsf \($0)}" },
+            .variable : { $0.lowercased() }
         ]
         
-        static func decorate(symbol:String, type:SymbolType) -> String {
+        static func decorate(_ symbol:String, type:SymbolType) -> String {
             return LaTeX.Symbols.typeDecorators[type]?(symbol) ?? symbol
         }
     }

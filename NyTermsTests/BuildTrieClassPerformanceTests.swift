@@ -20,7 +20,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("LCL129-1".p!)
         XCTAssertEqual(5,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymHopTrie()
             trie.fill(literals) { $0.paths }
         }
@@ -30,7 +30,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("LCL129-1".p!)
         XCTAssertEqual(5,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.stringPaths }
         }
@@ -42,7 +42,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("SYN000-1".p!)
         XCTAssertEqual(27,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymHopTrie()
             trie.fill(literals)  { $0.paths }
         }
@@ -52,7 +52,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("SYN000-1".p!)
         XCTAssertEqual(27,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.stringPaths }
         }
@@ -64,7 +64,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("PUZ051-1".p!)
         XCTAssertEqual(84,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymHopTrie()
             trie.fill(literals)  { $0.paths }
         }
@@ -74,7 +74,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("PUZ051-1".p!)
         XCTAssertEqual(84,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.stringPaths }
         }
@@ -86,7 +86,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("HWV074-1".p!)
         XCTAssertEqual(6017,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymHopTrie()
             trie.fill(literals)  { $0.paths }
         }
@@ -96,7 +96,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("HWV074-1".p!)
         XCTAssertEqual(6017,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.stringPaths }
         }
@@ -108,7 +108,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("HWV105-1".p!)
         XCTAssertEqual(52662,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymHopTrie()
             trie.fill(literals)  { $0.paths }
         }
@@ -118,7 +118,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("HWV105-1".p!)
         XCTAssertEqual(52662,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.stringPaths }
         }
@@ -130,7 +130,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("LCL129-1".p!)
         XCTAssertEqual(5,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.preorderPath }
         }
@@ -140,7 +140,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("SYN000-1".p!)
         XCTAssertEqual(27,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.preorderPath }
         }
@@ -150,7 +150,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("PUZ051-1".p!)
         XCTAssertEqual(84,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.preorderPath }
         }
@@ -160,7 +160,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("HWV074-1".p!)
         XCTAssertEqual(6017,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.preorderPath }
         }
@@ -170,7 +170,7 @@ class BuildTrieClassPerformanceTests: XCTestCase {
         let literals = TptpNode.literals("HWV105-1".p!)
         XCTAssertEqual(52662,literals.count)
         
-        self.measureBlock {
+        self.measure {
             var trie = SymbolTrie()
             trie.fill(literals)  { $0.preorderPath }
         }

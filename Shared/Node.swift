@@ -24,9 +24,9 @@ protocol Node : Hashable, CustomStringConvertible, StringLiteralConvertible {
     var symbolString : () -> String { get }
     var symbolQuadruple : () -> SymbolQuadruple? { get }
     
-    static func symbol(type:SymbolType) -> Symbol
+    static func symbol(_ type:SymbolType) -> Symbol
     
-    func register(type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool
+    func register(_ type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity) -> Bool
 
     
 }
@@ -104,7 +104,7 @@ extension Node {
 // MARK: Hashable : Equatable
 
 extension Node {
-    func isEqual(rhs:Self) -> Bool {
+    func isEqual(_ rhs:Self) -> Bool {
         if self.symbol != rhs.symbol  { return false }               // the symbols are equal
         
         if self.nodes == nil && rhs.nodes == nil { return true }     // both are nil. (both are variables)
@@ -112,13 +112,13 @@ extension Node {
         return self.nodes! == rhs.nodes!                             // none is nil (both are functions)
     }
     
-    func isVariant(rhs:Self) -> Bool {
+    func isVariant(_ rhs:Self) -> Bool {
         guard let mgu = (self =?= rhs) else { return false }
         
         return mgu.isRenaming
     }
     
-    func isUnifiable(rhs:Self) -> Bool {
+    func isUnifiable(_ rhs:Self) -> Bool {
         return (self =?= rhs) != nil
     }
 }
@@ -184,7 +184,7 @@ extension Node {
         return terms.reduce([self]) { $0 + $1.subterms }
     }
     
-    func is_subterm (t: Self) -> Bool {
+    func is_subterm (_ t: Self) -> Bool {
         return t.subterms.contains(self)
     }
 }

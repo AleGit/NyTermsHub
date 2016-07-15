@@ -15,14 +15,14 @@ class Z3CapiTest: XCTestCase {
     }
     
     /// see z3_capi.c
-    private func mk_solver(ctx:Z3_context) -> Z3_solver{
+    private func mk_solver(_ ctx:Z3_context) -> Z3_solver{
         let s = Z3_mk_solver(ctx)
         Z3_solver_inc_ref(ctx, s)
         return s
     }
     
     /// see z3_capi.c
-    private func del_solver(ctx:Z3_context, _ s: Z3_solver)
+    private func del_solver(_ ctx:Z3_context, _ s: Z3_solver)
     {
         Z3_solver_dec_ref(ctx, s);
     }

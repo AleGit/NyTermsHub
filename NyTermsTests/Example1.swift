@@ -24,7 +24,7 @@ class Example1: XCTestCase {
         super.tearDown()
     }
     
-    private func print_term(term : term_t) {
+    private func print_term(_ term : term_t) {
         guard let string = String(term:term) else {
             print(stderr, "Error in print_term: ");
             yices_print_error(stderr);

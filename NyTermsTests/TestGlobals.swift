@@ -9,18 +9,18 @@ typealias TestNode = NodeStruct
 
 // predefined test terms
 
-let a = TestNode(constant:"a")
-let b = TestNode(constant:"b")
-let c = TestNode(constant:"c")
-let cbot = TestNode(constant:"⊥")
-let x = TestNode(variable:"X")
-let y = TestNode(variable:"Y")
-let z = TestNode(variable:"Z")
-let fxy = TestNode(function:"f", nodes: [x,y])
+let a = TestNode(stringLiteral:"a")
+let b = TestNode(stringLiteral:"b")
+let c = TestNode(stringLiteral:"c")
+let cbot = TestNode(stringLiteral:"⊥")
+let x = TestNode(stringLiteral:"X")
+let y = TestNode(stringLiteral:"Y")
+let z = TestNode(stringLiteral:"Z")
+let fxy = TestNode(symbol:"f", nodes: [x,y])
 let fax = fxy * [x:a,y:x]
 let fxa = fxy * [y:a]
 let faa = fxy * [x:a,y:a]
-let gx = TestNode(function:"g", nodes: [x])
+let gx = TestNode(symbol:"g", nodes: [x])
 let gb = gx * [x:b]
 let gfaa = TestNode(function:"g",nodes: [faa])
 

@@ -38,7 +38,7 @@ class PrlcParserBasicTests: XCTestCase {
         let table = PrlcTable(size: 0, path: "")
         
         XCTAssertEqual(42, table.symbolStoreSize)
-        XCTAssertEqual(1024, table.store.memory.symbols.capacity)
+        XCTAssertEqual(1024, table.store.pointee.symbols.capacity)
         
         for (symbol,index) in symbols {
             XCTAssertEqual(index, table.indexOf(symbol: symbol),"\(symbol)")
@@ -121,7 +121,7 @@ class PrlcParserBasicTests: XCTestCase {
                 let c0 = table.treeStoreSize
                 let c1 = table.tptpSequence.count { _ in true }
                 let c2 = table.includes.count { _ in true }
-                let c2x = table.tptpSequence.count { $0.memory.type == PRLC_INCLUDE }
+                let c2x = table.tptpSequence.count { $0.pointee.type == PRLC_INCLUDE }
                 
                 print(name,":",
                       parseTime.prettyTimeIntervalDescription,

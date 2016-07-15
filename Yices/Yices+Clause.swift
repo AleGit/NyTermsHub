@@ -26,17 +26,17 @@ extension Yices {
     
     /// Return a yices clause and yices literals from a node clause.
     /// The children of `yicesClause` are often different from `yicesLiterals`.
-    static func clause<N:Node>(clause:N) -> Tuple /* (
+    static func clause<N:Node>(_ clause:N) -> Tuple /* (
         yicesClause: term_t,
         yicesLiterals:[type_t],
         alignedYicesLiterals:[type_t]) */ {
         
             // assert(clause.isClause,"'\(#function)(\(clause))' Argument must be a clause, but it is not.")
             
-            let type = clause.symbolType ?? SymbolType.Predicate  // unknown symbols are predicate symbols
+            let type = clause.symbolType ?? SymbolType.predicate  // unknown symbols are predicate symbols
             
             switch type {
-            case .Disjunction:
+            case .disjunction:
                 guard let literals = clause.nodes where literals.count > 0 else {
                     return (Yices.bot, Set<term_t>(), [term_t]())
                 }
@@ -44,7 +44,7 @@ extension Yices {
                 return Yices.clause(literals)
                
                 // unit clause
-            case .Predicate, .Negation, .Equation, .Inequation:
+            case .predicate, .negation, .equation, .inequation:
                 let message = "\(#function)(\(clause)) Argument node was not a clause, but a literal."
                 Nylog.info(message)
                 
@@ -70,7 +70,7 @@ extension Yices {
     /// * `p ≡ [ p, p ]`
     /// * `p ≡ [ ⊥ ~= ⊥, p ]`
     /// * `[p,q,q,q,q] ≡ [ p, q, ⊥ ~= ⊥, p,q ]`
-    static func clause<N:Node>(literals:[N]) -> Tuple /* (
+    static func clause<N:Node>(_ literals:[N]) -> Tuple /* (
         yicesClause: type_t,
         yicesLiterals:[type_t],
         alignedYicesLiterals:[type_t]) */ {
@@ -97,7 +97,7 @@ extension Yices {
     /// - an equation
     /// - an inequation
     /// - a predicatate term or a proposition constant
-    static func literal<N:Node>(literal:N) -> term_t {
+    static func literal<N:Node>(_ literal:N) -> term_t {
         assert(literal.isLiteral,"'\(#function)(\(literal))' Argument must be a literal, but it is not.")
         
         guard let nodes = literal.nodes
@@ -107,33 +107,33 @@ extension Yices {
         
         // By default a symbol is a predicate symbol
         // if it is not predefined or registered.
-        let type = literal.symbolType ?? SymbolType.Predicate
+        let type = literal.symbolType ?? SymbolType.predicate
         
         switch type {
-        case .Negation:
+        case .negation:
             assert(nodes.count == 1, "A negation must have exactly one child.")
             // no need to register negations
             // literal.register(.Negation, category: .Functor, notation:.Prefix, arity:.Fixed(1))
             return yices_not( Yices.literal(nodes.first! ))
             
-        case .Inequation:
+        case .inequation:
             assert(nodes.count == 2, "An inequation must have exactly two children.")
             // inequations must be registered to check if equality axioms are needed
-            literal.register(.Inequation, category: .Equational, notation:.Infix, arity:.Fixed(2))
+            literal.register(.inequation, category: .equational, notation:.infix, arity:.fixed(2))
             
             let args = nodes.map { Yices.term($0) }
             return yices_neq(args.first!, args.last!)
             
-        case .Equation:
+        case .equation:
             assert(nodes.count == 2, "An equation must have exactly two children.")
             // equations must be registered to check if equality axioms are needed
-            literal.register(.Equation, category: .Equational, notation:.Infix, arity:.Fixed(2))
+            literal.register(.equation, category: .equational, notation:.infix, arity:.fixed(2))
             let args = nodes.map { Yices.term($0) }
             return yices_eq(args.first!, args.last!)
             
-        case .Predicate:
+        case .predicate:
             // predicates must be registered to derive congruence axioms
-            literal.register(.Predicate, category:.Functor, notation:.Prefix, arity:.Fixed(nodes.count))
+            literal.register(.predicate, category:.functor, notation:.prefix, arity:.fixed(nodes.count))
             
             // proposition or predicate term (an application of Boolean type)
             return Yices.application(literal.symbolString(), nodes:nodes, term_tau: Yices.bool_tau)
@@ -145,7 +145,7 @@ extension Yices {
     }
     
     /// Build uninterpreted function term from term.
-    static func term<N:Node>(term:N) -> term_t {
+    static func term<N:Node>(_ term:N) -> term_t {
         assert(term.isTerm,"'\(#function)(\(term))' Argument must be a term, but it is not.")
         
         guard let nodes = term.nodes else {
@@ -153,14 +153,14 @@ extension Yices {
         }
         
         // functions must be registered to derive congruence axioms
-        term.register(.Function, category:.Functor, notation:.Prefix, arity:.Fixed(nodes.count))
+        term.register(.function, category:.functor, notation:.prefix, arity:.fixed(nodes.count))
         
         // function or constant term (an application of uninterpreted type)
         return Yices.application(term.symbolString(), nodes:nodes, term_tau:Yices.free_tau)
     }
     
     /// Build (constant) predicate or function.
-    static func application<N:Node>(symbol:String, nodes:[N], term_tau:type_t) -> term_t {
+    static func application<N:Node>(_ symbol:String, nodes:[N], term_tau:type_t) -> term_t {
         
         guard nodes.count > 0 else {
             return constant(symbol,term_tau: term_tau)

@@ -16,7 +16,7 @@ class PolyTryTests: YicesTestCase {
     
 
     
-    private func poly<T:Node where T.Symbol == String>(t:T) -> String {
+    private func poly<T:Node where T.NyTerms.Symbol == String>(_ t:T) -> String {
         guard let nodes = t.nodes else { return t.symbol } // variable
         
         let args = nodes.map { poly($0) }
@@ -116,7 +116,7 @@ class PolyTryTests: YicesTestCase {
         
     }
     
-    private func polyices<T:Node where T.Symbol == String>(t:T) -> term_t {
+    private func polyices<T:Node where T.NyTerms.Symbol == String>(_ t:T) -> term_t {
         guard let nodes = t.nodes else {
             var v = yices_get_term_by_name(t.symbol)
             if v == NULL_TERM {

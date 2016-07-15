@@ -99,7 +99,7 @@ class SwiftTests: XCTestCase {
         XCTAssertTrue(arguments[0].hasSuffix("NyTerms"))
         
         let key = "-tptp_root"
-        if let keyIndex = arguments.indexOf(key) {
+        if let keyIndex = arguments.index(of: key) {
             let valueIndex = keyIndex + 1
             XCTAssertTrue(valueIndex < arguments.count, "\(key) is last argument")
             let value = arguments[valueIndex]
@@ -113,10 +113,10 @@ class SwiftTests: XCTestCase {
     }
     
     func testProcessInfo() {
-        let info = NSProcessInfo.processInfo()
+        let info = ProcessInfo.processInfo
         
         let environment = info.environment.map { "\($0.0) : \($0.1)" }
-        print(environment.joinWithSeparator("\n"))
+        print(environment.joined(separator: "\n"))
         
         
     }
@@ -211,14 +211,14 @@ class SwiftTests: XCTestCase {
 }
 
 protocol AProtocol {
-    var predecessor: Int -> Int { get }
-    var successor: Int -> Int { get }
+    var predecessor: (Int) -> Int { get }
+    var successor: (Int) -> Int { get }
 }
 
 struct AStruct : AProtocol {
     
-    static func pred(input:Int) -> Int { return input-1 }
-    func succ(input:Int) -> Int { return input+1 }
+    static func pred(_ input:Int) -> Int { return input-1 }
+    func succ(_ input:Int) -> Int { return input+1 }
     
     var x = AStruct.pred
     var y = { succ($0) }

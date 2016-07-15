@@ -22,7 +22,7 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(symbols.count,1)
         
         if let inds = symbols[a.symbol] {
-            XCTAssertEqual(inds.type, SymbolType.Predicate)
+            XCTAssertEqual(inds.type, SymbolType.predicate)
             XCTAssertEqual(inds.arity, Set(arrayLiteral: 0))
             XCTAssertEqual(inds.occurences, 1)
             
@@ -42,7 +42,7 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(symbols.count,3)
         
         if let inds = symbols["f"] {
-            XCTAssertEqual(inds.type, SymbolType.Predicate)
+            XCTAssertEqual(inds.type, SymbolType.predicate)
             XCTAssertEqual(inds.arity, Set(arrayLiteral: 2))
             XCTAssertEqual(inds.occurences, 1)
             
@@ -52,7 +52,7 @@ class DimensionTests: XCTestCase {
         }
         
         if let inds = symbols["a"] {
-            XCTAssertEqual(inds.type, SymbolType.Function)
+            XCTAssertEqual(inds.type, SymbolType.function)
             XCTAssertEqual(inds.arity, Set(arrayLiteral: 0))
             XCTAssertEqual(inds.occurences, 1)
             
@@ -62,7 +62,7 @@ class DimensionTests: XCTestCase {
         }
         
         if let inds = symbols["X"] {
-            XCTAssertEqual(inds.type, SymbolType.Variable)
+            XCTAssertEqual(inds.type, SymbolType.variable)
             XCTAssertTrue(inds.arity.isEmpty)
             XCTAssertEqual(inds.occurences, 1)
             
@@ -82,7 +82,7 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(symbols.count,3)
         
         if let inds = symbols["g"] {
-            XCTAssertEqual(inds.type, SymbolType.Predicate)
+            XCTAssertEqual(inds.type, SymbolType.predicate)
             XCTAssertEqual(inds.arity, Set(arrayLiteral: 1))
             XCTAssertEqual(inds.occurences, 1)
             
@@ -92,7 +92,7 @@ class DimensionTests: XCTestCase {
         }
         
         if let inds = symbols["f"] {
-            XCTAssertEqual(inds.type, SymbolType.Function)
+            XCTAssertEqual(inds.type, SymbolType.function)
             XCTAssertEqual(inds.arity, Set(arrayLiteral: 2))
             XCTAssertEqual(inds.occurences, 1)
             
@@ -102,7 +102,7 @@ class DimensionTests: XCTestCase {
         }
         
         if let inds = symbols["a"] {
-            XCTAssertEqual(inds.type, SymbolType.Function)
+            XCTAssertEqual(inds.type, SymbolType.function)
             XCTAssertEqual(inds.arity, Set(arrayLiteral: 0))
             XCTAssertEqual(inds.occurences, 2)
             
@@ -125,9 +125,9 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(symbols["b"]?.arity, Set(arrayLiteral: 0))
         XCTAssertEqual(symbols["|"]?.arity, Set(arrayLiteral: 2))
         
-        XCTAssertEqual(symbols["a"]?.type, SymbolType.Predicate)
-        XCTAssertEqual(symbols["b"]?.type, SymbolType.Predicate)
-        XCTAssertEqual(symbols["|"]?.type, SymbolType.Disjunction)
+        XCTAssertEqual(symbols["a"]?.type, SymbolType.predicate)
+        XCTAssertEqual(symbols["b"]?.type, SymbolType.predicate)
+        XCTAssertEqual(symbols["|"]?.type, SymbolType.disjunction)
         
         XCTAssertEqual(symbols["a"]?.occurences, 1)
         XCTAssertEqual(symbols["b"]?.occurences, 1)
@@ -152,13 +152,13 @@ class DimensionTests: XCTestCase {
         XCTAssertEqual(symbols["a"]?.occurences, 2)
         XCTAssertEqual(symbols["X"]?.occurences, 2)
         
-        XCTAssertEqual(symbols["|"]?.type, SymbolType.Disjunction)
-        XCTAssertEqual(symbols["~"]?.type, SymbolType.Negation)
-        XCTAssertEqual(symbols["p"]?.type, SymbolType.Predicate)
-        XCTAssertEqual(symbols["f"]?.type, SymbolType.Function)
-        XCTAssertEqual(symbols["g"]?.type, SymbolType.Function)
-        XCTAssertEqual(symbols["a"]?.type, SymbolType.Function)
-        XCTAssertEqual(symbols["X"]?.type, SymbolType.Variable)
+        XCTAssertEqual(symbols["|"]?.type, SymbolType.disjunction)
+        XCTAssertEqual(symbols["~"]?.type, SymbolType.negation)
+        XCTAssertEqual(symbols["p"]?.type, SymbolType.predicate)
+        XCTAssertEqual(symbols["f"]?.type, SymbolType.function)
+        XCTAssertEqual(symbols["g"]?.type, SymbolType.function)
+        XCTAssertEqual(symbols["a"]?.type, SymbolType.function)
+        XCTAssertEqual(symbols["X"]?.type, SymbolType.variable)
         
         XCTAssertEqual(symbols["|"]?.arity, Set(arrayLiteral: 2))
         XCTAssertEqual(symbols["~"]?.arity, Set(arrayLiteral: 1))

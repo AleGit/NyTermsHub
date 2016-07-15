@@ -37,7 +37,7 @@ class MingyProverBasicTests: XCTestCase {
     }
 
     func testEmptyClause() {
-        let empty = TestNode(connective:"|",nodes: [TestNode]())
+        let empty = TestNode(symbol:"|",nodes: [TestNode]())
         
         let prover = MingyProver(clauses: [empty])
         let (result,runtime) = measure { prover.run(1.0) }
@@ -48,8 +48,8 @@ class MingyProverBasicTests: XCTestCase {
     }
 
     func testPropositionalFalse() {
-        let p = TestNode(connective:"|", nodes:[ "p" as TestNode])
-        let np = TestNode(connective:"|", nodes:[ "~p" as TestNode])
+        let p = TestNode(symbol:"|", nodes:[ "p" as TestNode])
+        let np = TestNode(symbol:"|", nodes:[ "~p" as TestNode])
         
         let prover = MingyProver(clauses: [p,np])
         let (result,runtime) = measure { prover.run(1.0) }
@@ -60,7 +60,7 @@ class MingyProverBasicTests: XCTestCase {
     }
 
     func testPropositionalSatisfiable() {
-        let satisfiable = TestNode(connective:"|",nodes:["p"])
+        let satisfiable = TestNode(symbol:"|",nodes:["p"])
         
         let prover = MingyProver(clauses: [satisfiable])
         let (result,runtime) = measure { prover.run(1.0) }
@@ -105,7 +105,7 @@ class MingyProverBasicTests: XCTestCase {
             // TestNode(connective:"|", nodes: ["p(X,X)"]),
             //TestNode(connective:"|", nodes: ["~(p(X,f(X)))"]),
             // "p(X,Y)|~p(f(X),f(Y))"
-            TestNode(connective:"|", nodes: ["X!=f(X)"]),
+            TestNode(symbol:"|", nodes: ["X!=f(X)"]),
             "X=Y|f(X)!=f(Y)"
             
         ]

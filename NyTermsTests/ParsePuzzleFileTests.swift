@@ -57,23 +57,23 @@ class ParsePuzzleFileTests: XCTestCase {
         // test transformation
         var index = 0
         if tptpFormulae.count > index {
-            XCTAssertEqual(tptpFormulae[index].language, TptpLanguage.CNF)
+            XCTAssertEqual(tptpFormulae[index].language, TptpLanguage.cnf)
             XCTAssertEqual(tptpFormulae[index].name, "intermediate_state")
-            XCTAssertEqual(tptpFormulae[index].role, TptpRole.Hypothesis)
+            XCTAssertEqual(tptpFormulae[index].role, TptpRole.hypothesis)
             XCTAssertTrue(tptpFormulae[index].root.isFormula)
             XCTAssertTrue(tptpFormulae[index].root.isClause)
         }
         
         index = 1
         if tptpFormulae.count > index {
-            XCTAssertEqual(tptpFormulae[index].language, TptpLanguage.CNF)
+            XCTAssertEqual(tptpFormulae[index].language, TptpLanguage.cnf)
             XCTAssertEqual(tptpFormulae[index].name, "goal_state")
-            XCTAssertEqual(tptpFormulae[index].role, TptpRole.NegatedConjecture)
+            XCTAssertEqual(tptpFormulae[index].role, TptpRole.negatedConjecture)
         }
         
         for root in tptpFormulae[2..<tptpFormulae.count] {
-            XCTAssertEqual(root.language, TptpLanguage.CNF)
-            XCTAssertEqual(root.role, TptpRole.Axiom)
+            XCTAssertEqual(root.language, TptpLanguage.cnf)
+            XCTAssertEqual(root.role, TptpRole.axiom)
             XCTAssertTrue(root.root.isFormula)
             XCTAssertTrue(root.root.isClause)
         }

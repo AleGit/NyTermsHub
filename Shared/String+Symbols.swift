@@ -11,10 +11,10 @@ enum SymbolType {
     
     // @available(*,deprecated=1.0)
     case
-    LeftParenthesis, RightParenthesis,
-    LeftCurlyBracket, RightCurlyBracket,
-    LeftSquareBracket, RightSquareBracket,
-    LeftAngleBracket, RightAngleBracket
+    leftParenthesis, rightParenthesis,
+    leftCurlyBracket, rightCurlyBracket,
+    leftSquareBracket, rightSquareBracket,
+    leftAngleBracket, rightAngleBracket
     
     /* CNF */
     
@@ -24,30 +24,30 @@ enum SymbolType {
     /* FOF */
     
     /// ⟨unary_connective⟩ ::= ~
-    case Negation   // ~    NOT
+    case negation   // ~    NOT
     
     /// ⟨assoc_connective⟩ ::= ⟨vline⟩ | &
-    case Disjunction    // |    OR                          // ⟨fof_or_formula⟩
-    case Conjunction    // &    AND                         // ⟨fof_and_formula⟩
+    case disjunction    // |    OR                          // ⟨fof_or_formula⟩
+    case conjunction    // &    AND                         // ⟨fof_and_formula⟩
     
     /// ⟨binary_connective⟩ ::= <=> | => | ⟨= | <~> | ~<vline> | ~&
-    case Implication    // =>   IMPLY
-    case Converse       // <=   YLPMI
+    case implication    // =>   IMPLY
+    case converse       // <=   YLPMI
     
-    case IFF    // <=>  IFF
-    case NIFF   // <~>  XOR NIFF
-    case NOR    // ~|   NOR
-    case NAND   // ~&   NAND
+    case iff    // <=>  IFF
+    case niff   // <~>  XOR NIFF
+    case nor    // ~|   NOR
+    case nand   // ~&   NAND
     
     /// ⟨gentzen_arrow⟩ ::= -->
-    case Sequent         // -->  GANTZEN
+    case sequent         // -->  GANTZEN
     
     /// n-ary list
-    case Tuple           // [ ... , ... ]
+    case tuple           // [ ... , ... ]
     
     /// ⟨fol_quantifier⟩ ::= ! | ?
-    case Universal       // !    FORALL
-    case Existential     // ?    EXISTS
+    case universal       // !    FORALL
+    case existential     // ?    EXISTS
     
     // general terms
     // 0-ary
@@ -56,37 +56,37 @@ enum SymbolType {
     // Predicate,      // (n-ary prefix)
     
     /// ⟨defined_infix_pred⟩ ::= ⟨infix_equality⟩ ::= =
-    case Equation               // =    EQUAL
+    case equation               // =    EQUAL
     /// ⟨infix_inequality⟩  ::= !=
-    case Inequation             // !=   NEQ
+    case inequation             // !=   NEQ
     
     /// Propositional and predicate symbols
     /// - ⟨plain_atomic_formula⟩ ::= ⟨plain_term⟩
     /// - ⟨plain_atomic_formula⟩ :== ⟨proposition⟩ | ⟨predicate⟩(⟨arguments⟩)
     /// - ⟨proposition⟩ :== ⟨predicate⟩
     /// - ⟨predicate⟩ :== ⟨atomic_word⟩
-    case Predicate
+    case predicate
     
     /// constant and function symbols
     /// - ⟨plain_term⟩ ::= ⟨constant⟩ | ⟨functor⟩(⟨arguments⟩)
     /// - ⟨constant⟩ ::= ⟨functor⟩
     /// - ⟨functor⟩ ::= ⟨atomic_word⟩
-    case Function               // constant and function symbols
+    case function               // constant and function symbols
     
     /// Variable symbols
     /// - ⟨variable⟩ ::= ⟨upper_word⟩
-    case Variable
+    case variable
     
     /// * for term paths
-    case Wildcard
+    case wildcard
     
-    case Invalid
+    case invalid
 }
 
 extension SymbolType {
     var isPredicational : Bool {
         switch self {
-        case .Predicate,.Equation,.Inequation:
+        case .predicate,.equation,.inequation:
             return true
         default:
             return false
@@ -95,50 +95,50 @@ extension SymbolType {
 }
 
 enum SymbolCategory {
-    case Auxiliary
+    case auxiliary
     
-    case Variable       //
-    case Functor        // constants, functions, proposition, predicates
-    case Equational     // equations, inequations, rewrite rules
-    case Connective
+    case variable       //
+    case functor        // constants, functions, proposition, predicates
+    case equational     // equations, inequations, rewrite rules
+    case connective
     
-    case Invalid
+    case invalid
 }
 
 enum SymbolNotation {
-    case TptpSpecific   // ! […]:(…)
+    case tptpSpecific   // ! […]:(…)
     
-    case Prefix     // f(…,…)
-    case Minus   // -1, 1-2
-    case Infix      // … + …
+    case prefix     // f(…,…)
+    case minus   // -1, 1-2
+    case infix      // … + …
     
-    case Postfix
+    case postfix
     
-    case Invalid
+    case invalid
 }
 
 enum SymbolArity : Equatable {
-    case None   // variable, auxiliary symbols
-    case Fixed(Int) // constant, function, predicate, equaitinal, connective symbols
-    case Variadic(Range<Int>)   // associative connectives
+    case none   // variable, auxiliary symbols
+    case fixed(Int) // constant, function, predicate, equaitinal, connective symbols
+    case variadic(CountableRange<Int>)   // associative connectives
     
-    func contains(value:Int) -> Bool {
+    func contains(_ value:Int) -> Bool {
         switch self {
-        case .None:
+        case .none:
             return false
-        case .Fixed(let arity):
+        case .fixed(let arity):
             return arity == value
-        case .Variadic(let range):
+        case .variadic(let range):
             return range.contains(value)
         }
     }
-    func contains(value:SymbolArity) -> Bool {
+    func contains(_ value:SymbolArity) -> Bool {
         switch (self,value) {
-        case (.None,.None):
+        case (.none,.none):
             return true
-        case (_, .Fixed(let arity)):
+        case (_, .fixed(let arity)):
             return self.contains(arity)
-        case (.Variadic(let outer), .Variadic(let inner)):
+        case (.variadic(let outer), .variadic(let inner)):
             return outer.startIndex <= inner.startIndex && inner.endIndex <= outer.endIndex
         default:
             return false
@@ -147,11 +147,11 @@ enum SymbolArity : Equatable {
     
     var max : Int {
         switch self {
-        case .None:
+        case .none:
             return 0
-        case .Fixed(let arity):
+        case .fixed(let arity):
             return arity
-        case .Variadic(let range):
+        case .variadic(let range):
             return range.endIndex
         }
     }
@@ -159,11 +159,11 @@ enum SymbolArity : Equatable {
 
 func ==(lhs:SymbolArity, rhs:SymbolArity) -> Bool {
     switch (lhs,rhs) {
-    case (.None,.None):
+    case (.none,.none):
         return true
-    case (.Fixed(let l),.Fixed(let r)):
+    case (.fixed(let l),.fixed(let r)):
         return l == r
-    case (.Variadic(let lr), .Variadic(let rr)):
+    case (.variadic(let lr), .variadic(let rr)):
         return lr == rr
     default:
         return false

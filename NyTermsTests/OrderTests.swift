@@ -16,7 +16,7 @@ class OrderTests: XCTestCase {
     
     func testSimpleLPO() {
         let signature = Set(["+","×","s"])
-        func myp(l:String, r:String) -> Bool {
+        func myp(_ l:String, r:String) -> Bool {
             guard l != r else { return false }
             
             XCTAssertTrue(signature.contains(l))
@@ -30,36 +30,36 @@ class OrderTests: XCTestCase {
         }
         let lpo = LexicographicPathOrder<T>(p: myp)
         
-        let O = T(constant:"0")
-        let x = T(variable:"x")
-        let y = T(variable:"y")
+        let O = T(stringLiteral:"0")
+        let x = T(stringLiteral:"x")
+        let y = T(stringLiteral:"y")
         
-        let Opx = T(function:"+", nodes:[O,x])
+        let Opx = T(symbol:"+", nodes:[O,x])
         // 0+x > x
         XCTAssertTrue(lpo.greaterThan(Opx, t: x))
         
-        let Omx = T(function:"×", nodes:[O,x])
+        let Omx = T(symbol:"×", nodes:[O,x])
         // 0*x > x
         XCTAssertTrue(lpo.greaterThan(Omx, t: x))
         
-        let sx = T(function:"s", nodes:[x])
+        let sx = T(symbol:"s", nodes:[x])
         // s(x) > x
         XCTAssertTrue(lpo.greaterThan(sx, t: x))
         
-        let sx_p_y = T(function:"+", nodes:[sx,y])
+        let sx_p_y = T(symbol:"+", nodes:[sx,y])
         // s(x)+y > y
         XCTAssertTrue(lpo.greaterThan(sx_p_y, t: y))
         
-        let xpy = T(function:"+", nodes:[x,y])
+        let xpy = T(symbol:"+", nodes:[x,y])
         // s(x)+y > x+y
         XCTAssertTrue(lpo.greaterThan(sx_p_y, t: xpy))
         
-        let s_xpy = T(function:"s", nodes:[xpy])
+        let s_xpy = T(symbol:"s", nodes:[xpy])
         // s(x)+y > s(x+y)
         XCTAssertTrue(lpo.greaterThan(sx_p_y, t: s_xpy))
         
-        let sx_m_y = T(function:"×",nodes:[sx,y])
-        let xmy = T(function:"×", nodes:[x,y])
+        let sx_m_y = T(symbol:"×",nodes:[sx,y])
+        let xmy = T(symbol:"×", nodes:[x,y])
         // s(x)*y > x*y
         XCTAssertTrue(lpo.greaterThan(sx_m_y, t: xmy))
         // s(x)+y > x + y
@@ -68,7 +68,7 @@ class OrderTests: XCTestCase {
         // s(x)*y > y
         XCTAssertTrue(lpo.greaterThan(sx_m_y, t: y))
         
-        let xmy_p_y = T(function:"+", nodes:[xmy,y])
+        let xmy_p_y = T(symbol:"+", nodes:[xmy,y])
         // s(x)*y > x*y + y
         XCTAssertTrue(lpo.greaterThan(sx_m_y, t: xmy_p_y))
         

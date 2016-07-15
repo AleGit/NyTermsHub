@@ -21,7 +21,7 @@ extension Node {
     
     /// Flat Check if `self` represents a (non-empty) tuple of variables.
     private var isTupleOfVariables : Bool {
-        guard self.symbolType == SymbolType.Tuple else { return false }
+        guard self.symbolType == SymbolType.tuple else { return false }
         guard let nodes = self.nodes else { return false }
         guard nodes.count > 0 else { return false } /* a tuple of variables must not be empty */
         return nodes.reduce(true) { $0 && $1.isVariable }
@@ -44,7 +44,7 @@ extension Node {
         // and that the right-hand side does not introduce new variables.
         
         guard !lhs.isVariable else { return false }
-        guard rhs.allVariables.isSubsetOf(lhs.allVariables) else { return false }
+        guard rhs.allVariables.isSubset(of: lhs.allVariables) else { return false }
         
         return true
     }
@@ -63,14 +63,14 @@ extension Node {
             return nodes.reduce(true) { $0 && $1.isTerm }
         }
         // if the type is defined it must be a function
-        return type == SymbolType.Function && nodes.reduce(true) { $0 && $1.isTerm }
+        return type == SymbolType.function && nodes.reduce(true) { $0 && $1.isTerm }
     }
     
     /// Recursive check if `self` represents the negation of a valid predicate (term).
     ///
     /// - an expression `~p` is a negated predicate (term), if `p` is a predicate (term).
     private var isNegatedPredicate : Bool {
-        guard self.symbolType == SymbolType.Negation else { return false }
+        guard self.symbolType == SymbolType.negation else { return false }
         guard let nodes = self.nodes where nodes.count == 1 else { return false }
         
         return nodes.first!.isPredicate
@@ -83,7 +83,7 @@ extension Node {
     private var isPredicate : Bool {
         if let type = self.symbolType {
             // if the symbol is defined it must be a predicatate symbol
-            guard type == SymbolType.Predicate else { return false }
+            guard type == SymbolType.predicate else { return false }
         }
         guard let nodes = self.nodes else { return false }  // a variable is not a predicate term
         
@@ -99,11 +99,11 @@ extension Node {
         guard let nodes = self.nodes else { return false }  // a variable is not an inequation
         
         switch (type, nodes.count) {
-        case (.Negation, 1):
+        case (.negation, 1):
             // the negation of one equation is an inequation
             return nodes.first!.isEquation
             
-        case (.Inequation, 2):
+        case (.inequation, 2):
             // the inequation of two terms is a inequation
             return nodes.first!.isTerm && nodes.last!.isTerm
         default:
@@ -117,7 +117,7 @@ extension Node {
     ///
     /// `~I` will never be recognized as an equation, even when `I` is an inequation.
     private var isEquation : Bool {
-        guard let type = self.symbolType where type == SymbolType.Equation else { return false }
+        guard let type = self.symbolType where type == SymbolType.equation else { return false }
         guard let nodes = self.nodes where nodes.count == 2 else { return false }
         return nodes.first!.isTerm && nodes.last!.isTerm
     }
@@ -144,7 +144,7 @@ extension Node {
         guard !self.isLiteral else { return true }
         
         guard let quartuple = self.symbolQuadruple()
-            where quartuple.category == SymbolCategory.Connective
+            where quartuple.category == SymbolCategory.connective
             else {
                 // undefined or non-connective symbol
                 return false
@@ -168,7 +168,7 @@ extension Node {
         }
         
         // when the node is not a literal then it must be a disjunction
-        guard let type = self.symbolType where type == SymbolType.Disjunction else { return false }
+        guard let type = self.symbolType where type == SymbolType.disjunction else { return false }
         
         // a disjunction must have a list of subnodes
         guard let nodes = self.nodes else { return false }
@@ -186,7 +186,7 @@ extension Node {
         }
         
         // the root not of a clause must be a disjunction
-        guard let type = self.symbolType where type == SymbolType.Disjunction else { return false }
+        guard let type = self.symbolType where type == SymbolType.disjunction else { return false }
         
         // a disjunction must have a list of subnodes (even if it is empty)
         guard let nodes = self.nodes else { return false }
@@ -198,7 +198,7 @@ extension Node {
     /// Recursive check if `self` represents as unit clause, i.e. a clause with exactly one literal
     var isUnitClause : Bool {
         
-        guard let type = self.symbolType where type == SymbolType.Disjunction else { return false }
+        guard let type = self.symbolType where type == SymbolType.disjunction else { return false }
         guard let nodes = self.nodes where nodes.count == 1 else { return false }
         
         return nodes.first!.isLiteral
@@ -207,7 +207,7 @@ extension Node {
     /// Recursive check if `self` represents a Horn clause, i.e. a clause with at most one positive literal.
     var isHornClause : Bool {
         
-        guard let type = self.symbolType where type == SymbolType.Disjunction else {
+        guard let type = self.symbolType where type == SymbolType.disjunction else {
             /* self is not a disjunction, hence self is not a clause */
             assert(false,"not a disjunction, hence not a (horn) clause: \(self)")
             

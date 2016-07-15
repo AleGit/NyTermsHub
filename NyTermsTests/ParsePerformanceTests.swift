@@ -45,7 +45,7 @@ class ParsePerformanceTests: XCTestCase {
     /// ~ 1.2 ms on iMac24/7
     func testPerformanceLCL129cnf1() {
         let path = "LCL129-1".p!         // 2.1K
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)
@@ -60,7 +60,7 @@ class ParsePerformanceTests: XCTestCase {
     func testPerformanceSYN000cnf2() {
         let path = "SYN000-2".p!         // 3.0K
         
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)
@@ -75,7 +75,7 @@ class ParsePerformanceTests: XCTestCase {
     ///  32 ms on iMac24/7
     func testPerformancePUZ051cfn() {
         let path = "PUZ051-1".p!         // 1.9K
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)
@@ -90,7 +90,7 @@ class ParsePerformanceTests: XCTestCase {
     /// ~ 3.3 s on iMac24/7
     func testPerformanceHWV074cnf1() {
         let path = "HWV074-1".p!         // 996K
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)
@@ -105,7 +105,7 @@ class ParsePerformanceTests: XCTestCase {
     /// < 90 MB
     func testPerformanceHWV105cnf1() {
         let path = "HWV105-1".p!         // 2.0M
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)
@@ -121,7 +121,7 @@ class ParsePerformanceTests: XCTestCase {
     func testPerformanceHWV062fof1 () {
         let path = "HWV062+1".p!         // 2.0M
         
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)
@@ -137,7 +137,7 @@ class ParsePerformanceTests: XCTestCase {
     func testPerformanceHWV134fof1 () {
         let path = "HWV134+1".p!         // 84 M
         
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)
@@ -154,7 +154,7 @@ class ParsePerformanceTests: XCTestCase {
     func testPerformanceHWV134cnf1 () {
         let path = "HWV134-1".p!         // 264M
         
-        self.measureBlock {
+        self.measure {
             let (result,tptpFormulae,tptpIncludes) = parse(path:path)
             self.i += 1
             print(self.runtime, self.i, path)

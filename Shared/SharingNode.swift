@@ -38,7 +38,7 @@ extension SharingNode {
         self.symbol = symbol
         self.children = children
         
-        if let index = Self.sharedNodes.indexOf(self) {
+        if let index = Self.sharedNodes.index(of: self) {
             self = Self.sharedNodes[index]
         }
         else {
@@ -53,7 +53,7 @@ extension SharingNode {
         
     }
     
-    func isEqual(rhs:Self) -> Bool {
+    func isEqual(_ rhs:Self) -> Bool {
         guard self.symbol == rhs.symbol else { return false }
         // affirmed: symbols are equal
         
@@ -92,7 +92,7 @@ extension ShareNode : CustomStringConvertible {
         }
         
         let string = ShareNode.i2s[symbol]?.0 ?? "'\(symbol)'"
-        let args = children.map { $0.description }.joinWithSeparator(",")
+        let args = children.map { $0.description }.joined(separator: ",")
         return "\(string)(\(args))"
         
     }
@@ -118,11 +118,11 @@ final class ShareNode : SharingNode {
         "!=" : 4
     ]
     static var i2s : [Int:(String,type:SymbolType, category:SymbolCategory, notation:SymbolNotation, arity:SymbolArity)] = [
-        0 : ("✻", SymbolType.Wildcard, SymbolCategory.Variable, SymbolNotation.Infix, SymbolArity.None),
-        1 : ("~", SymbolType.Negation, SymbolCategory.Connective, SymbolNotation.Prefix, SymbolArity.Fixed(1)),
-        2 : ("|", SymbolType.Conjunction, SymbolCategory.Connective, SymbolNotation.Infix, SymbolArity.Variadic(0..<Int.max)),
-        3 : ("=", SymbolType.Equation, SymbolCategory.Equational, SymbolNotation.Infix, SymbolArity.Fixed(2)),
-        4 : ("!=", SymbolType.Inequation, SymbolCategory.Equational, SymbolNotation.Infix, SymbolArity.Fixed(2))
+        0 : ("✻", SymbolType.wildcard, SymbolCategory.variable, SymbolNotation.infix, SymbolArity.none),
+        1 : ("~", SymbolType.negation, SymbolCategory.connective, SymbolNotation.prefix, SymbolArity.fixed(1)),
+        2 : ("|", SymbolType.conjunction, SymbolCategory.connective, SymbolNotation.infix, SymbolArity.variadic(0..<Int.max)),
+        3 : ("=", SymbolType.equation, SymbolCategory.equational, SymbolNotation.infix, SymbolArity.fixed(2)),
+        4 : ("!=", SymbolType.inequation, SymbolCategory.equational, SymbolNotation.infix, SymbolArity.fixed(2))
     ]
     
     var symbol : Int = 0
@@ -131,7 +131,7 @@ final class ShareNode : SharingNode {
     
     // init() { }
     
-    static func insert<N:Node where N.Symbol == String>(node:N, belowPredicate:Bool) -> (ShareNode,[(String,Position)]) {
+    static func insert<N:Node where N.Symbol == String>(_ node:N, belowPredicate:Bool) -> (ShareNode,[(String,Position)]) {
         
         var abovePredicate : Bool
         var isPredicate : Bool
@@ -139,10 +139,10 @@ final class ShareNode : SharingNode {
         if let index = s2i[node.symbol] {
             // symbol is registerd, hence it has the right type
             switch i2s[index]!.type {
-            case .Negation, .Conjunction:
+            case .negation, .conjunction:
                 abovePredicate = true
                 isPredicate = false
-            case .Predicate, .Equation, .Inequation:
+            case .predicate, .equation, .inequation:
                 abovePredicate = false
                 isPredicate = true
                 break
@@ -175,10 +175,10 @@ final class ShareNode : SharingNode {
         else {
             s2i[node.symbol] = symbol
             i2s[symbol] = (node.symbol,
-                           isPredicate ? SymbolType.Predicate : SymbolType.Function,
-                           SymbolCategory.Functor,
-                           SymbolNotation.Infix,
-                           SymbolArity.Fixed(nodes.count))
+                           isPredicate ? SymbolType.predicate : SymbolType.function,
+                           SymbolCategory.functor,
+                           SymbolNotation.infix,
+                           SymbolArity.fixed(nodes.count))
         }
         
         let pairs = nodes.map { insert($0, belowPredicate: belowPredicate || (!abovePredicate && isPredicate)) }
@@ -186,7 +186,7 @@ final class ShareNode : SharingNode {
         
         var variables = [(String,Position)]()
         
-        for (index, entry) in pairs.enumerate() {
+        for (index, entry) in pairs.enumerated() {
             let array = entry.1.map { ($0.0,[index]+$0.1) }
             variables += array
             

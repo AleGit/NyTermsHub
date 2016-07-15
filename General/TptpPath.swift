@@ -30,7 +30,7 @@ extension TptpPath {
         var localPath = [TptpPath]()
         
         var isRootPathComponent = true
-        for pathComponent in ((self as NSString).stringByDeletingLastPathComponent as NSString).pathComponents {
+        for pathComponent in ((self as NSString).deletingLastPathComponent as NSString).pathComponents {
             switch pathComponent {
             case "Axioms", "Problems":
                 isRootPathComponent = false;
@@ -48,14 +48,14 @@ extension TptpPath {
         // assert(localPath.count > 0)
         // assert(localPath.first == "Problems" || localPath.first == "Axioms")
         
-        return (NSString.pathWithComponents(rootPath), NSString.pathWithComponents(localPath), (self as NSString).lastPathComponent)
+        return (NSString.path(withComponents: rootPath), NSString.path(withComponents: localPath), (self as NSString).lastPathComponent)
     }
     
     /// TPTP problem files can include axioms, i.e. a path to an axiom file.
     /// 1. `file` is absolute path (untested)
     /// 2. `file` shares path prefix with `self` (default)
     /// 3. `file` is relative tptp root path. (untested)
-    func tptpPathTo(file:TptpPath) -> TptpPath? {
+    func tptpPathTo(_ file:TptpPath) -> TptpPath? {
         
         // 1, `file` is absolute path
         
@@ -73,8 +73,8 @@ extension TptpPath {
         
         // 2. `file` shares path prefix with `self`
         
-        let path = axiom.isEmpty ? (root as NSString).stringByAppendingPathComponent(last)
-            : ((root as NSString).stringByAppendingPathComponent(axiom) as NSString).stringByAppendingPathComponent(last)
+        let path = axiom.isEmpty ? (root as NSString).appendingPathComponent(last)
+            : ((root as NSString).appendingPathComponent(axiom) as NSString).appendingPathComponent(last)
         
         Nylog.info("\(self) \(#function)(\(file) -> \(path)")
         
@@ -82,8 +82,8 @@ extension TptpPath {
         
         // 3. `file` is relative to tptp root path.
         
-        let rootPath = axiom.isEmpty ? (TptpPath.tptpRootPath as NSString).stringByAppendingPathComponent(last)
-            : ((TptpPath.tptpRootPath as NSString).stringByAppendingPathComponent(axiom) as NSString).stringByAppendingPathComponent(last)
+        let rootPath = axiom.isEmpty ? (TptpPath.tptpRootPath as NSString).appendingPathComponent(last)
+            : ((TptpPath.tptpRootPath as NSString).appendingPathComponent(axiom) as NSString).appendingPathComponent(last)
         
         if rootPath.isAccessibleFile { return rootPath }
         
@@ -93,11 +93,11 @@ extension TptpPath {
     }
     
     /// Find path to tptp include file (usually an axiom).
-    func tptpPathTo(include: TptpInclude) -> TptpPath? {
+    func tptpPathTo(_ include: TptpInclude) -> TptpPath? {
         return self.tptpPathTo(include.fileName)
     }
     
-    private static func accessibleDirectory(path:TptpPath?, label : String = "no label") -> TptpPath? {
+    private static func accessibleDirectory(_ path:TptpPath?, label : String = "no label") -> TptpPath? {
         guard let path = path else {
             Nylog.warn("Key '\(label)' is not set or its value was missing.")
             return nil
@@ -146,21 +146,21 @@ extension TptpPath {
         
         // check if problem name is just a name without path or extension
         
-        assert(self.rangeOfString("/") == nil,"\(self)")    // assert file name only
+        assert(self.range(of: "/") == nil,"\(self)")    // assert file name only
         assert(!self.hasSuffix(".p"),"\(self)")    // assert without extension p
         assert(!self.hasSuffix(".ax"),"\(self)")    // assert without extension ax
         
         // extract first thre uppercase letters of problem name
         
-        let ABC = self[self.startIndex..<self.startIndex.advancedBy(3)]
-        assert(ABC.uppercaseString == ABC,"\(ABC)")
+        let ABC = self[self.startIndex..<self.index(self.startIndex, offsetBy: 3)]
+        assert(ABC.uppercased() == ABC,"\(ABC)")
         
-        let path = NSString.pathWithComponents([
+        let path = NSString.path(withComponents: [
             TptpPath.tptpRootPath, // e.g. /Users/Shared/TPTP
             "Problems", // by convention problem files are in the local directory
             ABC, // 'Problems/ABC' where ABC matches the first three letters of the file name
             self]) // self is the file name without extension, e.g. XYZ001-1
-        let full = (path as NSString).stringByAppendingPathExtension("p")!
+        let full = (path as NSString).appendingPathExtension("p")!
         
         guard full.isAccessibleFile else {
             let (errorNumber,errorString) = errorNumberAndDescription()

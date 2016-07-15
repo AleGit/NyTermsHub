@@ -10,8 +10,8 @@ import Foundation
 
 extension Process {
     
-    private static func argumentValueOf(key:String) -> String? {
-        guard let valueIndex = Process.arguments.indexOf(key)?.successor() else {
+    private static func argumentValueOf(_ key:String) -> String? {
+        guard let valueIndex = ((Process.arguments.index(of: key))! + 1) else {
             return nil
         }
         guard valueIndex < Process.arguments.count else {
@@ -22,9 +22,9 @@ extension Process {
         return Process.arguments[valueIndex]
     }
     
-    private static func environmentValueOf(key:String) -> String? {
+    private static func environmentValueOf(_ key:String) -> String? {
         #if os(OSX)
-            return NSProcessInfo.processInfo().environment[key]
+            return ProcessInfo.processInfo.environment[key]
         #else
             assert(false)
             return nil
@@ -36,11 +36,11 @@ extension Process {
     /// - if key starts with '-' try to get value from command line arguments.
     /// - if key is uppercase try to get value from environment.
     /// - otherwise return nil
-    static func valueOf(key:String) -> String? {
+    static func valueOf(_ key:String) -> String? {
         if key.hasPrefix("-") {
             return Process.argumentValueOf(key)
         }
-        else if (key.uppercaseString == key) {
+        else if (key.uppercased() == key) {
             return Process.environmentValueOf(key)
         }
         else {
@@ -52,8 +52,8 @@ extension Process {
     #if os(OSX)
     private static var infoOSX : String {
         
-        let info = NSProcessInfo.processInfo()
-        let host = NSHost.currentHost()
+        let info = ProcessInfo.processInfo
+        let host = Host.current()
         
         let names = host.names.filter {
             !( $0.hasSuffix("uibk.ac.at") || $0 == "localhost" )
@@ -82,11 +82,11 @@ extension Process {
         var size : size_t = 0
         sysctlbyname("hw.machine", nil, &size, nil, 0)
         
-        var machine = [CChar](count: Int(size), repeatedValue: 0)
+        var machine = [CChar](repeating: 0, count: Int(size))
         
         sysctlbyname("hw.machine", &machine, &size, nil, 0)
         
-        return String.fromCString(machine) ?? "n/a"
+        return String(cString: machine) ?? "n/a"
         #else
         return "n/a"
         #endif
@@ -122,7 +122,7 @@ extension Process {
     
 
     
-    private static func sysctl<T where T:Defaultable>(name:String) -> T {
+    private static func sysctl<T where T:Defaultable>(_ name:String) -> T {
         var size : size_t = 0
         var t : T = T()
         

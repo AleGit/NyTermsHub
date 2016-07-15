@@ -13,7 +13,7 @@ extension Node {
     /// self == f<sup>n</sup>(X), n ≥ 0 ?
     /// 1. f<sup>0</sup>(X)    := Xx
     /// 2. f<sup>n+1</sup>(X)  := f(f<sup>n</sup>(X))
-    func isFnX(f:Symbol, _ X:Symbol) -> Bool {
+    func isFnX(_ f:Symbol, _ X:Symbol) -> Bool {
         guard let nodes = self.nodes else {
              // case 1. self == X ?
             
@@ -31,15 +31,15 @@ extension Node {
 }
 
 extension Yices {
-    static func integerVariable(symbol:String) -> term_t {
+    static func integerVariable(_ symbol:String) -> term_t {
         return Yices.typedSymbol(symbol, term_tau:Yices.int_tau)
     }
     
-    static func weightVariable(symbol:String) -> term_t {
+    static func weightVariable(_ symbol:String) -> term_t {
         return Yices.integerVariable("w⏑\(symbol)")
     }
     
-    static func precedenceVariable(symbol:String) -> term_t {
+    static func precedenceVariable(_ symbol:String) -> term_t {
         return Yices.integerVariable("p⏑\(symbol)")
     }
 }
@@ -58,7 +58,7 @@ extension Yices {
 
         /// Register symbol with arity and create global weight and preference typedTerms (i.e. variables).
         /// Return weight of typedSymbol. (If symbol is allready registered check if arity is consistent.)
-        mutating func register(symbol:String, arity:Int) -> term_t {
+        mutating func register(_ symbol:String, arity:Int) -> term_t {
             guard let (w,_,a) = symbols[symbol] else {
                 let weight = Yices.weightVariable(symbol)
                 let preference = Yices.precedenceVariable(symbol)
@@ -74,7 +74,7 @@ extension Yices {
         
         /// Returns a yices weight term for the given tptp term.
         /// Registers occurring symbols on the way.
-        mutating func weight<N:Node>(node:N) -> term_t {
+        mutating func weight<N:Node>(_ node:N) -> term_t {
             guard let nodes = node.nodes else {
                 // w(t) = w_0 if t is a variable
                 return w0
@@ -88,7 +88,7 @@ extension Yices {
             return Yices.sum(summands)
         }
         
-        mutating func leftRightCondition<N:Node>(s:N, _ t:N) -> term_t {
+        mutating func leftRightCondition<N:Node>(_ s:N, _ t:N) -> term_t {
             guard leftRightPrerequisite(s,t) else { return Yices.bot }
             
             let ws = weight(s)
@@ -106,7 +106,7 @@ extension Yices {
             return c
         }
         
-        private func leftRightPrerequisite<N:Node>(s:N, _ t:N) -> Bool {
+        private func leftRightPrerequisite<N:Node>(_ s:N, _ t:N) -> Bool {
             guard !s.isVariable && s != t else { return false }
             
             // false if |s|_x < |t|_x for some variable x
@@ -123,7 +123,7 @@ extension Yices {
             return true
         }
         
-        mutating private func leftRightPrecedence<N:Node>(s:N, _ t:N) -> term_t {
+        mutating private func leftRightPrecedence<N:Node>(_ s:N, _ t:N) -> term_t {
             assert(leftRightPrerequisite(s,t), "leftRightPrerequisite was not called before")
             
             // we know leftRightPrerequisite(s,t) is holding, hence

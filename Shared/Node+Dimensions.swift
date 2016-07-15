@@ -75,8 +75,8 @@ extension Node where Symbol == String {
     }
     
     private func dimensions(
-        belowPredicate:Bool,
-        inout symbols:[Symbol:SymbolIndications]
+        _ belowPredicate:Bool,
+        symbols:inout [Symbol:SymbolIndications]
         
         ) -> (height:Int, size:Int, width:Int) {
             
@@ -84,9 +84,9 @@ extension Node where Symbol == String {
                 assert(self.symbolQuadruple() == nil, "variable \(self.symbolString) is predefined \(self.symbolQuadruple()!))")
                 assert(belowPredicate)
                 
-                var value = symbols[self.symbol] ?? (SymbolType.Variable,Set<Int>(),0)
+                var value = symbols[self.symbol] ?? (SymbolType.variable,Set<Int>(),0)
                 
-                assert(value.type == .Variable)
+                assert(value.type == .variable)
                 assert(value.arity.isEmpty)
                 
                 value.occurences += 1
@@ -97,7 +97,7 @@ extension Node where Symbol == String {
             }
             
             // types of symbols above predicate must be predefined
-            let type = self.symbolType ?? (belowPredicate ? SymbolType.Function : SymbolType.Predicate)
+            let type = self.symbolType ?? (belowPredicate ? SymbolType.function : SymbolType.predicate)
 
             // did the symbol appear befoe?, if not create an entry for function and predicate symbols with derived arity
             var value = symbols[self.symbol] ?? (type,Set(arrayLiteral: nodes.count),0)

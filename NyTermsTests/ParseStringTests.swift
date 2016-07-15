@@ -36,7 +36,7 @@ class ParseStringTests: XCTestCase {
     }
     
     func testParseStringMultipleQuantifiers() {
-        func fof_annotated(input:String) -> String {
+        func fof_annotated(_ input:String) -> String {
             return "fof(test,axiom,\(input))."
         }
         

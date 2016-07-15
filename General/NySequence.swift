@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct NyGenerator<S,T> : GeneratorType {
+struct NyGenerator<S,T> : IteratorProtocol {
     private var this : S?
     private let step : (S) -> S?
     private let data : (S) -> T
@@ -28,7 +28,7 @@ struct NyGenerator<S,T> : GeneratorType {
     }
 }
 
-struct NySequence<S,T> : SequenceType {
+struct NySequence<S,T> : Sequence {
     private let this : S?
     private let step : (S) -> S?
     private let data : (S) -> T
@@ -39,7 +39,7 @@ struct NySequence<S,T> : SequenceType {
         self.data = data
     }
     
-    func generate() -> NyGenerator<S,T> {
+    func makeIterator() -> NyGenerator<S,T> {
         return NyGenerator(first: this, step: step, data: data)
     }
     

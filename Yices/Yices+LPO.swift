@@ -18,7 +18,7 @@ extension Yices {
             return symbols.map { $0.1.precedence }
         }
         
-        mutating func register(symbol:String, arity:Int) -> term_t {
+        mutating func register(_ symbol:String, arity:Int) -> term_t {
             guard let (p,a) = symbols[symbol] else {
                 let precedence = Yices.precedenceVariable(symbol)
                 symbols[symbol] = (precedence,arity)
@@ -31,7 +31,7 @@ extension Yices {
             
         }
         
-        mutating func leftRightCondition<N:Node>(s:N, _ t:N) -> term_t {
+        mutating func leftRightCondition<N:Node>(_ s:N, _ t:N) -> term_t {
             guard s.nodes != nil else {
                 // variables must not be on the left hand side
                 return Yices.bot
@@ -43,7 +43,7 @@ extension Yices {
         }
         
         
-        mutating private func case1<N:Node>(s:N, _ t:N) -> term_t {
+        mutating private func case1<N:Node>(_ s:N, _ t:N) -> term_t {
             guard s.symbol == t.symbol else {
                 // case 1 is not applicable if symbols are different
                 return Yices.bot
@@ -86,7 +86,7 @@ extension Yices {
             }
         }
         
-        mutating private func case2<N:Node>(s:N, _ t:N) -> term_t {
+        mutating private func case2<N:Node>(_ s:N, _ t:N) -> term_t {
             guard let tnodes = t.nodes where s.symbol != t.symbol else {
                 // case 2 is not applicable if t is a variable
                 // case 2 is not applicable if symbols are the same
@@ -113,7 +113,7 @@ extension Yices {
             return Yices.and(conditions)
         }
         
-        mutating private func case3<N:Node>(s:N, _ t:N) -> term_t {
+        mutating private func case3<N:Node>(_ s:N, _ t:N) -> term_t {
             guard let snodes = s.nodes else {
                 assert(false,"\(#function)(\(s),_) - must not be called with a variable as first argument.")
                 return Yices.bot

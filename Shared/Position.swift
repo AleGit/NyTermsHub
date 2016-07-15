@@ -5,7 +5,7 @@ import Foundation
 
 /// We say `p` is a *prefix* of `q`, and we write `p` <= `q`.
 func <=<E:Equatable>(lhs:[E], rhs:[E]) -> Bool {
-    return rhs.startsWith(lhs)
+    return rhs.starts(with: lhs)
 }
 
 /// We say that `p` is a proper prefix of `q`, and

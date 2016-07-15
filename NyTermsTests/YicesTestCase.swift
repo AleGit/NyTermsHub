@@ -23,7 +23,7 @@ class YicesTestCase : XCTestCase {
         super.tearDown()
     }
     
-    private func typeInfo(tau:type_t) -> [String] {
+    private func typeInfo(_ tau:type_t) -> [String] {
         var typeinfos = [String]()
         
         if yices_type_is_bool(tau)==1 { typeinfos.append("is_bool") }
@@ -95,7 +95,7 @@ class YicesTestCase : XCTestCase {
             default:
                 print(status)
             }
-            print(Yices.infos(term:f).map { "\($0)" }.joinWithSeparator("\n\t") )
+            print(Yices.infos(term:f).map { "\($0)" }.joined(separator: "\n\t") )
         }
         
         let status = yices_check_context(ctx, nil)

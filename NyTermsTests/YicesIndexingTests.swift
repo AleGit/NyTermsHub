@@ -92,8 +92,8 @@ class YicesIndexingTests: YicesTestCase {
     }
     
     func testSampleClauses() {
-        let x_equals_y = TptpNode(equational:TptpNode.symbol(.Equation), nodes:["X","Y"])
-        let x_neq_y = TptpNode(equational:TptpNode.symbol(.Inequation), nodes:["X","Y"])
+        let x_equals_y = TptpNode(equational:TptpNode.symbol(.equation), nodes:["X","Y"])
+        let x_neq_y = TptpNode(equational:TptpNode.symbol(.inequation), nodes:["X","Y"])
         let clauses : [TptpNode] = [
             "p(X,Y)  | ~p(X,Y)",
             "X = Y | X != Y",

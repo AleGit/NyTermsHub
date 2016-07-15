@@ -86,7 +86,7 @@ class ShareNodeTests: XCTestCase {
         print(ShareNode.s2i)
         let x = ShareNode.i2s.map {
             ($0, $1.0,
-                $1.type,$1.category,$1.notation,$1.arity) }.sort { $0.0.0 < $0.1.0 }
+                $1.type,$1.category,$1.notation,$1.arity) }.sorted { $0.0.0 < $0.1.0 }
         for s in x {
             print(s)
         }
@@ -106,7 +106,7 @@ class ShareNodeTests: XCTestCase {
         
         let (_, convertingTime) = measure {
         
-        for (index,clause) in clauses.enumerate() {
+        for (index,clause) in clauses.enumerated() {
             
             let (a,b) = ShareNode.insert(clause, belowPredicate:false)
             if index % 10000 == 0 {

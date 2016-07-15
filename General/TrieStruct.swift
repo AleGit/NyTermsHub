@@ -15,11 +15,11 @@ struct TrieStruct<K: Hashable, V: Hashable> {
 
 extension TrieStruct : TrieType {
     
-    mutating func insert(value: Value) {
+    mutating func insert(_ value: Value) {
         valueStore.insert(value)
     }
     
-    mutating func delete(value: Value) -> Value? {
+    mutating func delete(_ value: Value) -> Value? {
         return valueStore.remove(value)
     }
     
@@ -38,7 +38,7 @@ extension TrieStruct {
     var payload : Set<Value> {
         var collected = valueStore
         for (_,trie) in trieStore {
-            collected.unionInPlace(trie.payload)
+            collected.formUnion(trie.payload)
         }
         return collected
     }

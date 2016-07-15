@@ -18,33 +18,33 @@ import Foundation
 indirect enum TailTrie<K:Hashable,V:Hashable> {
     typealias Key = K
     typealias Value = V
-    case Inner(tries:[K:TailTrie])
-    case Leaf(values:Set<V>)
+    case inner(tries:[K:TailTrie])
+    case leaf(values:Set<V>)
 }
 
 extension TailTrie : TrieType {
-    init() { self = TailTrie.Inner(tries: [Key:TailTrie<Key,Value>]()) }
+    init() { self = TailTrie.inner(tries: [Key:TailTrie<Key,Value>]()) }
     
-    mutating func insert(value: Value) {
+    mutating func insert(_ value: Value) {
         switch self {
-        case .Inner(let tries):
+        case .inner(let tries):
             if !tries.isEmpty { assert(false,"path is too short!") }
-            self = .Leaf(values:Set([value]))
+            self = .leaf(values:Set([value]))
             return
-        case .Leaf(var values):
+        case .leaf(var values):
             values.insert(value)
-            self = .Leaf(values:values)
+            self = .leaf(values:values)
             return
         }
     }
     
-    mutating func delete(value: Value) -> Value? {
+    mutating func delete(_ value: Value) -> Value? {
         switch self {
-        case .Inner:
+        case .inner:
             return nil
-        case .Leaf(var values):
+        case .leaf(var values):
             let v = values.remove(value)
-            self = .Leaf(values:values)
+            self = .leaf(values:values)
             return v
         }
     }
@@ -52,31 +52,31 @@ extension TailTrie : TrieType {
     subscript(key:Key) -> TailTrie? {
         get {
             switch self {
-            case .Inner(let tries):
+            case .inner(let tries):
                 return tries[key]
-            case .Leaf:
+            case .leaf:
                 return nil            }
         }
         
         set {
             
             switch self {
-            case .Inner(var tries):
+            case .inner(var tries):
                 tries[key] = newValue
-                self = .Inner(tries: tries)
-            case .Leaf:
+                self = .inner(tries: tries)
+            case .leaf:
                 guard let trie = newValue else { return }
                 let tries = [key : trie]
-                self = .Inner(tries: tries)
+                self = .inner(tries: tries)
             }
         }
     }
     
     var values : [Value]? {
         switch self {
-        case .Inner:
+        case .inner:
             return nil
-        case .Leaf(let values):
+        case .leaf(let values):
             return Array(values)
         }
     }
@@ -85,11 +85,11 @@ extension TailTrie : TrieType {
 extension TailTrie : CustomStringConvertible {
     var description : String {
         switch self {
-        case .Inner(let tries):
-            let strings = tries.map { "\($0):\($1)" }.joinWithSeparator(",")
+        case .inner(let tries):
+            let strings = tries.map { "\($0):\($1)" }.joined(separator: ",")
             return "[\(strings)]"
-        case .Leaf(let values):
-            return "{\(values.map { "\($0)" }.joinWithSeparator(","))}"
+        case .leaf(let values):
+            return "{\(values.map { "\($0)" }.joined(separator: ","))}"
         }
     }
 }
@@ -97,9 +97,9 @@ extension TailTrie : CustomStringConvertible {
 extension TailTrie : Equatable {
     var isEmpty : Bool {
         switch self {
-        case .Leaf(let values):
+        case .leaf(let values):
             return values.isEmpty
-        case .Inner(let tries):
+        case .inner(let tries):
             return tries.isEmpty
         }
     }
@@ -108,9 +108,9 @@ extension TailTrie : Equatable {
 
 func == <K,V>(lhs:TailTrie<K,V>, rhs:TailTrie<K,V>) -> Bool {
     switch(lhs,rhs) {
-    case (.Inner(let l), .Inner(let r)):
+    case (.inner(let l), .inner(let r)):
         return l == r
-    case (.Leaf(let l), .Leaf(let r)):
+    case (.leaf(let l), .leaf(let r)):
         return l == r
     default:
         return false
@@ -120,9 +120,9 @@ func == <K,V>(lhs:TailTrie<K,V>, rhs:TailTrie<K,V>) -> Bool {
 extension TailTrie {
     var tries : [TailTrie] {
         switch self {
-        case .Leaf:
+        case .leaf:
             return [TailTrie]() //empty
-        case .Inner(let tries):
+        case .inner(let tries):
             return Array(tries.values)
         }
     }

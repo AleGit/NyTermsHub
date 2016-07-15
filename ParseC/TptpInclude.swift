@@ -18,7 +18,7 @@ final class TptpInclude: NSObject {
         assert(fileName.hasPrefix("'") && fileName.hasSuffix("'"), "<file_name> ::= <single_quoted> is not single quoted.")
         
         // store the file name without single quotes:
-        self.fileName = fileName.substringWithRange(fileName.startIndex.successor()..<fileName.endIndex.predecessor())
+        self.fileName = fileName.substring(with: fileName.characters.index(after: fileName.startIndex)..<fileName.characters.index(before: fileName.endIndex))
         self.formulaSelection = formulaSelection;
     }
 }
@@ -28,7 +28,7 @@ extension TptpInclude {
         get {
             guard let selection = formulaSelection else { return "include('\(fileName)')." }
             
-            let names = selection.joinWithSeparator(",")
+            let names = selection.joined(separator: ",")
             return "include('\(fileName)',[\(names)])."
                 
             

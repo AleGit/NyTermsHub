@@ -45,7 +45,7 @@ extension Node {
         
         let list = nodes.map { $0.positions }
         
-        for (hop, tails) in list.enumerate() {
+        for (hop, tails) in list.enumerated() {
             positions += tails.map { [hop] + $0 }
         }
         return positions

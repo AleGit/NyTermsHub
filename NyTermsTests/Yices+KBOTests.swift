@@ -87,7 +87,7 @@ class YicesKBOTests: YicesTestCase {
         let rl = kbo.leftRightCondition(c,fX)
         let adm = kbo.admissible
         
-        XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (=> (= w⏑f 0) (>= (+ (* -1 p⏑f) p⏑c) 0)) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
+        XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (or (< (+ (* -1 p⏑f) p⏑c) 0) (/= w⏑f 0)) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
         XCTAssertEqual("(=> (>= (+ (* -1 𝛚₀) (* -1 w⏑f) w⏑c) 0) (and (= (+ 𝛚₀ w⏑f (* -1 w⏑c)) 0) (< (+ (* -1 p⏑f) p⏑c) 0)))", String(term:lr)!)
         XCTAssertEqual("false", String(term:rl)!)
         
@@ -112,7 +112,7 @@ class YicesKBOTests: YicesTestCase {
         let rl = kbo.leftRightCondition(c,fc)
         let adm = kbo.admissible
         
-        XCTAssertEqual("(and (=> (= w⏑f 0) (>= (+ (* -1 p⏑f) p⏑c) 0)) (< (* -1 𝛚₀) 0) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
+        XCTAssertEqual("(and (< (* -1 𝛚₀) 0) (or (/= w⏑f 0) (< (+ (* -1 p⏑f) p⏑c) 0)) (and (>= w⏑f 0) (>= (+ (* -1 𝛚₀) w⏑c) 0)))", String(term:adm)!)
         XCTAssertEqual("(=> (>= (* -1 w⏑f) 0) (and (= w⏑f 0) (< (+ (* -1 p⏑f) p⏑c) 0)))", String(term:lr)!)
         XCTAssertEqual("(=> (>= w⏑f 0) (and (= w⏑f 0) (< (+ p⏑f (* -1 p⏑c)) 0)))", String(term:rl)!)
         
@@ -192,6 +192,31 @@ class YicesKBOTests: YicesTestCase {
         printValues(ctx, terms: kbo.atoms)
         printTerms(ctx, terms: weights)
         
+
+    }
+
+    func testAdmissibility1() {
+        let ctx = yices_new_context(nil)
+        defer { yices_free_context(ctx) }
+        var kbo = Yices.KBO()
+
+        let trs : [(TptpNode,TptpNode)] = [
+            ("i(X)", "j(i(X))"),
+            ("j(X)", "X")]
+
+        var weights = [(TptpNode,term_t)]()
+
+        for (s,t) in trs {
+            let c = kbo.leftRightCondition(s, t)
+            weights.append((s,kbo.weight(s)))
+            weights.append((t,kbo.weight(t)))
+            yices_assert_formula(ctx, c)
+            print(s,"=",t,"\t",String(term:c)!)
+        }
+
+        yices_assert_formula(ctx, kbo.admissible)
+
+        XCTAssertEqual(STATUS_UNSAT,yices_check_context(ctx, nil))
 
     }
 

@@ -173,17 +173,17 @@ extension Yices {
             let unariesConditions = symbols.filter {
                 $0.1.arity == 1
                 }.map {
-                    (_,wpaf) -> term_t in
+                    (f,wpaf) -> term_t in
                     let (wf,pf,_) = wpaf
                     
                     let wf_eq_0 = Yices.eq(wf,Yices.zero)
                     
-                    let pg_ge_pf = symbols.map {
-                        (_,wpag) -> term_t in
+                    let pf_gt_pg = symbols.map {
+                        (g,wpag) -> term_t in
                         let (_,pg,_) = wpag
-                        return Yices.ge(pg,pf)
+                        return f == g ? Yices.top : Yices.gt(pf,pg)
                     }
-                    return Yices.implies(wf_eq_0, Yices.and(pg_ge_pf))
+                    return Yices.implies(wf_eq_0, Yices.and(pf_gt_pg))
             }
             
             return Yices.and (w0gt0, Yices.and(conditions), Yices.and(unariesConditions))
